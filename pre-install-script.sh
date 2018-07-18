@@ -15,5 +15,8 @@ done
 ## WORKSTATION
 yum -y install atomic-openshift-utils
 
-
+## NODES
+for i in node1 node2 node3 ; do
+  ssh $i "yum install -y docker-1.13.1"
+done
 
