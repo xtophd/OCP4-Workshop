@@ -30,3 +30,7 @@ for i in node1 node2 node3 ; do
   
   ssh $i "docker-storage-setup"
 done
+
+yum install docker-novolume-plugin
+systemctl enable docker-novolume-plugin
+systemctl start docker-novolume-plugin
