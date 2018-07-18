@@ -22,16 +22,15 @@ done
 
 ## CLUSTER
 for i in node1 node2 node3 ; do
-  scp docker $i:/etc/sysconfig
+
+  ## Setup up docker storage
   scp docker-storage-setup $i:/etc/sysconfig
-  
-  vgremove --force docker-vg
-  pvremove --force /dev/vdb
-  wipefs -a /dev/vdb
-  
+  ssh $i "vgremove --force docker-vg ; pvremove --force /dev/vdb ; wipefs -a /dev/vdb"
   ssh $i "docker-storage-setup"
+
+  ## Setup up docker-novolume-plugin
+  scp docker $i:/etc/sysconfig
+  ssh $i "yum install docker-novolume-plugin ; systemctl enable docker-novolume-plugin ; systemctl start docker-novolume-plugin"
+  
 done
 
-yum install docker-novolume-plugin
-systemctl enable docker-novolume-plugin
-systemctl start docker-novolume-plugin
