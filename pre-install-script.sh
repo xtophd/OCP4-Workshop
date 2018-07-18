@@ -22,6 +22,7 @@ done
 
 ## CLUSTER
 for i in node1 node2 node3 ; do
+  scp docker $i:/etc/sysconfig
   scp docker-storage-setup $i:/etc/sysconfig
   
   vgremove --force docker-vg
