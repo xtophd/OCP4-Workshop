@@ -13,7 +13,7 @@ for i in node1 node2 node3 ; do
 done
 
 ## WORKSTATION
-yum install atomic-openshift-utils
+yum -y install atomic-openshift-utils
 
 
 
