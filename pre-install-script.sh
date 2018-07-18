@@ -25,7 +25,7 @@ for i in node1 node2 node3 ; do
 
   ## Setup up docker storage
   scp docker-storage-setup $i:/etc/sysconfig
-  ssh $i "vgremove --force docker-vg ; pvremove --force /dev/vdb ; wipefs -a /dev/vdb"
+  ssh $i "rm -f /etc/sysconfig/docker-storage; vgremove --force docker-vg ; pvremove --force /dev/vdb ; wipefs -a /dev/vdb"
   ssh $i "docker-storage-setup"
 
   ## Setup up docker-novolume-plugin
