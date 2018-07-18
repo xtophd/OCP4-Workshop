@@ -30,7 +30,7 @@ for i in node1 node2 node3 ; do
 
   ## Setup up docker-novolume-plugin
   scp docker $i:/etc/sysconfig
-  ssh $i "yum install docker-novolume-plugin ; systemctl enable docker-novolume-plugin ; systemctl start docker-novolume-plugin"
+  ssh $i "yum -y install docker-novolume-plugin ; systemctl enable docker-novolume-plugin ; systemctl start docker-novolume-plugin"
   
 done
 
