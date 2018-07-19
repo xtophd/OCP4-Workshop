@@ -37,8 +37,8 @@
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
-          vgremove --force docker-vg
-          pvremove --force /dev/vdb
+          vgs docker-vg && vgremove --force docker-vg
+          pvs /dev/vdb1 && pvremove --force /dev/vdb1
           wipefs -a /dev/vdb
           docker-storage-setup
           EOF
