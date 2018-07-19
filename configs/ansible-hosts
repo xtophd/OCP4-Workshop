@@ -14,6 +14,9 @@ openshift_hostname_check=false
 deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 
+[workstation]
+workstation.example.com
+
 [nodes]
 master.example.com
 node1.example.com
