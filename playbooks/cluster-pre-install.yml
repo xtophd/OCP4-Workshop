@@ -17,7 +17,7 @@
     - name: Configuring docker-novolume-plugin in /etc/sysconfig/docker
       template:
         src: ~/OCP-Workshop/configs/docker
-        dest: /etc/sysconf/docker
+        dest: /etc/sysconfig/docker
         owner: root
         group: root
         mode: 0644
@@ -28,7 +28,7 @@
     - name: Configuring docker storage in /etc/sysconf/docker-storage-setup
       template:
         src: ~/OCP-Workshop/configs/docker-storage-setup
-        dest: /etc/sysconf/docker-storage-setup
+        dest: /etc/sysconfig/docker-storage-setup
         owner: root
         group: root
         mode: 0644
