@@ -34,3 +34,7 @@ for i in node1 node2 master ; do
   
 done
 
+## WORKSTATION
+cp -f hosts /etc/ansible/hosts
+ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+
