@@ -1,0 +1,29 @@
+
+[OSEv3:children]
+nodes
+masters
+nfs
+etcd
+
+[OSEv3:vars]
+openshift_master_cluster_public_hostname=None
+openshift_master_default_subdomain=cloud.example.com
+ansible_ssh_user=root
+openshift_master_cluster_hostname=None
+openshift_hostname_check=false
+deployment_type=openshift-enterprise
+openshift_disable_check=disk_availability,docker_storage,memory_availability
+
+[nodes]
+master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
+node1.example.com  openshift_public_ip=10.0.0.12 openshift_ip=10.0.0.12 openshift_public_hostname=node1.example.com openshift_hostname=node1.example.com openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
+node2.example.com  openshift_public_ip=10.0.0.13 openshift_ip=10.0.0.13 openshift_public_hostname=node2.example.com openshift_hostname=node2.example.com openshift_schedulable=True
+
+[masters]
+master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
+
+[nfs]
+master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
+
+[etcd]
+master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
