@@ -33,10 +33,14 @@
         group: root
         mode: 0644
 
+- name: Stopping dockerd services before configuring docker-storage
+      service: name=docker state=stopped enabled=yes
+
     - name: Cleaning up existing config and executing docker-storage-setup
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
+          rm -rf /var/lib/docker
           vgs docker-vg && vgremove --force docker-vg
           pvs /dev/vdb1 && pvremove --force /dev/vdb1
           wipefs -a /dev/vdb
