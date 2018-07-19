@@ -14,5 +14,37 @@
     - name: YUM installation of docker-1.13.1
       yum: name=docker version=1.13.1 state=installed
 
-    - name: SERVICE state of dockerd
+    - name: Configuring docker-novolume-plugin in /etc/sysconfig/docker
+      template:
+        src: ~/OCP-Workshop/configs/docker
+        dest: /etc/sysconf/docker
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: YUM installation of docker-novolume-plugin
+      yum: name=docker-novolume-plugin state=installed
+
+    - name: Configuring docker storage in /etc/sysconf/docker-storage-setup
+      template:
+        src: ~/OCP-Workshop/configs/docker-storage-setup
+        dest: /etc/sysconf/docker-storage-setup
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Cleaning up existing config and executing docker-storage-setup
+      shell: 
+        cmd: |
+          rm -f /etc/sysconfig/docker-storage
+          vgremove --force docker-vg
+          pvremove --force /dev/vdb
+          wipefs -a /dev/vdb
+          docker-storage-setup
+          EOF
+
+    - name: Enable service dockerd
       service: name=docker state=started enabled=yes
+      
+    - name: Enable service docker-novolume-plugin
+      service: name=docker-novolume-plugin state=started enabled=yes
