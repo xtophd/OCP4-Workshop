@@ -43,6 +43,3 @@ done
 cp -f hosts /etc/ansible/hosts
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
-## WORKSTATION: run the installer
-ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
-
