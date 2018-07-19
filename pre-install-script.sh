@@ -8,7 +8,7 @@
 yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 
 ## CLUSTER
-for i in node1 node2 node3 ; do
+for i in node1 node2 master ; do
   ssh $i "yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct"
 done
 
@@ -16,12 +16,12 @@ done
 yum -y install atomic-openshift-utils
 
 ## CLUSTER
-for i in node1 node2 node3 ; do
+for i in node1 node2 master ; do
   ssh $i "yum install -y docker-1.13.1"
 done
 
 ## CLUSTER
-for i in node1 node2 node3 ; do
+for i in node1 node2 master ; do
 
   ## Setup up docker storage
   scp docker-storage-setup $i:/etc/sysconfig
