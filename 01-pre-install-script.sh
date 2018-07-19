@@ -7,6 +7,12 @@
 ## WORKSTATION:  install minimum tool requirements
 yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 
+## WORKSTATION: install the ansible hosts inventory
+cp -f ./config/ansible-hosts /etc/ansible/hosts
+
+## Now we can do things via ansible where possible
+
+
 ## CLUSTER: install minimum tool requirements
 for i in node1 node2 master ; do
   ssh $i "yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct"
