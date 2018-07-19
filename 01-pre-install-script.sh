@@ -46,6 +46,6 @@ done
 
 
 ## WORKSTATION: run the prereq checks
-cp -f ./config/ansible-hosts /etc/ansible/hosts
+cp -f ./configs/ansible-hosts /etc/ansible/hosts
 ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
