@@ -12,8 +12,8 @@ for i in node1 node2 master ; do
   ssh $i "yum install -y wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct"
 done
 
-## WORKSTATION: install openshift utilities (which includes OCP installer)
-yum -y install atomic-openshift-utils
+## WORKSTATION: install openshift utilities (which includes OCP installer) and the oc client
+yum -y install atomic-openshift-utils atomic-openshift-clients
 
 ## CLUSTER: install docker (specific version)
 for i in node1 node2 master ; do
