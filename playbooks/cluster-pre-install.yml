@@ -12,7 +12,7 @@
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
 
     - name: YUM installation of docker-1.13.1
-      yum: name=docker version=1.13.1 state=installed
+      yum: name=docker-1.13.1 state=installed
 
     - name: Configuring docker-novolume-plugin in /etc/sysconfig/docker
       template:
