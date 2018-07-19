@@ -15,15 +15,15 @@ deployment_type=openshift-enterprise
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 
 [nodes]
-master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
-node1.example.com  openshift_public_ip=10.0.0.12 openshift_ip=10.0.0.12 openshift_public_hostname=node1.example.com openshift_hostname=node1.example.com openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
-node2.example.com  openshift_public_ip=10.0.0.13 openshift_ip=10.0.0.13 openshift_public_hostname=node2.example.com openshift_hostname=node2.example.com openshift_schedulable=True
+master.example.com  openshift_node_labels="{'region': 'infra'}" openshift_schedulable=False
+node1.example.com   openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
+node2.example.com   openshift_node_labels="{'region': 'infra'}" openshift_schedulable=True
 
 [masters]
-master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
+master.example.com
 
 [nfs]
-master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
+master.example.com
 
 [etcd]
-master.example.com  openshift_public_ip=10.0.0.11 openshift_ip=10.0.0.11 openshift_public_hostname=master.example.com openshift_hostname=master.example.com
+master.example.com
