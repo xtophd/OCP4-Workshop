@@ -1,0 +1,16 @@
+---
+- hosts: workstation
+
+  tasks:
+  
+    - name: YUM installation of misc required packages
+      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
+
+    - name: YUM installation of atomic-openshift-{utils,clients}
+      yum: name=atomic-openshift-utils,atomic-openshift-clients state=installed
+      
+ 
+
+
+
+
