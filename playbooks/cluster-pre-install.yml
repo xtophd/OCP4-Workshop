@@ -44,6 +44,9 @@
     - name: "YUM install docker-1.13.1"
       yum: name=docker-1.13.1 state=installed
 
+    - name: "SERVICE STOP docker"
+      service: name=docker state=stopped enabled=yes
+
     - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
       template:
         src: ~/OCP-Workshop/configs/docker-storage-setup
@@ -51,9 +54,6 @@
         owner: root
         group: root
         mode: 0644
-
-    - name: "SERVICE STOP docker"
-      service: name=docker state=stopped enabled=yes
 
     - name: "CMD cleaning up existing config and executing command docker-storage-setup"
       shell: 
