@@ -45,7 +45,6 @@
           pvs /dev/vdb1 && pvremove --force /dev/vdb1
           wipefs -a /dev/vdb
           docker-storage-setup
-          EOF
 
     - name: Starting service dockerd
       service: name=docker state=started enabled=yes
