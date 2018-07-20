@@ -16,7 +16,7 @@ openshift_release=v3.9
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
-DenyAllPasswordIdentityProvider
+DenyAllPasswordIdentityProvider=true
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 
 [workstation]
