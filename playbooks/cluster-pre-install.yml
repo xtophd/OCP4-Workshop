@@ -39,7 +39,7 @@
       user: name=student password="$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8"
 
     - name: "YUM install misc required packages"
-      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed,firewalld
+      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld state=installed
 
     - name: "SERVICE START firewalld"
       service: name=firewalld state=started enabled=yes
