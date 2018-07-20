@@ -66,7 +66,7 @@
         group: root
         mode: 0644
 
-    - name: "CMD cleaning up existing config and executing command docker-storage-setup"
+    - name: "CMD clean up any pre-existing docker-storage config and execute docker-storage-setup"
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
