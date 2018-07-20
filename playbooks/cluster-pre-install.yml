@@ -41,6 +41,14 @@
     - name: "YUM install misc required packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld state=installed
 
+    - name: "SERVICE STOP firewalld"
+      service: name=firewalld state=stopped enabled=yes
+
+    - name: "CMD flushing any existing iptable rules"
+      shell: 
+        cmd: |
+          iptables -F
+
     - name: "SERVICE START firewalld"
       service: name=firewalld state=started enabled=yes
 
