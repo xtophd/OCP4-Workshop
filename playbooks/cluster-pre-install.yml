@@ -46,8 +46,9 @@
           wipefs -a /dev/vdb
           docker-storage-setup
 
-    - name: Starting service dockerd
-      service: name=docker state=started enabled=yes
-      
     - name: Starting service docker-novolume-plugin
       service: name=docker-novolume-plugin state=started enabled=yes
+
+    - name: Starting service dockerd
+      service: name=docker state=started enabled=yes
+  
