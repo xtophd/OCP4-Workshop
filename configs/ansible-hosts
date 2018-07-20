@@ -13,6 +13,7 @@ openshift_master_cluster_hostname=None
 openshift_hostname_check=false
 deployment_type=openshift-enterprise
 openshift_release=v3.9
+os_firewall_use_firewalld=true
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
