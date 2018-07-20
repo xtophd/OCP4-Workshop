@@ -1,4 +1,13 @@
 ---
+- hosts: all
+  tasks:
+  
+    - name: PING all hosts to ensure we are alive and ready
+      ping:
+
+
+
+
 - hosts: workstation
   tasks:
   
@@ -13,6 +22,7 @@
 
 - hosts: masters
   tasks:
+  
     - name: YUM installation of httpd-utils
       yum: name=httpd-tools state=installed
 
@@ -21,6 +31,7 @@
 
 - hosts: nodes
   tasks:
+  
     - name: Root Password (ALL)
       user: name=root    password="$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf."
 
@@ -65,8 +76,8 @@
           wipefs -a /dev/vdb
           docker-storage-setup
 
-    - name: Starting service docker-novolume-plugin
-      service: name=docker-novolume-plugin state=started enabled=yes
+  #  - name: Starting service docker-novolume-plugin
+  #    service: name=docker-novolume-plugin state=started enabled=yes
 
     - name: Starting service dockerd
       service: name=docker state=started enabled=yes
