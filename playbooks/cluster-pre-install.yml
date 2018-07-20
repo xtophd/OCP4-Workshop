@@ -33,16 +33,16 @@
     - name: YUM installation of docker-1.13.1
       yum: name=docker-1.13.1 state=installed
 
-    - name: Configuring docker-novolume-plugin in /etc/sysconfig/docker
-      template:
-        src: ~/OCP-Workshop/configs/docker
-        dest: /etc/sysconfig/docker
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: YUM installation of docker-novolume-plugin
-      yum: name=docker-novolume-plugin state=installed
+#    - name: Configuring docker-novolume-plugin in /etc/sysconfig/docker
+#      template:
+#        src: ~/OCP-Workshop/configs/docker
+#        dest: /etc/sysconfig/docker
+#        owner: root
+#       group: root
+#        mode: 0644
+#
+#    - name: YUM installation of docker-novolume-plugin
+#      yum: name=docker-novolume-plugin state=installed
 
     - name: Configuring docker storage in /etc/sysconf/docker-storage-setup
       template:
