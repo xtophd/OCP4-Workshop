@@ -9,4 +9,4 @@ cp -f ./configs/ansible-hosts /etc/ansible/hosts
 
 ## ansible-playbook -f 3 ./playbooks/workstation-pre-install.yml
 
-ansible-playbook -f 3 ./playbooks/cluster-pre-install.yml
+ansible-playbook -f 4 ./playbooks/cluster-pre-install.yml
