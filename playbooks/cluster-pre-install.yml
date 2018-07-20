@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
   
-    - name: PING: all hosts to ensure we are alive and ready
+    - name: "PING all hosts to ensure we are alive and ready"
       ping:
 
 
@@ -11,10 +11,10 @@
 - hosts: workstation
   tasks:
   
-    - name: YUM: install misc required packages
+    - name: "YUM install misc required packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
 
-    - name: YUM: install atomic-openshift-{utils,clients}
+    - name: "YUM install atomic-openshift-{utils,clients}"
       yum: name=atomic-openshift-utils,atomic-openshift-clients state=installed
 
 
@@ -23,7 +23,7 @@
 - hosts: masters
   tasks:
   
-    - name: YUM: install httpd-utils
+    - name: "YUM install httpd-utils"
       yum: name=httpd-tools state=installed
 
 
@@ -32,19 +32,19 @@
 - hosts: nodes
   tasks:
   
-    - name: USER: root password reset
+    - name: "USER root password reset"
       user: name=root    password="$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf."
 
-    - name: USER: student password reset
+    - name: "USER student password reset"
       user: name=student password="$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8"
 
-    - name: YUM: install misc required packages
+    - name: "YUM install misc required packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
 
-    - name: YUM: install docker-1.13.1
+    - name: "YUM install docker-1.13.1"
       yum: name=docker-1.13.1 state=installed
 
-    - name: TEMPLATE: install /etc/sysconf/docker-storage-setup
+    - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
       template:
         src: ~/OCP-Workshop/configs/docker-storage-setup
         dest: /etc/sysconfig/docker-storage-setup
@@ -52,10 +52,10 @@
         group: root
         mode: 0644
 
-    - name: SERVICE STOP: docker
+    - name: "SERVICE STOP docker"
       service: name=docker state=stopped enabled=yes
 
-    - name: CMD: cleaning up existing config and executing command docker-storage-setup
+    - name: "CMD cleaning up existing config and executing command docker-storage-setup"
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
@@ -65,6 +65,6 @@
           wipefs -a /dev/vdb
           docker-storage-setup
 
-    - name: SERVICE START: docker
+    - name: "SERVICE START docker"
       service: name=docker state=started enabled=yes
       
