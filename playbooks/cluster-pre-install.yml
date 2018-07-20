@@ -1,6 +1,25 @@
 ---
-- hosts: nodes
+- hosts: workstation
+  tasks:
+  
+    - name: YUM installation of misc required packages
+      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
 
+    - name: YUM installation of atomic-openshift-{utils,clients}
+      yum: name=atomic-openshift-utils,atomic-openshift-clients state=installed
+
+
+
+
+- hosts: masters
+  tasks:
+    - name: YUM installation of httpd-utils
+      yum: name=httpd-utils state=installed
+
+
+
+
+- hosts: nodes
   tasks:
     - name: Root Password (ALL)
       user: name=root    password="$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf."
@@ -51,4 +70,4 @@
 
     - name: Starting service dockerd
       service: name=docker state=started enabled=yes
-  
+      
