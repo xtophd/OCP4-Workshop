@@ -12,17 +12,20 @@ ansible_ssh_user=root
 openshift_master_cluster_hostname=None
 openshift_hostname_check=false
 deployment_type=openshift-enterprise
+openshift_release=v3.9
 openshift_disable_check=disk_availability,docker_storage,memory_availability
 oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
+DenyAllPasswordIdentityProvider
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 
 [workstation]
 workstation.example.com
 
 [nodes]
-master.example.com
-node1.example.com
-node2.example.com
+master.example.com openshift_node_labels="{'region':'infra','zone':'default'}" openshift_schedulable=true
+node1.example.com openshift_node_labels="{'region': 'primary', 'zone': 'east'}"
+node2.example.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 
 [masters]
 master.example.com
