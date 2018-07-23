@@ -90,4 +90,4 @@ The installation of Red Hat Openshift Container Platform is now complete and you
 1.  Some exercises are dependant on the successful completion of other exericses.  Those dependencies will be noted at the top of each unit.
 2.  Pay attention to which linux login to use
 3.  Pay attention to which ocp user to use
-4.  Also be sure to pay close attention to which host you are executing tasks from.
+4.  Also be sure to pay close attention to which host you are executing tasks from
