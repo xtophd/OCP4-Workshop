@@ -40,6 +40,12 @@ In order to execute the pre-installation steps, we need to become the administra
 
 **NOTE** Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
 
+Here is the tail end of a sample output following a successfull run of the pre-install script and ansible playbooks.
+
+    PLAY RECAP **********
+    master.example.com         : ok=16   changed=12   unreachable=0    failed=0
+    node1.example.com          : ok=14   changed=11   unreachable=0    failed=0
+    node2.example.com          : ok=14   changed=11   unreachable=0    failed=0
 
 ## 2. Openshift Installation
 
