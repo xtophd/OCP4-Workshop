@@ -67,19 +67,3 @@
     - name: "SERVICE START docker"
       service: name=docker state=started enabled=yes
       
-
-
-
-##
-## Moved execution of "workstation" to the end to avoid having a package install/upgrade affect
-## a running ansible task (ie: it potentially breaks the next task execution)
-##
-
-- hosts: workstation
-  tasks:
-  
-    - name: "YUM install misc required packages"
-      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
-
-    - name: "YUM install atomic-openshift-{utils,clients}"
-      yum: name=atomic-openshift-utils,atomic-openshift-clients state=installed
