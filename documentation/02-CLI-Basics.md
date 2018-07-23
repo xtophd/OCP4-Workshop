@@ -114,7 +114,7 @@ Before running `oc delete` try running `oc get pods` to verify a router pod is r
 Likewise, delete and recreate a registry.
 
     [root@master master]#  oc get pods
-    [root@master master]#  oc delete all -l docker-registry=router
+    [root@master master]#  oc delete all -l docker-registry=default
     [root@master master]#  oc get pods
     [root@master master]#  oc adm registry
     [root@master master]#  oc get pods
