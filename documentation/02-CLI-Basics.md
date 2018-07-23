@@ -4,7 +4,7 @@ The default and recommended method for interacting with the Openshift Container 
 
 ## 2.1 Become the root user
 
-Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user `root` you can easily login to any host in your cluster.  With that said, ensure your session is user `root` on the host `workstation`.
+Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* you can easily login to any host in your cluster.  With that said, ensure your session is user *root* on the host *workstation.example.com*.
 
     [student@workstation ~]$ sudo -i
     [root@workstation ~]#
@@ -40,7 +40,7 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 
 At this time, we have not configured any additional user accounts or roles.  So our first activity will be to do just that.
 
-The installation parameters used to install this cluster automatically configured user credentials to be defined in `/etc/origin/master/openshift-passwd` and managed  by the commandline utility `htpasswd`.  This configuration is defined in `/etc/origin/master/master-config/yml` on the host master.example.com
+The installation parameters used to install this cluster automatically configured user credentials to be defined in **/etc/origin/master/openshift-passwd** and managed  by the commandline utility **htpasswd**.  This configuration is defined in **/etc/origin/master/master-config/yml** on the host **master.example.com**.
 
 ### Inspect the master-config.yml
 
