@@ -13,5 +13,9 @@ cp -f ./configs/ansible-hosts /etc/ansible/hosts
 ##
 ## Now we can do things via ansible where possible
 ##
+
+echo "Calling ansible playbook: ./playbooks/workstation-pre-install.yml"
+ansible-playbook -f 4 ./playbooks/workstation-pre-install.yml
+
 echo "Calling ansible playbook: ./playbooks/cluster-pre-install.yml"
 ansible-playbook -f 4 ./playbooks/cluster-pre-install.yml
