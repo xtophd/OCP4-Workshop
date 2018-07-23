@@ -1,6 +1,6 @@
 # Getting Started
 
-## Official Guides
+## Additional Reference Materials
 
 **NOTE** You are not required to reference the documentation for these exercises.  This is informational only.
 
