@@ -11,15 +11,16 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 
 ## 2.2 Connect to host master.example.com
 
+As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being promp
+
     [root@workstation ~]# ssh master
     [root@master ~]#
 
 ## 2.3 Establish OCP Admin session
 
     [root@master ~]# oc login -u system:admin
-    [root@master ~]#
-    [root@master ~]#
-    [root@master ~]#
+    
+Now that you have logged in to Openshift uing the *oc* command, you are ready to start interacting with the Openshift Container Platfrom
 
 ## 2.4 Verify Cluster Status
 
@@ -27,20 +28,34 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 
     [root@master ~]# oc get nodes
 
+Your output should look like this
+
+    NAME                 STATUS    ROLES     AGE       VERSION
+    master.example.com   Ready     master    1h        v1.9.1+a0ce1bc657
+    node1.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
+    node2.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
+
+
 ### Check the Pods
 
     [root@master ~]# oc get pods
 
+Your output should look like this
+
+    NAME                       READY     STATUS    RESTARTS   AGE
+    docker-registry-1-52lk5    1/1       Running   0          1h
+    registry-console-1-8qlb2   1/1       Running   0          1h
+    router-1-q92xl             1/1       Running   0          1h
+
 ### Check the Logs
 
     [root@master ~]#
-    [root@master ~]#
 
-## 2.5 User Accounts and Roles
+## 2.5 Configure Admin User
 
 At this time, we have not configured any additional user accounts or roles.  So our first activity will be to do just that.
 
-The installation parameters used to install this cluster automatically configured user credentials to be defined in **/etc/origin/master/openshift-passwd** and managed  by the commandline utility **htpasswd**.  This configuration is defined in **/etc/origin/master/master-config/yml** on the host **master.example.com**.
+The OCP installation parameters used to install this cluster automatically configured user credentials to be defined in **/etc/origin/master/openshift-passwd** and managed  by the commandline utility **htpasswd** (ie: httpd-tools).  This configuration is defined in **/etc/origin/master/master-config/yml** on the host **master.example.com**.
 
 ### Inspect the master-config.yml
 
@@ -64,4 +79,20 @@ Your results should look like this.  Pay attention to `file: /etc/origin/master/
     masterCA: ca-bundle.crt
     masterPublicURL: https://master.example.com:8443
 
+### Add admin user
 
+Add the user *admin* with password *redhat*
+
+    [root@master master]# htpasswd -b /etc/origin/master/htpasswd admin redhat
+
+### Assign cluster-admin role
+
+Provide the *admin* user with the *cluster-admin* role
+
+    [root@master master]# oc adm policy add-cluster-role-to-user cluster-admin admin
+
+### Use new admin credential
+
+Now you can use this new credential to log into Openshift
+
+    [root@master master]# oc login -u admin
