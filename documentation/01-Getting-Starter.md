@@ -12,31 +12,33 @@ Red Hat's official documentation can be found publicly with the links provided b
 
 With that stated, the steps of preparing and installing OCP have been condensed into 2 scripts which call a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
-## Pre Installation
+## 1. Pre Installation
 
-### Log on to your session
+### 1.1 Log on to your session
 
 Using the connection information and credentials provided by the instructor, get yourselves signed into your session.
 
-### Become the root user
+### 1.2 Become the root user
 
 In order to execute the pre-installation steps, we need to become the administrative user 'root'
 
     [student@workstation ~]$ sudo -i
     [root@workstation ~]#
 
-### Download the Workshop project from GitHub
+### 1.3 Download the Workshop project from GitHub
 
     [root@workstation ~]# git clone https://github.com/xtophd/OCP-Workshop
 
-### Run the pre-install script
+### 1.4 Run the pre-install script
 
 **NOTE** It is important to be in the correct working directory for this to function properly.  This typically runs for about 3 minutes.
 
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 01-pre-install-script.sh
 
-## Openshift Installation
+## 2. Openshift Installation
+
+## 2.1 Run the ocp-install script
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20 minutes.
 
