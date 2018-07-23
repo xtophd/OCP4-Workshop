@@ -24,7 +24,24 @@ Now that you have logged in to Openshift uing the *oc* command, you are ready to
 
 ## 2.4 Verify Cluster Status
 
-### Check the Nodes
+### Check Projects
+
+    [root@master ~]# oc get projects
+
+Your output should look like this
+
+
+### Check Cluster Status
+
+    [root@master ~]# oc status
+
+Your output should look like this
+
+    
+
+
+
+### Check Node Status
 
     [root@master ~]# oc get nodes
 
@@ -36,7 +53,7 @@ Your output should look like this
     node2.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
 
 
-### Check the Pods
+### Check Pod Status
 
     [root@master ~]# oc get pods
 
@@ -119,3 +136,7 @@ Likewise, delete and recreate a registry.
     [root@master master]#  oc adm registry
     [root@master master]#  oc get pods
     
+    
+## Conclusion
+
+    You now have a running cluster with an appropriate administrative user with proper credentials.
