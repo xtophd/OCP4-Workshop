@@ -31,7 +31,7 @@ In order to execute the pre-installation steps, we need to become the administra
 
 ### 1.4 Run the pre-install script
 
-**NOTE** It is important to be in the correct working directory for this to function properly.  This typically runs for about 3 minutes.
+**NOTE** It is important to be in the correct working directory for this to function properly.  This typically runs for about 3-5 minutes.
 
 #
 
@@ -53,7 +53,7 @@ Here is the tail end of a sample output following a successfull run of the pre-i
 
 ### 2.1 Run the ocp-install script
 
-**NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20 minutes.
+**NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
 
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 02-ocp-install-script.sh
