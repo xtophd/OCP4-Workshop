@@ -4,13 +4,13 @@
 
 **NOTE** You are not required to reference the documentation for these exercises.  This is informational only.
 
-Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official guides for complete information on the installtion procedures.
+Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
 [Openshift 3.9 Documentation](https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/)
 
 [Openshift 3.9 Installation and Configuration](https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html/installation_and_configuration/)
 
-With that stated, the steps of preparing and installing OCP have been condensed into 2 scripts which call a set of Ansible Playbooks.  Please follow the steps below.
+With that stated, the steps of preparing and installing OCP have been condensed into 2 scripts which call a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
 ## Pre Installation
 
