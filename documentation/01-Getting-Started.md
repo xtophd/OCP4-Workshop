@@ -33,6 +33,8 @@ In order to execute the pre-installation steps, we need to become the administra
 
 **NOTE** It is important to be in the correct working directory for this to function properly.  This typically runs for about 3 minutes.
 
+#
+
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 01-pre-install-script.sh
 
@@ -80,3 +82,12 @@ Here is the tail end of a sample output following a successfull installation of 
     Hosted Install             : Complete (0:03:09)
     Web Console Install        : Complete (0:00:43)
     Service Catalog Install    : Complete (0:03:12)
+
+## Conclusion
+
+The installation of Red Hat Openshift Container Platform is now complete and you should be ready to begin with the exercises.  A couple of remaining words of advice:
+
+1.  Some exercises are dependant on the successful completion of other exericses.  Those dependencies will be noted at the top of each unit.
+2.  Pay attention to which linux login to use
+3.  Pay attention to which ocp user to use
+4.  Also be sure to pay close attention to which host you are executing tasks from.
