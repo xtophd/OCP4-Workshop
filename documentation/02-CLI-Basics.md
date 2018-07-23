@@ -96,3 +96,14 @@ Provide the *admin* user with the *cluster-admin* role
 Now you can use this new credential to log into Openshift
 
     [root@master master]# oc login -u admin
+    
+## Deploy a fresh OCP router
+
+    [root@master master]#  oc delete all -l router=router
+    [root@master master]#  oc adm router --replicas=1 --service-account=router
+
+## Deploy a fresh OCP registry
+
+    [root@master master]#  oc delete all -l docker-registry=router
+    [root@master master]#  oc adm registry
+    
