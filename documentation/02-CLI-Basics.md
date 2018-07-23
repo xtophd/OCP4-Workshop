@@ -24,22 +24,82 @@ Now that you have logged in to Openshift uing the *oc* command, you are ready to
 
 ## 2.4 Verify Cluster Status
 
-### Check Projects
-
-    [root@master ~]# oc get projects
-
-Your output should look like this
-
-
 ### Check Cluster Status
 
     [root@master ~]# oc status
 
 Your output should look like this
 
-    
+    In project default on server https://master.example.com:8443
+
+    https://docker-registry-default.cloud.example.com (passthrough) (svc/docker-registry)
+      dc/docker-registry deploys registry.access.redhat.com/openshift3/ose-docker-registry:v3.9.33
+        deployment #1 deployed 28 minutes ago - 1 pod
+        
+    svc/kubernetes - 172.30.0.1 ports 443->8443, 53->8053, 53->8053
+
+    https://registry-console-default.cloud.example.com (passthrough) (svc/registry-console)
+      dc/registry-console deploys registry.access.redhat.com/openshift3/registry-console:v3.9
+        deployment #1 deployed 26 minutes ago - 1 pod
+
+    svc/router - 172.30.80.206 ports 80, 443, 1936
+      dc/router deploys registry.access.redhat.com/openshift3/ose-haproxy-router:v3.9.33
+        deployment #1 deployed 29 minutes ago - 1 pod
+
+    View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
+
+### High Level Cluster Check
+
+    [root@master ~]# oc get all
+
+Your output should look like this
+
+    NAME                                 REVISION   DESIRED   CURRENT   TRIGGERED BY
+    deploymentconfigs/docker-registry    1          1         1         config
+    deploymentconfigs/registry-console   1          1         1         config
+    deploymentconfigs/router             1          1         1         config
+
+    NAME                      HOST/PORT                                    PATH      SERVICES           PORT      TERMINATION   WILDCARD
+    routes/docker-registry    docker-registry-default.cloud.example.com              docker-registry    <all>     passthrough   None
+    routes/registry-console   registry-console-default.cloud.example.com             registry-console   <all>     passthrough   None
+
+    NAME                          READY     STATUS    RESTARTS   AGE                                                                 
+    po/docker-registry-1-zbwg2    1/1       Running   0          31m
+    po/registry-console-1-g669s   1/1       Running   0          30m
+    po/router-1-dxp2p             1/1       Running   0          31m
+
+    NAME                    DESIRED   CURRENT   READY     AGE
+    rc/docker-registry-1    1         1         1         32m
+    rc/registry-console-1   1         1         1         30m
+    rc/router-1             1         1         1         33m
+
+    NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                   AGE
+    svc/docker-registry    ClusterIP   172.30.235.25   <none>        5000/TCP                  33m
+    svc/kubernetes         ClusterIP   172.30.0.1      <none>        443/TCP,53/UDP,53/TCP     41m
+    svc/registry-console   ClusterIP   172.30.8.137    <none>        9000/TCP                  30m
+    svc/router             ClusterIP   172.30.80.206   <none>        80/TCP,443/TCP,1936/TCP   33m
 
 
+
+### Check Projects
+
+    [root@master ~]# oc get projects
+
+Your output should look like this
+
+    NAME                                DISPLAY NAME   STATUS
+    default                                            Active
+    kube-public                                        Active
+    kube-service-catalog                               Active
+    kube-system                                        Active
+    logging                                            Active
+    management-infra                                   Active
+    openshift                                          Active
+    openshift-ansible-service-broker                   Active
+    openshift-infra                                    Active
+    openshift-node                                     Active
+    openshift-template-service-broker                  Active
+    openshift-web-console                              Active
 
 ### Check Node Status
 
