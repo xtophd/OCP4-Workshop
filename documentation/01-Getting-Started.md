@@ -2,7 +2,7 @@
 
 ## Additional Reference Materials
 
-**NOTE** You are not required to reference the documentation for these exercises.  This is informational only.
+**NOTE** You are not required to reference outside documentation for these exercises.  This is informational only.
 
 Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
