@@ -36,12 +36,41 @@ In order to execute the pre-installation steps, we need to become the administra
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 01-pre-install-script.sh
 
+### 1.4 Pre-Install Results
+
+**NOTE** Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
+
+
 ## 2. Openshift Installation
 
-## 2.1 Run the ocp-install script
+### 2.1 Run the ocp-install script
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20 minutes.
 
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 02-ocp-install-script.sh
 
+### 2.2 Installation Results
+
+**NOTE** Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
+
+Here is the tail end of a sample output following a successfull installation of the Openshift Container Platform.
+
+    PLAY RECAP **********
+    localhost                  : ok=13   changed=0    unreachable=0    failed=0   
+    master.example.com         : ok=612  changed=260  unreachable=0    failed=0   
+    node1.example.com          : ok=135  changed=54   unreachable=0    failed=0   
+    node2.example.com          : ok=135  changed=55   unreachable=0    failed=0   
+    workstation.example.com    : ok=20   changed=0    unreachable=0    failed=0
+
+    INSTALLER STATUS ****************
+    Initialization             : Complete (0:00:26)
+    Health Check               : Complete (0:00:28)
+    etcd Install               : Complete (0:01:08)
+    NFS Install                : Complete (0:00:17)
+    Master Install             : Complete (0:03:45)
+    Master Additional Install  : Complete (0:01:34)
+    Node Install               : Complete (0:04:33)
+    Hosted Install             : Complete (0:03:09)
+    Web Console Install        : Complete (0:00:43)
+    Service Catalog Install    : Complete (0:03:12)
