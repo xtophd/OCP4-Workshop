@@ -183,7 +183,7 @@ Before running `oc delete` try running `oc get pods` to verify a router pod is r
     [root@master master]#  oc get pods
     [root@master master]#  oc delete all -l router=router
     [root@master master]#  oc get pods
-    [root@master master]#  oc adm router --replicas=1 --service-account=router
+    [root@master master]#  oc adm router --replicas=2 --service-account=router
     [root@master master]#  oc get pods
 
 ## Deploy a fresh OCP registry
