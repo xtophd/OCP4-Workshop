@@ -132,9 +132,9 @@ Your output should look like this
 
 At this time, we have not configured any additional user accounts or roles.  So our first activity will be to do just that.
 
-The OCP installation parameters used to install this cluster automatically configured user credentials to be defined in **/etc/origin/master/openshift-passwd** and managed  by the commandline utility **htpasswd** (ie: httpd-tools).  This configuration is defined in **/etc/origin/master/master-config/yml** on the host **master.example.com**.
+The OCP installation parameters used to install this cluster automatically configured user credentials to be defined in **/etc/origin/master/openshift-passwd** and managed  by the commandline utility **htpasswd** (ie: httpd-tools).  This configuration is defined in **/etc/origin/master/master-config.yaml** on the host **master.example.com**.
 
-### Inspect the master-config.yml
+### Inspect the master-config.yaml
 
 If you are not familiar with grep, the parameter `-6` will provide the 6 lines above and 6 lines below the requested matched.  Thus we can easily inspect the entire stanza defining the IdentityProviders. 
 
