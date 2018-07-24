@@ -170,7 +170,7 @@ Provide the *admin* user with the *cluster-admin* role
 
 ### Use new admin credential
 
-Now you can use this new credential to log into Openshift
+Now you can use this new credential to log into Openshift.  Remember that you declared the password for use *admin* above when you ran **htpasswd**.
 
     [root@master master]# oc login -u admin
     
