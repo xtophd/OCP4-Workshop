@@ -6,8 +6,13 @@
 - hosts: workstation
   tasks:
   
-    - name: "YUM install misc required packages"
-      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
-
-    - name: "YUM install atomic-openshift-{utils,clients}"
-      yum: name=atomic-openshift-utils,atomic-openshift-clients state=installed
+    - name: "TEMPLATE modify /etc/motd"
+      template:
+        src: motd
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644  
+  
+    - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
+      yum: name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct state=installed
