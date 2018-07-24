@@ -26,6 +26,15 @@
     - name: "USER student password reset"
       user: name=student password="$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8"
 
+    - name: "TEMPLATE modify /etc/motd"
+      template:
+        src: motd
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644
+
+
     - name: "YUM install misc required packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld state=installed
 
@@ -48,7 +57,7 @@
 
     - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
       template:
-        src: ~/OCP-Workshop/configs/docker-storage-setup
+        src: docker-storage-setup
         dest: /etc/sysconfig/docker-storage-setup
         owner: root
         group: root
