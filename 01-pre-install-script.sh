@@ -7,6 +7,7 @@
 ##
 ## Install the ansible hosts inventory
 ##
+
 echo -e '\n## Installing config file: /etc/ansible/hosts\n"
 cp -f ./configs/ansible-hosts /etc/ansible/hosts
 
