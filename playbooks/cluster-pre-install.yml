@@ -28,7 +28,7 @@
 
     - name: "TEMPLATE modify /etc/motd"
       template:
-        src: motd
+        src: motd.j2
         dest: /etc/motd
         owner: root
         group: root
@@ -57,7 +57,7 @@
 
     - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
       template:
-        src: docker-storage-setup
+        src: docker-storage-setup.j2
         dest: /etc/sysconfig/docker-storage-setup
         owner: root
         group: root
