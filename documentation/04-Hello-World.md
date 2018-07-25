@@ -42,6 +42,12 @@ Routers are the processes responsible for making services accessible to the outs
 
     oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
 
+We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
+
+    oc rollout status dc/hello-app
+
+
+
     oc get routes
         
     
@@ -57,6 +63,34 @@ We are going to fix the running application by connecting to the console and exp
 
     oc rsh {{ POD NAME }}
 
+    id
+    uid=1000120000 gid=0(root) groups=0(root),1000120000
+    
+Normally things go here, but this filesystem is read only.  And my 'id' is *root*.  How strange!
+
+    cd /var/www/html/
+
+Let's edit the file here instead
+
+
+     cd /opt/rh/httpd24/root/var/www
+
+     oc cp {{ src }} {{ pod:/dst }}
+
+    vi index.html
+
+Contents of the file should read as follows.  Save your file when complete.
+
+    <html>
+    Hellow, World!
+    </html>
+    
+    
+    
+    
+    
+
+    
 
 
 ## 4.6 Clean Up
