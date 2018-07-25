@@ -77,6 +77,12 @@ Let's edit the file here instead
 
      oc cp {{ src }} {{ pod:/dst }}
 
+OR, set the UID for the proces
+
+spec.template.spec.containers.securityContext.runAsUser
+
+
+
     vi index.html
 
 Contents of the file should read as follows.  Save your file when complete.
