@@ -55,7 +55,7 @@ We can also monitor the deployment of the application by running the following c
 
     curl -Is http://helloworld.cloud.example.com
 
-## 4.4 Welcome is not "Hello, World!"
+## 4.4 Making a real "Hello, World!"
 
 We are going to fix the running application by connecting to the console and exploring inside the active container.
 
@@ -66,7 +66,7 @@ We are going to fix the running application by connecting to the console and exp
     id
     uid=1000120000 gid=0(root) groups=0(root),1000120000
     
-Normally things go here, but this filesystem is read only.  And my 'id' is *root*.  How strange!
+Normally files serverd by httpd go into /var/www/html, but our user does not have permissions to write to this directory.
 
     cd /var/www/html/
 
@@ -111,13 +111,8 @@ Contents of the file should read as follows.  Save your file when complete.
     
 
 
-## 4.6 Clean Up
 
-    oc delete all --all
-    
-    oc delete project helloworld
-
-## 4.7 Using emptyDir
+## 4.8 Using emptyDir
 
     oc new-project helloworld2 --description="My First OCP App" --display-name="Hello World"
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
@@ -130,5 +125,12 @@ Contents of the file should read as follows.  Save your file when complete.
     oc cp /var/tmp/hello-world.html {{ pod }}:/var/www/html
     
     oc rsh {{
+
+
+## 4.7 Clean Up
+
+    oc delete all --all
+    
+    oc delete project helloworld
 
 ## Conclusion
