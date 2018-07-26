@@ -12,7 +12,7 @@ Red Hat's official documentation can be found publicly with the links provided b
 
 With that stated, the steps of preparing and installing OCP have been condensed into 2 scripts which call a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
-## 1. Pre Installation
+## 1. Openshift Pre Installation
 
 ### 1.1 Log on to your session
 
@@ -38,7 +38,7 @@ In order to execute the pre-installation steps, we need to become the administra
     [root@workstation ~]# cd OCP-Workshop
     [root@workstation ~]# bash 01-pre-install-script.sh
 
-### 1.4 Pre-Install Results
+### 1.5 Pre-Install Results
 
 **NOTE** Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
 
@@ -82,6 +82,18 @@ Here is the tail end of a sample output following a successfull installation of 
     Hosted Install             : Complete (0:03:09)
     Web Console Install        : Complete (0:00:43)
     Service Catalog Install    : Complete (0:03:12)
+
+## 3 Openshift Post Installation
+
+### 3.1 Run the post install script
+
+**NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
+
+    [root@workstation ~]# cd OCP-Workshop
+    [root@workstation ~]# bash 03-post-install-script.sh
+
+### 3.2 Post Installation Results
+
 
 ## Conclusion
 
