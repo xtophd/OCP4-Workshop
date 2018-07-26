@@ -24,6 +24,7 @@
       shell: 
         cmd: |
           oc login -u system:admin
+          oc project default
           oc delete all -l router=router
           
 
@@ -31,6 +32,7 @@
       shell: 
         cmd: |
           oc login -u system:admin
+          oc project default
           oc adm router --replicas=2 --service-account=router
 
 
@@ -38,6 +40,7 @@
       shell: 
         cmd: |
           oc login -u system:admin
+          oc project default
           oc delete all -l docker-registry=default
           
 
@@ -45,4 +48,5 @@
       shell: 
         cmd: |
           oc login -u system:admin
+          oc project default
           oc adm registry
