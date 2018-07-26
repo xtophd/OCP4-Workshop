@@ -70,6 +70,19 @@ Normally things go here, but this filesystem is read only.  And my 'id' is *root
 
     cd /var/www/html/
 
+So first things first, we need to adjust the uid used to run this container
+
+    oc edit namespace helloworld
+    
+Adjust the following parameter
+
+    openshift.io/sa.scc.uid-range: 1001/10000
+
+Delete and Redeploy our Pod
+
+    oc delete all --all
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+
 Let's edit the file here instead
 
      cd /opt/rh/httpd24/root/var/www
