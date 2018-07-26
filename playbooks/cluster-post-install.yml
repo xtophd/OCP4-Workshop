@@ -1,0 +1,48 @@
+---
+- hosts: masters
+  tasks:
+  
+    - name: "PING all hosts to ensure we are alive and ready"
+      ping:
+
+
+
+
+- hosts: masters
+  tasks:
+  
+    - name: "TEMPLATE create /var/tmp/helloworld.html"
+      template:
+        src: helloworld-html.j2
+        dest: /var/tmp/helloworld.html
+        owner: root
+        group: root
+        mode: 0644
+
+
+    - name: "CMD deleting existing OCP router"
+      shell: 
+        cmd: |
+          oc login -u system:admin
+          oc delete all -l router=router
+          
+
+    - name: "CMD creating new OCP router with replicas=2"
+      shell: 
+        cmd: |
+          oc login -u system:admin
+          oc adm router --replicas=2 --service-account=router
+
+
+    - name: "CMD deleting existing OCP registry"
+      shell: 
+        cmd: |
+          oc login -u system:admin
+          oc delete all -l docker-registry=default
+          
+
+    - name: "CMD creating new OCP registry"
+      shell: 
+        cmd: |
+          oc login -u system:admin
+          oc adm registry
