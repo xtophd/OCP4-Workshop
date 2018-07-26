@@ -117,4 +117,18 @@ Contents of the file should read as follows.  Save your file when complete.
     
     oc delete project helloworld
 
+## 4.7 Using emptyDir
+
+    oc new-project helloworld2 --description="My First OCP App" --display-name="Hello World"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
+    oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
+    
+    oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
+    
+    oc get pods
+       
+    oc cp /var/tmp/hello-world.html {{ pod }}:/var/www/html
+    
+    oc rsh {{
+
 ## Conclusion
