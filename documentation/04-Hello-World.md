@@ -1,6 +1,6 @@
 **NOTE** *This exercise is still in active development and will likely not work until flagged as completed.*
 
-# 4. PHP Container Example
+# 4. Hello World
 
 A "Hello, World!" program is traditionally used to illustrate the basic syntax of a programming language.  The program merely outputs or displays "Hello, World!" to a user. Due to it's simplicity in nature, it is often the very first program people write when learning a new language or platform.
 
@@ -14,11 +14,11 @@ The **project** is openshift's highest level construct.  Users, roles, applicati
 
     oc get projects
     
-    oc status
-
+    oc describe project helloworld
+    
 ## 4.2 Create an Application from a Docker Image
 
-We are no quite ready to start building our own container images, so we will leverage an existing available container from the dockerhub registry (built by Red Hat a while back ago for demo purposes).
+We are not quite ready to start building our own container images, so we will leverage an existing available container from the dockerhub registry (built by Red Hat a while back ago for demo purposes).
 
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 
@@ -71,7 +71,6 @@ Normally things go here, but this filesystem is read only.  And my 'id' is *root
     cd /var/www/html/
 
 Let's edit the file here instead
-
 
      cd /opt/rh/httpd24/root/var/www
 
