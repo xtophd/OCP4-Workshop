@@ -34,19 +34,3 @@
           oc login -u system:admin
           oc project default
           oc adm router --replicas=2 --service-account=router
-
-
-    - name: "CMD deleting existing OCP registry"
-      shell: 
-        cmd: |
-          oc login -u system:admin
-          oc project default
-          oc delete all -l docker-registry=default
-          
-
-    - name: "CMD creating new OCP registry"
-      shell: 
-        cmd: |
-          oc login -u system:admin
-          oc project default
-          oc adm registry
