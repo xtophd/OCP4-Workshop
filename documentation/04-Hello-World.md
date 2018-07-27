@@ -55,7 +55,12 @@ We can also monitor the deployment of the application by running the following c
 
     curl -Is http://helloworld.cloud.example.com
 
-## 4.4 Making a real "Hello, World!"
+## 4.5 Exploring the Container
+
+
+## 4.6 Making a real "Hello, World!"
+
+### Solution #1 - Change Security Attributes
 
 We are going to fix the running application by connecting to the console and exploring inside the active container.
 
@@ -112,7 +117,7 @@ Contents of the file should read as follows.  Save your file when complete.
 
 
 
-## 4.8 Using emptyDir
+### Solution #2 - Use emptyDir
 
     oc new-project helloworld2 --description="My First OCP App" --display-name="Hello World"
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
@@ -125,6 +130,12 @@ Contents of the file should read as follows.  Save your file when complete.
     oc cp /var/tmp/hello-world.html {{ pod }}:/var/www/html
     
     oc rsh {{
+
+
+### Solution #3 - Use NFS
+
+
+### Solution #4 - Use Source Control (git)
 
 
 ## 4.7 Clean Up
