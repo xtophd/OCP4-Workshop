@@ -19,6 +19,11 @@
         name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools 
         state=installed
 
+    - name: "FILE create path for exports/helloworld"
+      file: 
+        path=/exports/helloworld
+        state=directory
+
     - name: "TEMPLATE create /exports/helloworld/index.html"
       template:
         src: helloworld-html.j2
