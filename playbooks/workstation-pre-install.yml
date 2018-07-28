@@ -27,12 +27,12 @@
         group: root
         mode: 0644
 
-    - name: "SERVICE enable and start nfs
+    - name: "SERVICE enable and start nfs"
       service:
         name=nfs
         state=started enabled=yes
 
-    - name: "SERVICE enable and start nfslock 
+    - name: "SERVICE enable and start nfslock"
       service:
         name=nfsLOCK
         state=started enabled=yes
