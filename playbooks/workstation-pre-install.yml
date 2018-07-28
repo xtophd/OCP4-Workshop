@@ -27,8 +27,15 @@
         group: root
         mode: 0644
 
-    - name: "SERVICE enable and start nfs and nfslock 
-      service: name=nfs,nfslock state=started enabled=yes
+    - name: "SERVICE enable and start nfs
+      service:
+        name=nfs
+        state=started enabled=yes
+
+    - name: "SERVICE enable and start nfslock 
+      service:
+        name=nfsLOCK
+        state=started enabled=yes
       
     - name: "TEMPLATE modify/install /etc/exports"
       template:
