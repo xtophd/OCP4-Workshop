@@ -45,7 +45,7 @@
         group: root
         mode: 644
         
-    - name "CMD export nfs filesystems
+    - name "CMD export nfs filesystems"
       shell: 
         cmd: |
           exportfs -a
