@@ -123,10 +123,11 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
     
     curl http://helloworld.cloud.example.com
 
+**REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid in a containerized environment, etc...
 
 ### Solution #2 - Use emptyDir
 
-    oc new-project helloworld2 --description="My First OCP App" --display-name="Hello World"
+    oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
     oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
@@ -134,12 +135,14 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
     
     oc get pods
        
-    oc cp /var/tmp/hello-world.html {{ POD NAME }}:/var/www/html
+    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html
     
     curl http://helloworld.cloud.example.com
 
 
 ### Solution #3 - Use NFS
+
+
 
 
 ### Solution #4 - Use Source Control (git)
