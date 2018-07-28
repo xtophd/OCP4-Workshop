@@ -57,12 +57,7 @@ We can also monitor the deployment of the application by running the following c
 
 ## 4.5 Exploring the Container
 
-
-## 4.6 Making an authentic "Hello, World!"
-
-### Solution #1 - Change Security Attributes
-
-For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
+Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
     oc get pods
 
@@ -93,9 +88,15 @@ Normally files serverd by httpd go into /var/www/html, but security-conscious ra
 
     cd /var/www/html/
 
-So first things first, we need to adjust the uid used to run this container.  So, exit the containers shell and return back to the prompt on master.example.com.  Next edit the project attributes to adjust the uid for the container process.
+When you are done exporing, exit the shell and return to command-line of master.example.com
 
     exit
+
+## 4.6 Making an authentic "Hello, World!"
+
+### Solution #1 - Change Security Attributes
+
+For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
     
     oc edit namespace helloworld
     
@@ -114,8 +115,6 @@ Delete and Redeploy our Pod
     id
     
     exit
-
-Notice how we did not need to rerun "oc new-app"?
 
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
@@ -137,10 +136,31 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
        
     oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html
     
-    curl http://helloworld.cloud.example.com
+    curl http://helloworld2.cloud.example.com
 
+If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.
+
+Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What it important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
 
 ### Solution #3 - Use NFS
+
+Finally a solution we can live with.  Using a network filesystem which we declare during creation time.  During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and a export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
+
+    oc new-project helloworld3 --description="My Second OCP App" --display-name="Hello World III"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
+    
+    oc create -f nfs-pv.yml
+    oc create -f nfs-claim.yml
+    
+    oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=nfs-claim1
+
+    oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld3.cloud.example.com
+
+    oc get pods
+   
+    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html
+
+    curl http://helloworld3.cloud.example.com
 
 
 
