@@ -28,14 +28,16 @@
         mode: 0644
 
     - name: "SERVICE enable and start nfs"
-      service:
-        name=nfs
-        state=started enabled=yes
+      service: 
+        name=nfs 
+        state=started 
+        enabled=yes
 
     - name: "SERVICE enable and start nfslock"
-      service:
-        name=nfsLOCK
-        state=started enabled=yes
+      service: 
+        name=nfslock
+        state=started 
+        enabled=yes
       
     - name: "TEMPLATE modify/install /etc/exports"
       template:
@@ -45,7 +47,7 @@
         group: root
         mode: 644
         
-    - name "CMD export nfs filesystems"
+    - name: "CMD export nfs filesystems"
       shell: 
         cmd: |
           exportfs -a
