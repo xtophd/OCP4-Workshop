@@ -5,7 +5,7 @@
 
 - hosts: workstation
   tasks:
-  
+
     - name: "TEMPLATE modify /etc/motd"
       template:
         src: motd.j2
@@ -15,7 +15,9 @@
         mode: 0644  
   
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
-      yum: name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools state=installed
+      yum: 
+        name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools 
+        state=installed
 
     - name: "TEMPLATE create /exports/helloworld/index.html"
       template:
@@ -29,7 +31,7 @@
       service: name=nfs,nfslock state=started enabled=yes
       
     - name "TEMPLATE modify/install /etc/exports
-      tempate:
+      template:
         src: nfsexports.j2
         dest: /etc/exports
         owner: root
