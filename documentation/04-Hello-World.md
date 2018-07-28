@@ -53,30 +53,50 @@ We can also monitor the deployment of the application by running the following c
     
 ## 4.4 Validate Application
 
-    curl -Is http://helloworld.cloud.example.com
+    curl http://helloworld.cloud.example.com
 
 ## 4.5 Exploring the Container
 
 
-## 4.6 Making a real "Hello, World!"
+## 4.6 Making an authentic "Hello, World!"
 
 ### Solution #1 - Change Security Attributes
 
-We are going to fix the running application by connecting to the console and exploring inside the active container.
+For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
 
     oc get pods
 
     oc rsh {{ POD NAME }}
 
+Now that you have connected to the active container, have a look around
+
     id
     uid=1000120000 gid=0(root) groups=0(root),1000120000
     
-Normally files serverd by httpd go into /var/www/html, but our user does not have permissions to write to this directory.
+    
+    ps -ef
+    UID         PID   PPID  C STIME TTY          TIME CMD
+    default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
+    default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
+    default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
+    default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
+    default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
+    default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+    default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+    default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+    default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+    default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+    default      74      0  0 17:50 ?        00:00:00 /bin/sh
+    default      84     74  0 17:50 ?        00:00:00 ps -ef
+
+Normally files serverd by httpd go into /var/www/html, but security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
 
     cd /var/www/html/
 
-So first things first, we need to adjust the uid used to run this container
+So first things first, we need to adjust the uid used to run this container.  So, exit the containers shell and return back to the prompt on master.example.com.  Next edit the project attributes to adjust the uid for the container process.
 
+    exit
+    
     oc edit namespace helloworld
     
 Adjust the following parameter
@@ -86,35 +106,22 @@ Adjust the following parameter
 Delete and Redeploy our Pod
 
     oc delete all --all
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
-
-Let's edit the file here instead
-
-     cd /opt/rh/httpd24/root/var/www
-
-     oc cp {{ src }} {{ pod:/dst }}
-
-OR, set the UID for the proces
-
-spec.template.spec.containers.securityContext.runAsUser
-
-
-
-    vi index.html
-
-Contents of the file should read as follows.  Save your file when complete.
-
-    <html>
-    Hellow, World!
-    </html>
     
-    
-    
-    
-    
+    oc get pods
 
-    
+    oc rsh {{ POD NAME }}
 
+    id
+    
+    exit
+
+Notice how we did not need to rerun "oc new-app"?
+
+To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
+
+    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+    
+    curl http://helloworld.cloud.example.com
 
 
 ### Solution #2 - Use emptyDir
@@ -127,9 +134,9 @@ Contents of the file should read as follows.  Save your file when complete.
     
     oc get pods
        
-    oc cp /var/tmp/hello-world.html {{ pod }}:/var/www/html
+    oc cp /var/tmp/hello-world.html {{ POD NAME }}:/var/www/html
     
-    oc rsh {{
+    curl http://helloworld.cloud.example.com
 
 
 ### Solution #3 - Use NFS
