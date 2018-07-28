@@ -30,7 +30,7 @@
     - name: "SERVICE enable and start nfs and nfslock 
       service: name=nfs,nfslock state=started enabled=yes
       
-    - name "TEMPLATE modify/install /etc/exports"
+    - name: "TEMPLATE modify/install /etc/exports"
       template:
         src: nfsexports.j2
         dest: /etc/exports
