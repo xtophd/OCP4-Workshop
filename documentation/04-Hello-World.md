@@ -142,30 +142,39 @@ If you happen to rsh into the container namespace, have a look at the permission
 
 Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What it important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
 
-### Solution #3 - Use NFS
+
+### Solution #3 - Use Source Control (git)
+
+
+    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/OCP-Workshop-HelloWorld --name=hello-app3
+    
+    oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+    oc get pods
+    
+    oc rollout status dc/hello-app
+    
+    curl http://helloworld3.cloud.example.com
+
+
+### Solution #4 - Use NFS
 
 Finally a solution we can live with.  Using a network filesystem which we declare during creation time.  During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and a export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
-    oc new-project helloworld3 --description="My Second OCP App" --display-name="Hello World III"
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
+    oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
     
     oc create -f nfs-pv.yml
     oc create -f nfs-claim.yml
     
-    oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=nfs-claim1
+    oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=nfs-claim1
 
-    oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld3.cloud.example.com
+    oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
 
     oc get pods
-   
-    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html
 
-    curl http://helloworld3.cloud.example.com
+    curl http://helloworld4.cloud.example.com
 
-
-
-
-### Solution #4 - Use Source Control (git)
 
 
 ## 4.7 Clean Up
