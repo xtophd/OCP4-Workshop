@@ -34,3 +34,15 @@
           oc login -u system:admin
           oc project default
           oc adm router --replicas=2 --service-account=router
+
+
+
+
+- hosts: masters,nodes
+  tasks:
+  
+    - name: "CMD cleaning yum content"
+      shell: 
+        cmd: |
+          yum clean all
+  
