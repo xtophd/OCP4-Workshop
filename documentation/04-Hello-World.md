@@ -5,10 +5,12 @@
 A "Hello, World!" program is traditionally used to illustrate the basic syntax of a programming language.  The program merely outputs or displays "Hello, World!" to a user. Due to it's simplicity in nature, it is often the very first program people write when learning a new language or platform.
 
 This exercise will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.
-
+restaurants
 ## 4.1 Sign-on as admin
 
-In Unit 3, you created an admin user which we will utilize for this exercise.
+In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section to right now and complete that task before moving on.
+
+Connect to the master and sign-in as user *admin*.
 
     ssh master.example.com
 
