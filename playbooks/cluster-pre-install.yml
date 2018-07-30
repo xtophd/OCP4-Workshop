@@ -62,7 +62,7 @@
       notify: reconfig docker storage
 
 
-    handlers:
+handlers:
     
     - name: reconfig docker storage
       service: name=docker state=stopped enabled=yes
