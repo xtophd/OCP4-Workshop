@@ -1,58 +1,15 @@
 ##
 ## Moved "workstation" tasks into separate playbook to avoid having a package install/upgrade affect
-## a addtional ansible tasks (ie: it potentially breaks the next task execution)
+## a addtional ansible tasks (ie: it potentially breaks the next task execution).  Check the cluster-post-install
+## playbook for additional tasks on workshop.example.com
 ##
+
 
 - hosts: workstation
   tasks:
 
-    - name: "TEMPLATE modify /etc/motd"
-      template:
-        src: motd.j2
-        dest: /etc/motd
-        owner: root
-        group: root
-        mode: 0644  
-  
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
         name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools 
         state=installed
 
-    - name: "FILE create path for exports/helloworld"
-      file: 
-        path=/exports/helloworld
-        state=directory
-
-    - name: "TEMPLATE create /exports/helloworld/index.html"
-      template:
-        src: helloworld-html.j2
-        dest: /exports/helloworld/index.html
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: "SERVICE enable and start nfs"
-      service: 
-        name=nfs 
-        state=started 
-        enabled=yes
-
-    - name: "SERVICE enable and start nfslock"
-      service: 
-        name=nfslock
-        state=started 
-        enabled=yes
-      
-    - name: "TEMPLATE modify/install /etc/exports"
-      template:
-        src: nfsexports.j2
-        dest: /etc/exports
-        owner: root
-        group: root
-        mode: 644
-        
-    - name: "CMD export nfs filesystems"
-      shell: 
-        cmd: |
-          exportfs -a
