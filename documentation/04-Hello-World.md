@@ -159,7 +159,12 @@ Although it is not considered a best practice to inject files into a container d
 
 ### Solution #4 - Use NFS
 
-Finally a solution we can live with.  Using a network filesystem which we declare during creation time.  During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and a export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
+
+**NOTE** This section is not verified yet and does not work 100%
+
+The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our last solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
+
+During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
     oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
