@@ -1,12 +1,59 @@
 ---
-- hosts: masters
+- hosts: all
   tasks:
   
     - name: "PING all hosts to ensure we are alive and ready"
       ping:
 
 
+- hosts: workstation
+  tasks:
+  
+    - name: "TEMPLATE modify /etc/motd"
+      template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644  
+  
+    - name: "FILE create path for exports/helloworld"
+      file: 
+        path=/exports/helloworld
+        state=directory
 
+    - name: "TEMPLATE create /exports/helloworld/index.html"
+      template:
+        src: helloworld-html.j2
+        dest: /exports/helloworld/index.html
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: "SERVICE enable and start nfs"
+      service: 
+        name=nfs 
+        state=started 
+        enabled=yes
+
+    - name: "SERVICE enable and start nfslock"
+      service: 
+        name=nfslock
+        state=started 
+        enabled=yes
+      
+    - name: "TEMPLATE modify/install /etc/exports"
+      template:
+        src: nfsexports.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: 644
+        
+    - name: "CMD export nfs filesystems"
+      shell: 
+        cmd: |
+          exportfs -a
 
 - hosts: masters
   tasks:
