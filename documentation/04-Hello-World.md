@@ -119,17 +119,26 @@ Adjust the following parameter
 
     openshift.io/sa.scc.uid-range: 1001/10000
 
-Delete and Redeploy our Pod
-
+Delete the pod and have it auto redeploy
+    
     oc delete all --all
-    
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+
     oc get pods
-
     oc rsh {{ POD NAME }}
-
-    id
     
+Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
+    
+    id
+    cd /var/www
+    ls -la
     exit
+
+### Results of 'ls -la'
+
+    ##COMING SOON## smaple of ls -la output 
+
+
 
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
@@ -137,7 +146,7 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
     
     curl http://helloworld.cloud.example.com
 
-**REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid in a containerized environment, etc...
+**REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
 
 ### Solution #2 - Use emptyDir
 
