@@ -8,7 +8,7 @@ This exercise will step through everything needed to bring a "Hello, World!" pro
 
 ## 4.1 Create a Project
 
-The **project** is openshift's highest level construct.  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
+The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
     oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
 
@@ -18,11 +18,14 @@ The **project** is openshift's highest level construct.  Users, roles, applicati
     
 ## 4.2 Create an Application from a Docker Image
 
-We are not quite ready to start building our own container images, so we will leverage an existing available container from the dockerhub registry (built by Red Hat a while back ago for demo purposes).
+We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 
-So here What just happened?  We specifed the create of a new application call **hello-app**.  Openshift examined the specified container lable and likely determined it was not available locally. So OCP reached out to dockerhub, initiated a download and stored the image in our local registry.  Once that was completed, the container was deployed to a node and brought online.
+You just instructed openship to create a new application call **hello-app**:
+  - Openshift check the local registry for a copy of the image
+  - Wasn't available, so Openshift fetched it from Red Hat and added it to the local registry
+  - The container was deployed to a node and brought online.
 
 Now let's have a closer inspection.
 
