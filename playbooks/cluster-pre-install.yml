@@ -18,6 +18,22 @@
 
 
 - hosts: nodes
+  handlers:
+    
+    - name: reconfig docker storage
+      service: name=docker state=stopped enabled=yes
+      shell: 
+        cmd: |
+          rm -f /etc/sysconfig/docker-storage
+          rm -rf /var/lib/docker
+          vgs docker-vg && vgremove --force docker-vg
+          pvs /dev/vdb1 && pvremove --force /dev/vdb1
+          wipefs -a /dev/vdb
+          docker-storage-setup
+      service: name=docker state=started enabled=yes
+
+
+
   tasks:
   
     - name: "USER root password reset"
@@ -60,19 +76,3 @@
         group: root
         mode: 0644
       notify: reconfig docker storage
-
-
-handlers:
-    
-    - name: reconfig docker storage
-      service: name=docker state=stopped enabled=yes
-      shell: 
-        cmd: |
-          rm -f /etc/sysconfig/docker-storage
-          rm -rf /var/lib/docker
-          vgs docker-vg && vgremove --force docker-vg
-          pvs /dev/vdb1 && pvremove --force /dev/vdb1
-          wipefs -a /dev/vdb
-          docker-storage-setup
-      service: name=docker state=started enabled=yes
-      
