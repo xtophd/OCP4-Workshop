@@ -19,11 +19,11 @@
 
 - hosts: nodes
   handlers:
-    - name: reconfig storage step 1
+    - name: reconfig storage step-1
       service: name=docker state=stopped enabled=yes
-      notify: reconfig storage step 2
+      notify: reconfig storage step-2
       
-    - name: reconfig storage step 2
+    - name: reconfig storage step-2
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
@@ -32,9 +32,9 @@
           pvs /dev/vdb1 && pvremove --force /dev/vdb1
           wipefs -a /dev/vdb
           docker-storage-setup
-      notify: reconfig storage step 3
+      notify: reconfig storage step-3
           
-    - name: reconfig storage step 3
+    - name: reconfig storage step-3
       service: name=docker state=started enabled=yes
 
   tasks:
@@ -78,4 +78,4 @@
         owner: root
         group: root
         mode: 0644
-      notify: reconfig docker storage
+      notify: reconfig storage step-1
