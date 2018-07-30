@@ -187,8 +187,19 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 
 ## 4.7 Clean Up
 
-    oc delete all --all
+One last view of everything we have done thus far.
+
+    oc get pod --all-namespaces -o wide
+
+Now it is time to clean everything up.
+
+    oc project default
     
     oc delete project helloworld
+    oc delete project helloworld2
+    oc delete project helloworld3
+    oc delete project helloworld4
+
+    oc get pod --all-namespaces -o wide
 
 ## Conclusion
