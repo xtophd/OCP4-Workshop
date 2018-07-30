@@ -52,9 +52,6 @@
     - name: "YUM install docker-1.13.1"
       yum: name=docker-1.13.1 state=installed
 
-    - name: "SERVICE STOP docker"
-      service: name=docker state=stopped enabled=yes
-
     - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
       template:
         src: docker-storage-setup.j2
@@ -62,8 +59,13 @@
         owner: root
         group: root
         mode: 0644
+      notify: reconfig docker storage
 
-    - name: "CMD clean up any pre-existing docker-storage config and execute docker-storage-setup"
+
+    handlers:
+    
+    - name: reconfig docker storage
+      service: name=docker state=stopped enabled=yes
       shell: 
         cmd: |
           rm -f /etc/sysconfig/docker-storage
@@ -72,7 +74,5 @@
           pvs /dev/vdb1 && pvremove --force /dev/vdb1
           wipefs -a /dev/vdb
           docker-storage-setup
-
-    - name: "SERVICE START docker"
       service: name=docker state=started enabled=yes
       
