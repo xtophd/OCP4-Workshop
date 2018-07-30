@@ -6,6 +6,18 @@ A "Hello, World!" program is traditionally used to illustrate the basic syntax o
 
 This exercise will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.
 
+## 4.1 Sign-on as admin
+
+In Unit 3, you created an admin user which we will utilize for this exercise.
+
+    ssh master.example.com
+
+    oc login admin
+    password: ********
+    
+    oc project default
+    
+
 ## 4.1 Create a Project
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
