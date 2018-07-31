@@ -173,6 +173,7 @@ Although it is not considered a best practice to inject files into a container d
 
 ### Solution #3 - Use Source Control (git)
 
+Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
 
     oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
     
