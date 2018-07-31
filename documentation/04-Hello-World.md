@@ -67,7 +67,7 @@ We can also monitor the deployment of the application by running the following c
             
 ## 4.4 Validate Application
 
-    curl http://helloworld.cloud.example.com
+    [root@master ~]# curl http://helloworld.cloud.example.com
 
 ## 4.5 Exploring the Container
 
@@ -215,20 +215,20 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 
 One last view of everything we have done thus far.
 
-    oc get pod --all-namespaces -o wide
+    [root@master ~]# oc get pod --all-namespaces -o wide
 
 Now it is time to clean everything up.
 
-    oc project default
+    [root@master ~]# oc project default
     
-    oc delete project helloworld
-    oc delete project helloworld2
-    oc delete project helloworld3
-    oc delete project helloworld4
+    [root@master ~]# oc delete project helloworld
+    [root@master ~]# oc delete project helloworld2
+    [root@master ~]# oc delete project helloworld3
+    [root@master ~]# oc delete project helloworld4
 
-    oc get pod --all-namespaces -o wide
+    [root@master ~]# oc get pod --all-namespaces -o wide
 
-## Basic Trouble Shooting
+## 4.8 Basic Trouble Shooting
 
 ### Check Project
 
