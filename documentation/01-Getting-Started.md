@@ -27,6 +27,7 @@ In order to execute the pre-installation steps, we need to become the administra
 
 ### 1.3 Download the Workshop project from GitHub
 
+    [root@workstation ~]# cd ~
     [root@workstation ~]# git clone https://github.com/xtophd/OCP-Workshop
 
 ### 1.4 Run the pre-install script
@@ -35,7 +36,7 @@ In order to execute the pre-installation steps, we need to become the administra
 
 #
 
-    [root@workstation ~]# cd OCP-Workshop
+    [root@workstation ~]# cd ~/OCP-Workshop
     [root@workstation ~]# bash 01-pre-install-script.sh
 
 ### 1.5 Pre-Install Results
@@ -55,7 +56,7 @@ Here is the tail end of a sample output following a successfull run of the pre-i
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
 
-    [root@workstation ~]# cd OCP-Workshop
+    [root@workstation ~]# cd ~/OCP-Workshop
     [root@workstation ~]# bash 02-ocp-install-script.sh
 
 ### 2.2 Installation Results
@@ -89,7 +90,7 @@ Here is the tail end of a sample output following a successfull installation of 
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
 
-    [root@workstation ~]# cd OCP-Workshop
+    [root@workstation ~]# cd ~/OCP-Workshop
     [root@workstation ~]# bash 03-post-install-script.sh
 
 ### 3.2 Post Installation Results
