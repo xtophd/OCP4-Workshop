@@ -161,7 +161,7 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
     
     [root@master ~]# oc get pods
     
-    [root@master ~]# oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html
+    [root@master ~]# oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
     [root@master ~]# curl http://helloworld2.cloud.example.com
 
