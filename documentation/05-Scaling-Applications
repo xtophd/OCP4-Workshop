@@ -1,0 +1,21 @@
+# Scaling Applications
+
+## Create an application
+
+    oc new-project scaletest --description="Exercises in Scaling" --display-name="Scale Test"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=scaletest-app
+    
+    oc expose service scaletest-app --name=scaletest-svc --hostname=scaletest.cloud.example.com
+        
+    oc rollout status dc/scaletest-app
+    
+    curl http://scaletest.cloud.example.com
+    
+    oc get deploymentConfig/scaletest-app -o yaml
+
+    oc scale --replicas=3 dc/scaletest-app
+    
+    oc get endpoints scaletest-app-1
+    
+    oc scale --replicas=1 dc/scaletest-app
+
