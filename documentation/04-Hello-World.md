@@ -122,6 +122,7 @@ Delete the pod and have it auto redeploy
     
     [root@master ~]# oc delete all --all
     [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+    [root@master ~]# oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
 
     [root@master ~]# oc get pods
     [root@master ~]# oc rsh {{ POD NAME }}
@@ -226,5 +227,16 @@ Now it is time to clean everything up.
     oc delete project helloworld4
 
     oc get pod --all-namespaces -o wide
+
+## Basic Trouble Shooting
+
+### Check Project
+
+### Check Pods
+
+### Check Routes
+
+
+
 
 ## Conclusion
