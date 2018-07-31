@@ -95,6 +95,21 @@ Here is the tail end of a sample output following a successfull installation of 
 
 ### 3.2 Post Installation Results
 
+Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
+
+    TASK [CMD cleaning yum content] **************************************************************
+     [WARNING]: Consider using yum module rather than running yum
+
+    changed: [node1.example.com]
+    changed: [node2.example.com]
+    changed: [master.example.com]
+
+    PLAY RECAP ***********************************************************************************
+    master.example.com         : ok=10   changed=6    unreachable=0    failed=0   
+    node1.example.com          : ok=4    changed=1    unreachable=0    failed=0   
+    node2.example.com          : ok=4    changed=1    unreachable=0    failed=0   
+    workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
+
 
 ## Conclusion
 
