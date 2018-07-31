@@ -216,18 +216,20 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 
 One last view of everything we have done thus far.
 
-    [root@master ~]# oc get pod --all-namespaces -o wide
+    oc get pod --all-namespaces -o wide
 
 Now it is time to clean everything up.
 
-    [root@master ~]# oc project default
+    oc project default
     
-    [root@master ~]# oc delete project helloworld
-    [root@master ~]# oc delete project helloworld2
-    [root@master ~]# oc delete project helloworld3
-    [root@master ~]# oc delete project helloworld4
+    oc delete project helloworld
+    oc delete project helloworld2
+    oc delete project helloworld3
+    oc delete project helloworld4
 
-    [root@master ~]# oc get pod --all-namespaces -o wide
+    oc delete pv helloworld-pv
+
+    oc get pod --all-namespaces -o wide
 
 ## 4.8 Basic Trouble Shooting
 
