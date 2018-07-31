@@ -119,11 +119,9 @@ Adjust the following parameter
 
     [root@master ~]# openshift.io/sa.scc.uid-range: 1001/10000
 
-Delete the pod and have it auto redeploy
+Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
     
-    [root@master ~]# oc delete all --all
-    [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
-    [root@master ~]# oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
+    [root@master ~]# oc rollout latest dc/hello-app
 
     [root@master ~]# oc get pods
     [root@master ~]# oc rsh {{ POD NAME }}
