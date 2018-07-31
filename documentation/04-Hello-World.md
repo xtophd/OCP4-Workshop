@@ -198,19 +198,19 @@ The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
-    [root@master ~]# oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
-    [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
+    oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
     
-    [root@master ~]# oc create -f /var/tmp/helloworld-pv.yml
-    [root@master ~]# oc create -f /var/tmp/helloworld-pv-claim.yml
+    oc create -f /var/tmp/helloworld-pv.yml
+    oc create -f /var/tmp/helloworld-pv-claim.yml
     
-    [root@master ~]# oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
+    oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
 
-    [root@master ~]# oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+    oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
 
-    [root@master ~]# oc get pods
+    oc get pods
 
-    [root@master ~]# curl http://helloworld4.cloud.example.com
+    curl http://helloworld4.cloud.example.com
 
 
 
