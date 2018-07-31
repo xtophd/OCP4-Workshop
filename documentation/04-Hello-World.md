@@ -178,7 +178,7 @@ Although it is not considered a best practice to inject files into a container d
     
     [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/OCP-Workshop-HelloWorld --name=hello-app3
     
-    [root@master ~]# oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+    [root@master ~]# oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
     
     [root@master ~]# oc get pods
     
