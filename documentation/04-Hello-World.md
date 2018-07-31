@@ -204,7 +204,7 @@ During the pre-installation phase of this lab, the host workshop.example.com was
     [root@master ~]# oc create -f /var/tmp/helloworld-pv.yml
     [root@master ~]# oc create -f /var/tmp/helloworld-pv-claim.yml
     
-    [root@master ~]# oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=nfs-claim1
+    [root@master ~]# oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
 
     [root@master ~]# oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
 
