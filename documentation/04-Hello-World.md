@@ -174,12 +174,18 @@ Although it is not considered a best practice to inject files into a container d
 ### Solution #3 - Use Source Control (git)
 
 
-    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III" 
+    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
+    
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/OCP-Workshop-HelloWorld --name=hello-app3
+    
     oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
+    
     oc get pods
+    
     oc get events
+    
     oc rollout status dc/hello-app3
+    
     curl http://helloworld3.cloud.example.com
 
 
