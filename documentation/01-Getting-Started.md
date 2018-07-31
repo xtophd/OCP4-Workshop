@@ -14,9 +14,9 @@ With that stated, the steps of preparing and installing OCP have been condensed 
 
 ## 1. Openshift Pre Installation
 
-### 1.1 Log on to your session
+### 1.1 Sign-On on to your *workstation* session
 
-Using the connection information and credentials provided by the instructor, get yourselves signed into your session.
+Using the connection information and credentials provided by the instructor, get yourselves signed into your workstation session.
 
 ### 1.2 Become the root user
 
