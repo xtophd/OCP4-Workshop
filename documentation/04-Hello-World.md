@@ -201,8 +201,8 @@ During the pre-installation phase of this lab, the host workshop.example.com was
     [root@master ~]# oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
     [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
     
-    [root@master ~]# oc create -f nfs-pv.yml
-    [root@master ~]# oc create -f nfs-claim.yml
+    [root@master ~]# oc create -f /var/tmp/helloworld-pv.yml
+    [root@master ~]# oc create -f /var/tmp/helloworld-pv-claim.yml
     
     [root@master ~]# oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=nfs-claim1
 
