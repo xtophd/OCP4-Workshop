@@ -175,14 +175,12 @@ Although it is not considered a best practice to inject files into a container d
 
 Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
 
-    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
-    
+    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/OCP-Workshop-HelloWorld --name=hello-app3
     
     oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
     
     oc get pods
-    
     oc get events
     
     oc rollout status dc/hello-app3
