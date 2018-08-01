@@ -15,7 +15,7 @@
 
     oc scale --replicas=3 dc/scaletest-app
     
-    oc get endpoints scaletest-app-1
+    oc get endpoints scaletest-app
     
     oc scale --replicas=1 dc/scaletest-app
 
