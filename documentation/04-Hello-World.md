@@ -12,7 +12,7 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 
 Connect to the master and sign-in as user *admin*.
 
-    **root@master.example.com**
+**root@master.example.com**
     [root@master ~]# ssh master.example.com
 
     [root@master ~]# oc login admin
