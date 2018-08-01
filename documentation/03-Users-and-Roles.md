@@ -14,7 +14,7 @@ Use SSH to connect to master.example.com as user *root*
 
 If you are not familiar with grep utility, the parameter `-6` will provide the 6 lines above and 6 lines below the requested matched.  Thus we can easily inspect the entire stanza defining the IdentityProviders. 
 
-    [root@master master]# grep -6 htpasswd_auth master-config.yaml
+    :root@master; grep -6 htpasswd_auth master-config.yaml
 
 Your results should look like this.  Pay attention to `file: /etc/origin/master/htpasswd` and `kind: HTPasswdPasswordIdentityProvider`.
 
