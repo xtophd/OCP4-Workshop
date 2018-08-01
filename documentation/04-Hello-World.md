@@ -16,7 +16,7 @@ Connect to the master and sign-in as user *admin*.
 
     ssh master.example.com
 
-**root@workstation.com**
+**root@master.example.com**
 
     oc login admin
     password: ********
