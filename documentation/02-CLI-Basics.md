@@ -6,25 +6,32 @@ The default and recommended method for interacting with the Openshift Container 
 
 Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* you can easily login to any host in your cluster.  With that said, ensure your session is user *root* on the host *workstation.example.com*.
 
-    [student@workstation ~]$ sudo -i
-    [root@workstation ~]#
+    #[student@workstation ]$ 
+    
+    sudo -i
+    
 
 ## 2.2 Connect to host master.example.com
 
 As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being promp
 
-    [root@workstation ~]# ssh master
-    [root@master ~]#
+    #[root@workstation ]#
+    
+    ssh master
 
 ## 2.3 Establish OCP Admin session
 
-    [root@master ~]# oc login -u system:admin
+    #[root@master ]# 
+    
+    oc login -u system:admin
     
 Now that you have logged in to Openshift uing the *oc* command, you are ready to start interacting with the Openshift Container Platfrom
 
 ## 2.4 Check Cluster Status
 
-    [root@master ~]# oc status
+    #[root@master ]# 
+    
+    oc status
 
 Your output should look like this
 
@@ -48,7 +55,9 @@ Your output should look like this
 
 ## 2.5 High Level Cluster Check
 
-    [root@master ~]# oc get all
+    #[root@master ]#
+    
+    oc get all
 
 Your output should look like this
 
@@ -81,7 +90,9 @@ Your output should look like this
 
 ## 2.6 Check Projects
 
-    [root@master ~]# oc get projects
+    #[root@master ]# 
+    
+    oc get projects
 
 Your output should look like this
 
@@ -101,7 +112,9 @@ Your output should look like this
 
 ## 2.7 Check Node Status
 
-    [root@master ~]# oc get nodes
+    #[root@master ]#
+    
+    oc get nodes
 
 Your output should look like this
 
@@ -113,7 +126,9 @@ Your output should look like this
 
 ## 2.8 Check Pod Status
 
-    [root@master ~]# oc get pods
+    #[root@master ]# 
+    
+    oc get pods
 
 Your output should look like this
 
@@ -124,7 +139,7 @@ Your output should look like this
 
 ## 2.9  Check the Logs
 
-    [root@master ~]#
+    #[root@master ]#
 
         
 ## Conclusion
