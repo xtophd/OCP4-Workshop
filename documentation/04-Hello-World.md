@@ -22,7 +22,6 @@ Now sign-on to Openshift as the admin credential you created earlier
     #[root@master ]#
 
     oc login -u admin
-    password: ********
     
     oc project default
     
