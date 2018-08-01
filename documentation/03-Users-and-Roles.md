@@ -31,7 +31,7 @@ Your results should look like this.  Pay attention to `file: /etc/origin/master/
         kind: HTPasswdPasswordIdentityProvider
     masterCA: ca-bundle.crt
     masterPublicURL: https://master.example.com:8443
-
+    
 This confirms that the cluster is properly configured for the purposes of this workshop.
 
 ## 3.2 Configure User *admin*
@@ -54,3 +54,11 @@ Now you can use this new credential to log into Openshift.  Remember that you de
 
     oc login -u admin
     password: ********
+
+
+
+=============
+# End of Unit
+
+[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+
