@@ -19,7 +19,7 @@ Connect to the master and sign-in as user *admin*.
 
 Now sign-on to Openshift as the admin credential you created earlier
 
-    ## On host: root@master.example.com
+    :# [root@master.example.com]
 
     oc login admin
     password: ********
