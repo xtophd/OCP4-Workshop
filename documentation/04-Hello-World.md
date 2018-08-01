@@ -13,13 +13,13 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 Connect to the master and sign-in as user *admin*.
 
 
-    ## On host: root@workstation.example.com
+    ## [root@workstation ]#
 
     ssh master.example.com
 
 Now sign-on to Openshift as the admin credential you created earlier
 
-    :[root@master ]#
+    ## [root@master ]#
 
     oc login admin
     password: ********
@@ -30,17 +30,21 @@ Now sign-on to Openshift as the admin credential you created earlier
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
-    [root@master ~]# oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
+    ## [root@master ]#
 
-    [root@master ~]# oc get projects
+    oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
     
-    [root@master ~]# oc describe project helloworld
+    oc get projects
+    
+    oc describe project helloworld
     
 ## 4.2 Create an Application from a Docker Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
-    [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+    ## [root@master ]#
+
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 
 You just instructed openship to create a new application call **hello-app**:
   - Openshift check the local registry for a copy of the image
@@ -49,13 +53,15 @@ You just instructed openship to create a new application call **hello-app**:
 
 Now let's have a closer inspection.
 
-    [root@master ~]# oc status
-    
-    [root@master ~]# oc get pods
-    
-    [root@master ~]# oc get services
+    ## [root@master ]#
 
-    [root@master ~]# curl -Is http://{ip_address}}:8080
+    oc status
+    
+    oc get pods
+    
+    oc get services
+
+    curl -Is http://{ip_address}}:8080
 
 ## 4.3 Add a Route
 
@@ -63,13 +69,17 @@ Now let's have a closer inspection.
 
 Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
 
-    [root@master ~]# oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
+    ## [root@master ]#
+
+    oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
 
 We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
 
-    [root@master ~]# oc rollout status dc/hello-app
+    ## [root@master ]#
 
-    [root@master ~]# oc get routes
+    oc rollout status dc/hello-app
+
+    oc get routes
             
 ## 4.4 Validate Application
 
