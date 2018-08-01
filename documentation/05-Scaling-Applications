@@ -2,20 +2,41 @@
 
 ## Create an application
 
+By utilizing the process used during "Hello World", repeast the steps to build and deploy a simple application.
+
     oc new-project scaletest --description="Exercises in Scaling" --display-name="Scale Test"
+
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=scaletest-app
     
     oc expose service scaletest-app --name=scaletest-svc --hostname=scaletest.cloud.example.com
-        
+
+You can use the following command to watch the state of the deployment
+
     oc rollout status dc/scaletest-app
-    
+
+Verifiy the application and route is working
+
     curl http://scaletest.cloud.example.com
+    
+Inspect the deployment configuration
     
     oc get deploymentConfig/scaletest-app -o yaml
 
-    oc scale --replicas=3 dc/scaletest-app
-    
+Scale the number of replicas up
+
+    oc scale --replicas=10 dc/scaletest-app
+
+Inspect the state of the application
+
     oc get endpoints scaletest-app
+    
+    oc get pod --all-namespaces -o wide
+
+    
+Scale the number of replicas back down    
     
     oc scale --replicas=1 dc/scaletest-app
 
+# End of Unit
+
+[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
