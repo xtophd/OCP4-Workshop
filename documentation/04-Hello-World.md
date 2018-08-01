@@ -12,10 +12,13 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 
 Connect to the master and sign-in as user *admin*.
 
-**root@master.example.com**
-    [root@master ~]# ssh master.example.com
+**root@workstation.example.com**
 
-    [root@master ~]# oc login admin
+    ssh master.example.com
+
+**root@workstation.com**
+
+    oc login admin
     password: ********
     
     [root@master ~]# oc project default
