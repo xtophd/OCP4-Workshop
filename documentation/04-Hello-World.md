@@ -12,18 +12,20 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 
 Connect to the master and sign-in as user *admin*.
 
-**root@workstation.example.com**
+
+    ## On host: root@workstation.example.com
 
     ssh master.example.com
 
-**root@master.example.com**
+Now sign-on to Openshift as the admin credential you created earlier
+
+    ## On host: root@master.example.com
 
     oc login admin
     password: ********
     
-    [root@master ~]# oc project default
+    oc project default
     
-
 ## 4.1 Create a Project
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
