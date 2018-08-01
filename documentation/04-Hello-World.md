@@ -144,25 +144,36 @@ When you are done exploring, exit the shell and return to command-line of master
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
     
-    [root@master ~]# oc edit namespace helloworld
+    #[root@master ]#
+
+    oc edit namespace helloworld
     
 Adjust the following parameter
 
-    [root@master ~]# openshift.io/sa.scc.uid-range: 1001/10000
+    openshift.io/sa.scc.uid-range: 1001/10000
 
 Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
     
-    [root@master ~]# oc rollout latest dc/hello-app
+    #[root@master ]#
 
-    [root@master ~]# oc get pods
-    [root@master ~]# oc rsh {{ POD NAME }}
+    oc rollout latest dc/hello-app
+
+    oc get pods
+    
+    oc rsh {{ POD NAME }}
     
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
+
+
+    #[sh-4.2 ]# Container Shell
+
+    id
     
-    sh-4.2$ id
-    sh-4.2$ cd /var/www
-    sh-4.2$ ls -la
-    sh-4.2$ exit
+    cd /var/www
+    
+    ls -la
+    
+    exit
 
 ### Results of *id* and *ls -la*
 
@@ -176,46 +187,54 @@ Now that you are back in the container namespace, have a look at the /var/www/ht
     
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
-    [root@master ~]# oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+    #[root@master ]#
+
+    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
-    [root@master ~]# curl http://helloworld.cloud.example.com
+    curl http://helloworld.cloud.example.com
 
 **REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
 
 ### Solution #2 - Use emptyDir
 
-    [root@master ~]# oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
-    [root@master ~]# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
-    [root@master ~]# oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
+    #[root@master ]#
+
+    oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
+    oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
-    [root@master ~]# oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
+    oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
     
-    [root@master ~]# oc get pods
+    oc get pods
     
-    [root@master ~]# oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
-    [root@master ~]# curl http://helloworld2.cloud.example.com
+    curl http://helloworld2.cloud.example.com
 
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.
 
-Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What it important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
+Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What is important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
 
 
 ### Solution #3 - Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
 
-    root@master# oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
-    root@master# oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
+
+    #[root@master ]#
+
+    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
     
-    root@master# oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
     
-    root@master# oc get pods
-    root@master# oc get events
+    oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
     
-    root@master# oc rollout status dc/hello-app3
+    oc get pods
+    oc get events
     
-    root@master# curl http://helloworld3.cloud.example.com
+    oc rollout status dc/hello-app3
+    
+    curl http://helloworld3.cloud.example.com
 
 
 ### Solution #4 - Use NFS
@@ -227,10 +246,15 @@ The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
+
+    #[root@master ]#
+
     oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
+
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
     
     oc create -f /var/tmp/helloworld-pv.yml
+    
     oc create -f /var/tmp/helloworld-pv-claim.yml
     
     oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
@@ -241,21 +265,27 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 
     curl http://helloworld4.cloud.example.com
 
-
-
 ## 4.7 Clean Up
 
 One last view of everything we have done thus far.
+
+    #[root@master ]#
 
     oc get pod --all-namespaces -o wide
 
 Now it is time to clean everything up.
 
+
+    #[root@master ]#
+
     oc project default
     
     oc delete project helloworld
+    
     oc delete project helloworld2
+    
     oc delete project helloworld3
+    
     oc delete project helloworld4
 
     oc delete pv helloworld-pv
