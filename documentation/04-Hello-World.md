@@ -200,7 +200,9 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
     #[root@master ]#
 
     oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
+    
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
+    
     oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
     oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
@@ -230,6 +232,7 @@ Next we will implement the ideal solution.  Using a source code repository we we
     oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
     
     oc get pods
+    
     oc get events
     
     oc rollout status dc/hello-app3
