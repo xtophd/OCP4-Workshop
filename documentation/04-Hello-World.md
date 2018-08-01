@@ -13,13 +13,13 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 Connect to the master and sign-in as user *admin*.
 
 
-    ## [root@workstation ]#
+    #[root@workstation ]#
 
     ssh master.example.com
 
 Now sign-on to Openshift as the admin credential you created earlier
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc login -u admin
     password: ********
@@ -30,7 +30,7 @@ Now sign-on to Openshift as the admin credential you created earlier
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
     
@@ -42,7 +42,7 @@ The **project** is openshift's ... yada yada ...  Users, roles, applications, se
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 
@@ -53,7 +53,7 @@ You just instructed openship to create a new application call **hello-app**:
 
 Now let's have a closer inspection.
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc status
     
@@ -69,13 +69,13 @@ Now let's have a closer inspection.
 
 Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
 
 We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
 
-    ## [root@master ]#
+    #[root@master ]#
 
     oc rollout status dc/hello-app
 
@@ -83,22 +83,33 @@ We can also monitor the deployment of the application by running the following c
             
 ## 4.4 Validate Application
 
-    [root@master ~]# curl http://helloworld.cloud.example.com
+    #[root@master ]#
+
+    curl http://helloworld.cloud.example.com
 
 ## 4.5 Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
-    [root@master ~]# oc get pods
+    #[root@master ]#
 
-    [root@master ~]# oc rsh {{ POD NAME }}
+    oc get pods
+
+    oc rsh {{ POD NAME }}
 
 Now that you have connected to the active container, have a look around
 
-    sh-4.2$ id
-    uid=1000120000 gid=0(root) groups=0(root),1000120000
+    #[sh-4.2 ]# Container Shell
+
+    id
     
-    sh-4.2$ ps -ef
+    ps -ef
+    
+Sample output from the commands above
+
+    uid=1000120000 gid=0(root) groups=0(root),1000120000
+
+
     UID         PID   PPID  C STIME TTY          TIME CMD
     default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
     default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
@@ -113,14 +124,20 @@ Now that you have connected to the active container, have a look around
     default      74      0  0 17:50 ?        00:00:00 /bin/sh
     default      84     74  0 17:50 ?        00:00:00 ps -ef
 
-Normally files serverd by httpd go into /var/www/html, but security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
+Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
 
-    sh-4.2$ cd /var/www/html/
+    #[sh-4.2 ]# Container Shell
 
-When you are done exporing, exit the shell and return to command-line of master.example.com
+    cd /var/www/
+    
+    ls -la
 
-    sh-4.2$ exit
-    [root@master ~]# 
+When you are done exploring, exit the shell and return to command-line of master.example.com
+
+
+    #[sh-4.2 ]# Container Shell
+
+    exit
 
 ## 4.6 Making an authentic "Hello, World!"
 
