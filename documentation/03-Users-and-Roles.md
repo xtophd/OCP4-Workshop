@@ -22,6 +22,7 @@ If you are not familiar with grep utility, the parameter `-6` will provide the 6
 
 Your results should look like this.  Pay attention to `file: /etc/origin/master/htpasswd` and `kind: HTPasswdPasswordIdentityProvider`.
 
+```
 >    grantConfig:
 >      method: auto
 >    identityProviders:
@@ -35,7 +36,8 @@ Your results should look like this.  Pay attention to `file: /etc/origin/master/
 >        kind: HTPasswdPasswordIdentityProvider
 >    masterCA: ca-bundle.crt
 >    masterPublicURL: https://master.example.com:8443
-    
+```
+
 This confirms that the cluster is properly configured for the purposes of this workshop.
 
 ## 3.2 Configure User *admin*
