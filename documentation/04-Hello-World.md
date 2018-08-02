@@ -229,13 +229,15 @@ Next we will implement the ideal solution.  Using a source code repository we we
     
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
     
-    oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
+    oc get builds
     
     oc get pods
     
     oc get events
     
     oc rollout status dc/hello-app3
+    
+    oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
     
     curl http://helloworld3.cloud.example.com
 
