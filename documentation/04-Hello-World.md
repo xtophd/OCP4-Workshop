@@ -225,9 +225,11 @@ Next we will implement the ideal solution.  Using a source code repository we we
 
     #[root@master ]#
 
-    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
+    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"   
+     
+    ## OLD ###   oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
     
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
+    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app3
     
     oc get builds
     
