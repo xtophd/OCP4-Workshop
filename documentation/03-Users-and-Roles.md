@@ -10,15 +10,19 @@ The OCP parameters we used at installation automatically configured the cluster 
 
 Use SSH to connect to master.example.com as user *root*
 
-    #[root@workstation ]#
+```
+#[root@workstation ]#
 
-    ssh master.example.com
+ssh master.example.com
+```
 
 If you are not familiar with grep utility, the parameter `-6` will provide the 6 lines above and 6 lines below the requested matched.  Thus we can easily inspect the entire stanza defining the IdentityProviders. 
 
-    #[root@master ]#
+```
+#[root@master ]#
 
-    grep -6 htpasswd_auth /etc/origin/master/master-config.yaml
+grep -6 htpasswd_auth /etc/origin/master/master-config.yaml
+```
 
 Your results should look like this.  Pay attention to `file: /etc/origin/master/htpasswd` and `kind: HTPasswdPasswordIdentityProvider`.
 
@@ -46,25 +50,31 @@ This confirms that the cluster is properly configured for the purposes of this w
 
 Add the user *admin* with password *redhat*
 
-    #[root@master ]#
+```
+#[root@master ]#
 
-    htpasswd -b /etc/origin/master/htpasswd admin redhat
+htpasswd -b /etc/origin/master/htpasswd admin redhat
+```
 
 ### Assign role *cluster-admin*
 
 Provide the *admin* user with the *cluster-admin* role
 
-    #[root@master ]#
+```
+#[root@master ]#
     
-    oc adm policy add-cluster-role-to-user cluster-admin admin
+oc adm policy add-cluster-role-to-user cluster-admin admin
+```
 
 ### Use the new credential
 
 Now you can use this new credential to log into Openshift.  Remember that you declared the password for use *admin* above when you ran **htpasswd**.
 
-    #[root@master ]#
+```
+#[root@master ]#
 
-    oc login -u admin
+oc login -u admin
+```
 
 # End of Unit
 
