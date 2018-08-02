@@ -9,4 +9,4 @@ Finally,at the moment this effort is using Openshift Container Platform 3.9 on R
 
 Please continue to the 'documentation' folder and begin with the "Getting Started" unit.
 
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+[Proceed to Documentaion](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
