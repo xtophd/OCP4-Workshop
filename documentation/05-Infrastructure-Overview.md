@@ -22,6 +22,9 @@
 | **label**                 |   |
 | **image**                 |   |
 | **image-stream**          |   |
+| **image-registry**        | service responsible for hosting and distributing images |
+| **image-repository**      | collection of images |
+| **image-tag**             | alphanumeric identifier attached to images within a repository |
 | **docker**                |   |
 | **source-to-image (S2I)** |   |
 | **CRI-O**                 | implementation of the Kubernetes CRI (Container Runtime Interface) to enable OCI compatible runtimes (ie: it's is a lightweight alternative to using Docker) |
