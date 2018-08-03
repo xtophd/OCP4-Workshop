@@ -90,75 +90,90 @@ curl -Is http://{ip_address}}:8080
 
 Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
+oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
+```
 
 We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc rollout status dc/hello-app
+oc rollout status dc/hello-app
 
-    oc get routes
-            
+oc get routes
+```
+
 ## 4.4 Validate Application
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    curl http://helloworld.cloud.example.com
+curl http://helloworld.cloud.example.com
+```
 
 ## 4.5 Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc get pods
+oc get pods
 
-    oc rsh {{ POD NAME }}
+oc rsh {{ POD NAME }}
+```
 
 Now that you have connected to the active container, have a look around
 
-    #[sh-4.2 ]# Container Shell
+```
+: [sh-4.2 ]# 
 
-    id
+id
     
-    ps -ef
+ps -ef
+```
     
 Sample output from the commands above
 
-    uid=1000120000 gid=0(root) groups=0(root),1000120000
+```
+uid=1000120000 gid=0(root) groups=0(root),1000120000
 
 
-    UID         PID   PPID  C STIME TTY          TIME CMD
-    default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
-    default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
-    default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
-    default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
-    default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
-    default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-    default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-    default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-    default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-    default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-    default      74      0  0 17:50 ?        00:00:00 /bin/sh
-    default      84     74  0 17:50 ?        00:00:00 ps -ef
+UID         PID   PPID  C STIME TTY          TIME CMD
+default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
+default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      74      0  0 17:50 ?        00:00:00 /bin/sh
+default      84     74  0 17:50 ?        00:00:00 ps -ef
+```
 
 Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
 
-    #[sh-4.2 ]# Container Shell
+```
+: [sh-4.2 ]#
 
-    cd /var/www/
+cd /var/www/
     
-    ls -la
+ls -la
+```
 
 When you are done exploring, exit the shell and return to command-line of master.example.com
 
+```
+: [sh-4.2 ]#
 
-    #[sh-4.2 ]# Container Shell
-
-    exit
+exit
+```
 
 ## 4.6 Making an authentic "Hello, World!"
 
@@ -166,54 +181,65 @@ When you are done exploring, exit the shell and return to command-line of master
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
     
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc edit namespace helloworld
-    
+oc edit namespace helloworld
+```
+
 Adjust the following parameter
 
-    openshift.io/sa.scc.uid-range: 1001/10000
+```
+openshift.io/sa.scc.uid-range: 1001/10000
+```
 
 Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
     
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc rollout latest dc/hello-app
+oc rollout latest dc/hello-app
 
-    oc get pods
+oc get pods
     
-    oc rsh {{ POD NAME }}
-    
+oc rsh {{ POD NAME }}
+```
+
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
 
+```
+: [sh-4.2 ]#
 
-    #[sh-4.2 ]# Container Shell
-
-    id
+id
     
-    cd /var/www
+cd /var/www
     
-    ls -la
+ls -la
     
-    exit
+exit
+```
 
 ### Results of *id* and *ls -la*
 
-    uid=1001(default) gid=0(root) groups=0(root),1000120000
+```
+uid=1001(default) gid=0(root) groups=0(root),1000120000
 
-    total 0
-    drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
-    drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
-    drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
-    drwxr-xr-x.  2 default root   6 May  9 13:18 html
+total 0
+drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
+drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
+drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
+drwxr-xr-x.  2 default root   6 May  9 13:18 html
+```
     
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
-    curl http://helloworld.cloud.example.com
+curl http://helloworld.cloud.example.com
+```
 
 **REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
 
