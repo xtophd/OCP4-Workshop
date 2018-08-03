@@ -1,35 +1,28 @@
 
-# Openshift Infrastructure Overview
+# 5 Openshift Infrastructure Overview
 
-## Glossary
+## 5.1 Glossary of Terms
 
-**Kubernetes** : technology used by the Red Hat OpenShift Container Platform to deploy, maintain, and scale containerized applications across a set of containers or hosts. 
-
-**container runtime** : packages, instantiates, and runs the containerized applications
-
-**master** :
-
-**node** :
-
-**haproxy** :
-
-**etd** :
-
-**pod** :
-
-**service**  :
-
-**pv** :
-
-**pvc** :
-
-**role** :
-
-**project** :
-
-**attribute** :
-
-**label** "
+| Term |  |
+|-----:|--|
+| **kubernetes**        | technology used by the Red Hat OpenShift Container Platform to deploy, maintain, and scale containerized applications across a set of containers or hosts. |
+| **container runtime** | packages, instantiates, and runs the containerized applications
+| **master**            |   |
+| **node**              |   |
+| **haproxy**           |   |
+| **etd**               |   |
+| **pod**               |   |
+| **service**           |   |
+| **pv**                |   |
+| **pvc**               |   |
+| **role**              |   |
+| **project**           |   |
+| **attribute**         |   |
+| **label**             |   |
+| **image**             |   |
+| **image-stream**      |   |
+| **docker**            |   |
+| **CRI-O**             | implementation of the Kubernetes CRI (Container Runtime Interface) to enable OCI compatible runtimes (ie: it's is a lightweight alternative to using Docker) |
 
 
 ## Component Relationships
