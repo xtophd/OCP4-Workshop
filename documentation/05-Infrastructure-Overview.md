@@ -13,6 +13,7 @@
 | **etd**               |   |
 | **pod**               |   |
 | **service**           |   |
+| **service end point** |   |
 | **pv**                |   |
 | **pvc**               |   |
 | **role**              |   |
