@@ -139,6 +139,7 @@ ps -ef
 Sample output from the commands above
 
 <em>
+    
 ```
 uid=1000120000 gid=0(root) groups=0(root),1000120000
 
@@ -223,6 +224,8 @@ exit
 
 ### Results of *id* and *ls -la*
 
+<em>
+
 ```
 uid=1001(default) gid=0(root) groups=0(root),1000120000
 
@@ -232,7 +235,8 @@ drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
 drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
 drwxr-xr-x.  2 default root   6 May  9 13:18 html
 ```
-    
+</em>
+
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
 ```
