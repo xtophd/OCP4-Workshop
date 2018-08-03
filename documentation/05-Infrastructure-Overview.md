@@ -27,7 +27,7 @@
 | **CRI-O**                 | implementation of the Kubernetes CRI (Container Runtime Interface) to enable OCI compatible runtimes (ie: it's is a lightweight alternative to using Docker) |
 
 
-## Component Relationships
+## 5.1 Component Relationships
 
 |Cluster Components|                             |
 |------------------|-----------------------------|
