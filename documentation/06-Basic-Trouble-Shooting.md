@@ -8,6 +8,8 @@
 
 ## 7.4 Check Events
 
+## 7.5 Check Logs
+
 ```
 oc get events --sort-by='.lastTimestamp'
 ```
