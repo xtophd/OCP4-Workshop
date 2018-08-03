@@ -15,7 +15,7 @@ Connect to the master and sign-in as user *admin*.
 ```
 : [root@workstation ~]#
 
-    ssh master.example.com
+ssh master.example.com
 ```
 
 Now sign-on to Openshift as the admin credential you created earlier
