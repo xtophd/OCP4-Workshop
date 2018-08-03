@@ -231,6 +231,8 @@ Next we will implement the ideal solution.  Using a source code repository we we
     
     oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app3
     
+    oc logs -f bc/hello-app3
+    
     oc get builds
     
     oc get pods
