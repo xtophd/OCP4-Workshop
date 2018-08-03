@@ -8,7 +8,9 @@
 
 ## 6.4 Check Events
 
-
+```
+oc get events --sort-by='.lastTimestamp'
+```
 
 
 
