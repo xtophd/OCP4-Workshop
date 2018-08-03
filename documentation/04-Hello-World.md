@@ -212,57 +212,29 @@ To save time and avoid the complexity of editing an HTML file, we will just copy
 
 ### Solution #2 - Use emptyDir
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
+oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
     
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
     
-    oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
+oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
-    oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
+oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
     
-    oc get pods
+oc get pods
     
-    oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
-    curl http://helloworld2.cloud.example.com
+curl http://helloworld2.cloud.example.com
+```    
 
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.
 
 Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What is important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
 
-
-### Solution #3 - Use Source Control (git)
-
-Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
-
-
-    #[root@master ]#
-
-    oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"   
-     
-    ## OLD ###   oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop-HelloWorld --name=hello-app3
-    
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app3
-    
-    oc logs -f bc/hello-app3
-    
-    oc get builds
-    
-    oc get pods
-    
-    oc get events
-    
-    oc rollout status dc/hello-app3
-    
-    oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
-    
-    curl http://helloworld3.cloud.example.com
-
-
-### Solution #4 - Use NFS
-
+### Solution #3 - Use NFS
 
 **NOTE** This section is not verified yet and does not work 100%
 
@@ -270,51 +242,81 @@ The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
+```
+: [root@master ~]#
 
-    #[root@master ]#
+oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
 
-    oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"
-
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app4
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
     
-    oc create -f /var/tmp/helloworld-pv.yml
+oc create -f /var/tmp/helloworld-pv.yml
     
-    oc create -f /var/tmp/helloworld-pv-claim.yml
+oc create -f /var/tmp/helloworld-pv-claim.yml
     
-    oc set volume dc/hello-app4 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
+oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
 
-    oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
 
-    oc get pods
+oc get pods
 
-    curl http://helloworld4.cloud.example.com
+curl http://helloworld3.cloud.example.com
+```
+
+### Solution #4 - Use Source Control (git)
+
+Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
+
+```
+: [root@master ~]#
+
+oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"   
+     
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app4
+    
+oc logs -f bc/hello-app4
+    
+oc get builds
+    
+oc get pods
+    
+oc get events
+    
+oc rollout status dc/hello-app4
+    
+oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+    
+curl http://helloworld4.cloud.example.com
+```
 
 ## 4.7 Clean Up
 
 One last view of everything we have done thus far.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc get pod --all-namespaces -o wide
+oc get pod --all-namespaces -o wide
+```
 
 Now it is time to clean everything up.
 
+```
+: [root@master ~]#
 
-    #[root@master ]#
+oc project default
+    
+oc delete project helloworld
+    
+oc delete project helloworld2
+    
+oc delete project helloworld3
+    
+oc delete project helloworld4
 
-    oc project default
-    
-    oc delete project helloworld
-    
-    oc delete project helloworld2
-    
-    oc delete project helloworld3
-    
-    oc delete project helloworld4
+oc delete pv helloworld-pv
 
-    oc delete pv helloworld-pv
-
-    oc get pod --all-namespaces -o wide
+oc get pod --all-namespaces -o wide
+```
 
 ## 4.8 Basic Trouble Shooting
 
