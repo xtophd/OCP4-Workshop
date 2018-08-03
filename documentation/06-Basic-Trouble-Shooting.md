@@ -1,12 +1,12 @@
-# 6 Basic Trouble Shooting
+# 7 Basic Trouble Shooting
 
-## 6.1 Check Project
+## 7.1 Check Project
 
-## 6.2 Check Pods
+## 7.2 Check Pods
 
-## 6.3 Check Routes
+## 7.3 Check Routes
 
-## 6.4 Check Events
+## 7.4 Check Events
 
 ```
 oc get events --sort-by='.lastTimestamp'
