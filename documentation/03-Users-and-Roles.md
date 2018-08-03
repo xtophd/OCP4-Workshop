@@ -68,7 +68,7 @@ oc adm policy add-cluster-role-to-user cluster-admin admin
 
 ### Use the new credential
 
-Now you can use this new credential to log into Openshift.  Remember that you declared the password for use *admin* above when you ran **htpasswd**.
+Now you can use this new credential to log into Openshift.  Remember that you declared the password for user *admin* above when you ran `htpasswd`.
 
 ```
 : [root@master ~]#
