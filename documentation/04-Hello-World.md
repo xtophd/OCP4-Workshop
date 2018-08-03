@@ -12,55 +12,70 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 
 Connect to the master and sign-in as user *admin*.
 
-
-    #[root@workstation ]#
+```
+: [root@workstation ~]#
 
     ssh master.example.com
+```
 
 Now sign-on to Openshift as the admin credential you created earlier
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc login -u admin
+oc login -u admin
     
-    oc project default
-    
+oc project default
+```
+
 ## 4.1 Create a Project
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
+oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
     
-    oc get projects
+oc get projects
     
-    oc describe project helloworld
-    
-## 4.2 Create an Application from a Docker Image
+oc describe project helloworld
+```   
+   
+## 4.2 Create an Application from a Container Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+```
 
-You just instructed openship to create a new application call **hello-app**:
-  - Openshift check the local registry for a copy of the image
-  - Wasn't available, so Openshift fetched it from Red Hat and added it to the local registry
+You just instructed openship to create a new application called **hello-app**:
+  - Openshift checks the local registry for an existing copy of the image
+  - It likely wasn't available, so Openshift fetched it from Red Hat and added it to the local registry
   - The container was deployed to a node and brought online.
 
 Now let's have a closer inspection.
 
-    #[root@master ]#
+```
+: [root@master ~]#
 
-    oc status
+oc status
     
-    oc get pods
+oc get pods
     
-    oc get services
+oc get services
+```
 
-    curl -Is http://{ip_address}}:8080
+The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
+
+```
+: [root@master ~]#
+
+curl -Is http://{ip_address}}:8080
+```
 
 ## 4.3 Add a Route
 
