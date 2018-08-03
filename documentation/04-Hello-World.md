@@ -379,6 +379,8 @@ oc delete project helloworld3
     
 oc delete project helloworld4
 
+oc delete project helloworld5
+
 oc delete pv helloworld-pv
 
 oc get pod --all-namespaces -o wide
