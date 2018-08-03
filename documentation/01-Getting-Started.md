@@ -22,13 +22,13 @@ Using the connection information and credentials provided by the instructor, get
 
 In order to execute the pre-installation steps, we need to become the administrative user 'root'
 
-    #[student@workstation ]$ 
+    : [student@workstation ~]$ 
     
     sudo -i
     
 ### 1.3 Download the Workshop project from GitHub
 
-    #[root@workstation ]#
+    : [root@workstation ~]#
     
     cd ~
     
@@ -36,15 +36,21 @@ In order to execute the pre-installation steps, we need to become the administra
 
 ### 1.4 Run the pre-install script
 
-**NOTE** It is important to be in the correct working directory for this to function properly.  This typically runs for about 3-5 minutes.
+**NOTE** It is important to be in the correct working directory for these installation procedures to function properly.  
 
-#
+```
+: [root@workstation ~]#
+    
+cd ~/OCP-Workshop
+```
 
-    #[root@workstation ]#
-    
-    cd ~/OCP-Workshop
-    
-    bash 01-pre-install-script.sh
+Now you are ready to proceed with executing the pre-install steps.  This typically runs for about 3-5 minutes.    
+
+```
+: [root@workstation OCP-Workshop]#
+   
+bash 01-pre-install-script.sh
+```
 
 ### 1.5 Pre-Install Results
 
@@ -63,11 +69,11 @@ Here is the tail end of a sample output following a successfull run of the pre-i
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
 
-    #[root@workstation ]#
-    
-    cd ~/OCP-Workshop
-    
-    bash 02-ocp-install-script.sh
+```
+: [root@workstation OCP-Workshop]#
+  
+bash 02-ocp-install-script.sh
+```
 
 ### 2.2 Installation Results
 
@@ -75,24 +81,26 @@ Here is the tail end of a sample output following a successfull run of the pre-i
 
 Here is the tail end of a sample output following a successfull installation of the Openshift Container Platform.
 
-    PLAY RECAP **********
-    localhost                  : ok=13   changed=0    unreachable=0    failed=0   
-    master.example.com         : ok=612  changed=260  unreachable=0    failed=0   
-    node1.example.com          : ok=135  changed=54   unreachable=0    failed=0   
-    node2.example.com          : ok=135  changed=55   unreachable=0    failed=0   
-    workstation.example.com    : ok=20   changed=0    unreachable=0    failed=0
+```
+PLAY RECAP **********
+localhost                  : ok=13   changed=0    unreachable=0    failed=0   
+master.example.com         : ok=612  changed=260  unreachable=0    failed=0   
+node1.example.com          : ok=135  changed=54   unreachable=0    failed=0   
+node2.example.com          : ok=135  changed=55   unreachable=0    failed=0   
+workstation.example.com    : ok=20   changed=0    unreachable=0    failed=0
 
-    INSTALLER STATUS ****************
-    Initialization             : Complete (0:00:26)
-    Health Check               : Complete (0:00:28)
-    etcd Install               : Complete (0:01:08)
-    NFS Install                : Complete (0:00:17)
-    Master Install             : Complete (0:03:45)
-    Master Additional Install  : Complete (0:01:34)
-    Node Install               : Complete (0:04:33)
-    Hosted Install             : Complete (0:03:09)
-    Web Console Install        : Complete (0:00:43)
-    Service Catalog Install    : Complete (0:03:12)
+INSTALLER STATUS ****************
+Initialization             : Complete (0:00:26)
+Health Check               : Complete (0:00:28)
+etcd Install               : Complete (0:01:08)
+NFS Install                : Complete (0:00:17)
+Master Install             : Complete (0:03:45)
+Master Additional Install  : Complete (0:01:34)
+Node Install               : Complete (0:04:33)
+Hosted Install             : Complete (0:03:09)
+Web Console Install        : Complete (0:00:43)
+Service Catalog Install    : Complete (0:03:12)
+```
 
 ## 3 Openshift Post Installation
 
@@ -100,29 +108,30 @@ Here is the tail end of a sample output following a successfull installation of 
 
 **NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
 
-    #[root@workstation ]#
-    
-    cd ~/OCP-Workshop
-    
-    bash 03-post-install-script.sh
+```
+: [root@workstation OCP-Workshop]#
+        
+bash 03-post-install-script.sh
+```
 
 ### 3.2 Post Installation Results
 
 Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
 
-    TASK [CMD cleaning yum content] **************************************************************
-     [WARNING]: Consider using yum module rather than running yum
+```
+TASK [CMD cleaning yum content] **************************************************************
+[WARNING]: Consider using yum module rather than running yum
 
-    changed: [node1.example.com]
-    changed: [node2.example.com]
-    changed: [master.example.com]
+changed: [node1.example.com]
+changed: [node2.example.com]
+changed: [master.example.com]
 
-    PLAY RECAP ***********************************************************************************
-    master.example.com         : ok=10   changed=6    unreachable=0    failed=0   
-    node1.example.com          : ok=4    changed=1    unreachable=0    failed=0   
-    node2.example.com          : ok=4    changed=1    unreachable=0    failed=0   
-    workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
-
+PLAY RECAP ***********************************************************************************
+master.example.com         : ok=10   changed=6    unreachable=0    failed=0   
+node1.example.com          : ok=4    changed=1    unreachable=0    failed=0   
+node2.example.com          : ok=4    changed=1    unreachable=0    failed=0   
+workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
+```
 
 ## Conclusion
 
