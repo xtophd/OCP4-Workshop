@@ -138,6 +138,7 @@ ps -ef
     
 Sample output from the commands above
 
+<em>
 ```
 uid=1000120000 gid=0(root) groups=0(root),1000120000
 
@@ -156,6 +157,7 @@ default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
 default      74      0  0 17:50 ?        00:00:00 /bin/sh
 default      84     74  0 17:50 ?        00:00:00 ps -ef
 ```
+</em>
 
 Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
 
