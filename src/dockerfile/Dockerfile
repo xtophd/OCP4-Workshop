@@ -4,4 +4,4 @@ USER 0
 COPY index.php /tmp/src/
 RUN /usr/libexec/s2i/assemble
 CMD /usr/libexec/s2i/run
-Expose 80
+Expose 8080
