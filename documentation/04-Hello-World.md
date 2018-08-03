@@ -6,9 +6,17 @@ A "Hello, World!" program is traditionally used to illustrate the basic syntax o
 
 This exercise will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.
 restaurants
+
+There are 4 fundamental steps to deploying an application in the Openshift Container Platform:
+1. **oc login** - sign-on with proper credentials
+2. **oc new project** - create a project
+3. **oc new-app** - create an application
+4. **oc expose** - expose the service
+
+
 ## 4.1 Sign-on as admin
 
-In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section to right now and complete that task before moving on.
+In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section right now and complete that task before moving on.
 
 Connect to the master and sign-in as user *admin*.
 
@@ -18,7 +26,7 @@ Connect to the master and sign-in as user *admin*.
 ssh master.example.com
 ```
 
-Now sign-on to Openshift as the admin credential you created earlier
+Now sign-on to Openshift with the `admin` credential you created earlier
 
 ```
 : [root@master ~]#
