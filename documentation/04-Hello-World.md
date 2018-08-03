@@ -93,7 +93,7 @@ Routers are the processes responsible for making services accessible to the outs
 ```
 : [root@master ~]#
 
-oc expose service hello-app --name=hello-svc --hostname=helloworld.cloud.example.com
+oc expose service hello-app --hostname=helloworld.cloud.example.com
 ```
 
 We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
@@ -254,7 +254,7 @@ oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
     
 oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
-oc expose service hello-app2 --name=hello-svc2 --hostname=helloworld2.cloud.example.com
+oc expose service hello-app2 --hostname=helloworld2.cloud.example.com
     
 oc get pods
     
@@ -288,7 +288,7 @@ oc create -f /var/tmp/helloworld-pv-claim.yml
     
 oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
 
-oc expose service hello-app3 --name=hello-svc3 --hostname=helloworld3.cloud.example.com
+oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
 
 oc get pods
 
@@ -316,10 +316,37 @@ oc get events
     
 oc rollout status dc/hello-app4
     
-oc expose service hello-app4 --name=hello-svc4 --hostname=helloworld4.cloud.example.com
+oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
     
 curl http://helloworld4.cloud.example.com
 ```
+
+### Solution #5 - Use Dockerfile
+
+Next we will implement another solution using a Dockerfile.  Again, using a source code repository we we initiate a container deployment but this time we only specify a source with a `Dockerfile`.
+
+```
+: [root@master ~]#
+
+oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hello World V"   
+     
+oc new-app ~https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
+    
+oc logs -f bc/hello-app4
+    
+oc get builds
+    
+oc get pods
+    
+oc get events
+    
+oc rollout status dc/hello-app4
+    
+oc expose service hello-app4 --hostname=helloworld5.cloud.example.com
+    
+curl http://helloworld5.cloud.example.com
+```
+
 
 ## 4.7 Clean Up
 
