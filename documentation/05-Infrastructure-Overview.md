@@ -5,8 +5,8 @@
 
 | Term |  |
 |-----:|--|
-| **kubernetes**            | technology used by the Red Hat OpenShift Container Platform to deploy, maintain, and scale containerized applications across a set of containers or hosts. |
-| **container runtime**     | packages, instantiates, and runs the containerized applications
+| **kubernetes**            | Technology used by the Red Hat OpenShift Container Platform to deploy, maintain, and scale containerized applications across a set of containers or hosts. |
+| **container runtime**     | An implementation of Container Specification.  The implementation deals with packaging, instantiating, and running containerized applications.
 | **master**                |   |
 | **node**                  |   |
 | **haproxy**               |   |
@@ -22,9 +22,9 @@
 | **label**                 |   |
 | **image**                 |   |
 | **image-stream**          |   |
-| **image-registry**        | service responsible for hosting and distributing images |
-| **image-repository**      | collection of images |
-| **image-tag**             | alphanumeric identifier attached to images within a repository |
+| **image-registry**        | Service responsible for hosting and distributing images |
+| **image-repository**      | Collection of images |
+| **image-tag**             | Alphanumeric identifier attached to images within a repository |
 | **docker**                |   |
 | **source-to-image (S2I)** |   |
 | **CRI-O**                 | implementation of the Kubernetes CRI (Container Runtime Interface) to enable OCI compatible runtimes (ie: it's is a lightweight alternative to using Docker) |
