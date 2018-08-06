@@ -336,7 +336,7 @@ Next we will implement another solution using a Dockerfile.  Again, using a sour
 
 oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hello World V"   
      
-oc new-app ~https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
+oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
     
 oc logs -f bc/hello-app4
     
