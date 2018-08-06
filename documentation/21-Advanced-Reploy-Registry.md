@@ -1,4 +1,4 @@
-# 21 Advanced: Deploy Registry with Persistent Volume
+# 21 Advanced: Delete and Redeploy Registry with Persistent Volume
 
 
 *These steps merely delete and redeploy a registry with default settings*
