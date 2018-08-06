@@ -16,9 +16,7 @@ Select `Confirm Security Exception`
 
 Proceed to Sign-On as user `admin` with the password set during the **Users and Roles** unit.
 
-[[using-web-console]]
-Using Web Console
-~~~~~~~~~~~~~~~~~
+## Landing Page
 
 You will see the list of projects. Note the project you created in the last
 lab exercise is shown here.
