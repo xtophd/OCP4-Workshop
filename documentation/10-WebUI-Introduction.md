@@ -20,16 +20,18 @@ Proceed to Sign-On as user `admin` with the password set during the **Users and 
 
 Go To Front Landing Page
 
-Select **Create Project** Top Right
+Select **Create Project** *{Top Right}*
 Name: helloworld-6
 Display Name: Hello World VI
-Description: {{leave blank}}
+Description: *{leave blank}*
 
 Now Select **Hello World VI**
 
 ## Create Application
 
+Select **Overview** *{Top Left}*
 
+Image Name: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
 ## Expose the Service
 
