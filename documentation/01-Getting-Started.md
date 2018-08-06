@@ -59,6 +59,7 @@ bash 01-pre-install-script.sh
 Here is the tail end of a sample output following a successfull run of the pre-install script and ansible playbooks.
 
 <em>
+    
 ```
 PLAY RECAP **********
 master.example.com         : ok=16   changed=12   unreachable=0    failed=0
