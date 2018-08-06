@@ -1,0 +1,9 @@
+## Deploy a fresh OCP registry
+
+Likewise, delete and recreate a registry.
+
+    [root@master master]#  oc get pods
+    [root@master master]#  oc delete all -l docker-registry=default
+    [root@master master]#  oc get pods
+    [root@master master]#  oc adm registry
+    [root@master master]#  oc get pods
