@@ -1,4 +1,4 @@
-# Openshift WebUI Introduction
+# Openshift WebUI Basics
 
 ## Sign-on
 
