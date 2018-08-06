@@ -87,6 +87,7 @@ bash 02-ocp-install-script.sh
 Here is the tail end of a sample output following a successfull installation of the Openshift Container Platform.
 
 <em>
+    
 ```
 PLAY RECAP **********
 localhost                  : ok=13   changed=0    unreachable=0    failed=0   
@@ -126,6 +127,7 @@ bash 03-post-install-script.sh
 Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
 
 <em>
+    
 ```
 TASK [CMD cleaning yum content] **************************************************************
 [WARNING]: Consider using yum module rather than running yum
