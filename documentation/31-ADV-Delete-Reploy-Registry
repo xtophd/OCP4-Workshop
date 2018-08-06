@@ -1,4 +1,7 @@
-## Deploy a fresh OCP registry
+# Advanced: Deploy Registry with Persistent Volume
+
+
+*These steps merely delete and redeploy a registry with default settings*
 
 Likewise, delete and recreate a registry.
 
@@ -7,3 +10,5 @@ Likewise, delete and recreate a registry.
     [root@master master]#  oc get pods
     [root@master master]#  oc adm registry
     [root@master master]#  oc get pods
+
+Instructions for PV backed Registry coming soon
