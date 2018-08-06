@@ -1,7 +1,7 @@
 
-# 5 Openshift Infrastructure Overview
+# Glossary
 
-## 5.1 Glossary of Terms
+## Terms
 
 | Term |  |
 |-----:|--|
@@ -30,13 +30,11 @@
 | **CRI-O**                 | implementation of the Kubernetes CRI (Container Runtime Interface) to enable OCI compatible runtimes (ie: it's is a lightweight alternative to using Docker) |
 
 
-## 5.1 Component Relationships
+## Component Relationships
 
 |Cluster Components|                             |
 |------------------|-----------------------------|
 |**master(s)**     | API Server<br>etcd<br>Controller Manager Server<br>HAProxy - API load balancer |
 |                  |                             |                 
 |**nodes**         | HPProxy - Service Routers   |
-
-
 
