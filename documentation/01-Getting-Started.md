@@ -58,10 +58,14 @@ bash 01-pre-install-script.sh
 
 Here is the tail end of a sample output following a successfull run of the pre-install script and ansible playbooks.
 
-    PLAY RECAP **********
-    master.example.com         : ok=16   changed=12   unreachable=0    failed=0
-    node1.example.com          : ok=14   changed=11   unreachable=0    failed=0
-    node2.example.com          : ok=14   changed=11   unreachable=0    failed=0
+<em>
+```
+PLAY RECAP **********
+master.example.com         : ok=16   changed=12   unreachable=0    failed=0
+node1.example.com          : ok=14   changed=11   unreachable=0    failed=0
+node2.example.com          : ok=14   changed=11   unreachable=0    failed=0
+```
+</em>
 
 ## 2. Openshift Installation
 
@@ -81,6 +85,7 @@ bash 02-ocp-install-script.sh
 
 Here is the tail end of a sample output following a successfull installation of the Openshift Container Platform.
 
+<em>
 ```
 PLAY RECAP **********
 localhost                  : ok=13   changed=0    unreachable=0    failed=0   
@@ -101,6 +106,7 @@ Hosted Install             : Complete (0:03:09)
 Web Console Install        : Complete (0:00:43)
 Service Catalog Install    : Complete (0:03:12)
 ```
+</em>
 
 ## 3 Openshift Post Installation
 
@@ -118,6 +124,7 @@ bash 03-post-install-script.sh
 
 Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
 
+<em>
 ```
 TASK [CMD cleaning yum content] **************************************************************
 [WARNING]: Consider using yum module rather than running yum
@@ -132,6 +139,7 @@ node1.example.com          : ok=4    changed=1    unreachable=0    failed=0
 node2.example.com          : ok=4    changed=1    unreachable=0    failed=0   
 workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
 ```
+</em>
 
 ## Conclusion
 
