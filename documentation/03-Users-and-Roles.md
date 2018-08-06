@@ -26,6 +26,8 @@ grep -6 htpasswd_auth /etc/origin/master/master-config.yaml
 
 Your results should look like this.  Pay attention to `file: /etc/origin/master/htpasswd` and `kind: HTPasswdPasswordIdentityProvider`.
 
+<em>
+
 ```
 grantConfig:
   method: auto
@@ -41,6 +43,7 @@ identityProviders:
 masterCA: ca-bundle.crt
 masterPublicURL: https://master.example.com:8443
 ```
+</em>
 
 This confirms that the cluster is properly configured for the purposes of this workshop.
 
