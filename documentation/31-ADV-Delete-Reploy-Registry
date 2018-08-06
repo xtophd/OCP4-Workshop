@@ -3,7 +3,6 @@
 
 *These steps merely delete and redeploy a registry with default settings*
 
-Likewise, delete and recreate a registry.
 
     [root@master master]#  oc get pods
     [root@master master]#  oc delete all -l docker-registry=default
