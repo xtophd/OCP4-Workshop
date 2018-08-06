@@ -1,4 +1,4 @@
-# 20 ADVANCED - Delete and Redeploy Routers
+# 20 Advanced: Delete and Redeploy Routers
 
 
 ## Deploy a fresh OCP router
