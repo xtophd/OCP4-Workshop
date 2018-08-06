@@ -59,7 +59,7 @@ We are not quite ready to start building our own container images, so we will le
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 ```
 
-You just instructed openship to create a new application called **hello-app**:
+You just instructed openship to create a new application called **helloworld**:
   - Openshift checks the local registry for an existing copy of the image
   - It likely wasn't available, so Openshift fetched it from Red Hat and added it to the local registry
   - The container was deployed to a node and brought online.
