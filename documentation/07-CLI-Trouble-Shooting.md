@@ -14,8 +14,11 @@
 oc get events --sort-by='.lastTimestamp'
 ```
 
+## 7.6 Debug Crashed Pod
 
-
+```
+oc debug {{ POD NAME }}
+```
 
 ## Conclusion
 
