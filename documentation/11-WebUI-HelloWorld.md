@@ -37,14 +37,15 @@ Add to Project: WebUI Hello World
 
 Git Repository URL: https://github.com/xtophd/OPC-Workshop
 
+Select "Advanced Options"
+
 Context Directory: /src/helloworld
 
+Hostname: webui-hello.cloud.example.com
+
+Application Hostname: webui-hello.cloud.example.com
+
 Select **Create**
-
-
-
-Application Hostname: webui-hello
-
 
 
 You just instructed openship to create a new application called **webui-hello**:
