@@ -75,5 +75,5 @@ oc login -u admin
 
 = End of Unit
 
-link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index"[Return to Index]
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
 
