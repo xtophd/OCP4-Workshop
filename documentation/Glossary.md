@@ -8,7 +8,8 @@
 | **kubernetes**            | Technology used by the Red Hat OpenShift Container Platform to deploy, maintain, and scale containerized applications across a set of containers or hosts. |
 | **container runtime**     | An implementation of Container Specification.  The implementation deals with packaging, instantiating, and running containerized applications.
 | **master**                |   |
-| **node**                  |   |
+| **app node**               |   |
+| **infra node**               |   |
 | **haproxy**               |   |
 | **etd**                   |   |
 | **pod**                   |   |
