@@ -1,6 +1,6 @@
-# Openshift WebUI Basics
+= Openshift WebUI Basics
 
-## Sign-on
+== Sign-on
 
 Use Firefox to Sign-On as use `admin`
 
@@ -16,7 +16,7 @@ Select `Confirm Security Exception`
 
 Proceed to Sign-On as user `admin` with the password set during the **Users and Roles** unit.
 
-## Landing Page
+== Landing Page
 
 You will see the list of projects. Note the project you created in the last
 lab exercise is shown here.
@@ -100,6 +100,6 @@ a different lab exercise.
 
 Spend a few minutes and familiarize using Web Console.
 
-# End of Unit
+== End of Unit
 
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
