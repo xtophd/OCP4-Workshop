@@ -1,8 +1,8 @@
-**NOTE** *This exercise is still in active development and will likely not work until flagged as completed.*
+NOTE: *This exercise is still in active development and will likely not work until flagged as completed*
 
-# 11. Hello World(s) via WebUI
+= 11 Hello World(s) via WebUI
 
-## 11.1 Sign-on as admin
+== 11.1 Sign-on as admin
 
 Use Firefox to Sign-On as use admin
 
@@ -18,7 +18,7 @@ Select Confirm Security Exception
 
 Proceed to Sign-On as user admin with the password set during the Users and Roles unit.
 
-## 11.1 Create a Project
+== 11.1 Create a Project
 
 Go To Front Landing Page
 
@@ -27,7 +27,7 @@ Name: webui-hello
 Display Name: WebUI Hello World
 Description: *{leave blank}*
 
-## 11.2 Create an Application from a Container Image
+== 11.2 Create an Application from a Container Image
 
 Using the Search bar, search for **httpd** and select the *QUICKSTART HTTPD*
 
@@ -71,17 +71,17 @@ The IP address shown for the service is the internal non-routable network for th
 curl -Is http://{ip_address}}:8080
 ```
 
-## 11.3 Add a Route
+== 11.3 Add a Route
 
 Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
 
 
-## 11.4 Validate Application
+== 11.4 Validate Application
 
 
 
-## Conclusion
+== Conclusion
 
-# End of Unit
+= End of Unit
 
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
