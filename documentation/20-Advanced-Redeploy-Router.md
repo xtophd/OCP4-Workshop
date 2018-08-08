@@ -1,7 +1,7 @@
 # 20 Advanced: Delete and Redeploy Routers
 
 
-## Deploy a fresh OCP router
+== Deploy a fresh OCP router
 
 *This step was executed during the automated Post Installation phase.  However, I leave the manual steps here for clarity.*
 
@@ -17,7 +17,7 @@ Before running `oc delete` try running `oc get pods` to verify a router pod is r
     [root@master master]#  oc adm router --replicas=2 --service-account=router
     [root@master master]#  oc get pods
 
-## Deploy a fresh OCP registry
+== Deploy a fresh OCP registry
 
 Likewise, delete and recreate a registry.
 
@@ -26,3 +26,7 @@ Likewise, delete and recreate a registry.
     [root@master master]#  oc get pods
     [root@master master]#  oc adm registry
     [root@master master]#  oc get pods
+    
+== End of Unit
+
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
