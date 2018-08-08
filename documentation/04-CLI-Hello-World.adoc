@@ -1,6 +1,6 @@
 **NOTE** *This exercise is still in active development and will likely not work until flagged as completed.*
 
-# 4. Hello World
+= 4. Hello World
 
 A "Hello, World!" program is traditionally used to illustrate the basic syntax of a programming language.  The program merely outputs or displays "Hello, World!" to a user. Due to it's simplicity in nature, it is often the very first program people write when learning a new language or platform.
 
@@ -13,7 +13,7 @@ There are 4 fundamental steps to deploying an application in the Openshift Conta
 4. **oc expose** - expose the service
 
 
-## 4.1 Sign-on as admin
+== 4.1 Sign-on as admin
 
 In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section right now and complete that task before moving on.
 
@@ -35,7 +35,7 @@ oc login -u admin
 oc project default
 ```
 
-## 4.1 Create a Project
+== 4.1 Create a Project
 
 The **project** is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
@@ -49,7 +49,7 @@ oc get projects
 oc describe project helloworld
 ```   
    
-## 4.2 Create an Application from a Container Image
+== 4.2 Create an Application from a Container Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
@@ -84,7 +84,7 @@ The IP address shown for the service is the internal non-routable network for th
 curl -Is http://{ip_address}}:8080
 ```
 
-## 4.3 Add a Route
+== 4.3 Add a Route
 
 *Be sure that you succesfully deployed a new router with sufficient replicas to have one on each node.  Dnsmasq does not support round-robin on a wildcard entry.  I am also exploring using nodeSelector to have the router run on the master*
 
@@ -106,7 +106,7 @@ oc rollout status dc/hello-app
 oc get routes
 ```
 
-## 4.4 Validate Application
+== 4.4 Validate Application
 
 ```
 : [root@master ~]#
@@ -114,7 +114,7 @@ oc get routes
 curl http://helloworld.cloud.example.com
 ```
 
-## 4.5 Exploring the Container
+== 4.5 Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
@@ -178,9 +178,9 @@ When you are done exploring, exit the shell and return to command-line of master
 exit
 ```
 
-## 4.6 Making an authentic "Hello, World!"
+== 4.6 Making an authentic "Hello, World!"
 
-### Solution #1 - Change Security Attributes
+=== Solution #1 - Change Security Attributes
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
     
@@ -222,7 +222,7 @@ ls -la
 exit
 ```
 
-### Results of *id* and *ls -la*
+=== Results of *id* and *ls -la*
 
 <em>
 
@@ -249,7 +249,7 @@ curl http://helloworld.cloud.example.com
 
 **REMINDER** The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
 
-### Solution #2 - Use emptyDir
+=== Solution #2 - Use emptyDir
 
 ```
 : [root@master ~]#
@@ -273,7 +273,7 @@ If you happen to rsh into the container namespace, have a look at the permission
 
 Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What is important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
 
-### Solution #3 - Use NFS
+=== Solution #3 - Use NFS
 
 **NOTE** This section is not verified yet and does not work 100%
 
@@ -301,7 +301,7 @@ oc get pods
 curl http://helloworld3.cloud.example.com
 ```
 
-### Solution #4 - Use Source Control (git)
+=== Solution #4 - Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
 
@@ -327,7 +327,7 @@ oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
 curl http://helloworld4.cloud.example.com
 ```
 
-### Solution #5 - Use Dockerfile
+=== Solution #5 - Use Dockerfile
 
 Next we will implement another solution using a Dockerfile.  Again, using a source code repository we we initiate a container deployment but this time we only specify a source with a `Dockerfile`.
 
@@ -354,7 +354,7 @@ curl http://helloworld5.cloud.example.com
 ```
 
 
-## 4.7 Clean Up
+== 4.7 Clean Up
 
 One last view of everything we have done thus far.
 
@@ -386,19 +386,8 @@ oc delete pv helloworld-pv
 oc get pod --all-namespaces -o wide
 ```
 
-## 4.8 Basic Trouble Shooting
+== Conclusion
 
-### Check Project
+= End of Unit
 
-### Check Pods
-
-### Check Routes
-
-
-
-
-## Conclusion
-
-# End of Unit
-
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
