@@ -19,19 +19,6 @@ oc get pods
 oc adm router --replicas=2 --service-account=router
 oc get pods
 ----
-
-== Deploy a fresh OCP registry
-
-Likewise, delete and recreate a registry.
-
-.[root@master ~]#
-----
-oc get pods
-oc delete all -l docker-registry=default
-oc get pods
-oc adm registry
-oc get pods
-----
     
 == End of Unit
 
