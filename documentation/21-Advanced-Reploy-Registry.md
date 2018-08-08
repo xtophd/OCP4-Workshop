@@ -1,7 +1,7 @@
 # 21 Advanced: Delete and Redeploy Registry with Persistent Volume
 
 
-*These steps merely delete and redeploy a registry with default settings*
+*These steps merely delete and redeploy a registry with default settings*  Goal is to rewrite this unit to delete the default registry and redeploy with persistent storage on the backend.
 
 
     [root@master master]#  oc get pods
