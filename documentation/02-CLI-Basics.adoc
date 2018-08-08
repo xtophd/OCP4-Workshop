@@ -162,4 +162,5 @@ router-1-q92xl             1/1       Running   0          1h
 You now have a running cluster with an appropriate administrative user with proper credentials.
     
 = End of Unit
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
