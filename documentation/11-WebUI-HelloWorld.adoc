@@ -1,5 +1,3 @@
-NOTE: *This exercise is still in active development and will likely not work until flagged as completed*
-
 = 11 Hello World(s) via WebUI
 
 == 11.1 Sign-on as admin
