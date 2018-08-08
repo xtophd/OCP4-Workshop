@@ -1,6 +1,6 @@
-# Scaling Applications
+= Scaling Applications
 
-## Create an application
+== Create an application
 
 By utilizing the process used during "Hello World", repeast the steps to build and deploy a simple application.
 
@@ -37,6 +37,7 @@ Scale the number of replicas back down
     
     oc scale --replicas=1 dc/scaletest-app
 
-# End of Unit
+== End of Unit
 
-[Return to Index](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
+
