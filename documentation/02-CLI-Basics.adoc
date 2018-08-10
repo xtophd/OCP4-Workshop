@@ -42,7 +42,7 @@ What credentials is the current `oc` session using?
 oc whoami
 ----
 
-== 2.4 Check Cluster Status
+== 2.5 Check Cluster Status
 
 .[root@master ~]# 
 ----    
@@ -71,7 +71,7 @@ svc/router - 172.30.80.206 ports 80, 443, 1936
 View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
 ----
     
-== 2.5 High Level Cluster Check
+== 2.6 High Level Cluster Check
 
 .[root@master ~]# 
 ----
@@ -108,7 +108,7 @@ svc/router             ClusterIP   172.30.80.206   <none>        80/TCP,443/TCP,
 ----
 
 
-== 2.6 Check Projects
+== 2.7 Check Projects
 
 .[root@master ~]# 
 ----    
@@ -133,7 +133,7 @@ openshift-template-service-broker                  Active
 openshift-web-console                              Active
 ----
 
-== 2.7 Check Node Status
+== 2.8 Check Node Status
 
 .[root@master ~]# 
 ----    
@@ -149,7 +149,7 @@ node1.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
 node2.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
 ----
 
-== 2.8 Check Pod Status
+== 2.9 Check Pod Status
 
 .[root@master ~]# 
 ----    
@@ -163,13 +163,6 @@ NAME                       READY     STATUS    RESTARTS   AGE
 docker-registry-1-52lk5    1/1       Running   0          1h
 registry-console-1-8qlb2   1/1       Running   0          1h
 router-1-q92xl             1/1       Running   0          1h
-----
-
-== 2.9  Check the Logs
-
-.[root@master ~]# 
-----
-oc logs coming-soon
 ----
         
 == Conclusion
