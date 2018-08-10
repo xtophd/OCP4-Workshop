@@ -159,7 +159,7 @@ router-1-q92xl             1/1       Running   0          1h
         
 == Conclusion
 
-You now have a running cluster with an appropriate administrative user with proper credentials.
+At this point it should be clear that the primary commandline interface to Openshift is the `oc` utility.
     
 = End of Unit
 
