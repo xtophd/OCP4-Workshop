@@ -43,12 +43,56 @@ The *project* is openshift's ... yada yada ...  Users, roles, applications, serv
 .[root@master ~]#
 ----
 oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
-    
+----
+
+
+.[root@master ~]#
+----
 oc get projects
-    
+----
+
+.Your output should look like this
+----
+NAME                                DISPLAY NAME   STATUS
+default                                            Active
+helloworld                          Hello World    Active
+kube-public                                        Active
+kube-service-catalog                               Active
+kube-system                                        Active
+logging                                            Active
+management-infra                                   Active
+openshift                                          Active
+openshift-ansible-service-broker                   Active
+openshift-infra                                    Active
+openshift-node                                     Active
+openshift-template-service-broker                  Active
+openshift-web-console                              Activ
+----
+
+.[root@master ~]#
+----    
 oc describe project helloworld
 ----  
-   
+
+.Your output should look like this
+----
+Name:                   helloworld
+Created:                8 seconds ago
+Labels:                 <none>
+Annotations:            openshift.io/description=My First OCP App
+                        openshift.io/display-name=Hello World
+                        openshift.io/requester=admin
+                        openshift.io/sa.scc.mcs=s0:c11,c5
+                        openshift.io/sa.scc.supplemental-groups=1000120000/10000
+                        openshift.io/sa.scc.uid-range=1000120000/10000
+Display Name:           Hello World
+Description:            My First OCP App
+Status:                 Active
+Node Selector:          <none>
+Quota:                  <none>
+Resource limits:        <none>
+----
+
 == 4.2 Create an Application from a Container Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
