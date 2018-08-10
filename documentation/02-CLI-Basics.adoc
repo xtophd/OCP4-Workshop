@@ -24,12 +24,14 @@ Proceed to connect to host *master*.
 
 == 2.3 Establish OCP Admin session
 
+First order of business is to sign-on to the Openshift platform.  This is accomplished as follows.
+
 .[root@master ~]# 
 ----
     oc login -u system:admin
 ----
 
-Now that you have logged in to Openshift uing the *oc* command, you are ready to start interacting with the Openshift Container Platfrom
+Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
 
 == 2.4 Check Cluster Status
 
