@@ -1,10 +1,10 @@
 = 2. Command Line Basics
 
-The default and recommended method for interacting with the Openshift Container Platform with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP.
+The default and recommended method for interacting with the Openshift Container Platform is with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP, but for the most part all of your acitivities will be with `oc`.
 
 == 2.1 Become the root user
 
-Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* you can easily login to any host in your cluster.  With that said, ensure your session is user *root* on the host *workstation.example.com*.
+Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.  With that said, proceed to sign-on to the host *workstation* as user *student* and then use `sudo` to elevate your priviledges to *root*
 
 .[student@workstation ~]$
 ----    
@@ -13,7 +13,9 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 
 == 2.2 Connect to host master.example.com
 
-As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being promp
+As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not and established `root` user session.
+
+Proceed to connect to host *master*.
 
 .[root@workstation ~]#
 ----    
