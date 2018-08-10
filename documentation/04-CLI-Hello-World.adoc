@@ -231,9 +231,8 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 === Solution #2 - Use emptyDir
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
     
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
@@ -247,7 +246,7 @@ oc get pods
 oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
 curl http://helloworld2.cloud.example.com
-```    
+----
 
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.
 
@@ -261,9 +260,8 @@ The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
 
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
@@ -279,15 +277,14 @@ oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
 oc get pods
 
 curl http://helloworld3.cloud.example.com
-```
+----
 
 === Solution #4 - Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"   
      
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app4
@@ -305,15 +302,14 @@ oc rollout status dc/hello-app4
 oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
     
 curl http://helloworld4.cloud.example.com
-```
+----
 
 === Solution #5 - Use Dockerfile
 
 Next we will implement another solution using a Dockerfile.  Again, using a source code repository we we initiate a container deployment but this time we only specify a source with a `Dockerfile`.
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hello World V"   
      
 oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
@@ -331,24 +327,21 @@ oc rollout status dc/hello-app4
 oc expose service hello-app4 --hostname=helloworld5.cloud.example.com
     
 curl http://helloworld5.cloud.example.com
-```
-
+----
 
 == 4.7 Clean Up
 
 One last view of everything we have done thus far.
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc get pod --all-namespaces -o wide
-```
+----
 
 Now it is time to clean everything up.
 
-```
-: [root@master ~]#
-
+.[root@master ~]#
+----
 oc project default
     
 oc delete project helloworld
@@ -364,7 +357,7 @@ oc delete project helloworld5
 oc delete pv helloworld-pv
 
 oc get pod --all-namespaces -o wide
-```
+----
 
 == Conclusion
 
