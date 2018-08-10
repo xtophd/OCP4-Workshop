@@ -8,7 +8,7 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 
 .[student@workstation ~]$
 ----    
-    sudo -i
+sudo -i
 ----
 
 == 2.2 Connect to host master.example.com
@@ -19,7 +19,7 @@ Proceed to connect to host *master*.
 
 .[root@workstation ~]#
 ----    
-    ssh master
+ssh master
 ----
 
 == 2.3 Establish OCP Admin session
@@ -28,17 +28,26 @@ First order of business is to sign-on to the Openshift platform.  This is accomp
 
 .[root@master ~]# 
 ----
-    oc login -u system:admin
+oc login -u system:admin
 ----
 
 Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
 
+== 2.4 Credentials check
+
+What credentials is the current `oc` session using?
+
+.[root@master ~]# 
+----
+oc whoami
+----
+
 == 2.4 Check Cluster Status
 
 .[root@master ~]# 
-    #[root@master ]# 
-    
-    oc status
+----    
+oc status
+----
 
 Your output should look like this
 
@@ -144,7 +153,7 @@ node2.example.com    Ready     compute   1h        v1.9.1+a0ce1bc657
 
 .[root@master ~]# 
 ----    
-    oc get pods
+oc get pods
 ----
 
 Your output should look like this
@@ -159,7 +168,9 @@ router-1-q92xl             1/1       Running   0          1h
 == 2.9  Check the Logs
 
 .[root@master ~]# 
-
+----
+oc logs coming-soon
+----
         
 == Conclusion
 
