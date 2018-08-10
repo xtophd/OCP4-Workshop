@@ -122,7 +122,7 @@ The IP address shown for the service is the internal non-routable network for th
 
 .[root@master ~]#
 ----
-curl -Is http://{ip_address}}:8080
+curl http://{ip_address}}:8080
 ----
 
 == 4.3 Add a Route
