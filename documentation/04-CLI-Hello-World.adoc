@@ -166,18 +166,23 @@ oc rsh {{ POD NAME }}
 Now that you have connected to the active container, have a look around
 
 
-.[sh-4.2 ]#
+.sh-4.2#
 ----
 id
-    
+----
+
+.Your output should look like this
+----
+uid=1000120000 gid=0(root) groups=0(root),1000120000
+----
+
+.sh-4.2#
+----
 ps -ef
 ----
     
 .Your output should look like this
 ----
-uid=1000120000 gid=0(root) groups=0(root),1000120000
-
-
 UID         PID   PPID  C STIME TTY          TIME CMD
 default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
 default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
