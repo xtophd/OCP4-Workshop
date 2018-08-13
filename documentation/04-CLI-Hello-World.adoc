@@ -330,8 +330,24 @@ oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
     
 oc expose service hello-app2 --hostname=helloworld2.cloud.example.com
     
+oc rollout status dc/hello-app2
+----
+
+NOTE: You will need to wait until the pod is finished being deployed until you can inject a custom HTML file into the container image.
+
+.Your output should look like this
+----
+Waiting for rollout to finish: 0 of 1 updated replicas are available...                      
+Waiting for latest deployment config spec to be observed by the controller loop...           
+replication controller "hello-app2-2" successfully rolled out 
+----
+
+Now you can proceed with customizing the deployed (and live) pod.
+
+.[root@master ~]#
+----
 oc get pods
-    
+
 oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
     
 curl http://helloworld2.cloud.example.com
@@ -343,7 +359,7 @@ Although it is not considered a best practice to inject files into a container d
 
 === Solution #3 - Use NFS
 
-**NOTE** This section is not verified yet and does not work 100%
+NOTE: This section is not verified yet and does not work 100%
 
 The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our last solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
 
@@ -370,7 +386,7 @@ curl http://helloworld3.cloud.example.com
 
 === Solution #4 - Use Source Control (git)
 
-Next we will implement the ideal solution.  Using a source code repository we we initiate a container deployment which will pull the source and layer it into the deployed container (ie: source to images / S2I)
+Next we will implement the ideal solution.  Using a source code repository we will initiate a container deployment which will pull the source code and layer it into a base container (ie: source to images / S2I) and deploy it as a single unified image.
 
 .[root@master ~]#
 ----
