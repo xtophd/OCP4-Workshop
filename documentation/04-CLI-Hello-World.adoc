@@ -217,7 +217,10 @@ drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
 drwxr-xr-x.  2 default root   6 May  9 13:18 html
 ----
 
-When you are done exploring, exit the shell and return to command-line of master.example.com
+
+The primary thing we are trying to point out here is that the UID the process is running with (ie: **1000120000**) does not have permissions to write to any part of the container filesystem except traditionally open directories like **/tmp** or **/var/tmp**.  Next, you will do a series of exercises detailing how to make adjustments to the project and deploy a real helloworld application.
+
+When you are done exploring the container namespace, exit the shell and return to command-line of master.example.com
 
 
 .sh-4.2$
