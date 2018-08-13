@@ -5,10 +5,11 @@ A "Hello, World!" program is traditionally used to illustrate the basic syntax o
 This exercise will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.  In fact, we are going to do it several different ways to illustrate some best and worst practices of container usage.
 
 There are 4 fundamental steps to deploying an application in the Openshift Container Platform:
-1. **oc login** - sign-on with proper credentials
-2. **oc new project** - create a project
-3. **oc new-app** - create an application
-4. **oc expose** - expose the service
+
+  . **oc login** - sign-on with proper credentials
+  . **oc new project** - create a project
+  . **oc new-app** - create an application
+  . **oc expose** - expose the service
 
 
 == 4.1 Sign-on as admin
