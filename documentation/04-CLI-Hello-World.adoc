@@ -232,7 +232,7 @@ exit
 
 === Solution #1 - Change Security Attributes
 
-For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a running pods.  We begin by connecting to the console of our current running application and exploring inside the active container.
+For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *helloworld* project.
     
 .[root@master ~]#
 ----
@@ -250,6 +250,23 @@ Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
 ----
 oc rollout latest dc/hello-app
 
+oc get pods
+----
+
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-####* Terminating.
+Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
+versions of the pod.
+
+----
+NAME                READY     STATUS        RESTARTS   AGE                                   
+hello-app-1-wbq42   0/1       Terminating   0          2h                                    
+hello-app-2-lhvgp   1/1       Running       0          10s
+----
+
+
+
+.[root@master ~]#
+---
 oc get pods
     
 oc rsh {{ POD NAME }}
