@@ -359,9 +359,7 @@ Although it is not considered a best practice to inject files into a container d
 
 === Solution #3 - Use NFS
 
-NOTE: This section is not verified yet and does not work 100%
-
-The purpose is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our last solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
+The purpose of this unit is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our next solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
