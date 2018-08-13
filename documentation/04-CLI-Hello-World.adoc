@@ -425,9 +425,9 @@ oc get pods
     
 oc get events
     
-oc rollout status dc/hello-app4
+oc rollout status dc/hello-app5
     
-oc expose service hello-app4 --hostname=helloworld5.cloud.example.com
+oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
     
 curl http://helloworld5.cloud.example.com
 ----
