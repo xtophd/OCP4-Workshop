@@ -208,6 +208,15 @@ cd /var/www/
 ls -la
 ----
 
+.Your output should look like this
+----
+total 0
+drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
+drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
+drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
+drwxr-xr-x.  2 default root   6 May  9 13:18 html
+----
+
 When you are done exploring, exit the shell and return to command-line of master.example.com
 
 
