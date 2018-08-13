@@ -257,6 +257,7 @@ Depending on how quickly you run *oc get pods* after rolling out the new deploym
 Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
 versions of the pod.
 
+.Your output should look like this
 ----
 NAME                READY     STATUS        RESTARTS   AGE                                   
 hello-app-1-wbq42   0/1       Terminating   0          2h                                    
@@ -266,7 +267,7 @@ hello-app-2-lhvgp   1/1       Running       0          10s
 
 
 .[root@master ~]#
----
+----
 oc get pods
     
 oc rsh {{ POD NAME }}
