@@ -21,8 +21,8 @@ Proceed to Sign-On as user admin with the password set during the Users and Role
 Go To Front Landing Page
 
 Select **Create Project** *{Top Right}*
-Name: webui-hello
-Display Name: WebUI Hello World
+Name: webui-hello1
+Display Name: WebUI Hello 1
 Description: *{leave blank}*
 
 == 11.2 Create an Application from a Container Image
@@ -33,23 +33,40 @@ Select **Next>**
 
 Add to Project: WebUI Hello World
 
-Git Repository URL: https://github.com/xtophd/OPC-Workshop
+Use the defaults for all values unless specified below:
 
-Select "Advanced Options"
+Name: webui-hello1
+
+Git Repository URL: https://github.com/xtophd/OCP-Workshop
 
 Context Directory: /src/helloworld
 
-Hostname: webui-hello.cloud.example.com
-
-Application Hostname: webui-hello.cloud.example.com
+Application Hostname: webui-hello1.cloud.example.com
 
 Select **Create**
-
 
 You just instructed openship to create a new application called **webui-hello**:
   - The container was deployed to a node and brought online.
 
-Now let's have a closer inspection.
+Now let's have a closer inspection.  
+
+Click "Continue to Project Overview"
+
+=== Inspect the Deployments
+
+=== Inspect the Pods
+
+=== Inspect the Services
+
+=== Inpects the Routes
+
+=== Validate the Application
+
+Create and use a new Tab in Firefox to view your new application.  The link should be http://webui-hello1.cloud.example.com
+
+
+
+
 
 ```
 : [root@master ~]#
