@@ -440,7 +440,7 @@ oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
 curl http://helloworld5.cloud.example.com
 ----
 
-== 4.7 Clean Up
+== Clean Up
 
 One last view of everything we have done thus far.
 
