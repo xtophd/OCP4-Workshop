@@ -236,7 +236,7 @@ When you are done exploring the container namespace, exit the shell and return t
 exit
 ----
 
-== 4.2 Making an authentic "Hello, World!"
+== Making an authentic "Hello, World!"
 
 === Solution #1 - Change Security Attributes
 
