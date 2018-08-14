@@ -40,7 +40,7 @@ Ensure that you are using the *default* project
 oc project default
 ----
 
-=== 4.1 Create a Project
+=== Create a Project
 
 The *project* is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
