@@ -11,8 +11,9 @@ There are 4 fundamental steps to deploying an application in the Openshift Conta
   . **oc new-app** - create an application
   . **oc expose** - expose the service
 
+== 4.1 My First Application
 
-== 4.1 Sign-on as admin
+=== Sign-on as admin
 
 In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section right now and complete that task before moving on.
 
@@ -37,7 +38,7 @@ Ensure that you are using the *default* project
 oc project default
 ----
 
-== 4.1 Create a Project
+=== 4.1 Create a Project
 
 The *project* is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
 
@@ -94,7 +95,7 @@ Quota:                  <none>
 Resource limits:        <none>
 ----
 
-== 4.2 Create an Application from a Container Image
+=== Create an Application from a Container Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
@@ -127,7 +128,7 @@ The IP address shown for the service is the internal non-routable network for th
 curl http://{ip_address}}:8080
 ----
 
-== 4.3 Add a Route
+=== Add a Route
 
 *Be sure that you succesfully deployed a new router with sufficient replicas to have one on each node.  Dnsmasq does not support round-robin on a wildcard entry.  I am also exploring using nodeSelector to have the router run on the master*
 
@@ -147,14 +148,14 @@ oc rollout status dc/hello-app
 oc get routes
 ----
 
-== 4.4 Validate Application
+=== Validate Application
 
 .[root@master ~]#
 ----
 curl http://helloworld.cloud.example.com
 ----
 
-== 4.5 Exploring the Container
+=== Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
@@ -229,7 +230,7 @@ When you are done exploring the container namespace, exit the shell and return t
 exit
 ----
 
-== 4.6 Making an authentic "Hello, World!"
+== 4.2 Making an authentic "Hello, World!"
 
 === Solution #1 - Change Security Attributes
 
