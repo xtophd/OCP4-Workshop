@@ -18,6 +18,10 @@ openshift_disable_check=disk_availability,docker_storage,memory_availability
 oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
 oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+## Having problems with openshift_ansible_service_broker stealing storage (PV).  Disable for now
+## https://github.com/openshift/openshift-ansible/issues/7305#issuecomment-395045769
+ansible_service_broker_install=false
+ansible_service_broker_remove=true
 
 [workstation]
 workstation.example.com
