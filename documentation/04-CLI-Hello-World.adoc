@@ -370,6 +370,15 @@ oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
 curl http://helloworld2.cloud.example.com
 ----
 
+.Your output should look like this
+----
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.
 
 Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche applications.  What is important to note is the any filesystems mounted with emptyDir and non-persistant and will be destoyed when the container is stoppped.
@@ -384,12 +393,29 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 ----
 oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
 
-oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
     
 oc create -f /var/tmp/helloworld-pv.yml
-    
+----
+
+.Your output should look like this
+----
+persistentvolume "helloworld-pv" created
+----
+
+.[root@master ~]#
+----
 oc create -f /var/tmp/helloworld-pv-claim.yml
-    
+----
+
+.Your output should look like this
+----
+persistentvolumeclaim "helloworld-claim" created
+----
+
+.[root@master ~]#
+----
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
+
 oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
 
 oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
@@ -397,6 +423,15 @@ oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
 oc get pods
 
 curl http://helloworld3.cloud.example.com
+----
+
+.Your output should look like this
+----
+<html>
+<body>
+Hello, World!
+</body>
+</html>
 ----
 
 === Solution #4 - Use Source Control (git)
