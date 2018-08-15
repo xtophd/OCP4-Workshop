@@ -9,7 +9,7 @@
 // Push titles down one level
 :leveloffset: 1
 
-include::01_Getting_Started.adoc[]
+include::01-Getting-Started.adoc[]
 
 // Return to normal title levels
 :leveloffset: 0
