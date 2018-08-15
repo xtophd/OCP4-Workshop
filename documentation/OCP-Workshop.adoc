@@ -1,5 +1,6 @@
 :doctype: book
 :ascii-ids:
+:allow-uri-read:
 :gitrepo: https://github.com/xtophd/OCP-Wrokshop
 :code_dir: code
 :image_dir: images
