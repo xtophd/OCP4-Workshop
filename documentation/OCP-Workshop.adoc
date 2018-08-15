@@ -1,23 +1,11 @@
-:doctype: book
-:ascii-ids:
-:allow-uri-read:
 :gitrepo: https://github.com/xtophd/OCP-Workshop
-:code_dir: code
-:image_dir: images
 :units_dir: units
 
 
 = Openshift Container Platform: Workshop
 
-// Push titles down one level
-:leveloffset: 1
+include::{units_dir}/05-CLI-Scaling-Applications.adoc[leveloffset=1]
 
-
-include::{units_dir}/05-CLI-Scaling-Applications.adoc[]
-
-
-// Return to normal title levels
-:leveloffset: 0
 
 ////
 Always end files with a blank line to avoid include problems.
