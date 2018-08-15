@@ -1,5 +1,4 @@
 :sectnums:
-:section-number: 4
 :sectnumlevels: 3
 
 = OCP-Workshop
