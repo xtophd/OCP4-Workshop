@@ -324,6 +324,15 @@ oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
 curl http://helloworld.cloud.example.com
 ----
 
+.Your output should look like this
+----
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
 
 === Solution #2 - Use emptyDir
