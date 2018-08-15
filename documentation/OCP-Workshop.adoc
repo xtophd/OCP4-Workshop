@@ -1,7 +1,7 @@
 :doctype: book
 :ascii-ids:
 :allow-uri-read:
-:gitrepo: https://github.com/xtophd/OCP-Wrokshop
+:gitrepo: https://github.com/xtophd/OCP-Workshop
 :code_dir: code
 :image_dir: images
 
