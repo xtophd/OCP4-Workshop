@@ -13,7 +13,7 @@
 :leveloffset: 1
 
 
-include::{units}/05-CLI-Scaling-Applications.adoc
+include::{units_dir}/05-CLI-Scaling-Applications.adoc
 
 
 // Return to normal title levels
