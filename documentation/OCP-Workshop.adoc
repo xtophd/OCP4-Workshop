@@ -3,11 +3,18 @@
 
 :safe-mode-name: unsafe
 
+toc::[]
+
 = Openshift Container Platform: Workshop
 
 include::{units_dir}/05-CLI-Scaling-Applications.adoc[leveloffset=1]
 
 = The End
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+docdir:: {docdir}
 
 ////
 Always end files with a blank line to avoid include problems.
