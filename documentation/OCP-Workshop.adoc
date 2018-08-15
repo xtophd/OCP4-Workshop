@@ -10,7 +10,7 @@
 // Push titles down one level
 :leveloffset: 1
 
-include::01-Getting-Started.adoc[]
+include::https://github.com/xtophd/OCP-Workshop/documentation/01-Getting-Started.adoc[]
 
 // Return to normal title levels
 :leveloffset: 0
