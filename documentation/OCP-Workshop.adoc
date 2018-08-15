@@ -4,13 +4,17 @@
 :gitrepo: https://github.com/xtophd/OCP-Workshop
 :code_dir: code
 :image_dir: images
+:units_dir: units
+
 
 = Openshift Container Platform: Workshop
 
 // Push titles down one level
 :leveloffset: 1
 
-include::https://github.com/xtophd/OCP-Workshop/blob/master/documentation/01-Getting-Started.adoc
+
+include::./{units}/05-CLI-Scaling-Applications.adoc
+
 
 // Return to normal title levels
 :leveloffset: 0
