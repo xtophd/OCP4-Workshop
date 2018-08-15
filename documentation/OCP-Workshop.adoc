@@ -2,7 +2,7 @@
 :gitrepo: https://github.com/xtophd/OCP-Workshop
 :units_dir: units
 
-:unsafe:
+:config-safe-mode: unsafe
 
 toc::[]
 
