@@ -391,7 +391,6 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 .[root@master ~]#
 ----
 oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
-
     
 oc create -f /var/tmp/helloworld-pv.yml
 ----
@@ -403,13 +402,39 @@ persistentvolume "helloworld-pv" created
 
 .[root@master ~]#
 ----
+oc get pv
+----
+
+.Your output should look like this
+----
+NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
+helloworld-pv   5Gi        RWO            Recycle          Available                                      7s
+
+Now create the persistent volume claim and follow-up by checking the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.
+
+The pvc will likewise show STATUS *Bound* to the VOLUME *helloworld-pv*
+
+.[root@master ~]#
+----
 oc create -f /var/tmp/helloworld-pv-claim.yml
+
+oc get pv
+
+oc get pvc
 ----
 
 .Your output should look like this
 ----
 persistentvolumeclaim "helloworld-claim" created
+
+NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
+helloworld-pv   5Gi        RWO            Recycle          Bound     helloworld3/helloworld-claim
+
+NAME               STATUS    VOLUME          CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+helloworld-claim   Bound     helloworld-pv   5Gi        RWO                           4s
 ----
+
+Now that the storage prep work is complete, we can proceed to create the pod, assign the storage, and finally expose the route.
 
 .[root@master ~]#
 ----
