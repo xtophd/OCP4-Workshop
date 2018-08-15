@@ -1,0 +1,19 @@
+:doctype: book
+:ascii-ids:
+:gitrepo: https://github.com/xtophd/OCP-Wrokshop
+:code_dir: code
+:image_dir: images
+
+= Openshift Container Platform: Workshop
+
+// Push titles down one level
+:leveloffset: 1
+
+include::01_Getting_Started.adoc[]
+
+// Return to normal title levels
+:leveloffset: 0
+
+////
+Always end files with a blank line to avoid include problems.
+////
