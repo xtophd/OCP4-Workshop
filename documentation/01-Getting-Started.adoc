@@ -3,6 +3,7 @@
 
 = Getting Started
 
+[discrete]
 == Additional Reference Materials
 
 NOTE: You are not required to reference outside documentation for these exercises.  This is informational only.
