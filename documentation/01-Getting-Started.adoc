@@ -116,7 +116,7 @@ Service Catalog Install    : Complete (0:03:12)
 
 === Run the post install script
 
-**NOTE** Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
+NOTE: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
 
 .[root@workstation OCP-Workshop]#
 ----
