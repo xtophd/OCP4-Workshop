@@ -4,7 +4,7 @@
 :gitrepo: https://github.com/xtophd/OCP-Workshop
 :code_dir: code
 :image_dir: images
-:units_dir: units
+:units_dir: ./units
 
 
 = Openshift Container Platform: Workshop
