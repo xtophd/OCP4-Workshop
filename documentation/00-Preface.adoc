@@ -1,5 +1,14 @@
-## Coming soon
+:sectnums:
+:sectnumlevels: 3
 
+[preface]
+= Preface
+
+This guide is intended to support a series of workshop exercises for individuals getting familiar with Red Hat's Openshift  Container Platform.
+
+This is not an official Red Hat sponsered effort although I am currently employeed by Red Hat.  Rather this is a tool I use to teach myself and those I interact with professionally about new and emerging technologies.
+
+In the spirit of Opensource, I am attempting to make my work publicly accessible for reuse by others.  But be advised that this is my first attempt at using GitHub and ascii-doc. So please be patient as I navigate my way through managing a day job while building out this project (workshop).  At some point I will stop editing in the master branch :-0
 
 = Conventions Used
 
