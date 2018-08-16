@@ -58,7 +58,7 @@ oc get projects
 ----
 
 .Your output should look like this
-[source,shell,small,indent=4]
+[small]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
