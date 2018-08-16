@@ -13,6 +13,7 @@ include::{units_dir}/05-CLI-Scaling-Applications.adoc[leveloffset=1]
 = The End
 
 .Built-in
+env-github:: {env-github}
 asciidoctor-version:: {asciidoctor-version}
 safe-mode-name:: {safe-mode-name}
 docdir:: {docdir}
