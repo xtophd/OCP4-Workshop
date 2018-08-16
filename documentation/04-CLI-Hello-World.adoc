@@ -444,7 +444,7 @@ helloworld-claim   Bound     helloworld-pv   5Gi        RWO                     
 Now that the storage prep-work is complete, we can proceed: 
 
   * create the pod, 
-  * assign the storage, and 
+  * assign the storage 
   * expose the route.
 
 .[root@master ~]#
