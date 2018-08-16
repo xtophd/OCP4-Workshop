@@ -20,11 +20,11 @@ include::{units_dir}/01-Getting-Started.adoc[]
 
 == Users & Roles
 
-include::{units_dir}/00-Users-and-Roles.adoc[]
+include::{units_dir}/03-Users-and-Roles.adoc[]
 
 == CLI Hello World
 
-include::{units_dir}/00-CLI-Hello-World.adoc[]
+include::{units_dir}/04-CLI-Hello-World.adoc[]
 
 [discrete]
 = The End
