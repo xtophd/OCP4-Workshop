@@ -5,7 +5,7 @@
 
 The default and recommended method for interacting with the Openshift Container Platform is with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP, but for the most part all of your acitivities will be with `oc`.
 
-== Login to OCP as **admin**
+== Login to OCP Cluster
 
 === Become the user *root* user on *workstation*
 
