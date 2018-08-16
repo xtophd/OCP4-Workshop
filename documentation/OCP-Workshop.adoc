@@ -1,12 +1,8 @@
 :gitrepo: https://github.com/xtophd/OCP-Workshop
 :units_dir: units
 :doctype: book
-:toc: left
-:toclevels: 2
 :sectnums:
 :sectnumlevels: 3
-
-toc::[]
 
 = Openshift Container Platform: Workshop
 
