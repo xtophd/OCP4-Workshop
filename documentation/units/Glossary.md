@@ -19,6 +19,8 @@
 | **pvc**                   |   |
 | **role**                  |   |
 | **project**               |   |
+| **design config (dc)**    |   |
+| **build config (bc)**     |   |
 | **attribute**             |   |
 | **label**                 |   |
 | **image**                 |   |
