@@ -8,13 +8,14 @@ toc::[]
 
 = Openshift Container Platform: Workshop
 
-:leveloffset: +1
+== Preface
 
 include::{units_dir}/00-Preface.adoc
 
+== CLI Scaling Applications
+
 include::{units_dir}/05-CLI-Scaling-Applications.adoc
 
-:leveloffset: 0
 
 = The End
 
