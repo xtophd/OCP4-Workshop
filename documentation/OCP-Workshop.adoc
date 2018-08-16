@@ -20,7 +20,7 @@ include::{units_dir}/01-Getting-Started.adoc[]
 
 == Users & Roles
 
-include::{units_dir}/03-Users-and-Roles.adoc[]
+include::{units_dir}/03-CLI-Users-and-Roles.adoc[]
 
 == CLI Hello World
 
