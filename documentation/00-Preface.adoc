@@ -31,7 +31,7 @@ oc get projects
 
 == Output
 
-Sample output will be titled with "Your output should look like this" and also be indented to help with visual.  Sometimes there will also be footnotes or callouts.
+Sample output will be titled with "Your output should look like this" and also be indented to help with visual identification.  Sometimes there will also be footnotes and/or callouts.
 
 .Your output should look like this
 [source,indent=4]
