@@ -574,7 +574,7 @@ oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hell
      
 oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
     
-oc logs -f bc/hello-app4
+oc logs -f bc/hello-app5
     
 oc get builds
     
