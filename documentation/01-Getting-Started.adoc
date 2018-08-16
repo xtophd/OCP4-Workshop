@@ -63,6 +63,8 @@ NOTE: Please verify that PLAY RECAP reports 0 errors for all hosts.  If you enco
 
 Here is the tail end of a sample output following a successfull run of the pre-install script and ansible playbooks.
 
+.Your output should look like this
+[source,indent=4]
 ----
 PLAY RECAP **********
 master.example.com         : ok=16   changed=12   unreachable=0    failed=0 // <1>
@@ -89,6 +91,8 @@ bash 02-ocp-install-script.sh
 
 Here is the tail end of a sample output following a successfull installation of the Openshift Container Platform.
 
+.Your output should look like this
+[source,indent=4]
 ----
 PLAY RECAP **********
 localhost                  : ok=13   changed=0    unreachable=0    failed=0  // <1>
@@ -127,6 +131,8 @@ bash 03-post-install-script.sh
 
 Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
 
+.Your output should look like this
+[source,indent=4]
 ----
 TASK [CMD cleaning yum content] **************************************************************
 [WARNING]: Consider using yum module rather than running yum
