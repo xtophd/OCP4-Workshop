@@ -409,6 +409,7 @@ oc get pv
 ----
 NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
 helloworld-pv   5Gi        RWO            Recycle          Available                                      7s
+----
 
 Now create the persistent volume claim and follow-up by checking the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.
 
