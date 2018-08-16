@@ -1,6 +1,9 @@
-= 3 Users & Roles
+:sectnums:
+:sectnumlevels: 3
 
-== 3.1 Inspect Configuration
+= Users & Roles
+
+== Inspect Configuration
 
 At this time, we have not configured any additional user accounts or roles.  So our next activity will be to do just that.
 
@@ -44,7 +47,7 @@ masterPublicURL: https://master.example.com:8443
 
 This confirms that the cluster is properly configured for the purposes of this workshop.
 
-== 3.2 Configure User *admin*
+== Configure User *admin*
 
 === Add User
 
