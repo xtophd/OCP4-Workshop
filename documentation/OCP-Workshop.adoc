@@ -1,8 +1,6 @@
-:safe: UNSAFE
 :gitrepo: https://github.com/xtophd/OCP-Workshop
 :units_dir: units
-
-:config-safe-mode: unsafe
+:doctype: book
 
 toc::[]
 
@@ -10,11 +8,11 @@ toc::[]
 
 == Preface
 
-include::{units_dir}/00-Preface.adoc
+include::{units_dir}/00-Preface.adoc[]
 
 == CLI Scaling Applications
 
-include::{units_dir}/05-CLI-Scaling-Applications.adoc
+include::{units_dir}/05-CLI-Scaling-Applications.adoc[]
 
 
 = The End
