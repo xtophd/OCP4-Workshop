@@ -521,7 +521,36 @@ oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hel
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app4
     
 oc logs -f bc/hello-app4
-    
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Cloning "https://github.com/xtophd/OCP-Workshop" ...
+        Commit: eeec609783b7b233120e34f0410e2acdbc0029f6 (Update CLI-Hello-World.adoc)
+        Author: Christoph Doerbeck <38790538+xtophd@users.noreply.github.com>
+        Date:   Thu Aug 16 12:37:23 2018 -0500
+---> Enabling s2i support in httpd24 image
+AllowOverride All
+---> Installing application source
+=> sourcing 20-copy-config.sh ...
+=> sourcing 40-ssl-certs.sh ...
+Pushing image docker-registry.default.svc:5000/helloworld4/hello-app4:latest ...
+Pushed 1/5 layers, 22% complete
+Pushed 2/5 layers, 42% complete
+Pushed 3/5 layers, 65% complete
+Pushed 4/5 layers, 88% complete
+Pushed 4/5 layers, 100% complete
+Pushed 5/5 layers, 100% complete
+Push successful
+----
+
+
+Now we can run a few more commands to increase our familiarity with deployment process
+
+
+.[root@master ~]#
+----
 oc get builds
     
 oc get pods
