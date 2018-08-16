@@ -1,7 +1,6 @@
 :sectnums:
 :sectnumlevels: 3
 :source-indent: 4
-:source-language: shell
 
 = CLI Hello World
 
