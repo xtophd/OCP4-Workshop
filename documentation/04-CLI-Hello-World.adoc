@@ -417,7 +417,16 @@ The pvc will likewise show STATUS *Bound* to the VOLUME *helloworld-pv*
 .[root@master ~]#
 ----
 oc create -f /var/tmp/helloworld-pv-claim.yml
+----
 
+.Your output should look like this
+----
+persistentvolumeclaim "helloworld-claim" created
+----
+
+
+.[root@master ~]#
+----
 oc get pv
 
 oc get pvc
@@ -425,8 +434,6 @@ oc get pvc
 
 .Your output should look like this
 ----
-persistentvolumeclaim "helloworld-claim" created
-
 NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
 helloworld-pv   5Gi        RWO            Recycle          Bound     helloworld3/helloworld-claim
 
