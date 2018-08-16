@@ -411,9 +411,7 @@ NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM    
 helloworld-pv   5Gi        RWO            Recycle          Available                                      7s
 ----
 
-Now create the persistent volume claim and follow-up by checking the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.
-
-The pvc will likewise show STATUS *Bound* to the VOLUME *helloworld-pv*
+Now create the persistent volume claim. 
 
 .[root@master ~]#
 ----
@@ -425,6 +423,7 @@ oc create -f /var/tmp/helloworld-pv-claim.yml
 persistentvolumeclaim "helloworld-claim" created
 ----
 
+Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *helloworld-pv*
 
 .[root@master ~]#
 ----
@@ -442,7 +441,11 @@ NAME               STATUS    VOLUME          CAPACITY   ACCESS MODES   STORAGECL
 helloworld-claim   Bound     helloworld-pv   5Gi        RWO                           4s
 ----
 
-Now that the storage prep work is complete, we can proceed to create the pod, assign the storage, and finally expose the route.
+Now that the storage prep-work is complete, we can proceed: 
+
+  * create the pod, 
+  * assign the storage, and 
+  * expose the route.
 
 .[root@master ~]#
 ----
