@@ -159,7 +159,7 @@ The installation of Red Hat Openshift Container Platform is now complete and you
 4.  Also be sure to pay close attention to which host you are executing tasks from
 
 == End of Unit
-link:../OCP-Workshop.adoc[Return to Index]
+link:../OCP-Workshop.adoc[Return to TOC]
 
 ////
 Always end files with a blank line to avoid include problems.
