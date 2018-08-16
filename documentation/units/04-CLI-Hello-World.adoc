@@ -568,7 +568,7 @@ oc get pods --all-namespaces -o wide
 
 [discrete]
 == End of Unit
-link:../OCP-Workshop.adoc[Return to Index]
+link:../OCP-Workshop.adoc[Return to TOC]
 
 ////
 Always end files with a blank line to avoid include problems.
