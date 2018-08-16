@@ -1,0 +1,61 @@
+:sectnums:
+:sectnumlevels: 3
+
+= First-Time-Login
+
+The default and recommended method for interacting with the Openshift Container Platform is with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP, but for the most part all of your acitivities will be with `oc`.
+
+== Login to OCP Cluster
+
+=== Become the user *root* user on *workstation*
+
+Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.  With that said, proceed to sign-on to the host *workstation* as user *student* and then use `sudo` to elevate your priviledges to *root*
+
+.[student@workstation ~]$
+----    
+sudo -i
+----
+
+=== Connect to host master.example.com
+
+As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not and established `root` user session.
+
+Proceed to connect to host *master*.
+
+.[root@workstation ~]#
+----    
+ssh master
+----
+
+=== Login as *admin* to OCP Cluster
+
+First order of business is to sign-on to the Openshift platform.  This is accomplished as follows.
+
+.[root@master ~]# 
+----
+oc login -u system:admin
+----
+
+You can verify what credentials the current session using as with `oc whoami`
+
+.[root@master ~]# 
+----
+oc whoami
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+system:admin                                                                                 
+----
+
+Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
+        
+[discrete]
+== End of Unit
+link:../OCP-Workshop.adoc[Return to TOC]
+
+////
+Always end files with a blank line to avoid include problems.
+////
+    
