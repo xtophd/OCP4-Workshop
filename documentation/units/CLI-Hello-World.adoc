@@ -169,6 +169,22 @@ oc get routes
 curl http://helloworld.cloud.example.com
 ----
 
+The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's rnu the command again and be a little more specific wo we can verify a function httpd server.  
+
+.[root@master ~]#
+----
+curl -s http://helloworld.cloud.example.com | grep "Test Page"
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+<title>Test Page for the Apache HTTP Server on Red Hat Enterprise Linux</title>
+<h1>Red Hat Enterprise Linux <strong>Test Page</strong></h1>
+----
+
+
+
 === Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
