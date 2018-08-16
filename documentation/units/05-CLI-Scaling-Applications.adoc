@@ -41,6 +41,7 @@ Scale the number of replicas back down
     
     oc scale --replicas=1 dc/scaletest-app
 
+[discrete]
 == End of Unit
 link:../OCP-Workshop.adoc[Return to Index]
 
