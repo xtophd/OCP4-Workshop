@@ -84,8 +84,11 @@ oc whoami
 admin
 ----
 
+[discrete]
+== End of Unit
+link:../OCP-Workshop.adoc[Return to TOC]
 
-= End of Unit
-
-link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
+////
+Always end files with a blank line to avoid include problems.
+////
 
