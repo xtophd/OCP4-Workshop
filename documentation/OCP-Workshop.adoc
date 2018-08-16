@@ -20,7 +20,7 @@ include::{units_dir}/01-Getting-Started.adoc[]
 
 include::{units_dir}/00-Users-and-Roles.adoc[]
 
-== cLI Hello World
+== CLI Hello World
 
 include::{units_dir}/00-CLI-Hello-World.adoc[]
 
