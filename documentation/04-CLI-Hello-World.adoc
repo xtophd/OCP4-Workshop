@@ -1,5 +1,7 @@
 :sectnums:
 :sectnumlevels: 3
+:source-indent: 4
+:source-language: shell
 
 = CLI Hello World
 
@@ -57,7 +59,6 @@ oc get projects
 ----
 
 .Your output should look like this
-[source,shell,italic,indent=4]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
