@@ -107,11 +107,13 @@ We are not quite ready to start building our own container images, so we will le
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 ----
 
-You just instructed openship to create a new application called **helloworld**:
+You just instructed openship to create a new application called **hello-app**.  Without getting caught up in the details, basically what happens is:
 
-  * Openshift checks the local registry for an existing copy of the image
-  * It likely wasn't available, so Openshift fetched it from Red Hat and added it to the local registry
-  * The container was deployed to a node and brought online.
+  * Openshift checks the local catalog for an existing copy of the specified image **httpd-24-rhel7**
+  * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Registry and adds it to the local catalog
+  * A **build container** is initiated to contruct the desired image (ie: customizations or source integration)
+  * A **deployment container** is initiated to launch the desired image
+  * and *Voi La!!!* The container is deployed and ready to go to work.
 
 Now let's have a closer inspection.
 
