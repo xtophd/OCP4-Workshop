@@ -36,9 +36,7 @@ First order of business is to sign-on to the Openshift platform.  This is accomp
 oc login -u system:admin
 ----
 
-=== Credentials check
-
-What credentials is the current `oc` session using?
+You can verify what credentials the current session using as with `oc whoami`
 
 .[root@master ~]# 
 ----
