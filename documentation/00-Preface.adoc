@@ -12,13 +12,13 @@ In the spirit of Opensource, I am attempting to make my work publicly accessible
 
 = Conventions Used
 
-== Notes
+== Tips, Notes & Warnings
+
+TIP: Extra info which could be helpful, but not essential for a given task or discussion
 
 NOTE: Special information to pay attention to will be called out like this
 
-== Warnings
-
-WARN: Critical information to pay attention to will be called out like this
+WARNING: Critical information to pay attention to will be called out like this
 
 == Executing tasks on the CLI
 
