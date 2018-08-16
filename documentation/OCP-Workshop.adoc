@@ -12,19 +12,27 @@ toc::[]
 
 == Preface
 
-include::{units_dir}/00-Preface.adoc[leveloffset=+1]
+include::{units_dir}/Preface.adoc[leveloffset=+1]
 
-== Getting Started
+== Getting Started (Installation)
 
-include::{units_dir}/01-Getting-Started.adoc[leveloffset=+1]
+include::{units_dir}/Getting-Started.adoc[leveloffset=+1]
+
+== First Time Login
+
+include::{units_dir}/First-Time-Login.adoc[leveloffset=+1]
+
+== Command Line Basics
+
+include::{units_dir}/CLI-Basics.adoc[leveloffset=+1]
 
 == Users & Roles
 
-include::{units_dir}/03-CLI-Users-and-Roles.adoc[leveloffset=+1]
+include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 
 == CLI Hello World
 
-include::{units_dir}/04-CLI-Hello-World.adoc[leveloffset=+1]
+include::{units_dir}/CLI-Hello-World.adoc[leveloffset=+1]
 
 [discrete]
 = The End
