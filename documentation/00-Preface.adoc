@@ -16,9 +16,9 @@ In the spirit of Opensource, I am attempting to make my work publicly accessible
 
 TIP: Extra info which could be helpful, but not essential for a given task or discussion
 
-NOTE: Special information to pay attention to will be called out like this
+NOTE: Special information to pay attention
 
-WARNING: Critical information to pay attention to will be called out like this
+WARNING: Critical information which could help you avoid major set backs
 
 == Executing tasks on the CLI
 
