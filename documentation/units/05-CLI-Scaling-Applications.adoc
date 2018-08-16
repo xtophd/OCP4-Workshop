@@ -1,8 +1,8 @@
 :sectnums:
 :sectnumlevels: 3
+:section-number: 5
 
 = Scaling Applications
-:chapter-number: 5
 
 == Create an application
 
