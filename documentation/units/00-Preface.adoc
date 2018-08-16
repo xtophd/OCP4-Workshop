@@ -53,6 +53,7 @@ openshift-web-console                              Active
 ----
 <1> This is the line we are interested in with a special note
 
+[discrete]
 == End of Unit
 link:../OCP-Workshop.adoc[Return to TOC]
 
