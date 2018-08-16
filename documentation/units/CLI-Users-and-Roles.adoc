@@ -28,7 +28,8 @@ grep -6 htpasswd_auth /etc/origin/master/master-config.yaml
 
 Pay attention to `file: /etc/origin/master/htpasswd` and `kind: HTPasswdPasswordIdentityProvider`.
 
-.Your results should look like this
+.Your output should look like this
+[source,indent=4]
 ----
 grantConfig:
   method: auto
@@ -82,7 +83,8 @@ oc login -u admin
 oc whoami
 ----
 
-.Your results should look like this
+.Your output should look like this
+[source,indent=4]
 ----
 admin
 ----
