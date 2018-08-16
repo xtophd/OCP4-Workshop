@@ -14,7 +14,7 @@ include::{units_dir}/00-Preface.adoc
 
 include::{units_dir}/05-CLI-Scaling-Applications.adoc
 
-:leveloffset: +1
+:leveloffset: 0
 
 = The End
 
