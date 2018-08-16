@@ -82,6 +82,7 @@ oc describe project helloworld
 ----  
 
 .Your output should look like this
+[source,indent=4]
 ----
 Name:                   helloworld
 Created:                8 seconds ago
@@ -182,6 +183,7 @@ id
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 uid=1000120000 gid=0(root) groups=0(root),1000120000
 ----
@@ -192,6 +194,7 @@ ps -ef
 ----
     
 .Your output should look like this
+[source,indent=4]
 ----
 UID         PID   PPID  C STIME TTY          TIME CMD
 default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
@@ -218,6 +221,7 @@ ls -la
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 total 0
 drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
@@ -267,6 +271,7 @@ Never the less, after rolling out the new pod kubenettes will (by default) shuto
 versions of the pod.
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME                READY     STATUS        RESTARTS   AGE                                   
 hello-app-1-wbq42   0/1       Terminating   0          2h                                    
@@ -290,6 +295,7 @@ id
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 uid=1001(default) gid=0(root) groups=0(root),1000120000
 ----
@@ -301,6 +307,7 @@ ls -la
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 total 0
 drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
@@ -326,6 +333,7 @@ curl http://helloworld.cloud.example.com
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 <html>
 <body>
@@ -354,6 +362,7 @@ oc rollout status dc/hello-app2
 NOTE: You will need to wait until the pod is finished being deployed until you can inject a custom HTML file into the container image.
 
 .Your output should look like this
+[source,indent=4]
 ----
 Waiting for rollout to finish: 0 of 1 updated replicas are available...                      
 Waiting for latest deployment config spec to be observed by the controller loop...           
@@ -372,6 +381,7 @@ curl http://helloworld2.cloud.example.com
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 <html>
 <body>
@@ -398,6 +408,7 @@ oc create -f /var/tmp/helloworld-pv.yml
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 persistentvolume "helloworld-pv" created
 ----
@@ -408,6 +419,7 @@ oc get pv
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
 helloworld-pv   5Gi        RWO            Recycle          Available                                      7s
@@ -421,6 +433,7 @@ oc create -f /var/tmp/helloworld-pv-claim.yml
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 persistentvolumeclaim "helloworld-claim" created
 ----
@@ -435,6 +448,7 @@ oc get pvc
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
 helloworld-pv   5Gi        RWO            Recycle          Bound     helloworld3/helloworld-claim
@@ -463,6 +477,7 @@ curl http://helloworld3.cloud.example.com
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 <html>
 <body>
