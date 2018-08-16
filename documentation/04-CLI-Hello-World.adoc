@@ -508,13 +508,11 @@ oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
 curl http://helloworld5.cloud.example.com
 ----
 
-== Clean Up
-
-One last view of everything we have done thus far.
+== Clean Up (Optional)
 
 .[root@master ~]#
 ----
-oc get pod --all-namespaces -o wide
+oc get pods --all-namespaces -o wide
 ----
 
 Now it is time to clean everything up.
@@ -535,7 +533,7 @@ oc delete project helloworld5
 
 oc delete pv helloworld-pv
 
-oc get pod --all-namespaces -o wide
+oc get pods --all-namespaces -o wide
 ----
 
 == Conclusion
