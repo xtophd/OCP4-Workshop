@@ -1,3 +1,6 @@
+:sectnums:
+:sectnumlevels: 3
+
 = Scaling Applications
 
 == Create an application
