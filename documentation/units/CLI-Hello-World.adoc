@@ -300,7 +300,7 @@ hello-app-1-wbq42   0/1       Terminating   0          2h
 hello-app-2-lhvgp   1/1       Running       0          10s
 ----
 
-Just press CTRL-C to exit the watch process and return to your shell
+Just press CTRL-C to exit the `watch` process and return to your shell
 
 Next we will once again connect to the containers shell and explore the changes that were implemented by editing the security attributes.
 
