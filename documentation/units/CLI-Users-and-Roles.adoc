@@ -47,7 +47,7 @@ masterPublicURL: https://master.example.com:8443
 
 This confirms that the cluster is properly configured for the purposes of this workshop.
 
-== Configure User *admin*
+== Create OCP Cluster Admin User
 
 === Add User
 
@@ -58,7 +58,7 @@ Add the user *admin* with password *redhat*
 htpasswd -b /etc/origin/master/htpasswd admin redhat
 ----
 
-=== Assign role *cluster-admin*
+=== Assign *cluster-admin* role
 
 Provide the *admin* user with the *cluster-admin* role
 
@@ -67,7 +67,7 @@ Provide the *admin* user with the *cluster-admin* role
 oc adm policy add-cluster-role-to-user cluster-admin admin
 ----
 
-=== Use the new credential
+=== Login with Admin Credential
 
 Now you can use this new credential to log into Openshift.  Remember that you declared the password for user *admin* above when you ran `htpasswd`.
 
