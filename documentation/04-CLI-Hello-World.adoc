@@ -23,7 +23,6 @@ In the Unit "Users and Roles", you created an admin user which we will utilize f
 Connect to the master and sign-in as user *admin*.
 
 .[root@workstation ~]#
-[source,shell,indent=4]
 ----
 ssh master.example.com
 ----
@@ -58,7 +57,7 @@ oc get projects
 ----
 
 .Your output should look like this
-[small]
+[source,shell,italic,indent=4]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
