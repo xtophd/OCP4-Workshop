@@ -1,1 +1,46 @@
 ## Coming soon
+
+
+= Conventions Used
+
+== Notes
+
+NOTE: Special information to pay attention to will be called out like this
+
+== Warnings
+
+WARN: Critical information to pay attention to will be called out like this
+
+== Executing tasks on the CLI
+
+Each block of commands to execute will be label with the expected *user-id* and *host*.  To enhance cut & paste efficiency, the command prompt is omitted from each line.
+
+.[root@master ~]#
+----
+oc get projects
+----
+
+== Output
+
+Sample output will be titled with "Your output should look like this" and also be indented to help with visual.  Sometimes there will also be footnotes or callouts.
+
+.Your output should look like this
+[source,indent=4]
+----
+NAME                                DISPLAY NAME   STATUS
+default                                            Active
+helloworld                          Hello World    Active // <1>
+kube-public                                        Active
+kube-service-catalog                               Active
+kube-system                                        Active
+logging                                            Active
+management-infra                                   Active
+openshift                                          Active
+openshift-ansible-service-broker                   Active
+openshift-infra                                    Active
+openshift-node                                     Active
+openshift-template-service-broker                  Active
+openshift-web-console                              Active
+----
+<1> This is the line we are interested in with a special note
+
