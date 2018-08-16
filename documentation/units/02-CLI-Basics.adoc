@@ -1,8 +1,13 @@
-= 2. Command Line Basics
+:sectnums:
+:sectnumlevels: 3
+
+= Command Line Basics
 
 The default and recommended method for interacting with the Openshift Container Platform is with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP, but for the most part all of your acitivities will be with `oc`.
 
-== 2.1 Become the root user
+== Login to OCP as *admin*
+
+=== Become the user *root* user on *workstation*
 
 Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.  With that said, proceed to sign-on to the host *workstation* as user *student* and then use `sudo` to elevate your priviledges to *root*
 
@@ -11,7 +16,7 @@ Your workshop environment is preconfigured with distributed ssh-keys to ease the
 sudo -i
 ----
 
-== 2.2 Connect to host master.example.com
+=== Connect to host master.example.com
 
 As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not and established `root` user session.
 
@@ -22,7 +27,7 @@ Proceed to connect to host *master*.
 ssh master
 ----
 
-== 2.3 Establish OCP Admin session
+=== Login as *admin* to OCP Cluster
 
 First order of business is to sign-on to the Openshift platform.  This is accomplished as follows.
 
@@ -31,9 +36,7 @@ First order of business is to sign-on to the Openshift platform.  This is accomp
 oc login -u system:admin
 ----
 
-Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
-
-== 2.4 Credentials check
+=== Credentials check
 
 What credentials is the current `oc` session using?
 
@@ -43,11 +46,14 @@ oc whoami
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 system:admin                                                                                 
 ----
 
-== 2.5 Check Cluster Status
+Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
+
+== Check Cluster Status
 
 .[root@master ~]# 
 ----    
@@ -55,6 +61,7 @@ oc status
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 In project default on server https://master.example.com:8443
 
@@ -75,7 +82,7 @@ svc/router - 172.30.80.206 ports 80, 443, 1936
 View details with 'oc describe <resource>/<name>' or list everything with 'oc get all'.
 ----
     
-== 2.6 High Level Cluster Check
+== High Level Cluster Check
 
 .[root@master ~]# 
 ----
@@ -83,6 +90,7 @@ oc get all
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME                                 REVISION   DESIRED   CURRENT   TRIGGERED BY
 deploymentconfigs/docker-registry    1          1         1         config
@@ -119,6 +127,7 @@ oc get projects
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
@@ -143,6 +152,7 @@ oc get nodes
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME                 STATUS    ROLES     AGE       VERSION
 master.example.com   Ready     master    1h        v1.9.1+a0ce1bc657
@@ -158,6 +168,7 @@ oc get pods
 ----
 
 .Your output should look like this
+[source,indent=4]
 ----
 NAME                       READY     STATUS    RESTARTS   AGE
 docker-registry-1-52lk5    1/1       Running   0          1h
