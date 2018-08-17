@@ -145,6 +145,18 @@ NOTE: Again, it is important to be in the correct working directory for this to 
 bash 03-post-install-script.sh
 ----
 
+While the post-install script runs, we can breifly review what actions are being performed.  Again, there are 2 primary activities:
+
+* Workstation Actions
+** deploys sample files used by exercises
+** configures, enables and starts NFS services
+** cleans up yum content
+
+* OCP Cluster Node Actions
+** deploys sample files used by exercises
+** deletes and deploys OCP router with replicas=2
+** cleans up yum content
+
 === Post Installation Results
 
 Here is the tail end of a sample output following a successfull post-install of the Openshift Container Platform.
@@ -165,17 +177,6 @@ node1.example.com          : ok=4    changed=1    unreachable=0    failed=0
 node2.example.com          : ok=4    changed=1    unreachable=0    failed=0   
 workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
 ----
-
-While the pre-install script runs, we can breifly review what actions are being performed.  There are 2 primary activities:
-
-* Workstation Actions
-** install ansible inventory (/etc/ansible/hosts)
-** minimum package installation
-
-* OCP Cluster Node Actions
-** reconfigure docker storage to use a block device
-** enable and start firewalld
-** minimum Package installation
 
 == Conclusion
 
