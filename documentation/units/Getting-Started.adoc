@@ -64,6 +64,17 @@ Now you are ready to proceed with executing the pre-install steps.  This typical
 bash 01-pre-install-script.sh
 ----
 
+While the pre-install script runs, we can breifly review what actions are being performed.  There are 2 primary activities:
+
+* Workstation Actions
+** install ansible inventory (/etc/ansible/hosts)
+** minimum package installation
+
+* OCP Cluster Node Actions
+** reconfigure docker storage to use a block device
+** enable and start firewalld
+** minimum Package installation
+
 === Pre-Install Results
 
 NOTE: Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
@@ -155,6 +166,16 @@ node2.example.com          : ok=4    changed=1    unreachable=0    failed=0
 workstation.example.com    : ok=10   changed=6    unreachable=0    failed=0   
 ----
 
+While the pre-install script runs, we can breifly review what actions are being performed.  There are 2 primary activities:
+
+* Workstation Actions
+** install ansible inventory (/etc/ansible/hosts)
+** minimum package installation
+
+* OCP Cluster Node Actions
+** reconfigure docker storage to use a block device
+** enable and start firewalld
+** minimum Package installation
 
 == Conclusion
 
