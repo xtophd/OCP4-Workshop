@@ -570,18 +570,20 @@ Next we will implement another solution using a Dockerfile.  Again, using a sour
 
 To mix things up a little, we will also use a PHP enhanced container image instead of the plain httpd image we have been using.  The dockerfile looks something like this:
 
-
-    ##
-    ## Parameters required to work with a RHSCL image designed for S2I
-    ##
-    FROM registry.access.redhat.com/rhscl/php-71-rhel7
-    MAINTAINER Christoph Doerbeck cdoerbec@redhat.com
-    USER 0
-    COPY index.php /tmp/src/
-    RUN /usr/libexec/s2i/assemble
-    CMD /usr/libexec/s2i/run
-    Expose 8080
-
+.sample dockerfile
+[source,indent=4]
+----
+##
+## Parameters required to work with a RHSCL image designed for S2I
+##
+FROM registry.access.redhat.com/rhscl/php-71-rhel7
+MAINTAINER Joe Foo jfoo@example.com
+USER 0
+COPY index.php /tmp/src/
+RUN /usr/libexec/s2i/assemble
+CMD /usr/libexec/s2i/run
+Expose 8080
+----
 
 .[root@master ~]#
 ----
