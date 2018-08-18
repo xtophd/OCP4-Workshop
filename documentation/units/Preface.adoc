@@ -43,12 +43,12 @@ Sample output will be titled with "Your output should look like this" and also b
 .Your output should look like this
 [source,indent=4,color=yellow]
 ++++
-<pre>
+<em><pre>
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
 helloworld                          Hello World    Active
 kube-public                                        Active
-</pre>
+</pre></em>
 ++++
 
 .Your output should look like this
