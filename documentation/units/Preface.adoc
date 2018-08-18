@@ -41,7 +41,8 @@ oc get projects
 Sample output will be titled with "Your output should look like this" and also be indented to help with visual identification.  Sometimes there will also be footnotes and/or callouts.
 
 .Your output should look like this
-[source,indent=4,white-background]----
+[source,indent=4,red]
+----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
 helloworld                          Hello World    Active // <1>
