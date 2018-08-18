@@ -42,10 +42,21 @@ Sample output will be titled with "Your output should look like this" and also b
 
 .Your output should look like this
 [source,indent=4,color=yellow]
+++++
+<pre>
+NAME                                DISPLAY NAME   STATUS
+default                                            Active
+helloworld                          Hello World    Active
+kube-public                                        Active
+</pre>
+++++
+
+.Your output should look like this
+[source,indent=4,color=yellow]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
-helloworld                          [big red yellow-background]*very obvious*Hello World*    Active // <1>
+helloworld                          Hello World    Active // <1>
 kube-public                                        Active
 kube-service-catalog                               Active
 kube-system                                        Active
