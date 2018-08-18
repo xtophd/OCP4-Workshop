@@ -42,7 +42,7 @@ Sample output will be titled with "Your output should look like this" and also b
 
 .Your output should look like this
 [source,indent=4,color-background=white]
-====
+----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
 helloworld                          Hello World    Active // <1>
@@ -57,7 +57,7 @@ openshift-infra                                    Active
 openshift-node                                     Active
 openshift-template-service-broker                  Active
 openshift-web-console                              Active
-====
+----
 <1> This is the line we are interested in with a special note
 
 [discrete]
