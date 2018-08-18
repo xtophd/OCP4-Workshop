@@ -41,7 +41,7 @@ oc get projects
 Sample output will be titled with "Your output should look like this" and also be indented to help with visual identification.  Sometimes there will also be footnotes and/or callouts.
 
 .Your output should look like this
-[source,indent=4]
+[source,indent=4,code_background_color=transparent,code_border_width=0]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
