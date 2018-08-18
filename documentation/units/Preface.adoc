@@ -45,7 +45,7 @@ Sample output will be titled with "Your output should look like this" and also b
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
-helloworld                          Hello World    Active // <1>
+helloworld                          [big red yellow-background]*very obvious*Hello World*    Active // <1>
 kube-public                                        Active
 kube-service-catalog                               Active
 kube-system                                        Active
