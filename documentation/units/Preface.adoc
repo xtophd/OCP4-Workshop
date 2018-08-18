@@ -40,7 +40,6 @@ oc get projects
 
 Sample output will be titled with _'Your output should look like this'_ and also be indented to help with visual identification.  Sometimes there will also be footnotes and/or callouts.
 
-[sidebar,indent=4]
 .Your output should look like this
 ++++
 <em><pre>
@@ -51,6 +50,7 @@ kube-public                                        Active
 </pre></em>
 ++++
 
+[sidebar,indent=4]
 .Your output should look like this
 [source,indent=4]
 ----
