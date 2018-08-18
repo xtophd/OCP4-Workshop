@@ -56,7 +56,7 @@ kube-public                                        Active
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
-helloworld                          Hello World    Active // <1>
+helloworld                          *Hello World*    Active // <1>
 kube-public                                        Active
 kube-service-catalog                               Active
 kube-system                                        Active
