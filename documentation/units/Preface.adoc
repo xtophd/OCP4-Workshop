@@ -52,7 +52,7 @@ kube-public                                        Active
 ++++
 
 .Your output should look like this
-[source,indent=4,emphasized]
+[sidebar,indent=4]
 ----
 NAME                                DISPLAY NAME   STATUS
 default                                            Active
