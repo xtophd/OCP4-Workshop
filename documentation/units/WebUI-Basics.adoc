@@ -16,14 +16,14 @@ If this is the first time connecting to the Openshift WebUI (especially a lab en
 
 .Insecure Connection
 ====
-image::images/ocp-webui-signon-01.jpg[Sunset]
+image::ocp-webui-signon-01.jpg[Sunset]
 ====
 
 Proceed to select the `Advanced` button and then scroll down to select `Add Exception`
 
 .Add Exception
 ====
-image::images/ocp-webui-signon-02.jpg[Sunset]
+image::ocp-webui-signon-02.jpg[Sunset]
 ====
 
 Finally, select `Confirm Security Exception`
