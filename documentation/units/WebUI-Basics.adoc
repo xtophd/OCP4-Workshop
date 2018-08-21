@@ -1,3 +1,9 @@
+:units_dir: units
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+:imagesdir: ./images
+
 = Openshift WebUI Basics
 
 == Sign-on
