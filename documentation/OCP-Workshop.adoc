@@ -14,11 +14,11 @@ include::{units_dir}/Preface.adoc[leveloffset=+1]
 
 include::{units_dir}/Getting-Started.adoc[leveloffset=+1]
 
-== First Time Login
+== CLI First Time Login
 
-include::{units_dir}/First-Time-Login.adoc[leveloffset=+1]
+include::{units_dir}/CLI-First-Time-Login.adoc[leveloffset=+1]
 
-== Command Line Basics
+== CLI Basics
 
 include::{units_dir}/CLI-Basics.adoc[leveloffset=+1]
 
@@ -29,6 +29,10 @@ include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 == CLI Hello World
 
 include::{units_dir}/CLI-Hello-World.adoc[leveloffset=+1]
+
+== WebUI First Time Login
+
+include::{units_dir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
 
 == WebUI Hello World
 
