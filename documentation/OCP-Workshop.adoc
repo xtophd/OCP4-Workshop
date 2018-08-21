@@ -14,15 +14,15 @@ include::{units_dir}/Preface.adoc[leveloffset=+1]
 
 include::{units_dir}/Getting-Started.adoc[leveloffset=+1]
 
-== CLI First Time Login
+== CLI: First Time Login
 
 include::{units_dir}/CLI-First-Time-Login.adoc[leveloffset=+1]
 
-== CLI Basics
+== CLI: Basics
 
 include::{units_dir}/CLI-Basics.adoc[leveloffset=+1]
 
-== Users & Roles
+== CLI: Users & Roles
 
 include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 
@@ -30,11 +30,15 @@ include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 
 include::{units_dir}/CLI-Hello-World.adoc[leveloffset=+1]
 
-== WebUI First Time Login
+== WebUI: First Time Login
 
 include::{units_dir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
 
-== WebUI Hello World
+== WebUI: Basics
+
+include::{units_dir}/WebUI-Basics.adoc[leveloffset=+1]
+
+== WebUI: Hello World
 
 include::{units_dir}/WebUI-Hello-World.adoc[leveloffset=+1]
 
