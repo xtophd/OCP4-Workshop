@@ -6,6 +6,8 @@ Use Firefox to Sign-On as use `admin`
 
 https://master.example.com:8443
 
+image::images/ocp-webui-signon-01.jpg[Sunset]
+
 Select `Advanced` button
 
 Scroll Down
