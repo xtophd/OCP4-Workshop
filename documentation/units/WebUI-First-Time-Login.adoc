@@ -14,6 +14,8 @@ endif::[]
 
 == Sign-on
 
+NOTE:  you will NOT be able to login to the WebUI until you have created a admin account as detailed in the CLI: Users and Roles unit.  If you have not performed those sets, please take a moment to complete that exercise first.
+
 Use Firefox on the designated *workstation* to connect to the following URL:
 
 https://master.example.com:8443[]
