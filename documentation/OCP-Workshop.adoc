@@ -30,6 +30,11 @@ include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 
 include::{units_dir}/CLI-Hello-World.adoc[leveloffset=+1]
 
+== WebUI Hello World
+
+include::{units_dir}/WebUI-Hello-World.adoc[leveloffset=+1]
+
+
 [discrete]
 = The End
 
