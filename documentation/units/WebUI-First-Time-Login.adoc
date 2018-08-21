@@ -16,7 +16,7 @@ endif::[]
 
 Use Firefox on the designated *workstation* to connect to the following URL:
 
-https://master.example.com:8443
+https://master.example.com:8443[]
 
 If this is the first time connecting to the Openshift WebUI (especially in a lab environment like this) you will probably be notified of an "Insecure Connection" as shown below.  Please proceed to click on the `Advanced` button.
 
