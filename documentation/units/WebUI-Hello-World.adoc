@@ -29,7 +29,7 @@ image::ocp-webui-project-01.jpg[Landing Page]
 Go To Front Landing Page and select `Create Project`
 
 ====
-image::ocp-webui-project-01.jpg[Landing Page]
+image::ocp-webui-project-02.jpg[Landing Page]
 ====
 
 Fill in the details as follows:
