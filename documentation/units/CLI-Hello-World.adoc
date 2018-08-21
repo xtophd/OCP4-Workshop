@@ -169,7 +169,7 @@ oc get routes
 curl http://helloworld.cloud.example.com
 ----
 
-The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's rnu the command again and be a little more specific wo we can verify a function httpd server.  
+The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific wo we can verify a function httpd server.  
 
 .[root@master ~]#
 ----
