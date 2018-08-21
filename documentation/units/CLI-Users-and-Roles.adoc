@@ -1,7 +1,7 @@
 :sectnums:
 :sectnumlevels: 3
 
-= Users & Roles
+= CLI: Users & Roles
 
 == Inspect Configuration
 
