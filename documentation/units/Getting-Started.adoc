@@ -135,7 +135,7 @@ Service Catalog Install    : Complete (0:03:12)
 <1> All "failed" results should = 0
 
 [discrete]
-== A Few Words While the Installer Runs
+=== A Few Words While the Installer Runs
 
 So you might be asking yourself, *why* another workshop?  What's different about this one?
 
