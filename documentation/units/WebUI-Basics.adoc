@@ -2,17 +2,19 @@
 
 == Sign-on
 
-Use Firefox to Sign-On as use `admin`
+Use Firefox on the designated *workstation* to connect to the following URL:
 
 https://master.example.com:8443
 
+If this is the first time connecting to the Openshift WebUI (especially a lab environment) you will probably be notified of an "Insecure Connection" as shown below.
+
+.Insecure Connection
 image::images/ocp-webui-signon-01.jpg[Sunset]
 
-Select `Advanced` button
+Proceed to select the `Advanced` button and then Scroll Down select `Add Exception`
 
-Scroll Down
-
-Select `Add Exception` button
+.Insecure Connection
+image::images/ocp-webui-signon-02.jpg[Sunset]
 
 Select `Confirm Security Exception`
 
