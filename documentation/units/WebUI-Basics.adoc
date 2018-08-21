@@ -11,14 +11,14 @@ If this is the first time connecting to the Openshift WebUI (especially a lab en
 .Insecure Connection
 image::images/ocp-webui-signon-01.jpg[Sunset]
 
-Proceed to select the `Advanced` button and then Scroll Down select `Add Exception`
+Proceed to select the `Advanced` button and then scroll down to select `Add Exception`
 
-.Insecure Connection
+.Add Exception
 image::images/ocp-webui-signon-02.jpg[Sunset]
 
-Select `Confirm Security Exception`
+Finally, select `Confirm Security Exception`
 
-Proceed to Sign-On as user `admin` with the password set during the **Users and Roles** unit.
+Proceed to Sign-On as user `admin` with the password set during the **CLI-Users-and-Roles** unit.
 
 == Landing Page
 
