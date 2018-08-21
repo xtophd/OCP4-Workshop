@@ -134,6 +134,20 @@ Service Catalog Install    : Complete (0:03:12)
 ----
 <1> All "failed" results should = 0
 
+[discrete]
+== A Few Words While the Installer Runs
+
+So you might be asking yourself, *why* another workshop?  What's different about this one?
+
+I have 2 simple goals:
+
+. Explain what openshift is through a hands-on approach
+. Deliver an "Ah-Ha" moment for each participant regarding containerized workloads:
+** What's in it for operators
+** What's in it for developers
+
+So while the OCP installer runs for the next 20 minutes, your presenter may opt to provide an formal "Introduction to Openshift", discuss the higher  level theme of "Modern Application Development" or merely host a simple Q&A session.  
+
 == Openshift Post Installation
 
 === Run the post install script
