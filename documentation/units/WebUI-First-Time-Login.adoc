@@ -1,0 +1,56 @@
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:units_dir: units
+:imagesdir: ./images
+
+= Openshift WebUI Basics
+
+== Sign-on
+
+Use Firefox on the designated *workstation* to connect to the following URL:
+
+https://master.example.com:8443
+
+If this is the first time connecting to the Openshift WebUI (especially in a lab environment like this) you will probably be notified of an "Insecure Connection" as shown below.  Please proceed to click on the `Advanced` button.
+
+
+====
+image::ocp-webui-signon-01.jpg[Advanced]
+====
+
+Next, proceed to click on `Add Exception`.
+
+
+====
+image::ocp-webui-signon-02.jpg[Add Exception]
+====
+
+And finally, click on `Confirm Security Exception`.
+
+====
+image::ocp-webui-signon-03.jpg[Confirm]
+====
+
+Now you may proceed to Sign-On as user `admin` with the password set during the **CLI-Users-and-Roles** unit.
+
+====
+image::ocp-webui-signon-04.jpg[Confirm]
+====
+
+[discrete]
+= The End
+
+[discrete]
+== End of Unit
+link:../OCP-Workshop.adoc[Return to TOC]
+
+////
+Always end files with a blank line to avoid include problems.
+////
