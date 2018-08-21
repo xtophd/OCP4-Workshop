@@ -24,12 +24,11 @@ Proceed to Sign-On as user admin with the password set during the Users and Role
 
 === Create a Project
 
-Go To Front Landing Page
+Go To Front Landing Page and select `Create Project`
 
-Select **Create Project** *{Top Right}*
-Name: webui-hello1
-Display Name: WebUI Hello 1
-Description: *{leave blank}*
+* Name: webui-hello1
+* Display Name: WebUI Hello 1
+* Description: *{leave blank}*
 
 === Create an Application from a Container Image and GIT
 
