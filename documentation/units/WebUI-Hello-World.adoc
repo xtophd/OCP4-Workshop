@@ -1,28 +1,30 @@
 :sectnums:
-:section-number: 4
 :sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:units_dir: units
+:imagesdir: ./images
 
-= OCP-Workshop
 
-== WebUI Hellow World
+= WebUI Hellow World
 
-=== Sign-on as admin
+== Sign-on as admin
 
-Use Firefox to Sign-On as use admin
+Please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
 
-https://master.example.com:8443
 
-Select Advanced button
+== Review of the OCP WebUI Landing Page
 
-Scroll Down
+====
+image::ocp-webui-project-01.jpg[Landing Page]
+====
 
-Select Add Exception button
-
-Select Confirm Security Exception
-
-Proceed to Sign-On as user admin with the password set during the Users and Roles unit.
-
-=== Create a Project
+== Create a Project
 
 Go To Front Landing Page and select `Create Project`
 
@@ -30,7 +32,7 @@ Go To Front Landing Page and select `Create Project`
 * Display Name: WebUI Hello 1
 * Description: *{leave blank}*
 
-=== Create an Application from a Container Image and GIT
+== Create an Application from a Container Image and GIT
 
 Using the Search bar, search for **httpd** and select the *QUICKSTART HTTPD*
 
@@ -99,9 +101,10 @@ Routers are the processes responsible for making services accessible to the outs
 == Validate Application
 
 
+[discrete]
+== End of Unit
+link:../OCP-Workshop.adoc[Return to TOC]
 
-== Conclusion
-
-= End of Unit
-
-link:https://github.com/xtophd/OCP-Workshop/tree/master/documentation[Return to Index]
+////
+Always end files with a blank line to avoid include problems.
+////
