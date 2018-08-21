@@ -45,9 +45,6 @@ image::ocp-webui-signon-04.jpg[Confirm]
 ====
 
 [discrete]
-= The End
-
-[discrete]
 == End of Unit
 link:../OCP-Workshop.adoc[Return to TOC]
 
