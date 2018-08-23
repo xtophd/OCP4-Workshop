@@ -17,6 +17,9 @@ endif::[]
 
 Please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
 
+====
+image::ocp-webui-login-04.png[Login]
+====
 
 == Review of the OCP WebUI Landing Page
 
