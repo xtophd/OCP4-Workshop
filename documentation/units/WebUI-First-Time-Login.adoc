@@ -24,26 +24,26 @@ If this is the first time connecting to the Openshift WebUI (especially in a lab
 
 
 ====
-image::ocp-webui-signon-01.jpg[Advanced]
+image::ocp-webui-login-01.png[Advanced]
 ====
 
 Next, proceed to click on `Add Exception`.
 
 
 ====
-image::ocp-webui-signon-02.jpg[Add Exception]
+image::ocp-webui-login-02.png[Add Exception]
 ====
 
 And finally, click on `Confirm Security Exception`.
 
 ====
-image::ocp-webui-signon-03.jpg[Confirm]
+image::ocp-webui-login-03.png[Confirm]
 ====
 
 Now you may proceed to Sign-On as user `admin` with the password set during the **CLI-Users-and-Roles** unit.
 
 ====
-image::ocp-webui-signon-04.jpg[Confirm]
+image::ocp-webui-login-04.png[Confirm]
 ====
 
 [discrete]
