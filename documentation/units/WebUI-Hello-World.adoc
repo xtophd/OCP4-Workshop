@@ -24,7 +24,7 @@ image::ocp-webui-login-04.png[Login]
 == Review of the OCP WebUI Landing Page
 
 ====
-image::ocp-webui-project-01.jpg[Landing Page]
+image::ocp-webui-landing-01.png[Landing Page]
 ====
 
 == Create a Project
