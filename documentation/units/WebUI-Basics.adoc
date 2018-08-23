@@ -15,7 +15,9 @@ Please proceed to login to the Openshift WebUI as user admin. Instructions for d
 You will see the list of projects. Note the project you created in the last
 lab exercise is shown here.
 
-image:projects_list.png[image]
+====
+image::ocp-webui-landing-01.png[Landing]
+====
 
 Also note the *New Project* button which allows you to create a new
 project from Web Console.
