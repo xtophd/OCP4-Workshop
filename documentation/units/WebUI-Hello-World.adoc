@@ -57,7 +57,7 @@ You will then be presented with an overview of the container image. Select `Next
 image::ocp-webui-helloworld-03.png[Data Entry]
 ====
 
-Now you are presented with a series of options to configure the apllicaton.
+Now you are presented with a series of options to configure the applicaton.
 
 ====
 image::ocp-webui-helloworld-04.png[Confirm Selection]
