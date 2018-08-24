@@ -31,30 +31,36 @@ image::ocp-webui-landing-01.png[Landing Page]
 
 Go To Front Landing Page and select `Create Project`
 
+====
+image::ocp-webui-helloworld-01.png[Project]
+====
+
 Fill in the details as follows:
 
 * Name: webui-hello1
 * Display Name: WebUI Hello 1
 * Description: *{leave blank}*
 
-====
-image::ocp-webui-helloworld-01.png[Project]
-====
-
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
 == Create an Application from a Container Image and GIT
 
-Using the Search bar, search for **httpd** and select the *QUICKSTART HTTPD*
+Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
 ====
 image::ocp-webui-helloworld-02.png[Search]
 ====
 
-Select **Next**
+You will then be presented with an overview of the container image. Select `Next` to move to the data entry dialog.
 
 ====
-image::ocp-webui-helloworld-03.png[Confirm Selection]
+image::ocp-webui-helloworld-03.png[Data Entry]
+====
+
+Now you are presented with a series of options to configure the apllicaton.
+
+====
+image::ocp-webui-helloworld-04.png[Confirm Selection]
 ====
 
 Now entering details using defaults for all values unless specified below:
@@ -64,10 +70,6 @@ Now entering details using defaults for all values unless specified below:
 * Git Repository URL: https://github.com/xtophd/OCP-Workshop
 * Context Directory: /src/helloworld
 * Application Hostname: webui-hello1.cloud.example.com
-
-====
-image::ocp-webui-helloworld-04.png[Confirm Selection]
-====
 
 Once you have filled in the details, select **Create**
 
