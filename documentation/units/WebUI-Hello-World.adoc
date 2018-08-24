@@ -51,6 +51,11 @@ Using the Search bar, search for **httpd** and select the *QUICKSTART HTTPD*
 image::ocp-webui-helloworld-02.png[Search]
 ====
 
+
+====
+image::ocp-webui-helloworld-03.png[Confirm Selection]
+====
+
 Select **Next**
 
 Use the defaults for all values unless specified below:
