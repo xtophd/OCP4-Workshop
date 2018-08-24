@@ -47,21 +47,22 @@ And now click `Create`.  You should notice that your new project has been added 
 
 Using the Search bar, search for **httpd** and select the *QUICKSTART HTTPD*
 
-Select **Next>**
+====
+image::ocp-webui-helloworld-02.png[Search]
+====
 
-Add to Project: WebUI Hello World
+Select **Next**
 
 Use the defaults for all values unless specified below:
 
-Name: webui-hello1
+* Add to Project: WebUI Hello World
+* Name: webui-hello1
+* Git Repository URL: https://github.com/xtophd/OCP-Workshop
+* Context Directory: /src/helloworld
+* Application Hostname: webui-hello1.cloud.example.com
 
-Git Repository URL: https://github.com/xtophd/OCP-Workshop
+Once you have filled in the details, select **Create**
 
-Context Directory: /src/helloworld
-
-Application Hostname: webui-hello1.cloud.example.com
-
-Select **Create**
 
 You just instructed openship to create a new application called **webui-hello**:
   - The container was deployed to a node and brought online.
