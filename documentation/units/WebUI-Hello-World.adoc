@@ -53,7 +53,7 @@ Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* resul
 image::ocp-webui-helloworld-02.png[Search]
 ====
 
-You will then be presented with an overview of the container image. Select `Next` to move to the data entry dialog.
+You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
 
 ====
 image::ocp-webui-helloworld-03.png[Data Entry]
@@ -67,7 +67,7 @@ image::ocp-webui-helloworld-04.png[Confirm Selection]
 
 Now entering details using defaults for all values unless specified below:
 
-.Key-Values for Application Attributes
+.Key-Values for Application Configuration
 [horizontal]
 *Add to Project*:: WebUI Hello World
 *Name*:: webui-hello1
