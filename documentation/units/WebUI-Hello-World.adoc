@@ -38,7 +38,7 @@ image::ocp-webui-helloworld-01.png[Project]
 Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
-[horizontal]
+[horizontal,width=25%]
 *Name*:: webui-hello1
 *Display Name*:: WebUI Hello 1
 *Description*:: {leave blank}
