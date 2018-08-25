@@ -60,6 +60,8 @@ openshift-web-console                              Active
 ----
 <1> This is the line we are interested in with a special note
 
+== Key Values for Dialog Entry
+
 When working with exercises in Web User Interface (WebUI), key-value data will be presented in a lists like this:
 
 .Key-Values for Create Project Dialog
