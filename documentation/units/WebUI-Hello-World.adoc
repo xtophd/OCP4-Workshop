@@ -37,9 +37,11 @@ image::ocp-webui-helloworld-01.png[Project]
 
 Fill in the details as follows:
 
+****
 * Name: webui-hello1
 * Display Name: WebUI Hello 1
 * Description: *{leave blank}*
+****
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
