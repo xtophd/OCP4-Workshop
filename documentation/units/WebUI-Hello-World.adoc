@@ -37,7 +37,7 @@ image::ocp-webui-helloworld-01.png[Project]
 
 Fill in the details as follows:
 
-.Create Project Key-Values
+.Key-Values for Create Project Dialog
 [horizontal]
 *Name*:: webui-hello1
 *Display Name*:: WebUI Hello 1
@@ -67,11 +67,13 @@ image::ocp-webui-helloworld-04.png[Confirm Selection]
 
 Now entering details using defaults for all values unless specified below:
 
-* Add to Project: WebUI Hello World
-* Name: webui-hello1
-* Git Repository URL: https://github.com/xtophd/OCP-Workshop
-* Context Directory: /src/helloworld
-* Application Hostname: webui-hello1.cloud.example.com
+.Key-Values for Application Attributes
+[horizontal]
+*Add to Project*:: WebUI Hello World
+*Name*:: webui-hello1
+*Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
+*Context Directory*:: /src/helloworld
+*Application Hostname*:: webui-hello1.cloud.example.com
 
 Once you have filled in the details, select **Create**
 
