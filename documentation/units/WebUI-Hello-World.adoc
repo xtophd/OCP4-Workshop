@@ -37,13 +37,11 @@ image::ocp-webui-helloworld-01.png[Project]
 
 Fill in the details as follows:
 
-.Sample Quote with horizontal list
-____
+.Sample List with horizontal
 [horizontal]
 *Name*:: webui-hello1
 *Display Name*:: WebUI Hello 1
 *Description*:: {leave blank}
-____
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
