@@ -37,8 +37,8 @@ image::ocp-webui-helloworld-01.png[Project]
 
 Fill in the details as follows:
 
-.Sample List with horizontal compact
-[horizontal,options=compact]
+.Create Project Key-Values
+[horizontal]
 *Name*:: webui-hello1
 *Display Name*:: WebUI Hello 1
 *Description*:: {leave blank}
