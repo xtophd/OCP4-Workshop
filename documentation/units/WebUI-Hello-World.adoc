@@ -13,7 +13,22 @@ endif::[]
 
 = WebUI: Hellow World
 
-== Sign-on as admin
+This unit will mimic (as closely as possible) the exerices done in the CLI version of Hello World.
+
+The objective is to step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform. Again, we are going to do it several different ways to illustrate some best and worst practices of container usage.
+
+There are 4 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
+
+  . **login** - sign-on with proper credentials
+  . **create project**
+  . **create application**
+  . **expose route**
+
+Let's get started.
+
+== My First Application
+
+=== Sign-on as admin
 
 Please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
 
@@ -21,7 +36,7 @@ Please proceed to login to the Openshift WebUI as user *admin*.  Instructions fo
 image::ocp-webui-login-04.png[Login]
 ====
 
-== Review of the OCP WebUI Landing Page
+=== Review of the OCP WebUI Landing Page
 
 ====
 image::ocp-webui-landing-01.png[Landing Page]
@@ -45,7 +60,7 @@ Fill in the details as follows:
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
-== Create an Application
+=== Create an Application
 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
@@ -79,9 +94,12 @@ Once you have filled in the details, select **Create**
 You just instructed openship to create a new application called **webui-hello**:
   - The container was deployed to a node and brought online.
 
-Now let's have a closer inspection.  
-
 Click "Continue to Project Overview"
+
+
+=== Add a Route
+
+
 
 
 
