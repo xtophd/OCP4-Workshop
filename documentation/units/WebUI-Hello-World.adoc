@@ -113,7 +113,7 @@ Authentic Solutions
 
 === Solution #4: Use Source Control (git)
 
-=== Create a Project
+==== Create a Project
 
 Go To Front Landing Page and select `Create Project`
 
@@ -127,7 +127,7 @@ Fill in the details as follows:
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
-== Create an Application from a Container Image and GIT
+==== Create an Application from a Container Image and GIT
 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
