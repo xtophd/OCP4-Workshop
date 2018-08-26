@@ -55,7 +55,7 @@ Fill in the details as follows:
 .Key-Values for Create Project Dialog
 [horizontal]
 *Name*:: webui-hello
-*Display Name*:: WebUI Hello
+*Display Name*:: WebUI Hello World
 *Description*:: {leave blank}
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
@@ -121,8 +121,8 @@ Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
-*Name*:: webui-hello1
-*Display Name*:: WebUI Hello 1
+*Name*:: webui-hello4
+*Display Name*:: WebUI Hello World 4
 *Description*:: {leave blank}
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
