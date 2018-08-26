@@ -11,7 +11,7 @@ endif::[]
 :imagesdir: ./images
 
 
-= WebUI Hellow World
+= WebUI: Hellow World
 
 == Sign-on as admin
 
@@ -27,7 +27,7 @@ image::ocp-webui-login-04.png[Login]
 image::ocp-webui-landing-01.png[Landing Page]
 ====
 
-== Create a Project
+=== Create a Project
 
 Go To Front Landing Page and select `Create Project`
 
@@ -39,13 +39,13 @@ Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
-*Name*:: webui-hello1
-*Display Name*:: WebUI Hello 1
+*Name*:: webui-hello
+*Display Name*:: WebUI Hello
 *Description*:: {leave blank}
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
-== Create an Application from a Container Image and GIT
+== Create an Application
 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
@@ -70,16 +70,64 @@ Now entering details using defaults for all values unless specified below:
 .Key-Values for Application Configuration
 [horizontal]
 *Add to Project*:: WebUI Hello World
-*Name*:: webui-hello1
-*Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
-*Context Directory*:: /src/helloworld
-*Application Hostname*:: webui-hello1.cloud.example.com
+*Name*:: webui-hello
+*Application Hostname*:: webui-hello.cloud.example.com
 
 Once you have filled in the details, select **Create**
 
 
 You just instructed openship to create a new application called **webui-hello**:
   - The container was deployed to a node and brought online.
+
+Now let's have a closer inspection.  
+
+Click "Continue to Project Overview"
+
+
+
+///////////////////////////////////////////////////////////////////////
+Authentic Solutions
+///////////////////////////////////////////////////////////////////////
+
+
+
+== Making an authentic "Hello, World!"
+
+=== Solution #4: Use Source Control (git)
+
+=== Create a Project
+
+Go To Front Landing Page and select `Create Project`
+
+Fill in the details as follows:
+
+.Key-Values for Create Project Dialog
+[horizontal]
+*Name*:: webui-hello1
+*Display Name*:: WebUI Hello 1
+*Description*:: {leave blank}
+
+And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
+
+== Create an Application from a Container Image and GIT
+
+Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
+
+You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
+
+Now you are presented with a series of options to configure the applicaton.
+
+Now entering details using defaults for all values unless specified below:
+
+.Key-Values for Application Configuration
+[horizontal]
+*Add to Project*:: WebUI Hello World 4
+*Name*:: webui-hello4
+*Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
+*Context Directory*:: /src/helloworld
+*Application Hostname*:: webui-hello4.cloud.example.com
+
+Once you have filled in the details, select **Create**
 
 Now let's have a closer inspection.  
 
@@ -101,30 +149,6 @@ Create and use a new Tab in Firefox to view your new application.  The link shou
 
 
 
-```
-: [root@master ~]#
-
-oc status
-    
-oc get pods
-    
-oc get services
-```
-
-The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
-
-```
-: [root@master ~]#
-
-curl -Is http://{ip_address}}:8080
-```
-
-== Add a Route
-
-Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
-
-
-== Validate Application
 
 
 [discrete]
