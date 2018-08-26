@@ -1,5 +1,5 @@
 :sectnums:
-:sectnumlevels: 3
+:sectnumlevels: 2
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
