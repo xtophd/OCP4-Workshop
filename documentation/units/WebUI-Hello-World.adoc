@@ -90,23 +90,31 @@ Now you are presented with a description of the specified image.  Scroll down a 
 [horizontal]
 *Name*:: webui-hello
 
-Click `Deploy` and then `Continue to project overview`
+Click `Deploy` and then `Continue to Project Overview`
 
 ====
 image::ocp-webui-hw1-06-app-overview.png[Application Overview]
 ====
 
-
-Enter the values as shown below using defaults for all values unless specified:
-
-You just instructed openship to create a new application called **webui-hello**:
-  - The container was deployed to a node and brought online.
-
-Click "Continue to Project Overview"
-
+You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
 
 === Add a Route
 
+====
+image::ocp-webui-hw1-07-app-routes.png[Application Routes]
+====
+
+====
+image::ocp-webui-hw1-08-routes-create.png[Create Route]
+====
+
+====
+image::ocp-webui-hw1-09-routes-overview.png[Routes Overview]
+====
+
+====
+image::ocp-webui-hw1-10-verification.png[Verification]
+====
 
 
 == Making an authentic "Hello, World!"
