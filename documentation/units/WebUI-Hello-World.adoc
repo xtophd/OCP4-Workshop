@@ -100,17 +100,30 @@ You just completed instructing Openshift to create a new application called **we
 
 === Add a Route
 
+Now it is time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
 ====
 image::ocp-webui-hw1-07-app-routes.png[Application Routes]
 ====
+
+After clicking on `Create Route` you will be prompted for some details.
 
 ====
 image::ocp-webui-hw1-08-routes-create.png[Create Route]
 ====
 
+Fill in the details as follows (using defaults unless specified otherwise).
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: webui-hello
+
+Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
+
 ====
 image::ocp-webui-hw1-09-routes-overview.png[Routes Overview]
 ====
+
+You can now click on the URL provided in the **Hostname** column to verify that the application is working as expected.  You should see the standard Red Hat Enterprise Linux Test Page.
 
 ====
 image::ocp-webui-hw1-10-verification.png[Verification]
