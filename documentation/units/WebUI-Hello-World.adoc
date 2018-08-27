@@ -20,9 +20,9 @@ The objective is to step through everything needed to bring a "Hello, World!" pr
 There are 4 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
 
   . **login** - sign-on with proper credentials
-  . **create project**
-  . **create application**
-  . **expose route**
+  . **Create a Project**
+  . **Create an Application**
+  . **Expose a Route**
 
 Let's get started.
 
@@ -98,7 +98,7 @@ image::ocp-webui-hw1-06-app-overview.png[Application Overview]
 
 You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
 
-=== Add a Route
+=== Expose a Route
 
 Now it is time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
 ====
