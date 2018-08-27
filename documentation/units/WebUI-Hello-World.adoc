@@ -153,6 +153,10 @@ image::ocp-webui-hw1-10-verification.png[Verification]
 
 Go To Front Landing Page and select `Create Project`
 
+====
+image::ocp-webui-hw4-01-create-project.png[Create Project]
+====
+
 Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
@@ -167,11 +171,23 @@ And now click `Create`.  You should notice that your new project has been added 
 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
+====
+image::ocp-webui-hw4-02-image-search.png[Create Project]
+====
+
 You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
+
+====
+image::ocp-webui-hw4-03-image-details.png[Image Details]
+====
 
 Now you are presented with a series of options to configure the applicaton.
 
-Now entering details using defaults for all values unless specified below:
+====
+image::ocp-webui-hw4-04-app-details.png[Application Details]
+====
+
+Entering details using defaults for all values unless specified below:
 
 .Key-Values for Application Configuration
 [horizontal]
@@ -187,6 +203,15 @@ Now let's have a closer inspection.
 
 Click "Continue to Project Overview"
 
+====
+image::ocp-webui-hw4-05-app-overview.png[Application Details]
+====
+
+Fianlly, to verify the application is working properly click on the **URL**
+
+====
+image::ocp-webui-hw4-06-app-verification.png[Application Verification]
+====
 
 
 // --- Authentic Solution #5 ------------------------------------------
