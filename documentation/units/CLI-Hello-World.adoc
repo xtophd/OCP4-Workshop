@@ -19,7 +19,7 @@ There are 4 fundamental steps to deploying an application in the Openshift Conta
   . **oc login** - sign-on with proper credentials
   . **oc new project** - create a project
   . **oc new-app** - create an application
-  . **oc expose** - expose the service
+  . **oc expose** - expose the service (route)
 
 == My First Application
 
@@ -142,7 +142,7 @@ The IP address shown for the service is the internal non-routable network for th
 curl http://{ip_address}}:8080
 ----
 
-=== Add a Route
+=== Expose a Route
 
 *Be sure that you succesfully deployed a new router with sufficient replicas to have one on each node.  Dnsmasq does not support round-robin on a wildcard entry.  I am also exploring using nodeSelector to have the router run on the master*
 
