@@ -60,31 +60,31 @@ image::ocp-webui-hw1-02-select-project.png[Select Project]
 
 === Create an Application
 
-The next step is to select `Deploy`.
+The next step is to select `Deploy Image`.
 
 ====
 image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
 ====
 
-Click the radio button next to `Image Name`.
+Next you will be prompted for image name.
 
 ====
 image::ocp-webui-hw1-04-image-name.png[Image Name]
 ====
 
-Enter the values as shown below, and then click the `Search` icon.
+Click the radio button next to `Image Name` and enter the values as shown below.
 
 .Key-Values for Application Configuration
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Now you are presented with a description of the specified image.
+Click the `Search` icon to advance to the final phase of this deployment.
 
 ====
-image::ocp-webui-hw1-05-image-name.png[Image Name]
+image::ocp-webui-hw1-05-resource-name.png[Resource Name]
 ====
 
-Scroll down a bit and change the *Name*.
+Now you are presented with a description of the specified image.  Scroll down a bit and change the *Name* as shown below.
 
 .Key-Values for Application Configuration
 [horizontal]
@@ -93,19 +93,11 @@ Scroll down a bit and change the *Name*.
 Click `Deploy` and then `Continue to project overview`
 
 ====
-image::ocp-webui-hw1-06-resource-name.png[Image Name]
+image::ocp-webui-hw1-06-app-overview.png[Application Overview]
 ====
 
-Now entering details using defaults for all values unless specified below:
 
-.Key-Values for Application Configuration
-[horizontal]
-*Add to Project*:: WebUI Hello World
-*Name*:: webui-hello
-*Application Hostname*:: webui-hello.cloud.example.com
-
-Once you have filled in the details, select **Create**
-
+Enter the values as shown below using defaults for all values unless specified:
 
 You just instructed openship to create a new application called **webui-hello**:
   - The container was deployed to a node and brought online.
