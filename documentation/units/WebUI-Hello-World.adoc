@@ -36,18 +36,12 @@ Please proceed to login to the Openshift WebUI as user *admin*.  Instructions fo
 image::ocp-webui-login-04.png[Login]
 ====
 
-=== Review of the OCP WebUI Landing Page
-
-====
-image::ocp-webui-landing-01.png[Landing Page]
-====
-
 === Create a Project
 
 Go To Front Landing Page and select `Create Project`
 
 ====
-image::ocp-webui-helloworld-01.png[Project]
+image::ocp-webui-hw1-01-create-project.png[Create Project]
 ====
 
 Fill in the details as follows:
@@ -58,26 +52,48 @@ Fill in the details as follows:
 *Display Name*:: WebUI Hello World
 *Description*:: {leave blank}
 
-And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
+And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `WebUI Hello World` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
+
+====
+image::ocp-webui-hw1-02-select-project.png[Select Project]
+====
 
 === Create an Application
 
-Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
+The next step is to select `Deploy`.
 
 ====
-image::ocp-webui-helloworld-02.png[Search]
+image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
 ====
 
-You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
+Click the radio button next to `Image Name`.
 
 ====
-image::ocp-webui-helloworld-03.png[Data Entry]
+image::ocp-webui-hw1-04-image-name.png[Image Name]
 ====
 
-Now you are presented with a series of options to configure the applicaton.
+Enter the values as shown below, and then click the `Search` icon.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+Now you are presented with a description of the specified image.
 
 ====
-image::ocp-webui-helloworld-04.png[Confirm Selection]
+image::ocp-webui-hw1-05-image-name.png[Image Name]
+====
+
+Scroll down a bit and change the *Name*.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: webui-hello
+
+Click `Deploy` and then `Continue to project overview`
+
+====
+image::ocp-webui-hw1-06-resource-name.png[Image Name]
 ====
 
 Now entering details using defaults for all values unless specified below:
