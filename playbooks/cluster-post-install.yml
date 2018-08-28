@@ -17,10 +17,10 @@
         group: root
         mode: 0644  
         
-    - name: "TEMPLATE create /var/tmp/helloworld-pv.yml"
+    - name: "TEMPLATE create /var/tmp/helloworld-pv.txt"
       template:
         src: helloworld-pv-yml.j2
-        dest: /var/tmp/helloworld-pv.yml
+        dest: /var/tmp/helloworld-pv.txt
         owner: root
         group: root
         mode: 0644
