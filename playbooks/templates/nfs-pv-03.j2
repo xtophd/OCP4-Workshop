@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-03
+spec:
+  capacity:
+    storage: 5Gi 
+  accessModes:
+  - ReadWriteOnce 
+  nfs: 
+    path: /exports/helloworld
+    server: workstation.example.com
+  persistentVolumeReclaimPolicy: Recycle 
