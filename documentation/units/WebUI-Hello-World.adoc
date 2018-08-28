@@ -143,6 +143,11 @@ image::ocp-webui-hw1-10-verification.png[Verification]
 // --- Authentic Solution #3 ------------------------------------------
 === Solutino #3: Use NFS
 
+
+==== Create Persistent Volume (PV)
+
+Persistent Volumes are "cluster" objects and thus are not namespaced.  The WebUI also does not currently provide a dialog for creating PVs.  This action will be performed by importing a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
+
 ==== Create Project
 Fill in the details as follows:
 
@@ -152,9 +157,11 @@ Fill in the details as follows:
 *Display Name*:: WebUI Hello 3
 *Description*:: {leave blank}
 
-==== Create Persistent Volume (PV)
+==== Create Application
 
-
+.Key-Values for Application Configuration
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
 ==== Create Persistent Volume Claim (PVC)
 
@@ -165,14 +172,12 @@ Fill in the details as follows:
 
 Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
 
-
-
-
-==== Create Application
-
-.Key-Values for Application Configuration
+.Key-Values for Storage Details
 [horizontal]
-*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+*Storage*:: webui-hello3-claim
+*Mount Path*:: /var/www/html
+
+Click `Add`.  Openshift will no initiate a redplyment of our app with the new configuration which includes NFS storage.
 
 ==== Expose Route
 
