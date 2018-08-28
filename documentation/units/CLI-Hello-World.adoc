@@ -428,13 +428,13 @@ During the pre-installation phase of this lab, the host workshop.example.com was
 ----
 oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
     
-oc create -f /var/tmp/helloworld-pv.yml
+oc create -f /var/tmp/nfs-pv-01.yml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolume "helloworld-pv" created
+persistentvolume "nfs-pv-01" created
 ----
 
 .[root@master ~]#
