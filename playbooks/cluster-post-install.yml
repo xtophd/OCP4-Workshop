@@ -27,7 +27,7 @@
 
     - name: "TEMPLATE create /var/tmp/nfs-pv-02.txt"
       template:
-        src: nfs-pv-03.j2
+        src: nfs-pv-02.j2
         dest: /var/tmp/nfs-pv-02.txt
         owner: root
         group: root
@@ -101,7 +101,7 @@
 
     - name: "TEMPLATE create /var/tmp/nfs-pv-02.yml"
       template:
-        src: nfs-pv-03.j2
+        src: nfs-pv-02.j2
         dest: /var/tmp/nfs-pv-02.yml
         owner: root
         group: root
