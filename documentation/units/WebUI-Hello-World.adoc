@@ -154,7 +154,16 @@ Fill in the details as follows:
 
 ==== Create Persistent Volume (PV)
 
+
+
 ==== Create Persistent Volume Claim (PVC)
+
+.Key-Values for Create Storage
+[horizontal]
+*Name*:: webui-hello3-claim
+*Size*:: 1 GiB
+
+Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
 
 
 
