@@ -143,7 +143,37 @@ image::ocp-webui-hw1-10-verification.png[Verification]
 // --- Authentic Solution #3 ------------------------------------------
 === Solutino #3: Use NFS
 
+==== Create Project
+Fill in the details as follows:
 
+.Key-Values for Create Project Dialog
+[horizontal]
+*Name*:: webui-hello3
+*Display Name*:: WebUI Hello 3
+*Description*:: {leave blank}
+
+==== Create Persistent Volume (PV)
+
+==== Create Persistent Volume Claim (PVC)
+
+
+
+
+==== Create Application
+
+.Key-Values for Application Configuration
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+==== Expose Route
+
+Fill in the details as follows (using defaults unless specified otherwise).
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: webui-hello3
+
+==== Verify
 
 // --- Authentic Solution #4 ------------------------------------------
 === Solution #4: Use Source Control (git)
