@@ -99,7 +99,7 @@
         group: root
         mode: 0644
 
-- name: "TEMPLATE create /var/tmp/nfs-pv-02.yml"
+    - name: "TEMPLATE create /var/tmp/nfs-pv-02.yml"
       template:
         src: nfs-pv-03.j2
         dest: /var/tmp/nfs-pv-02.yml
