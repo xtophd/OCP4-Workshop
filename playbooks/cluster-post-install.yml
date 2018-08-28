@@ -17,13 +17,30 @@
         group: root
         mode: 0644  
         
-    - name: "TEMPLATE create /var/tmp/helloworld-pv.txt"
+    - name: "TEMPLATE create /var/tmp/nfs-pv-01.txt"
       template:
-        src: helloworld-pv-yml.j2
-        dest: /var/tmp/helloworld-pv.txt
+        src: nfs-pv-01.j2
+        dest: /var/tmp/nfs-pv-01.txt
         owner: root
         group: root
         mode: 0644
+
+    - name: "TEMPLATE create /var/tmp/nfs-pv-02.txt"
+      template:
+        src: nfs-pv-03.j2
+        dest: /var/tmp/nfs-pv-02.txt
+        owner: root
+        group: root
+        mode: 0644
+  
+    - name: "TEMPLATE create /var/tmp/nfs-pv-03.txt"
+      template:
+        src: nfs-pv-03.j2
+        dest: /var/tmp/nfs-pv-03.txt
+        owner: root
+        group: root
+        mode: 0644
+  
   
     - name: "FILE create path for exports/helloworld"
       file: 
@@ -74,15 +91,15 @@
         group: root
         mode: 0644
 
-    - name: "TEMPLATE create /var/tmp/helloworld-pv.yml"
+    - name: "TEMPLATE create /var/tmp/nfs-pv-01.yml"
       template:
-        src: helloworld-pv-yml.j2
-        dest: /var/tmp/helloworld-pv.yml
+        src: nfs-pv-01.j2
+        dest: /var/tmp/nfs-pv-01.txt
         owner: root
         group: root
         mode: 0644
 
-    - name: "TEMPLATE create /var/tmp/helloworld-pv-claim.yml"
+    - name: "TEMPLATE create /var/tmp/nfs-pv-01.yml"
       template:
         src: helloworld-pv-claim-yml.j2
         dest: /var/tmp/helloworld-pv-claim.yml
