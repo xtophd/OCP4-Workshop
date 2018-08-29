@@ -566,9 +566,9 @@ curl http://helloworld4.cloud.example.com
 
 === Solution #5 - Use Dockerfile
 
-Next we will implement another solution using a Dockerfile.  Again, using a source code repository we we initiate a container deployment but this time we only specify a `Dockerfile` source.
+Next we will implement another solution using a Dockerfile.  Again, using a source code repository we initiate a container deployment but this time we only specify a `Dockerfile` source.
 
-To mix things up a little, we will also use a PHP enhanced container image instead of the plain httpd image we have been using.  The dockerfile looks something like this:
+To mix things up a little, we will also use a PHP enhanced container image instead of the plain httpd image we have been using.  The dockerfile in the source repository looks something like this:
 
 .sample dockerfile
 [source,indent=4]
