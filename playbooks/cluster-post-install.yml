@@ -94,7 +94,7 @@
     - name: "TEMPLATE create /var/tmp/nfs-pv-01.yml"
       template:
         src: nfs-pv-01.j2
-        dest: /var/tmp/nfs-pv-01.txt
+        dest: /var/tmp/nfs-pv-01.yml
         owner: root
         group: root
         mode: 0644
