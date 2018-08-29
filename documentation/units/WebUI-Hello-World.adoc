@@ -89,7 +89,6 @@ Now you are presented with a description of the specified image.  Scroll down a 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: webui-hello
-*Hostname*:: webui-hello.cloud.example.com
 
 Click `Deploy` and then `Continue to Project Overview`
 
@@ -102,6 +101,7 @@ You just completed instructing Openshift to create a new application called **we
 === Expose a Route
 
 Now it is time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
+
 ====
 image::ocp-webui-hw1-07-app-routes.png[Application Routes]
 ====
@@ -117,6 +117,7 @@ Fill in the details as follows (using defaults unless specified otherwise).
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: webui-hello
+*Hostname*:: webui-hello.cloud.example.com
 
 Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
 
