@@ -89,6 +89,7 @@ Now you are presented with a description of the specified image.  Scroll down a 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: webui-hello
+*Hostname*:: webui-hello.cloud.example.com
 
 Click `Deploy` and then `Continue to Project Overview`
 
