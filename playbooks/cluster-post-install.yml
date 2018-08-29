@@ -91,6 +91,14 @@
         group: root
         mode: 0644
 
+    - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
+      template:
+        src: helloworld3-pv-claim.j2
+        dest: /var/tmp/helloworld3-pv-claim.yml
+        owner: root
+        group: root
+        mode: 0644
+
     - name: "TEMPLATE create /var/tmp/nfs-pv-01.yml"
       template:
         src: nfs-pv-01.j2
