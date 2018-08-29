@@ -445,21 +445,21 @@ oc get pv
 .Your output should look like this
 [source,indent=4]
 ----
-NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-helloworld-pv   5Gi        RWO            Recycle          Available                                      7s
+NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
+nfs-pv-01   5Gi        RWO            Recycle          Available                                      7s
 ----
 
 Now create the persistent volume claim. 
 
 .[root@master ~]#
 ----
-oc create -f /var/tmp/helloworld-pv-claim.yml
+oc create -f /var/tmp//helloworld3-pv-claim.yml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolumeclaim "helloworld-claim" created
+persistentvolumeclaim "helloworld3-claim" created
 ----
 
 Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *helloworld-pv*
@@ -474,11 +474,11 @@ oc get pvc
 .Your output should look like this
 [source,indent=4]
 ----
-NAME            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                          STORAGECLASS   REASON    AGE
-helloworld-pv   5Gi        RWO            Recycle          Bound     helloworld3/helloworld-claim
+NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                       STORAGECLASS   REASON    AGE
+nfs-pv-01   5Gi        RWO            Recycle          Bound     default/helloworld3-claim                            11m
 
-NAME               STATUS    VOLUME          CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-helloworld-claim   Bound     helloworld-pv   5Gi        RWO                           4s
+NAME                STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                           58s
 ----
 
 Now that the storage prep-work is complete, we can proceed: 
@@ -491,7 +491,7 @@ Now that the storage prep-work is complete, we can proceed:
 ----
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
 
-oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld-claim
+oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld3-claim
 
 oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
 
