@@ -189,7 +189,7 @@ Now click 'Deploy' and **Continue to the project overview**.
 
 ==== Create Persistent Volume Claim (PVC)
 
-Go to the deployments page and select our deployment configurattion **wehui-hello3**.
+Go to the deployments page and select our deployment configuration **wehui-hello3**.
 
 Now click on the `Actions` pull down and select `Add Storage`.
 
@@ -211,12 +211,16 @@ Click `Add`.  Openshift will no initiate a redplyment of our app with the new co
 
 ==== Expose Route
 
+Go to Applications-> Routes and proceed to click `Create Route`
+
 Fill in the details as follows (using defaults unless specified otherwise).
 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: webui-hello3
 *Hostname*:: webui-hello3.cloud.example.com
+
+Click `Create`
 
 ==== Verify
 
