@@ -141,7 +141,7 @@ On the left menu, mouse-over `Applications` and proceed to `Pods`.  Now click on
 image::ocp-webui-hw1-11-pod-overview.png[Pod Overview]
 ====
 
-One of th eoptions in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
+One of the options in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
 
 ====
 image::ocp-webui-hw1-12-pod-terminal.png[Pod Terminal]
