@@ -135,7 +135,7 @@ image::ocp-webui-hw1-10-verification.png[Verification]
 
 === Exploring the Container
 
-From the left menu, select Application -> Pods, then click on the pod to bring up it's details.
+On the left menu, mouse-over `Applications` and proceed to `Pods`.  Now click on the pod link to bring up it's details.
 
 ====
 image::ocp-webui-hw1-11-pod-overview.png[Pod Overview]
