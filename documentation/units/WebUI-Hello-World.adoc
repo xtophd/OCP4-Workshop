@@ -125,12 +125,86 @@ Proceed to click `Create`.  You should be returned to the Routes Overview page a
 image::ocp-webui-hw1-09-routes-overview.png[Routes Overview]
 ====
 
+=== Validate Application
+
 You can now click on the URL provided in the **Hostname** column to verify that the application is working as expected.  You should see the standard Red Hat Enterprise Linux Test Page.
 
 ====
 image::ocp-webui-hw1-10-verification.png[Verification]
 ====
 
+=== Exploring the Container
+
+From the left menu, select Application -> Pods, then click on the pod to bring up it's details.
+
+====
+image::ocp-webui-hw1-11-pod-overview.png[Pod Overview]
+====
+
+One of th eoptions in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
+
+====
+image::ocp-webui-hw1-10-pod-terminal.png[Pod Terminal]
+====
+
+Now that you have connected to the active container, have a look around
+
+
+.sh-4.2$
+----
+id
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+uid=1000120000 gid=0(root) groups=0(root),1000120000
+----
+
+.sh-4.2$
+----
+ps -ef
+----
+    
+.Your output should look like this
+[source,indent=4]
+----
+UID         PID   PPID  C STIME TTY          TIME CMD
+default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
+default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
+default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+default      74      0  0 17:50 ?        00:00:00 /bin/sh
+default      84     74  0 17:50 ?        00:00:00 ps -ef
+----
+
+Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
+
+.sh-4.2$
+----
+cd /var/www/
+    
+ls -la
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+total 0
+drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
+drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
+drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
+drwxr-xr-x.  2 default root   6 May  9 13:18 html
+----
+
+
+The primary thing we are trying to point out here is that the UID the process is running with (ie: **1000120000**) does not have permissions to write to any part of the container filesystem except traditionally open directories like **/tmp** or **/var/tmp**.  Next, you will do a series of exercises detailing how to make adjustments to the project and deploy a real helloworld application.
 
 == Making an authentic "Hello, World!"
 
