@@ -183,7 +183,7 @@ Scroll down and change the application name as follows.
 
 .Key-Values for Application Configuration
 [horizontal]
-*Name*:: webui-hello
+*Name*:: webui-hello3
 
 Now click deploy
 
