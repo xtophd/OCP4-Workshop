@@ -191,6 +191,10 @@ Now click on `Close" and continue with your image deployment.
 
 As before, the next step is to `Deploy Image`
 
+====
+image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
+====
+
 .Key-Values for Deploy Image
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
@@ -211,7 +215,17 @@ Go to the deployments page and select our deployment configuration **wehui-hello
 
 Now click on the `Actions` pull down and select `Add Storage`.
 
+====
+image::ocp-webui-hw3-05-add-storage.png[Add Storage]
+====
+
 After click on `Create Storage` you will be presented the dialog for setting up a persistent volume claim (PVC).
+
+====
+image::ocp-webui-hw3-06-create-storage.png[Add Storage]
+====
+
+Use the following parameters.
 
 .Key-Values for Create Storage
 [horizontal]
@@ -219,6 +233,12 @@ After click on `Create Storage` you will be presented the dialog for setting up 
 *Size*:: 1 GiB
 
 Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
+
+====
+image::ocp-webui-hw3-07-storage-details.png[Add Storage]
+====
+
+Use the following parameters.
 
 .Key-Values for Storage Details
 [horizontal]
