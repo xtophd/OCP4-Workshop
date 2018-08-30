@@ -24,14 +24,6 @@
         owner: root
         group: root
         mode: 0644
-
-    - name: "TEMPLATE create /var/tmp/nfs-pv-01.txt"
-      template:
-        src: webui-hello3-namespace.j2
-        dest: /var/tmp/webui-hello3-namespace.txt
-        owner: root
-        group: root
-        mode: 0644
         
     - name: "TEMPLATE create /var/tmp/nfs-pv-01.txt"
       template:
