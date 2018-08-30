@@ -185,7 +185,7 @@ Scroll down and change the application name as follows.
 [horizontal]
 *Name*:: webui-hello3
 
-Now click deploy
+Now click 'Deploy' and **Continue to the project overview**.
 
 ==== Create Persistent Volume Claim (PVC)
 
