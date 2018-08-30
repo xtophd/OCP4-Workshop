@@ -147,7 +147,13 @@ image::ocp-webui-hw1-10-verification.png[Verification]
 
 ==== Create Project
 
-Create a project as before and fill in the details as follows:
+Start at the Openshift landing page and `Create` a project as before.
+
+====
+image::ocp-webui-hw1-01-create-project.png[Create Project]
+====
+
+Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
@@ -163,9 +169,21 @@ Persistent Volumes are "cluster" objects and thus are not namespaced (ie: they d
 
 Proceed to click `Import YAML/JSON`
 
+====
+image::ocp-webui-hw3-02-pv-import-yaml.png[Import YAML]
+====
+
 A sample YAML file is provided on the workstation to make this process easy.  Use the `Browse` button on the search bar to locate: **/var/tmp/nfs-pv-02.txt**
 
+====
+image::ocp-webui-hw3-03-pv-yaml.png[YAML Details]
+====
+
 Proceed to click on `Create`.  You will get a warning message requesting confirmation, click `Create Anyway`
+
+====
+image::ocp-webui-hw3-04-pv-confirmation.png[PV Confirmation]
+====
 
 Now click on `Close" and continue with your image deployment.
 
