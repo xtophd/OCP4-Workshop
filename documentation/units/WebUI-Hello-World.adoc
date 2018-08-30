@@ -167,7 +167,7 @@ Once the project is created, proceed to select the project on the right.
 
 Persistent Volumes are "cluster" objects and thus are not namespaced (ie: they don't belong to projects alone).  The WebUI also does not currently provide a dialog for creating PVs.  This action will be performed by importing a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
 
-Proceed to click `Import YAML/JSON`
+Proceed to click `Import YAML/JSON`.  You can select either the button in the center of the screen, or the option from the **Add to Project** pull down.
 
 ====
 image::ocp-webui-hw3-02-pv-import-yaml.png[Import YAML]
@@ -199,7 +199,7 @@ image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Enter the Image Name and click the search icon.
+After typing in the Image Name, click the search icon to populate the image details and expose additional options.
 
 Scroll down and change the application name as follows.
 
@@ -219,7 +219,7 @@ Now click on the `Actions` pull down and select `Add Storage`.
 image::ocp-webui-hw3-05-add-storage.png[Add Storage]
 ====
 
-After click on `Create Storage` you will be presented the dialog for setting up a persistent volume claim (PVC).
+After you click on `Create Storage` you will be presented the dialog for setting up a persistent volume claim (PVC).
 
 ====
 image::ocp-webui-hw3-06-create-storage.png[Add Storage]
