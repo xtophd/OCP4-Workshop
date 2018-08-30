@@ -163,15 +163,11 @@ Persistent Volumes are "cluster" objects and thus are not namespaced (ie: they d
 
 Proceed to click `Import YAML/JSON`
 
-A sample YAML file is provided on the workstation to make this process easy with a cut&past operation.  Use a new tab in the firefox browser with the following URL: **file:://var/tmp/nfs-pv-02.txt**
-
-Once the file is displayed in the browser you can easily cut the entire file with CTRL-A (select all) and then CTRL-C (cut).
-
-Now return to the OCP WebUI tab and then click inside the editing box followed by a CTRL-V (paste)
+A sample YAML file is provided on the workstation to make this process easy.  Use the `Browse` button on the search bar to locate: **/var/tmp/nfs-pv-02.txt**
 
 Proceed to click on `Create`.  You will get a warning message requesting confirmation, click `Create Anyway`
 
-Next `Continue to the project overview".
+Now click on `Close" and continue with your image deployment.
 
 ==== Create Application
 
