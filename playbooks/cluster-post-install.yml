@@ -17,10 +17,10 @@
         group: root
         mode: 0644  
 
-    - name: "TEMPLATE create /var/tmp/webui-hello3-namespace.txt"
+    - name: "TEMPLATE create /var/tmp/webui-hello-namespace.txt"
       template:
-        src: webui-hello3-namespace.j2.j2
-        dest: /var/tmp/webui-hello3-namespace.txt
+        src: webui-hello-namespace.j2
+        dest: /var/tmp/webui-hello-namespace.txt
         owner: root
         group: root
         mode: 0644
