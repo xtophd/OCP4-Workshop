@@ -366,7 +366,12 @@ Hello, World!
 </html>
 ----
 
-IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, etc...
+IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform: 
+  . container design 
+  . project attributes 
+  . process uid/gid (ie: namespaces) in a containerized environment,
+  . filesystems
+  . etc...
 
 === Solution #2 - Use emptyDir
 
