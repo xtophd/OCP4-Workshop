@@ -147,8 +147,9 @@ One of th eoptions in the pod details is to connect to the active pods terminal.
 image::ocp-webui-hw1-12-pod-terminal.png[Pod Terminal]
 ====
 
-Now that you have connected to the active container, have a look around.  These are identical exercises to those performed in the CLI version of hellow-world.  If you are comfortable with the activites, can can skip to **Making an authentic "Hello, World!"**.
+Now that you have connected to the active container, have a look around.  These are identical exercises to those performed in the CLI version of hellow-world.  If you are familiar with the terminal activites you can skip to **Making an authentic "Hello, World!"**.
 
+Here are a few commands to explore the container's namespace (ie: environment).
 
 .sh-4.2$
 ----
