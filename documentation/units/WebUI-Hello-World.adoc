@@ -144,7 +144,7 @@ image::ocp-webui-hw1-11-pod-overview.png[Pod Overview]
 One of th eoptions in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
 
 ====
-image::ocp-webui-hw1-10-pod-terminal.png[Pod Terminal]
+image::ocp-webui-hw1-12-pod-terminal.png[Pod Terminal]
 ====
 
 Now that you have connected to the active container, have a look around
