@@ -8,7 +8,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 :units_dir: units
-:imagesdir: ./images
+:imagesdir: ./_images
 
 = Openshift WebUI Basics
 
