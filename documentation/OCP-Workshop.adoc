@@ -1,5 +1,5 @@
 :gitrepo: https://github.com/xtophd/OCP-Workshop
-:units_dir: units
+:includedir: _includes
 :doctype: book
 :sectnums:
 :sectnumlevels: 3
@@ -8,31 +8,31 @@
 
 == Preface
 
-include::{units_dir}/Preface.adoc[leveloffset=+1]
+include::{includedir}/Preface.adoc[leveloffset=+1]
 
 == Getting Started (Installation)
 
-include::{units_dir}/Getting-Started.adoc[leveloffset=+1]
+include::{includedir}/Getting-Started.adoc[leveloffset=+1]
 
 == CLI: First Time Login
 
-include::{units_dir}/CLI-First-Time-Login.adoc[leveloffset=+1]
+include::{includedir}/CLI-First-Time-Login.adoc[leveloffset=+1]
 
 == CLI: Users & Roles
 
-include::{units_dir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
+include::{includedir}/CLI-Users-and-Roles.adoc[leveloffset=+1]
 
 == CLI Hello World
 
-include::{units_dir}/CLI-Hello-World.adoc[leveloffset=+1]
+include::{includedir}/CLI-Hello-World.adoc[leveloffset=+1]
 
 == WebUI: First Time Login
 
-include::{units_dir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
+include::{includedir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
 
 == WebUI: Hello World
 
-include::{units_dir}/WebUI-Hello-World.adoc[leveloffset=+1]
+include::{includedir}/WebUI-Hello-World.adoc[leveloffset=+1]
 
 
 [discrete]
