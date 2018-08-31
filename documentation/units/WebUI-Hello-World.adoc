@@ -48,9 +48,9 @@ Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
-*Name*:: webui-hello
-*Display Name*:: WebUI Hello World
-*Description*:: {leave blank}
+*Name*:: hello-webui
+*Display Name*:: Hello WebUI
+*Description*:: My First WebUI App
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `WebUI Hello World` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
 
@@ -88,7 +88,7 @@ Now you are presented with a description of the specified image.  Scroll down a 
 
 .Key-Values for Application Configuration
 [horizontal]
-*Name*:: webui-hello
+*Name*:: hello-webui
 
 Click `Deploy` and then `Continue to Project Overview`
 
@@ -116,8 +116,8 @@ Fill in the details as follows (using defaults unless specified otherwise).
 
 .Key-Values for Application Configuration
 [horizontal]
-*Name*:: webui-hello
-*Hostname*:: webui-hello.cloud.example.com
+*Name*:: hello-webui
+*Hostname*:: hello-webui.cloud.example.com
 
 Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
 
@@ -210,7 +210,112 @@ The primary thing we are trying to point out here is that the UID the process is
 == Making an authentic "Hello, World!"
 
 // --- Authentic Solution #1 ------------------------------------------
+
 === Solution #1: Change Security Attribute
+
+The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import TAML/JSON` functionality of the WebUI.  
+
+For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *webui-hello* project.
+    
+.[root@master ~]#
+----
+oc edit namespace helloworld
+----
+
+.Adjust the following attribute
+----
+openshift.io/sa.scc.uid-range: 1001/10000
+----
+
+Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
+    
+.[root@master ~]#
+----
+oc rollout latest dc/hello-app
+
+watch oc get pods
+----
+
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* Terminating.
+Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
+versions of the pod.
+
+.Your output should look like this
+[source,indent=4]
+----
+NAME                READY     STATUS        RESTARTS   AGE                                   
+hello-app-1-wbq42   0/1       Terminating   0          2h                                    
+hello-app-2-lhvgp   1/1       Running       0          10s
+----
+
+Just press CTRL-C to exit the `watch` process and return to your shell
+
+Next we will once again connect to the containers shell and explore the changes that were implemented by editing the security attributes.
+
+.[root@master ~]#
+----
+oc get pods
+    
+oc rsh {{ POD NAME }}
+----
+
+Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
+
+.sh-4.2$
+----
+id
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+uid=1001(default) gid=0(root) groups=0(root),1000120000
+----
+
+.sh-4.2$
+----
+cd /var/www
+ls -la
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+total 0
+drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
+drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
+drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
+drwxr-xr-x.  2 default root   6 May  9 13:18 html
+----
+
+.sh-4.2$
+----
+exit
+----
+
+To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
+
+.[root@master ~]#
+----
+oc get pods
+
+oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+    
+curl http://helloworld.cloud.example.com
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
+IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
+
 
 
 // --- Authentic Solution #2 ------------------------------------------
@@ -232,9 +337,9 @@ Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
-*Name*:: webui-hello3
-*Display Name*:: WebUI Hello 3
-*Description*:: {leave blank}
+*Name*:: hello-webui3
+*Display Name*:: Hello WebUI III
+*Description*:: My Third WebUI App
 
 Once the project is created, proceed to select the project on the right.
 
@@ -280,13 +385,13 @@ Scroll down and change the application name as follows.
 
 .Key-Values for Application Configuration
 [horizontal]
-*Name*:: webui-hello3
+*Name*:: hello-webui3
 
 Now click 'Deploy' and **Continue to the project overview**.
 
 ==== Create Persistent Volume Claim (PVC)
 
-Go to the deployments page and select our deployment configuration **wehui-hello3**.
+Go to the deployments page and select our deployment configuration **hello-webui3**.
 
 Now click on the `Actions` pull down and select `Add Storage`.
 
@@ -304,7 +409,7 @@ Use the following parameters.
 
 .Key-Values for Create Storage
 [horizontal]
-*Name*:: webui-hello3-claim
+*Name*:: hello-webui3-claim
 *Size*:: 1 GiB
 
 Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
@@ -317,7 +422,7 @@ Use the following parameters.
 
 .Key-Values for Storage Details
 [horizontal]
-*Storage*:: webui-hello3-claim
+*Storage*:: hello-webui3-claim
 *Mount Path*:: /var/www/html
 
 Click `Add`.  Openshift will no initiate a redplyment of our app with the new configuration which includes NFS storage.
@@ -330,8 +435,8 @@ Fill in the details as follows (using defaults unless specified otherwise).
 
 .Key-Values for Application Configuration
 [horizontal]
-*Name*:: webui-hello3
-*Hostname*:: webui-hello3.cloud.example.com
+*Name*:: hello-webui3
+*Hostname*:: hello-webui3.cloud.example.com
 
 Click `Create`
 
@@ -356,9 +461,9 @@ Fill in the details as follows:
 
 .Key-Values for Create Project Dialog
 [horizontal]
-*Name*:: webui-hello4
-*Display Name*:: WebUI Hello World 4
-*Description*:: {leave blank}
+*Name*:: hello-webui4
+*Display Name*:: Hello WebUI IV
+*Description*:: My Fourth WebUI App
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
@@ -386,11 +491,11 @@ Entering details using defaults for all values unless specified below:
 
 .Key-Values for Application Configuration
 [horizontal]
-*Add to Project*:: WebUI Hello World 4
-*Name*:: webui-hello4
+*Add to Project*:: Hello WebUI IV
+*Name*:: hello-webui4
 *Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
 *Context Directory*:: /src/helloworld
-*Application Hostname*:: webui-hello4.cloud.example.com
+*Application Hostname*:: hello-webui4.cloud.example.com
 
 Once you have filled in the details, select **Create**
 
