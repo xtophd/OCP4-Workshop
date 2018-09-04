@@ -124,7 +124,7 @@ You just instructed Openshift to create a new application called **hello-app**. 
   * A **Deployment Container** is initiated to launch the desired image
   * and *Voi La!!!* The container is deployed and ready to go to work.
 
-Now let's have a closer inspection.
+Now let's have a closer inspection with a couple different commands.  
 
 .[root@master ~]#
 ----
@@ -134,6 +134,10 @@ oc get pods
     
 oc get services
 ----
+
+
+
+
 
 The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
 
@@ -147,6 +151,13 @@ hello-app-1-74v6s   1/1       Running   0          44s
 
 NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 hello-app   ClusterIP   172.30.163.94   <none>        8080/TCP,8443/TCP   6m
+----
+
+We can also monitor the deployment of the application by running `oc rollout status`.  This command will exit once the deployment has completed and the web application is ready.
+
+.[root@master ~]#
+----
+oc rollout status dc/hello-app
 ----
 
 Once the **hello-app-1-????** is in a 'Running' state, you can proceed with the next step.  Use the 'Cluster-IP' address from output of `oc get services` to perform the following **curl**.
@@ -169,13 +180,18 @@ Let's create a route for our new applciation.
 oc expose service hello-app --hostname=helloworld.cloud.example.com
 ----
 
-We can also monitor the deployment of the application by running the following command.  This command will exit once the deployment has completed and the web application is ready.
+You can retrieve the current list of configured routes with the `oc get routes` command.
 
 .[root@master ~]#
 ----
-oc rollout status dc/hello-app
-
 oc get routes
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+NAME        HOST/PORT                      PATH      SERVICES    PORT       TERMINATION   WILDCARD
+hello-app   helloworld.cloud.example.com             hello-app   8080-tcp                 None
 ----
 
 === Validate Application
