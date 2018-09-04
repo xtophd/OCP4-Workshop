@@ -63,13 +63,13 @@ image::ocp-webui-hello1-project-select.png[Select Project]
 The next step is to select `Deploy Image`.
 
 ====
-image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
+image::ocp-webui-hello1-image-deploy.png[Image Deploy]
 ====
 
 Next you will be prompted for image name.
 
 ====
-image::ocp-webui-hw1-04-image-name.png[Image Name]
+image::ocp-webui-hello1-image-name.png[Image Name]
 ====
 
 Click the radio button next to `Image Name` and enter the values as shown below.
@@ -81,7 +81,7 @@ Click the radio button next to `Image Name` and enter the values as shown below.
 Click the `Search` icon to advance to the final phase of this deployment.
 
 ====
-image::ocp-webui-hw1-05-resource-name.png[Resource Name]
+image::ocp-webui-hello1-resource-name.png[Resource Name]
 ====
 
 Now you are presented with a description of the specified image.  Scroll down a bit and change the *Name* as shown below.
