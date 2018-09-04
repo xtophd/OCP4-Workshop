@@ -103,13 +103,19 @@ You just completed instructing Openshift to create a new application called **we
 Now it is time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
 
 ====
-image::ocp-webui-hw1-07-app-routes.png[Application Routes]
+image::ocp-webui-hello1-routes.png[Application Routes]
+====
+
+Now proceed to click on `Create Route`.
+
+====
+image::ocp-webui-hello1-route-create.png[Create Route]
 ====
 
 After clicking on `Create Route` you will be prompted for some details.
 
 ====
-image::ocp-webui-hw1-08-routes-create.png[Create Route]
+image::ocp-webui-hello1-route-details.png[Create Route]
 ====
 
 Fill in the details as follows (using defaults unless specified otherwise).
