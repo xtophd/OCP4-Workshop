@@ -149,18 +149,20 @@ NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 hello-app   ClusterIP   172.30.163.94   <none>        8080/TCP,8443/TCP   6m
 ----
 
-Once the **hello-app-1-????** is in a **Running** state, you can proceed with the next step.  Use the **Cluster-IP** address from output of `oc get services` to perform the following **curl**.
+Once the **hello-app-1-????** is in a 'Running' state, you can proceed with the next step.  Use the 'Cluster-IP' address from output of `oc get services` to perform the following **curl**.
 
 .[root@master ~]#
 ----
 curl http://{ip_address}}:8080
 ----
 
+This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
+
 === Expose a Route
 
-*Be sure that you succesfully deployed a new router with sufficient replicas to have one on each node.  Dnsmasq does not support round-robin on a wildcard entry.  I am also exploring using nodeSelector to have the router run on the master*
+In Openshift, routers are the processes responsible for making services accessible to the outside world.  Routers run as containers on nodes.  Therefore, the nodes where routers run must be reachable themselves.
 
-Routers are the processes responsible for making services accessible to the outside world, so the routers must be reachable. Routers run as containers on nodes - therefore, the nodes where routers run must be reachable themselves.
+Let's create a route for our new applciation.
 
 .[root@master ~]#
 ----
