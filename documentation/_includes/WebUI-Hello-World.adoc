@@ -144,13 +144,13 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 On the left menu, mouse-over `Applications` and proceed to `Pods`.  Now click on the pod link to bring up it's details.
 
 ====
-image::ocp-webui-hw1-11-pod-overview.png[Pod Overview]
+image::ocp-webui-hello1-pod-overview.png[Pod Overview]
 ====
 
 One of the options in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
 
 ====
-image::ocp-webui-hw1-12-pod-terminal.png[Pod Terminal]
+image::ocp-webui-hello1-pod-terminal.png[Pod Overview]
 ====
 
 Now that you have connected to the active container, have a look around.  These are identical exercises to those performed in the CLI version of hellow-world.  If you are familiar with the terminal activites you can skip to **Making an authentic "Hello, World!"**.
