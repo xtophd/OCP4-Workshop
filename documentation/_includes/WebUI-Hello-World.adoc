@@ -93,7 +93,7 @@ Now you are presented with a description of the specified image.  Scroll down a 
 Click `Deploy` and then `Continue to Project Overview`
 
 ====
-image::ocp-webui-hw1-06-app-overview.png[Application Overview]
+image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
 You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
