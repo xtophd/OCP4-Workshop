@@ -149,7 +149,7 @@ NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
 hello-app   ClusterIP   172.30.163.94   <none>        8080/TCP,8443/TCP   6m
 ----
 
-Once the **hello-app-1-????** is in a **Running** state, you can proceed with the next step.
+Once the **hello-app-1-????** is in a **Running** state, you can proceed with the next step.  Use the **Cluster-IP** address from output of `oc get services` to perform the following **curl**.
 
 .[root@master ~]#
 ----
