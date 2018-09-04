@@ -137,6 +137,17 @@ oc get services
 
 The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
 
+Run `oc get pods` several times to watch the changes as described above.
+
+.Your output should look like this
+[source,indent=4]
+----
+NAME                READY     STATUS    RESTARTS   AGE
+hello-app-1-74v6s   1/1       Running   0          44s
+----
+
+Once the **hello-app-1-????** is in a **Running** state, you can proceed with the next step.
+
 .[root@master ~]#
 ----
 curl http://{ip_address}}:8080
