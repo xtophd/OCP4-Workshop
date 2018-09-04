@@ -257,103 +257,14 @@ The last task to complete Solution #1 is to initiate a new deployment.  For that
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 ====
     
-.[root@master ~]#
-----
-oc edit namespace helloworld
-----
-
-.Adjust the following attribute
-----
-openshift.io/sa.scc.uid-range: 1001/10000
-----
-
-Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
-    
-.[root@master ~]#
-----
-oc rollout latest dc/hello-app
-
-watch oc get pods
-----
-
-Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* Terminating.
-Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
-versions of the pod.
-
-.Your output should look like this
-[source,indent=4]
-----
-NAME                READY     STATUS        RESTARTS   AGE                                   
-hello-app-1-wbq42   0/1       Terminating   0          2h                                    
-hello-app-2-lhvgp   1/1       Running       0          10s
-----
-
-Just press CTRL-C to exit the `watch` process and return to your shell
-
-Next we will once again connect to the containers shell and explore the changes that were implemented by editing the security attributes.
-
-.[root@master ~]#
-----
-oc get pods
-    
-oc rsh {{ POD NAME }}
-----
-
-Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
+Now you can use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell, poke around, and to complete the task install a helloworld index.html.
 
 .sh-4.2$
 ----
-id
-----
-
-.Your output should look like this
-[source,indent=4]
-----
-uid=1001(default) gid=0(root) groups=0(root),1000120000
-----
-
-.sh-4.2$
-----
-cd /var/www
-ls -la
-----
-
-.Your output should look like this
-[source,indent=4]
-----
-total 0
-drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
-drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
-drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
-drwxr-xr-x.  2 default root   6 May  9 13:18 html
-----
-
-.sh-4.2$
-----
-exit
-----
-
-To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
-
-.[root@master ~]#
-----
-oc get pods
-
-oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
+cd /var/www/html
+curl helloworld.cloud.example.com >> index.html
+-----
     
-curl http://helloworld.cloud.example.com
-----
-
-.Your output should look like this
-[source,indent=4]
-----
-<html>
-<body>
-Hello, World!
-</body>
-</html>
-----
-
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
 
