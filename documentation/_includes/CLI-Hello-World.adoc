@@ -137,13 +137,16 @@ oc get services
 
 The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
 
-Run `oc get pods` several times to watch the changes as described above.
+Run `oc get pods` and `oc get services` several times to watch the changes as described above.
 
 .Your output should look like this
 [source,indent=4]
 ----
 NAME                READY     STATUS    RESTARTS   AGE
 hello-app-1-74v6s   1/1       Running   0          44s
+
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+hello-app   ClusterIP   172.30.163.94   <none>        8080/TCP,8443/TCP   6m
 ----
 
 Once the **hello-app-1-????** is in a **Running** state, you can proceed with the next step.
