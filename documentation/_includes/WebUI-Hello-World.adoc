@@ -219,9 +219,43 @@ The primary thing we are trying to point out here is that the UID the process is
 
 === Solution #1: Change Security Attribute
 
-The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import TAML/JSON` functionality of the WebUI.  
+The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
 
-For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *webui-hello* project.
+For our first solution, we are going to adjust the current project's security attribute by importing a YAML config file.
+
+Proceed to click on the left side `Overview` tab.  The main bar across the top should still show **Hello WebUI** as our selected project.   In the upper right corner you should see a pull-down labeled `Add to Project`.  From there, select `Import YAML/JSON`.
+
+====
+image::ocp-webui-hello1-add-to-project.png[Add To Project]
+====
+
+Now you can either type in the YAML configuration file, but for convenience one has been provided.
+
+====
+image::ocp-webui-hello1-yaml-import.png[Import YAML]
+====
+
+User the `Browse` button to find and load the following file.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Filename*:: /var/tmp/webui-hello-namespace.txt
+
+Once the file has been loaded, proceed to click on `Create`.
+
+====
+image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
+====
+    
+A Confirmation dialog will appear to which we will simply clink on `Replace`.
+
+Now click on `Close` and you will be returned to the project overview page.
+
+The last task to complete Solution #1 is to initiate a new deployment.  For that you click on the three vertical dots on the far right of the depolyment configuration, and select `Deploy`
+
+====
+image::ocp-webui-hello1-redeploy.png[Re-Deploy]
+====
     
 .[root@master ~]#
 ----
