@@ -412,7 +412,7 @@ image::ocp-webui-hello3-verification.png[Verification]
 Go To Front Landing Page and select `Create Project`
 
 ====
-image::ocp-webui-hw4-01-create-project.png[Create Project]
+image::ocp-webui-hello1-project-create.png[Create Project]
 ====
 
 Fill in the details as follows:
@@ -430,7 +430,7 @@ And now click `Create`.  You should notice that your new project has been added 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
 ====
-image::ocp-webui-hw4-02-image-search.png[Create Project]
+image::ocp-webui-hello4-image-search.png[Image Search]
 ====
 
 You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
