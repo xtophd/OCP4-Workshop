@@ -324,7 +324,7 @@ Now click on `Close" and continue with your image deployment.
 As before, the next step is to `Deploy Image`
 
 ====
-image::ocp-webui-hw1-03-image-deploy.png[Image Deploy]
+image::ocp-webui-hello3-yaml-import.png[Import YAML]
 ====
 
 .Key-Values for Deploy Image
