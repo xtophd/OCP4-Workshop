@@ -265,7 +265,7 @@ curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
 ====
-image::ocp-webui-hello1-Verification2.png[Verification]
+image::ocp-webui-hello1-verification2.png[Verification]
 ====
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
