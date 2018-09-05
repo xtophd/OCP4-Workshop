@@ -100,13 +100,13 @@ You just completed instructing Openshift to create a new application called **we
 
 === Expose a Route
 
-Now it is time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
+Time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
 
 ====
 image::ocp-webui-hello1-routes.png[Application Routes]
 ====
 
-Now proceed to click on `Create Route`.
+Proceed to click on `Create Route`.
 
 ====
 image::ocp-webui-hello1-route-create.png[Create Route]
@@ -257,7 +257,7 @@ The last task to complete Solution #1 is to initiate a new deployment.  For that
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 ====
     
-Now you can use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell, poke around and install a helloworld **index.html**.
+Finally, you can use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell, poke around and install a helloworld **index.html**.
 
 .sh-4.2$
 ----
