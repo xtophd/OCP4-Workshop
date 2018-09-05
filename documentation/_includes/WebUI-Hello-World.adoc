@@ -273,14 +273,14 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 
 // --- Authentic Solution #3 ------------------------------------------
-=== Solutino #3: Use NFS
+=== Solution #3: Use NFS
 
 ==== Create Project
 
 Start at the Openshift landing page and `Create` a project as before.
 
 ====
-image::ocp-webui-hw1-01-create-project.png[Create Project]
+image::ocp-webui-hello1-project-create.png[Create Project]
 ====
 
 Fill in the details as follows:
