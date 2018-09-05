@@ -348,7 +348,7 @@ Mouse over `Applications` and select `Deployments`.  Next, select our deployment
 Now click on the `Actions` pull down and select `Add Storage`.
 
 ====
-image::ocp-webui-hello3-storage-pvc.png[Add Storage]
+image::ocp-webui-hello3-storage-add.png[Add Storage]
 ====
 
 Since there are no PVC's available for use, you will be directed to the Create Storage page.
