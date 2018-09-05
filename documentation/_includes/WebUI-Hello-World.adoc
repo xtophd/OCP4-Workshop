@@ -468,7 +468,7 @@ image::ocp-webui-hello4-app-overview.png[Application Overview]
 Fianlly, to verify the application is working properly click on the **URL**
 
 ====
-image::ocp-webui-hw4-06-app-verification.png[Application Verification]
+image::ocp-webui-hello4-verification.png[Application Verification]
 ====
 
 
