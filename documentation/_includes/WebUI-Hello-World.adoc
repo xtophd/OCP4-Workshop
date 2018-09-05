@@ -398,7 +398,9 @@ Click `Create`
 
 Mouse-over `Application` and select `Routes`.  Click on the URL provided in the Hostname column.  You should get the helloworld output.
 
-
+====
+image::ocp-webui-hello3-verification.png[Verification]
+====
 
 
 // --- Authentic Solution #4 ------------------------------------------
