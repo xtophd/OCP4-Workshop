@@ -353,14 +353,10 @@ image::ocp-webui-hello3-storage-add.png[Add Storage]
 
 Since there are no PVC's available for use, you will be directed to the Create Storage page.
 
-====
-image::ocp-webui-hello3-storage-create.png[Add Storage]
-====
-
-After you click on `Create Storage` you will be presented the dialog for setting up a persistent volume claim (PVC).
+After you click on `Create Storage` you will be presented a dialog for setting up a persistent volume claim (PVC).
 
 ====
-image::ocp-webui-hello3-storage-details.png[Add Storage]
+image::ocp-webui-hello3-storage-pvc.png[Create Storage]
 ====
 
 Use the following parameters.
@@ -373,7 +369,7 @@ Use the following parameters.
 Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
 
 ====
-image::ocp-webui-hello3-storage-pvc.png[Add Storage]
+image::ocp-webui-hello3-storage-details.png[Storage Details]
 ====
 
 Use the following parameters.
