@@ -436,13 +436,13 @@ image::ocp-webui-hello4-image-search.png[Image Search]
 You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
 
 ====
-image::ocp-webui-hw4-03-image-details.png[Image Details]
+image::ocp-webui-hello4-image-details.png[Image Details]
 ====
 
 Now you are presented with a series of options to configure the applicaton.
 
 ====
-image::ocp-webui-hw4-04-app-details.png[Application Details]
+image::ocp-webui-hello4-app-details.png[Application Details]
 ====
 
 Entering details using defaults for all values unless specified below:
@@ -462,7 +462,7 @@ Now let's have a closer inspection.
 Click "Continue to Project Overview"
 
 ====
-image::ocp-webui-hw4-05-app-overview.png[Application Details]
+image::ocp-webui-hello4-app-overview.png[Application Overview]
 ====
 
 Fianlly, to verify the application is working properly click on the **URL**
