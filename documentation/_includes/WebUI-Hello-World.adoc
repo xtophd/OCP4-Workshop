@@ -354,7 +354,7 @@ From the `Actions` pull-down, select `Edit Yaml`
 In the Edit block, scroll down to line 44 or thereabouts and find **namd: hello-webui2**.  On the next line, insert the following block:
 
 .Edit YAML File
-[source,indent=4]
+[source,yaml,indent=4]
 ----
 volumeMounts:
   - mountPath: /var/www/html
@@ -368,7 +368,7 @@ image::ocp-webui-hello2-yaml-edit1.png[YAML Edit 1]
 Now scroll down to line 60 or thereabouts and find **terminationGracePeriodSeconds**.  On the next line, insert the following block:
 
 .Edit YAML File Continued
-[source,indent=4]
+[source,yaml,indent=4]
 ----
 volumes:
   - name: hello-webui2-vol
