@@ -52,7 +52,7 @@ Fill in the details as follows:
 *Display Name*:: Hello WebUI
 *Description*:: My First WebUI App
 
-And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `WebUI Hello World` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
+And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `HelloWebUI` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
 
 ====
 image::ocp-webui-hello1-project-select.png[Select Project]
@@ -251,7 +251,7 @@ A Confirmation dialog will appear to which we will simply clink on `Replace`.
 
 Now click on `Close` and you will be returned to the project overview page.
 
-The last task to complete Solution #1 is to initiate a new deployment.  For that you click on the three vertical dots on the far right of the depolyment configuration, and select `Deploy`
+The last task to complete the image configuration is to initiate a new deployment.  For that you click on the three vertical dots on the far right of the depolyment configuration, and select `Deploy`
 
 ====
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
@@ -272,6 +272,108 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 // --- Authentic Solution #2 ------------------------------------------
 === Solution #2: Use emptyDir
+
+We being this solution by repeating the steps to deploy a httpd base image.
+
+=== Create a Project
+
+Go To Front Landing Page and select `Create Project`
+
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
+
+Fill in the details as follows:
+
+.Key-Values for Create Project Dialog
+[horizontal]
+*Name*:: hello-webui2
+*Display Name*:: Hello WebUI II
+*Description*:: My Second WebUI App
+
+And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `Wello WebUI II` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
+
+====
+image::ocp-webui-hello2-project-select.png[Select Project]
+====
+
+=== Create an Application
+
+The next step is to select `Deploy Image` and fill in the following details.
+
+Click the radio button next to `Image Name` and enter the values as shown below.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+Click the `Search` icon to advance to the final phase of this deployment.
+
+Now you are presented with a description of the specified image.  Scroll down a bit and change the *Name* as shown below.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: hello-webui2
+
+Click `Deploy` and then `Continue to Project Overview`
+
+====
+image::ocp-webui-hello2-project-overview.png[Project Overview]
+====
+
+You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
+
+=== Expose a Route
+
+Time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
+
+Proceed to click on `Create Route`.
+
+After clicking on `Create Route` you will be prompted for some details.
+
+Fill in the details as follows (using defaults unless specified otherwise).
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: hello-webui2
+*Hostname*:: hello-webui.cloud.example.com
+
+Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
+
+====
+image::ocp-webui-hello2-routes-overview.png[Create Route]
+====
+
+Mouse over `Applications` and proceed to `Deployments`
+
+Select the `hello-webui2` deployment
+
+From the `Actions` pull-down, select `Edit Yaml`
+
+====
+image::ocp-webui-hello2-yaml-edit1.png[YAML Edit 1]
+====
+
+====
+image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
+====
+
+Select `Save`
+
+Mouse over `Applications` and select `Pods`.
+
+Select the Pod and then use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell and install a helloworld **index.html**.
+
+.sh-4.2$
+----
+curl helloworld3.cloud.example.com > /var/www/html/index.html
+----
+
+Mission accomplisheded.
+
+====
+image::ocp-webui-hello1-verification2.png[Verification]
+====
 
 
 // --- Authentic Solution #3 ------------------------------------------
