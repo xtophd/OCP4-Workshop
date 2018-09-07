@@ -215,7 +215,9 @@ The primary thing we are trying to point out here is that the UID the process is
 
 == Making an authentic "Hello, World!"
 
-// --- Authentic Solution #1 ------------------------------------------
+// ----------------------------------------------------------------------------------------------------
+// --- Authentic Solution #1
+// ----------------------------------------------------------------------------------------------------
 
 === Solution #1: Change Security Attribute
 
@@ -270,7 +272,10 @@ image::ocp-webui-hello1-verification2.png[Verification]
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
-// --- Authentic Solution #2 ------------------------------------------
+// ----------------------------------------------------------------------------------------------------
+// --- Authentic Solution #2
+// ----------------------------------------------------------------------------------------------------
+
 === Solution #2: Use emptyDir
 
 We being this solution by repeating the steps to deploy a httpd base image.
@@ -346,19 +351,39 @@ Select the `hello-webui2` deployment
 
 From the `Actions` pull-down, select `Edit Yaml`
 
+In the Edit block, scroll down to line 44 or thereabouts and find **namd: hello-webui2**.  On the next line, insert the following block:
+
+.Edit YAML File
+[source,indent=4]
+----
+volumeMounts:
+  - mountPath: /var/www/html
+    name: hellow-webui2-vol
+----
+
 ====
 image::ocp-webui-hello2-yaml-edit1.png[YAML Edit 1]
 ====
+
+Now scroll down to line 60 or thereabouts and find **terminationGracePeriodSeconds**.  On the next line, insert the following block:
+
+.Edit YAML File Continued
+[source,indent=4]
+----
+volumes:
+  - name: hello-webui2-vol
+    emptyDir: {}
+----
 
 ====
 image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
 ====
 
-Select `Save`
+Now scroll to the bottomw and select `Save`.  Updating the deployment configuation like this will automatically trigger a new deployment of our application.
 
 Mouse over `Applications` and select `Pods`.
 
-Select the Pod and then use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell and install a helloworld **index.html**.
+Select the Pod and then use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell and install a helloworld **index.html** as shown below.
 
 .sh-4.2$
 ----
@@ -371,8 +396,10 @@ Mission accomplisheded.
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
 
+// ----------------------------------------------------------------------------------------------------
+// --- Authentic Solution #3
+// ----------------------------------------------------------------------------------------------------
 
-// --- Authentic Solution #3 ------------------------------------------
 === Solution #3: Use NFS
 
 ==== Create Project
@@ -500,8 +527,10 @@ Mouse-over `Application` and select `Routes`.  Click on the URL provided in the 
 image::ocp-webui-hello3-verification.png[Verification]
 ====
 
+// ----------------------------------------------------------------------------------------------------
+// --- Authentic Solution #4
+// ----------------------------------------------------------------------------------------------------
 
-// --- Authentic Solution #4 ------------------------------------------
 === Solution #4: Use Source Control (git)
 
 
