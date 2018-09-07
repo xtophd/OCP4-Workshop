@@ -379,7 +379,7 @@ volumes:
 image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
 ====
 
-Now scroll to the bottomw and select `Save`.  Updating the deployment configuation like this will automatically trigger a new deployment of our application.
+Select `Save`.  Provided there are no errors, updating the deployment configuation like this will automatically trigger a new deployment of our application.
 
 Mouse over `Applications` and select `Pods`.
 
