@@ -293,10 +293,6 @@ Fill in the details as follows:
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `Wello WebUI II` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
 
-====
-image::ocp-webui-hello2-project-select.png[Select Project]
-====
-
 === Create an Application
 
 The next step is to select `Deploy Image` and fill in the following details.
