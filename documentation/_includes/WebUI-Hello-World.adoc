@@ -96,11 +96,11 @@ Click `Deploy` and then `Continue to Project Overview`
 image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
-You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build a containerized application.
+You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build of a containerized application.
 
 === Expose a Route
 
-Time to configure a *route* and expose our new application to the network.  On the left menu, mouse-over *Applications->Routes*.
+Time to configure a *route* and expose our new application to the network.  On the left menu, mouse-over and select  *Applications->Routes*.
 
 ====
 image::ocp-webui-hello1-routes.png[Application Routes]
@@ -133,7 +133,9 @@ image::ocp-webui-hello1-routes-overview.png[Create Route]
 
 === Validate Application
 
-You can now click on the URL provided in the **Hostname** column to verify that the application is working as expected.  You should see the standard Red Hat Enterprise Linux Test Page.
+Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided in the **Hostname** column to verify that the application is working as expected.
+
+You should see the standard Red Hat Enterprise Linux Test Page.  If you get an error response, it is probably an indication that the build is still in progress.  Just wait a minute and try again.
 
 ====
 image::ocp-webui-hello1-verification.png[Application Verification]
@@ -141,7 +143,7 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 
 === Exploring the Container
 
-On the left menu, mouse-over `Applications` and proceed to `Pods`.  Now click on the pod link to bring up it's details.
+On the left menu, mouse-over and select *Applications->Pods*.  Now click on the pod link to bring up it's details.
 
 ====
 image::ocp-webui-hello1-pod-overview.png[Pod Overview]
@@ -198,6 +200,8 @@ Normally files serverd by httpd go into /var/www/html, but the security-consciou
 cd /var/www/
     
 ls -la
+
+echo "Can I create a file" > testfile
 ----
 
 .Your output should look like this
@@ -208,10 +212,13 @@ drwxr-xr-x.  4 default root  33 Jul 17 17:12 .
 drwxr-xr-x. 19 root    root 249 Jul 17 17:13 ..
 drwxr-xr-x.  2 default root   6 May  9 13:18 cgi-bin
 drwxr-xr-x.  2 default root   6 May  9 13:18 html
+
+sh: testfile: Permission denied
 ----
 
+The primary thing we are trying to point out here is that the UID the process is running with (ie: **1000120000**) does not have permissions to write to any part of the container filesystem except traditionally open directories like **/tmp** or **/var/tmp**.  In effect, that makes this base container alone rather useless for running real world applications.
 
-The primary thing we are trying to point out here is that the UID the process is running with (ie: **1000120000**) does not have permissions to write to any part of the container filesystem except traditionally open directories like **/tmp** or **/var/tmp**.  Next, you will do a series of exercises detailing how to make adjustments to the project and deploy a real helloworld application.
+Next, you will do a series of exercises detailing how to make adjustments to the project in order to deploy a real helloworld applications.
 
 == Making an authentic "Hello, World!"
 
@@ -225,7 +232,7 @@ The Openshift WebUI does not provide a native dialog for modifying all project a
 
 For our first solution, we are going to adjust the current project's security attribute by importing a YAML config file.
 
-Proceed to click on the left side `Overview` tab.  The main bar across the top should still show **Hello WebUI** as our selected project.   In the upper right corner you should see a pull-down labeled `Add to Project`.  From there, select `Import YAML/JSON`.
+Proceed to click on the left menu `Overview` tab.  The main bar across the top should still show *Hello WebUI* as our selected project.   In the upper right corner you should see a pull-down labeled `Add to Project`.  From there, select `Import YAML/JSON`.
 
 ====
 image::ocp-webui-hello1-add-to-project.png[Add To Project]
@@ -253,18 +260,30 @@ A Confirmation dialog will appear to which we will simply clink on `Replace`.
 
 Now click on `Close` and you will be returned to the project overview page.
 
-The last task to complete the image configuration is to initiate a new deployment.  For that you click on the three vertical dots on the far right of the depolyment configuration, and select `Deploy`
+Since our modification only affected "Project" attributes, nothing triggered an automatice redeployment of the application.  Thus, you will need to initiate a new deployment manually.  
+
+From the *Project Overview* page, click on the three vertical dots on the far right of the deployment configuration, and select `Deploy`
 
 ====
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 ====
-    
-Finally, you can use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell, poke around and install a helloworld **index.html**.
+
+What you have done by modifying the project security attributes is configure the effective UID of deployed application to be 1001 which now enables permission to write in /var/www/html.  It is not as insecure as enabling root priviledges, but already far less secure than then previous configuration.
+
+Let us proceed with completing our first "helloworld" deployment.
+
+Mouse-over and select *Applications->Pods*.
+
+Here you can use the `Terminal` feature to access a shell, poke around and install a helloworld *index.html*.  
 
 .sh-4.2$
 ----
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
+
+If you didn't notice, the source for *index.html* came from an application that was deployed during the CLI exercises.  Final set is to verify the application is function as expected.
+
+From the *Project Overview* page, click on the link (http://hello-webui2.cloud.example.com) provided on the right side above the Deployment Config line.
 
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
@@ -278,7 +297,11 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 === Solution #2: Use emptyDir
 
-We being this solution by repeating the steps to deploy a httpd base image.
+As noted in solution #1, there is a security issue with the default UID and filesystem permissions in base containers directory /var/www/html.  Solution #1 attacked the problems by changing the UID of the running process.
+
+In this solution, we are going to create a volume (ie: filesystem) which provides read/write permissions for the default (and more secure) UID.
+
+We begin this solution by repeating the steps to deploy a httpd base image.
 
 === Create a Project
 
@@ -322,15 +345,11 @@ Click `Deploy` and then `Continue to Project Overview`
 image::ocp-webui-hello2-project-overview.png[Project Overview]
 ====
 
-You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
-
 === Expose a Route
 
-Time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
+On the left menu, mouse-over and select  *Applications->Routes*.
 
 Proceed to click on `Create Route`.
-
-After clicking on `Create Route` you will be prompted for some details.
 
 Fill in the details as follows (using defaults unless specified otherwise).
 
@@ -345,13 +364,19 @@ Proceed to click `Create`.  You should be returned to the Routes Overview page a
 image::ocp-webui-hello2-routes-overview.png[Create Route]
 ====
 
-Mouse over `Applications` and proceed to `Deployments`
+Now comes the step of configuring our new volume (ie: filesystem).  For this purpose we are utilizing a special type of volume called an "emptyDir".  This type of volume is created when a Pod is assigned to a Node, and exists as long as that Pod is running on that node.  What does that mean?  It means that the volume is *NOT* persistent and that data stored in the volume will be lost when the pod is stopped.  It also means that the volume will be *empty* when the pod starts (hence the name: emptyDir).
+
+For real world use cases, emptyDir is often used as a local cache.  Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
+
+Never the less, it suits our needs for this exercise so let's proceed to configure an emptyDir.  The WebUI does not provide a ellegant solution configuring an emptyDir, so we will resort to editing the deployment configuration YAML.
+
+Mouse-over and select *Applications->Deployments*
 
 Select the `hello-webui2` deployment
 
 From the `Actions` pull-down, select `Edit Yaml`
 
-In the Edit block, scroll down to line 44 or thereabouts and find **namd: hello-webui2**.  On the next line, insert the following block:
+In the editing block (window), scroll down to line 44 or thereabouts and find *namd: hello-webui2*.  On the next line, insert the following block:
 
 .Edit YAML File
 [source,yaml,indent=4]
@@ -381,16 +406,16 @@ image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
 
 Select `Save`.  Provided there are no errors, updating the deployment configuation like this will automatically trigger a new deployment of our application.
 
-Mouse over `Applications` and select `Pods`.
+Mouse-over and select *Applications->Pods*
 
-Select the Pod and then use the `Terminal` feature found in the **Pod** Overview page.  From there you can access the shell and install a helloworld **index.html** as shown below.
+Select the Pod and then use the `Terminal` feature found in the Pod Details page.  From there you can access the shell, inspect the filesystem mounted on /var/www/html and install a helloworld *index.html* as shown below.
 
 .sh-4.2$
 ----
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
-Mission accomplisheded.
+Mission accomplished.
 
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
@@ -404,7 +429,7 @@ image::ocp-webui-hello1-verification2.png[Verification]
 
 ==== Create Project
 
-Start at the Openshift landing page and `Create` a project as before.
+From the Openshift Front Landing page select `Create` a project as before.
 
 ====
 image::ocp-webui-hello1-project-create.png[Create Project]
@@ -422,9 +447,17 @@ Once the project is created, proceed to select the project on the right.
 
 ==== Create Persistent Volume (PV)
 
-Persistent Volumes are "cluster" objects and thus are not namespaced (ie: they don't belong to projects alone).  The WebUI also does not currently provide a dialog for creating PVs.  This action will be performed by importing a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
+Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In soluttion #1, we use a volume type of "emptyDir".
 
-Proceed to click `Import YAML/JSON`.  You can select either the button in the center of the screen, or the option from the **Add to Project** pull down.
+In the language of Kubernettes, a PV is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster.  A Persistent Volume Claim (PVC) is a request for storage by a user (deployment).
+
+Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespaced (ie: they don't belong to projects).  They belong to are are available to the whole cluster.
+
+If all of this is confusing, don't worry about it.  What it boils down to is that storage is like a 2 magenets.  The have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Then if the attributes match, like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
+
+The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
+
+From the *Project Overview* page select `Import YAML/JSON`.
 
 ====
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
@@ -464,11 +497,13 @@ Scroll down and change the application name as follows.
 [horizontal]
 *Name*:: hello-webui3
 
-Now click 'Deploy' and **Continue to the project overview**.
+Now click 'Deploy' and `Continue to the project overview`.
 
 ==== Create Persistent Volume Claim (PVC)
 
-Mouse over `Applications` and select `Deployments`.  Next, select our deployment configuration **hello-webui3**.
+Mouse-over and select *Applications->Deployments*.  
+
+Select our deployment configuration *hello-webui3*.
 
 Now click on the `Actions` pull down and select `Add Storage`.
 
@@ -476,9 +511,9 @@ Now click on the `Actions` pull down and select `Add Storage`.
 image::ocp-webui-hello3-storage-add.png[Add Storage]
 ====
 
-Since there are no PVC's available for use, you will be directed to the Create Storage page.
+Since we have not configured a PVC for our use, you will be directed to the *Create Storage* page.
 
-After you click on `Create Storage` you will be presented a dialog for setting up a persistent volume claim (PVC).
+Select `Create Storage` and you will be presented a dialog for setting up a persistent volume claim (PVC).
 
 ====
 image::ocp-webui-hello3-storage-pvc.png[Create Storage]
@@ -508,7 +543,9 @@ Click `Add`.  Openshift will now initiate a redployment of our app using the new
 
 ==== Expose Route
 
-Mouse-over `Applications` and select `Routes`. Proceed to click `Create Route`
+Mouse-over and select *Applications->Routes*
+
+Click `Create Route`
 
 Fill in the details as follows (using defaults unless specified otherwise).
 
