@@ -800,6 +800,8 @@ Now from the WebUI, let us deploy the Dockerfile based application.  For this fi
 
 ==== Create a Project
 
+From the Openshift Front Landing page
+
 .Key-Values for Create Project Dialog
 [horizontal]
 *Name*:: hello-webui5
@@ -808,11 +810,17 @@ Now from the WebUI, let us deploy the Dockerfile based application.  For this fi
 
 ==== Import YAML file
 
+NOTE: Make sure you have selected your new project before importing.
+
+From the Porject Overview page
+
 .Key-Values for Import YAML
 [horizontal]
 *Filename*:: /var/tmp/bc-dockerfile.txt
 
 ==== Create (expose) a Route
+
+From the Applications->Routes page
 
 .Key-Values for Create Route
 [horizontal]
@@ -821,7 +829,7 @@ Now from the WebUI, let us deploy the Dockerfile based application.  For this fi
 
 ==== Validate the Application
 
-
+Did it work?
 
 [discrete]
 == End of Unit
