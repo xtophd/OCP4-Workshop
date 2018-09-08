@@ -1,0 +1,14 @@
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "hello-webui5"
+spec:
+  source:
+    contextDir: "/src/dockerfile" 
+    git: 
+      uri: "https://github.com/xtophd/OCP-Workshop"
+    type: "Git"
+    dockerfile: "FROM xtophd/OCP-Workshop/src/helloworld" 
+  strategy:
+    type: "Docker"
+    
