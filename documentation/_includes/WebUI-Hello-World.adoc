@@ -297,7 +297,7 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 === Solution #2: Use emptyDir
 
-As noted in solution #1, there is a security issue with the default UID and the filesystem permissions in base container's directory /var/www/html.  Solution #1 attacked the problems by changing the UID of the running process.
+As noted in solution #1, there is a security issue with the default UID and the filesystem permissions in base container's directory /var/www/html.  Solution #1 attacked the problem by changing the UID of the running process.
 
 In this solution, we are going to create a volume (ie: filesystem) which provides sufficient read/write permissions for the default (and more secure) UID.
 
