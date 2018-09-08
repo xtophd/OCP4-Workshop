@@ -812,7 +812,7 @@ From the Openshift Front Landing page
 
 NOTE: Make sure you have selected your new project before importing.
 
-From the Porject Overview page
+From the Project Overview page
 
 .Key-Values for Import YAML
 [horizontal]
