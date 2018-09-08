@@ -618,18 +618,18 @@ oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile 
 
 The output of the above command is listed below.  Step through it and notice the individual stanzas (denoted by the leading '-').  There are sections for: 
 
-  . ImageStream (for the source base php image)
-  . ImageStream (for the final deployable image (ie: output))
-  . BuildConfig
-    . note "dockerStrategy"
-    . note dockerStrategy "from"
-    . note git "uri" and "contextDir"
-    . note the "output"
-  . DeploymentConfig
-    . note the number of "replicas"
-    . note the reference to the "image", the "ports"
-    . note the triggers
-  . Service
+  * ImageStream (for the source base php image)
+  * ImageStream (for the final deployable image (ie: output))
+  * BuildConfig
+  ** note "dockerStrategy"
+  ** note dockerStrategy "from"
+  ** note git "uri" and "contextDir"
+  ** note the "output"
+  * DeploymentConfig
+  ** note the number of "replicas"
+  ** note the reference to the "image", the "ports"
+  ** note the triggers
+  * Service
 
 The reasons for noting specific items in each stanza is simply to point out the relationships between them.
 The only step (definition) missing to having a completely deployed application at the end of ingesting this YAML is the exposed *route* which connects the outside world to the pod's *service*.
