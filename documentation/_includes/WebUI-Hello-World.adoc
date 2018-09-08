@@ -592,7 +592,7 @@ Click "Continue to Project Overview"
 image::ocp-webui-hello4-app-overview.png[Application Overview]
 ====
 
-Fianlly, to verify the application is working properly click on the **URL**
+Finally, to verify the application is working properly click on the **URL**
 
 ====
 image::ocp-webui-hello4-verification.png[Application Verification]
@@ -602,7 +602,226 @@ image::ocp-webui-hello4-verification.png[Application Verification]
 // --- Authentic Solution #5 ------------------------------------------
 === Solution #5: Use Dockerfile
 
-=== Validate the Application
+So this solution is a bit more complicated.  As shown during the CLI exercises, deploying an application
+based on a Dockerfile is pretty trivial.  In fact, the `oc new-app` commandline was the shortest and had the least amount of typing of all the CLI helloworld examples.
+
+Using the WebUI, there is currently no method to natively invoke a *Docker Build Strategy*.  Thus we are left with the option of importing a YAML configuration file.  Once again, this workshop has provided a sample file to make the exercise fairly simply to execute.  However, we are going to spend some time discussing it in detail.  This will hopefully shed some light on how Openshift (ie: Kubernettes) functions.
+
+First let us begin with how this YAML file was built.  That's simple, we used the `oc new-app` CLI tool.
+
+.[root@workstation ~]#
+----
+oc login master:8443 -u admin
+     
+oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-webui5 --dry-run -o yaml
+----
+
+The output of the above command is listed below.  Step through it and notice the individual stanzas (denoted by the leading '-').  There are sections for: 
+
+  . ImageStream (for the source base php image)
+  . ImageStream (for the final deployable image (ie: output))
+  . BuildConfig
+    . note "dockerStrategy"
+    . note dockerStrategy "from"
+    . note git "uri" and "contextDir"
+    . note the "output"
+  . DeploymentConfig
+    . note the number of "replicas"
+    . note the reference to the "image", the "ports"
+    . note the triggers
+  . Service
+
+The reasons for noting specific items in each stanza is simply to point out the relationships between them.
+The only step (definition) missing to having a completely deployed application at the end of ingesting this YAML is the exposed *route* which connects the outside world to the pod's *service*.
+
+Review the output below and discuss each section.  Then proceed to the steps towards deploying the application.
+
+.Review of YAML Ouput
+[source,yaml,indent=4]
+----
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hello-webui5
+    name: php-71-rhel7
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: registry.access.redhat.com/rhscl/php-71-rhel7
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/rhscl/php-71-rhel7
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hello-webui5
+    name: hello-webui5
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hello-webui5
+    name: hello-webui5
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: hello-webui5:latest
+    postCommit: {}
+    resources: {}
+    source:
+      contextDir: /src/dockerfile
+      git:
+        uri: https://github.com/xtophd/OCP-Workshop
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: php-71-rhel7:latest
+      type: Docker
+    triggers:
+    - github:
+        secret: 6cz-L0p9MI1QQhgpUfSS
+      type: GitHub
+    - generic:
+        secret: pd4ciAF8dAczFAzksjyf
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hello-webui5
+    name: hello-webui5
+  spec:
+    replicas: 1
+    selector:
+      app: hello-webui5
+      deploymentconfig: hello-webui5
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: hello-webui5
+          deploymentconfig: hello-webui5
+      spec:
+        containers:
+        - image: hello-webui5:latest
+          name: hello-webui5
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - hello-webui5
+        from:
+          kind: ImageStreamTag
+          name: hello-webui5:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: hello-webui5
+    name: hello-webui5
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: hello-webui5
+      deploymentconfig: hello-webui5
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
+----
+
+
+Now from the WebUI, let us deploy the Dockerfile based application.  For this final exercise, there will be no screen shots provided.
+
+
+==== Create a Project
+
+.Key-Values for Create Project Dialog
+[horizontal]
+*Name*:: hello-webui5
+*Display Name*:: Hello WebUI V
+*Description*:: My Fifth WebUI App
+
+==== Import YAML file
+
+.Key-Values for Import YAML
+[horizontal]
+*Filename*:: /var/tmp/bc-dockerfile.txt
+
+==== Create (expose) a Route
+
+.Key-Values for Create Route
+[horizontal]
+*Name*:: hello-webui5
+*Hostname*:: hello-webui5.cloud.example.com
+
+==== Validate the Application
+
+
 
 [discrete]
 == End of Unit
