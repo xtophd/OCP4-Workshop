@@ -868,6 +868,10 @@ From the Applications->Routes page
 
 Did it work?
 
+====
+image::ocp-webui-hello5-verification.png[Application Verification]
+====
+
 [discrete]
 == End of Unit
 link:../OCP-Workshop.adoc[Return to TOC]
