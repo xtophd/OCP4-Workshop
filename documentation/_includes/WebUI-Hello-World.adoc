@@ -46,7 +46,7 @@ image::ocp-webui-hello1-project-create.png[Create Project]
 
 Fill in the details as follows:
 
-.Key-Values for Create Project Dialog
+.Key-Values for Create Project
 [horizontal]
 *Name*:: hello-webui
 *Display Name*:: Hello WebUI
@@ -74,7 +74,7 @@ image::ocp-webui-hello1-image-name.png[Image Name]
 
 Click the radio button next to `Image Name` and enter the values as shown below.
 
-.Key-Values for Application Configuration
+.Key-Values for Image Selection
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
@@ -96,11 +96,11 @@ Click `Deploy` and then `Continue to Project Overview`
 image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
-You just completed instructing Openshift to create a new application called **webui-hello** based on a container image being pulled from registry.access.redhat.com.
+You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build a containerized application.
 
 === Expose a Route
 
-Time to configure a **route** and expose our new application to the network.  On the left menu, mouse-over `Applications` and proceed to `Routes`.
+Time to configure a *route* and expose our new application to the network.  On the left menu, mouse-over *Applications->Routes*.
 
 ====
 image::ocp-webui-hello1-routes.png[Application Routes]
