@@ -48,7 +48,14 @@
         owner: root
         group: root
         mode: 0644
-  
+
+    - name: "TEMPLATE create /var/tmp/bc-dockerfile.txt"
+      template:
+        src: bc-dockerfile.j2
+        dest: /var/tmp/bc-dockerfile.txt
+        owner: root
+        group: root
+        mode: 0644
   
     - name: "FILE create path for exports/helloworld"
       file: 
