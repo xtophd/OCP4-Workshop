@@ -376,7 +376,7 @@ Select the `hello-webui2` deployment
 
 From the `Actions` pull-down, select `Edit Yaml`
 
-In the editing block (window), scroll down to line 44 or thereabouts and find *namd: hello-webui2*.  On the next line, insert the following block:
+In the editing block (window), scroll down to line 44 or thereabouts and find *name: hello-webui2*.  On the next line, insert the following block:
 
 .Edit YAML File
 [source,yaml,indent=4]
