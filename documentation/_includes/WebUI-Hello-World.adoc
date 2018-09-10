@@ -356,7 +356,7 @@ Fill in the details as follows (using defaults unless specified otherwise).
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
-*Hostname*:: hello-webui.cloud.example.com
+*Hostname*:: hello-webui2.cloud.example.com
 
 Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
 
