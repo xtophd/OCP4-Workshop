@@ -301,6 +301,8 @@ exit
 
 == Making an authentic "Hello, World!"
 
+/// -------------------------------------------------------------------------------------------------------------
+
 === Solution #1 - Change Security Attributes
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *helloworld* project.
@@ -404,6 +406,8 @@ Hello, World!
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
+/// -------------------------------------------------------------------------------------------------------------
+
 === Solution #2 - Use emptyDir
 
 For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
@@ -459,6 +463,8 @@ TIP: Why does the POD version start with '2' this time instead of '1'?
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.  Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche use cases.
 
 NOTE: Important to note that any filesystems mounted with emptyDir is non-persistant and will be destoyed when the container is stoppped.
+
+/// -------------------------------------------------------------------------------------------------------------
 
 === Solution #3 - Use NFS
 
@@ -552,6 +558,8 @@ Hello, World!
 </html>
 ----
 
+/// -------------------------------------------------------------------------------------------------------------
+
 === Solution #4 - Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we will initiate a container deployment which will pull the source code and layer it into a base container (ie: source to images / S2I) and deploy it as a single unified image.
@@ -605,6 +613,8 @@ oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
     
 curl http://helloworld4.cloud.example.com
 ----
+
+/// -------------------------------------------------------------------------------------------------------------
 
 === Solution #5 - Use Dockerfile
 
