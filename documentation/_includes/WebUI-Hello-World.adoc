@@ -383,7 +383,7 @@ In the editing block (window), scroll down to line 44 or thereabouts and find *n
 ----
 volumeMounts:
   - mountPath: /var/www/html
-    name: hellow-webui2-vol
+    name: hello-webui2-vol
 ----
 
 ====
