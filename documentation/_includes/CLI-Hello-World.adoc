@@ -406,6 +406,10 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 === Solution #2 - Use emptyDir
 
+For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
+
+Never the less, it suits our needs for this exercise so let’s proceed to configure Pod that uses an emptyDir as a volume mounted under /var/www/html.
+
 .[root@master ~]#
 ----
 oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
