@@ -450,6 +450,8 @@ Hello, World!
 </html>
 ----
 
+TIP: Why does the POD version start with '2' this time instead of '1'?
+
 If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.  Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche use cases.
 
 NOTE: Important to note that any filesystems mounted with emptyDir is non-persistant and will be destoyed when the container is stoppped.
