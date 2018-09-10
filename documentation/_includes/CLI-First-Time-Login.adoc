@@ -40,10 +40,15 @@ First order of business is to sign-on to the Openshift platform.  This is accomp
 
 .[root@master ~]# 
 ----
-oc login -u system:admin
+oc login -u admin
 ----
 
-You can verify what credentials the current session using as with `oc whoami`
+.Key-Values for Login
+[horizontal]
+*Username*:: admin
+*Password*:: redhat
+
+You can verify what credentials the current 'oc' session is using with `oc whoami`
 
 .[root@master ~]# 
 ----
