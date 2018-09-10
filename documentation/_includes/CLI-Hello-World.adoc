@@ -25,7 +25,7 @@ There are 4 fundamental steps to deploying an application in the Openshift Conta
 
 === Sign-on as admin
 
-In the Unit "Users and Roles", you created an admin user which we will utilize for this exercise.  If you did not perfrom this, hop to that section right now and complete that task before moving on.
+You may have already established a session in the "CLI: First Time Login".  Never the less, here are the condensed instructions again.
 
 Connect to the master and sign-in as user *admin*.
 
@@ -34,7 +34,7 @@ Connect to the master and sign-in as user *admin*.
 ssh master.example.com
 ----
 
-Now sign-on to Openshift with the `admin` credential you created earlier
+Now sign-on to Openshift with username `admin` and password `redhat`.
 
 .[root@master ~]#
 ----
