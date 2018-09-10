@@ -463,11 +463,15 @@ From the *Project Overview* page select `Import YAML/JSON`.
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
 ====
 
-A sample YAML file is provided on the workstation to make this process easy.  Use the `Browse` button on the search bar to locate: **/var/tmp/nfs-pv-02.txt**
+A sample YAML file is provided on the workstation to make this process easy.  Use the `Browse` button on the search bar to locate the file.  Details in the dialog below.
 
 ====
 image::ocp-webui-hello3-yaml-pv.png[Create PV]
 ====
+
+.Key-Values for Import YAML
+[horizontal]
+*Filename*:: /var/tmp/nfs-pv-02.txt
 
 Proceed to click on `Create`.  You will get a warning message requesting confirmation, click `Create Anyway`
 
