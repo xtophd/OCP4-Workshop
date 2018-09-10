@@ -58,7 +58,7 @@ oc whoami
 .Your output should look like this
 [source,indent=4]
 ----
-system:admin                                                                                 
+admin                                                                                 
 ----
 
 Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
