@@ -143,9 +143,7 @@
         cmd: |
           oc login -u system:admin
           oc project default
-          oc delete all -l router=router
-          oc logout
-          
+          oc delete all -l router=router         
 
     - name: "CMD creating new OCP router with replicas=2"
       shell: 
@@ -153,8 +151,6 @@
           oc login -u system:admin
           oc project default
           oc adm router --replicas=2 --service-account=router
-          oc logout
-
 
     - name: "CMD creating OCP admin user with cluster admin role"
       shell: 
@@ -162,7 +158,6 @@
           oc login -u system:admin
           htpasswd -b /etc/origin/master/htpasswd admin redhat
           oc adm policy add-cluster-role-to-user cluster-admin admin
-          oc logout
 
 - hosts: masters,nodes
   tasks:
