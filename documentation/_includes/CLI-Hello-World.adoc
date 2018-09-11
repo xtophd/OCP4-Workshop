@@ -327,7 +327,7 @@ oc rollout latest dc/hello-app
 watch oc get pods
 ----
 
-Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* Terminating.
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.
 Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
 versions of the pod.
 
