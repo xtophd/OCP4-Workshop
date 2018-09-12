@@ -48,6 +48,9 @@ image::ocp-webui-login-04.png[Confirm]
 
 [discrete]
 == End of Unit
+
+*Next:* link:WebUI-Hello-World.adoc[WebUI: Hello World]
+
 link:../OCP-Workshop.adoc[Return to TOC]
 
 ////
