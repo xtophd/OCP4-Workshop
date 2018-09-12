@@ -8,6 +8,12 @@
 - hosts: workstation
   tasks:
 
+    - name: "SERVICE disable and stop rhsmcertd, packagekit"
+      service: 
+        name=rhsmcertd,packagekit
+        state=stopped
+        enabled=no
+
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
         name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools 
