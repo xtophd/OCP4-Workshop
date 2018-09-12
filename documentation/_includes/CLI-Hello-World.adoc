@@ -699,6 +699,9 @@ oc get pods --all-namespaces -o wide
 
 [discrete]
 == End of Unit
+
+*Next:* link:WebUI-First-Time-Login.adoc[WebUI: First Time Login]
+
 link:../OCP-Workshop.adoc[Return to TOC]
 
 ////
