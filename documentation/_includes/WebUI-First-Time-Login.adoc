@@ -10,7 +10,7 @@ endif::[]
 :units_dir: units
 :imagesdir: ./_images
 
-= Openshift WebUI Basics
+= WebUI: First Time Login
 
 == Login
 
