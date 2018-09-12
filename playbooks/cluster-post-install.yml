@@ -82,12 +82,6 @@
         state=started 
         enabled=yes
 
-    - name: "SERVICE disable and stop rhsmcertd, packagekit"
-      service: 
-        name=rhsmcertd,packagekit
-        state=stopped
-        enabled=no
-
     - name: "TEMPLATE modify/install /etc/exports"
       template:
         src: nfsexports.j2
