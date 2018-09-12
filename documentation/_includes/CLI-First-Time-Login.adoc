@@ -8,7 +8,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= CLI: First-Time-Login
+= CLI: First Time Login
 
 The default and recommended method for interacting with the Openshift Container Platform is with the `oc` command.  In limited circumstances you could be directed to use other tools to invoke action or retrieve data from OCP, but for the most part all of your acitivities will be with `oc`.
 
