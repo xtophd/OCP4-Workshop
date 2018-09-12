@@ -8,9 +8,15 @@
 - hosts: workstation
   tasks:
 
-    - name: "SERVICE disable and stop rhsmcertd, packagekit"
+    - name: "SERVICE disable and stop packagekit"
       service: 
-        name=rhsmcertd,packagekit
+        name=packagekit
+        state=stopped
+        enabled=no
+
+    - name: "SERVICE disable and stop rhsmcertd"
+      service: 
+        name=rhsmcertd
         state=stopped
         enabled=no
 
