@@ -408,6 +408,7 @@ Hello, World!
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
 // -------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 
 === Solution #2 - Use emptyDir
 
@@ -530,6 +531,10 @@ nfs-pv-01   5Gi        RWO            Recycle          Bound     default/hellowo
 NAME                STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                           58s
 ----
+
+NOTE: Notice how the ACCESS MODES are defined as RWO (Read Write Once).  Under normal circumstances a NFS volume being used as a persistent volume would be defined as RWM (Red Write Many) since NFS supports more than one POD mounting an export for read write usage.  In order to isolate activities and keep things simple for the introductory exercises, we opted to use RWO.
+
+
 
 Now that the storage prep-work is complete, we can proceed: 
 
