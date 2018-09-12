@@ -215,7 +215,7 @@ The installation of Red Hat Openshift Container Platform is now complete and you
 [discrete]
 == End of Unit
 
-link:CLI-First-Time-Login.adoc[Next: CLI First Time Login]
+*Next:* link:CLI-First-Time-Login.adoc[CLI: First Time Login]
 
 link:../OCP-Workshop.adoc[Return to TOC]
 
