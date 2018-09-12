@@ -73,7 +73,7 @@ When working with exercises in Web User Interface (WebUI), key-value data will b
 [discrete]
 == End of Unit
 
-*Next:* link:../Getting-Started.adoc[Getting Started]
+*Next:* link:Getting-Started.adoc[Getting Started]
 
 link:../OCP-Workshop.adoc[Return to TOC]
 
