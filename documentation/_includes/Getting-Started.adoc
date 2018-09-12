@@ -214,7 +214,8 @@ The installation of Red Hat Openshift Container Platform is now complete and you
 
 [discrete]
 == End of Unit
-link:../OCP-Workshop.adoc[Return to TOC]
+link:CLI-First-Time-Login.adoc[Proceed to: "CLI First Time Login"]
+link:../OCP-Workshop.adoc[Return to: TOC]
 
 ////
 Always end files with a blank line to avoid include problems.
