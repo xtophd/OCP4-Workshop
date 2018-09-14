@@ -24,7 +24,15 @@
         owner: root
         group: root
         mode: 0644
-        
+
+    - name: "TEMPLATE create /var/tmp/pv-hello-webui3.txt"
+      template:
+        src: pv-hello-webui3.j2
+        dest: /var/tmp/pv-hello-webui3.txt
+        owner: root
+        group: root
+        mode: 0644
+
     - name: "TEMPLATE create /var/tmp/nfs-pv-01.txt"
       template:
         src: nfs-pv-01.j2
