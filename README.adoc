@@ -11,4 +11,4 @@ Please continue to the 'documentation' folder and begin with the "OCP-Workshop.a
 
 Or just lick this link:
 
-link:./documentation/OCP-Workshop.adoc[OCP-Workshop]
+link:./documentation/OCP-Workshop.adoc[OCP-Workshop Guide]
