@@ -7,6 +7,8 @@ Finally,at the moment this effort is using Openshift Container Platform 3.9 on R
 
 **Entitlements ARE Required**
 
-Please continue to the 'documentation' folder and begin with the "Getting Started" unit.
+Please continue to the 'documentation' folder and begin with the "OCP-Workshop.adoc"
 
-[Proceed to Documentaion](https://github.com/xtophd/OCP-Workshop/tree/master/documentation "OCP-Workshop Index")
+Or just lick this link:
+
+link:./documentation/OCP-Workshop.adoc[OCP-Workshop]
