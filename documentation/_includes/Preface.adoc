@@ -17,6 +17,8 @@ This is not an official Red Hat sponsered effort although I am currently employe
 
 In the spirit of Opensource, I am attempting to make my work publicly accessible for reuse by others.  But be advised that this is my first attempt at using GitHub and ascii-doc. So please be patient as I navigate my way through managing a day job while building out this project (workshop).  At some point I will stop editing in the master branch :-0
 
+NOTE:  This whole effort is done using official Red Hat software and although things can be set up to work with upstream software components (CentOS, Origin, etc...) I current do not have the bandwidth to support the development and testing of alternate build environments.
+
 = Conventions Used
 
 == Tips, Notes & Warnings
