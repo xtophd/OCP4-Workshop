@@ -447,13 +447,13 @@ Once the project is created, proceed to select the project on the right.
 
 ==== Create Persistent Volume (PV)
 
-Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In soluttion #1, we use a volume type of "emptyDir".
+Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In soluttion #2, we use a volume type of "emptyDir".
 
 In the language of Kubernettes, a PV is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster.  A Persistent Volume Claim (PVC) is a request for storage by a user (deployment).
 
 Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespaced (ie: they don't belong to projects).  They belong to are are available to the whole cluster.
 
-If all of this is confusing, don't worry about it.  What it boils down to is that storage is like a 2 magenets.  The have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Then if the attributes match, like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
+If all of this is confusing, don't worry about it now.  What it boils down to is that storage configuration in Openshift behaves like 2 magenets.  You have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Once configured, if the attributes of a PV and PVC match then like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
 
 The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
 
@@ -463,7 +463,35 @@ From the *Project Overview* page select `Import YAML/JSON`.
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
 ====
 
-A sample YAML file is provided on the workstation to make this process easy.  Use the `Browse` button on the search bar to locate the file.  Details in the dialog below.
+A sample YAML file is provided on the workstation to make this process easy.  
+
+.Sample YAML to Configure PV
+----
+[source,indent=4]
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-helloworld // <1>
+spec:
+  capacity:
+    storage: 5Gi  // <2>
+  accessModes:
+  - ReadWriteMany  // <3>
+  persistentVolumeReclaimPolicy: Retain // <4>
+  nfs:  // <5>
+    path: /exports/helloworld // <6>
+    server: workstation.example.com // <7>
+    readOnly: false
+----
+<1> name of the PV
+<2> amount of storage allocated to this volume
+<3> accessModes (a key element/label to match a PV and a PVC)
+<4> volume reclaim policy Retain (in this case volume is preserved after pods terminate)
+<5> the volume type being used (in this case the NFS plug-in)
+<6> the NFS mount path (NFS export)
+<7> the NFS server (can also be specified by IP address)
+
+Use the `Browse` button on the search bar to locate the file.  Details in the dialog below.
 
 ====
 image::ocp-webui-hello3-yaml-pv.png[Create PV]
