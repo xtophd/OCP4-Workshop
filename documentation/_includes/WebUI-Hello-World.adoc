@@ -119,7 +119,7 @@ ____
 image::ocp-webui-hello1-image-name.png[Image Name]
 ====
 
-If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) additional parameters will appear in order to complete this phase.
+If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
 Complete the data entry with the following details:
@@ -137,48 +137,38 @@ ____
 image::ocp-webui-hello1-resource-name.png[Resource Name]
 ====
 
-Now you are presented with a description of the specified image.  Scroll down a bit and change the *Name* as shown below.
-
-.Key-Values for Application Configuration
-[horizontal]
-*Name*:: hello-webui
-
-Click `Deploy` and then `Continue to Project Overview`
+The *Project Overview* page provides a high-level view of the project you just created including quick links to the *Deployment Config*, *Services*, *Routes*, *Pods* and more.  Take a moment to look it over and familiarize yourself with it.
 
 ====
 image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
-You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build of a containerized application.
+You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build and deployment of a containerized application.
 
 === Expose a Route
 
-Time to configure a *route* and expose our new application to the network.  On the left menu, mouse-over and select  *Applications->Routes*.
+Time to configure a *route* and expose our new application to the network.
 
-====
-image::ocp-webui-hello1-routes.png[Application Routes]
-====
+____
+Select `Create Route` from project *Overview*
 
-Proceed to click on `Create Route`.
-
-====
-image::ocp-webui-hello1-route-create.png[Create Route]
-====
-
-After clicking on `Create Route` you will be prompted for some details.
-
-====
-image::ocp-webui-hello1-route-details.png[Create Route]
-====
-
-Fill in the details as follows (using defaults unless specified otherwise).
+Use the following details (leave defaults unless specified otherwise):
 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui
 *Hostname*:: hello-webui.cloud.example.com
+____
 
-Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
+====
+image::ocp-webui-hello1-route-details.png[Create Route]
+====
+
+____
+Select `Create`
+____
+
+You should be returned to the Routes Overview page as shown.
 
 ====
 image::ocp-webui-hello1-routes-overview.png[Create Route]
