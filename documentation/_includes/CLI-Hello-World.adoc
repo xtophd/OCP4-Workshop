@@ -390,7 +390,7 @@ There is a sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
-/var/tmp/install-helloworld-html.sh
+/var/tmp/cheat-install-helloworld.sh
 ----
 
 .Your output should look like this
@@ -398,7 +398,7 @@ There is a sample script in /var/tmp to make life a little easier.
 ----
 My pod = hello-app-2-np9vs
 Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
-Validating output
+Validating output from helloworld.cloud.example.com
 
 <html>
 <body>
@@ -468,15 +468,15 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 
 .[root@master ~]#
 ----
-/var/tmp/install-helloworld-html.sh
+/var/tmp/cheat-install-helloworld.sh
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-My pod = hello-app-2-np9vs
-Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
-Validating output
+My pod = hello-app2-2-92cwr
+Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
+Validating output from helloworld2.cloud.example.com
 
 <html>
 <body>
