@@ -441,6 +441,29 @@ replication controller "hello-app2-2" successfully rolled out
 
 Now you can proceed with customizing the deployed (and live) pod.
 
+There is a sample script in /var/tmp you can run to make life a little easier.
+
+.[root@master ~]#
+----
+/var/tmp/install-helloworld-html.sh
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+My pod = hello-app-2-np9vs
+Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
+Validating output
+
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
+OR, if you want to do things by hand here are the steps.
+
 .[root@master ~]#
 ----
 oc get pods
@@ -459,6 +482,7 @@ Hello, World!
 </body>
 </html>
 ----
+
 
 TIP: Why does the POD version start with '2' this time instead of '1'?
 
