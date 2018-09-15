@@ -68,22 +68,22 @@ ____
 After selecting a project, the WebUI changes it's layout to 3 main elements and their components:
 
   . *Banner*
-  .. *Logo* Openshift Container Platform
-  .. *Help*
-  .. *Profile and Administrative* Pull Down
+  ** *Logo* Openshift Container Platform
+  ** *Help*
+  ** *Profile and Administrative* Pull Down
   . *Navigation Bar*
-  .. *Navicon*
-  .. *Project Pull Down*
-  .. *Search Catalog*
-  .. *Add to Project*
+  ** *Navicon*
+  ** *Project Pull Down*
+  ** *Search Catalog*
+  ** *Add to Project*
   . *Menu*
-  .. *Overview*
-  .. *Applications*
-  .. *Builds*
-  .. *Resources*
-  .. *Storage*
-  .. *Monitoring*
-  .. *Catalog*
+  ** *Overview*
+  ** *Applications*
+  ** *Builds*
+  ** *Resources*
+  ** *Storage*
+  ** *Monitoring*
+  ** *Catalog*
   
 The current working project is denoted in a pull down on the *Navigation Bar*.  For the purposes of these exercises, we are focused on `Applications`, `Builds` and `Storage`.  Other attributes of a *Project* will be covered in later units.
 
