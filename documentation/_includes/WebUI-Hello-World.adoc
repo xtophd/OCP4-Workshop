@@ -69,6 +69,8 @@ ____
 image::ocp-webui-hello1-project-select.png[Select Project]
 ====
 
+=== Create an Application
+
 After selecting a project, the WebUI changes it's layout to 3 main elements and their components:
 
   . *Banner*
@@ -91,15 +93,25 @@ After selecting a project, the WebUI changes it's layout to 3 main elements and 
   
 The current working project is denoted in a pull down on the *Navigation Bar*.  For the purposes of these exercises, we are focused on `Applications`, `Builds` and `Storage`.  Other attributes of a *Project* will be covered in later units.
 
-=== Create an Application
-
-The next step is to select `Deploy Image`.
+____
+Select `Deploy Image` from project *Overview* page
+____
 
 ====
 image::ocp-webui-hello1-image-deploy.png[Image Deploy]
 ====
 
-Next you will be prompted for image name.
+____
+Select `Image Name` radio button
+
+Use the following datails:
+
+.Key-Values for Image Specification
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+Press `Return` after entering the image name
+____
 
 ====
 image::ocp-webui-hello1-image-name.png[Image Name]
@@ -107,11 +119,18 @@ image::ocp-webui-hello1-image-name.png[Image Name]
 
 Click the radio button next to `Image Name` and enter the values as shown below.
 
-.Key-Values for Image Selection
-[horizontal]
-*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) additional parameters will appear in order to complete this phase.
 
-Click the `Search` icon to advance to the final phase of this deployment.
+____
+Complete the data entry with the following details:
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: hello-webui
+
+Select `Deploy` 
+Select the `Continue to Project Overview` link
+____
 
 ====
 image::ocp-webui-hello1-resource-name.png[Resource Name]
