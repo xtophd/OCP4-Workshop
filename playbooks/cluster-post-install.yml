@@ -114,7 +114,7 @@
         group: root
         mode: 0644
 
-  - name: "TEMPLATE create /var/tmp/install-helloworld-html.sh"
+    - name: "TEMPLATE create /var/tmp/install-helloworld-html.sh"
       template:
         src: install-helloworld-html.j2
         dest: /var/tmp/install-helloworld-html.sh
