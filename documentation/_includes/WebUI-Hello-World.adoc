@@ -40,9 +40,9 @@ image::ocp-webui-login-04.png[Login]
 
 From the *Openshift Landing* page select `Create Project`
 
-******
+=====
 Select `Create Project` from the *Openshift Landing* page
-******
+=====
 
 ====
 image::ocp-webui-hello1-project-create.png[Create Project]
