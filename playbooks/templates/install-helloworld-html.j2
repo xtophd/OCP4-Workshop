@@ -2,7 +2,7 @@
 
 MYPOD=`oc get pods --no-headers | cut -f 1 -d ' '`
 
-SRC="/var/www/html/helloworld.html"
+SRC="/var/tmp/helloworld.html"
 DST="${MYPOD}:/var/www/html/index.html"
 
 echo "My pod = ${MYPOD}"
