@@ -386,6 +386,29 @@ exit
 
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
+There is a sample script in /var/tmp to make life a little easier.
+
+.[root@master ~]#
+----
+/var/tmp/install-helloworld-html.sh
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+My pod = hello-app-2-np9vs
+Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
+Validating output
+
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
+OR if you prefer to do the steps manually, here are the commands.
+
 .[root@master ~]#
 ----
 oc get pods
@@ -441,7 +464,7 @@ replication controller "hello-app2-2" successfully rolled out
 
 Now you can proceed with customizing the deployed (and live) pod.
 
-There is a sample script in /var/tmp you can run to make life a little easier.
+Once again, you can use the sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
