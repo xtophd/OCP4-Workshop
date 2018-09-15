@@ -499,7 +499,7 @@ image::ocp-webui-hello3-yaml-pv.png[Create PV]
 
 .Key-Values for Import YAML
 [horizontal]
-*Filename*:: /var/tmp/nfs-pv-02.txt
+*Filename*:: /var/tmp/pv-hello-webui3.txt
 
 Proceed to click on `Create`.  You will get a warning message requesting confirmation, click `Create Anyway`
 
@@ -903,6 +903,11 @@ Did it work?
 ====
 image::ocp-webui-hello5-verification.png[Application Verification]
 ====
+
+=== Additional References
+
+link:https://docs.openshift.com/container-platform/3.9/install_config/storage_examples/shared_storage.html[Sharing an NFS mount across two persistent volume claims]
+
 
 [discrete]
 == End of Unit
