@@ -38,25 +38,23 @@ image::ocp-webui-login-04.png[Login]
 
 === Create a Project
 
-From the *Openshift Landing* page select `Create Project`
 
 ____
 Select `Create Project` from the *Openshift Landing* page
-____
 
-====
-image::ocp-webui-hello1-project-create.png[Create Project]
-====
+Use the following details:
 
-Fill in the details as follows:
-
-____
 .Key-Values for Create Project
 [horizontal]
 *Name*:: hello-webui
 *Display Name*:: Hello WebUI
 *Description*:: My First WebUI App
 ____
+
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
+
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `HelloWebUI` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
 
