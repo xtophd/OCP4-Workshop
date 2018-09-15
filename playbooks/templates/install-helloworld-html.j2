@@ -1,12 +1,17 @@
 #!/bin/bash
 
-MYPOD=`oc get pods --no-headers | cut -f 1 -d ' '`
+MYPOD=`oc get pods --no-headers | awk '{ print $1 }'`
+MYROUTE=`oc get routes --no-headers | awk '{ print $2 }'`
 
 SRC="/var/tmp/helloworld.html"
 DST="${MYPOD}:/var/www/html/index.html"
 
 echo "My pod = ${MYPOD}"
-
 echo "Copying ${SRC} to ${DST}"
-
+ 
 oc cp ${SRC} ${DST}
+
+echo "Validating output"
+echo ""
+
+curl ${MYROUTE}
