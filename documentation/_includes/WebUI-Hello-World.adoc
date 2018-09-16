@@ -180,7 +180,7 @@ You should see the standard Red Hat Enterprise Linux Test Page.  If you get an e
 image::ocp-webui-hello1-verification.png[Application Verification]
 ====
 
-=== Exploring the Container
+=== Explore the Container
 
 ____
 select `Applications` -> `Pods` from *Menu*
@@ -277,7 +277,11 @@ Next, you will do a series of exercises detailing how to make adjustments to the
 
 == Hello-WebUI I : Change Security Attribute
 
+NOTE: For consistancy, it should be noted that normal steps to deploying an application (Create Project, Create Application, Expose Route) where all don in the section above.  This exercise only modifies the existing projet.
+
 The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
+
+=== Edit Project Attributes
 
 For our first solution, we are going to adjust the current project's security attributes by importing a YAML config file.  
 
@@ -298,7 +302,7 @@ ____
 image::ocp-webui-hello1-add-to-project.png[Add To Project]
 ====
 
-Before you selected `Create` you had an opportunity to inspect the file.  The only change to the project's security attributes is _openshift.io/sascc.uid-range:1001/10000_.  This is identical to the changes made during the CLI Hello World exercises using the `oc edit project` command line.
+Before you selected `Create` you had an opportunity to inspect the file.  The only change to the project's security attributes is _openshift.io/sascc.uid-range:1001/10000_.  This is identical to the change made during the CLI Hello World exercises using the `oc edit project` command line.
 
 ====
 image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
@@ -314,6 +318,8 @@ ____
 
 You should be returned to the project overview page.
 
+=== Redeploy the Application
+
 Since our modification only affected "Project" attributes, nothing triggered an automatice redeployment of the application.  Thus, you will need to initiate a new deployment manually.  
 
 ____
@@ -327,6 +333,8 @@ image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 What you have done by modifying the project security attributes is configure the effective UID of the soon to be redeployed application to be 1001.  This modification now enables permission to write in /var/www/html.  It is not as insecure as simply enabling root priviledges for the process, but already far less secure than then the previous configuration.
 
 Let us proceed with completing our first "helloworld" deployment.
+
+=== Explore the Container
 
 ____
 
