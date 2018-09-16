@@ -491,7 +491,7 @@ Mission accomplished.
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
 
-IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, or fails and restarts ... the changes you introduced to the image by manually copying index.html to the image will not be restored.
+IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
 
 // ----------------------------------------------------------------------------------------------------
 // --- Authentic Solution #3
@@ -501,11 +501,10 @@ IMPORTANT:  Again, it is critical to understand that this is also NOT a recommen
 
 ==== Create Project
 
-From the Openshift Front Landing page select `Create` a project as before.
+____
+Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-====
-image::ocp-webui-hello1-project-create.png[Create Project]
-====
+Use the following details:
 
 Fill in the details as follows:
 
@@ -515,7 +514,15 @@ Fill in the details as follows:
 *Display Name*:: Hello WebUI III
 *Description*:: My Third WebUI App
 
-Once the project is created, proceed to select the project on the right.
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
+
+You should notice that your new project "Hello WebUI III" has been added to the list on the right.
+
+____
+Select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
+____
 
 ==== Create Persistent Volume (PV)
 
@@ -531,6 +538,7 @@ The WebUI does not currently provide a convinient dialog for creating PVs, thus 
 
 ____
 Select `Import YAML/JSON` from project *Overview* page
+____
 
 ====
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
