@@ -17,13 +17,14 @@ This unit will mimic (as closely as possible) the exerices done in the CLI versi
 
 The objective is to step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform. Again, we are going to do it several different ways to illustrate some best and worst practices of container usage.
 
-There are 5 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
+There are 6 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
 
-  . **login** - sign-on with proper credentials
-  . **Create a Project**
-  . **Create an Application**
-  . **Expose a Route**
-  . **Modify the Project, Build or Deployment**
+  . *login* - sign-on with proper credentials
+  . *Create a Project*
+  . *Create an Application*
+  . *Expose a Route*
+  . *Modify the Project, Build or Deployment*
+  . *Validation*
 
 NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do step-5 last.
 
