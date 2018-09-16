@@ -17,15 +17,16 @@ This unit will mimic (as closely as possible) the exerices done in the CLI versi
 
 The objective is to step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform. Again, we are going to do it several different ways to illustrate some best and worst practices of container usage.
 
-There are 5 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
+There are 6 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
 
   . *login* - sign-on with proper credentials
   . *Create a Project*
   . *Deploy an Image*
   . *Expose a Route*
   . *Modify the Project, Build or Deployment*
+  . *Validation*
 
-NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do step-5 last.
+NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do things in this order.
 
 Let's get started.
 
@@ -173,7 +174,7 @@ You should be returned to the Routes Overview page as shown.
 image::ocp-webui-hello1-routes-overview.png[Create Route]
 ====
 
-==== Validation
+==== Interim Validation
 
 Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided in the *Hostname* column to verify that the application is working as expected.
 
@@ -351,7 +352,7 @@ curl helloworld3.cloud.example.com > /var/www/html/index.html
 
 If you didn't notice, the source for *index.html* came from an application that was deployed during the CLI exercises.  Final step is to verify the application is functioning as expected.
 
-==== Validation
+=== Validation
 
 ____
 Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
@@ -530,13 +531,19 @@ ls -la
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
-Mission accomplished.
+==== Validation
 
+IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
+
+Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL for your expose route to verify your deployment.
+
+____
+select `https://hello-webui.cloud.example.com` from *Hostname* column on *Routes Summary*
+____ 
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
 
-IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -571,29 +578,58 @@ ____
 Select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
 ____
 
-=== Deply an Image
+=== Deploy an Image
 
 As before, the next step is to `Deploy Image`
+
+____
+Select `Deploy Image` from project *Overview* page
+
+Select `Image Name` radio button
+
+Use the following datails:
+
+.Key-Values for Application Configuration
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+Press `Return` after entering the image name
+____
 
 ====
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
 ====
 
-.Key-Values for Deploy Image
-[horizontal]
-*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
-After typing in the Image Name, click the search icon to populate the image details and expose additional options.
-
-Scroll down and change the application name as follows.
+____
+Complete the data entry with the following details:
 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui3
 
-Now click 'Deploy' and `Continue to the project overview`.
+Select `Deploy` 
 
-==== Create Persistent Volume (PV)
+Select the `Continue to Project Overview` link
+____
+
+=== Expose Route
+
+Mouse-over and select *Applications->Routes*
+
+Click `Create Route`
+
+Fill in the details as follows (using defaults unless specified otherwise).
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: hello-webui3
+*Hostname*:: hello-webui3.cloud.example.com
+
+Click `Create`
+
+=== Modify the Project, Build or Deployment
 
 Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In soluttion #2, we use a volume type of "emptyDir".
 
@@ -603,17 +639,11 @@ Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespace
 
 If all of this is confusing, don't worry about it now.  What it boils down to is that storage configuration in Openshift behaves like 2 magenets.  You have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Once configured, if the attributes of a PV and PVC match then like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
 
+==== Create Persistent Volume (PV)
+
 The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
 
-____
-Select `Import YAML/JSON` from project *Overview* page
-____
-
-====
-image::ocp-webui-hello3-yaml-import.png[Import YAML]
-====
-
-A sample YAML file is provided on the workstation to make this process easy.  
+A sample YAML file is provided on the workstation to make this process easy.  It should look similar to one outlined below.
 
 .Sample YAML to Configure PV
 ----
@@ -641,32 +671,48 @@ spec:
 <6> the NFS mount path (NFS export)
 <7> the NFS server (can also be specified by IP address)
 
-Use the `Browse` button on the search bar to locate the file.  Details in the dialog below.
+____
+Select `Import YAML/JSON` from project *Overview* page
 
-====
-image::ocp-webui-hello3-yaml-pv.png[Create PV]
-====
+Select `Browse`
+
+Use the following details:
 
 .Key-Values for Import YAML
 [horizontal]
 *Filename*:: /var/tmp/pv-hello-webui3.txt
 
-Proceed to click on `Create`.  You will get a warning message requesting confirmation, click `Create Anyway`
+select `Create`
+
+select `Create Anyway` from *Confirmation Dialog*
+____
+
+====
+image::ocp-webui-hello3-yaml-import.png[Import YAML]
+====
+
+====
+image::ocp-webui-hello3-yaml-pv.png[Create PV]
+====
 
 ====
 image::ocp-webui-hello3-yaml-confirmation.png[Confirm PV]
 ====
 
-Now click on `Close" and continue with your image deployment.
+____
+select `Close`
+____
 
 
 ==== Create Persistent Volume Claim (PVC)
 
-Mouse-over and select *Applications->Deployments*.  
+____
+select `Applications` -> `Deployments` from *Menu*
 
-Select our deployment configuration *hello-webui3*.
+select *hello-webui3* from *Deployments Summary*
 
-Now click on the `Actions` pull down and select `Add Storage`.
+select `Add Storage` from `Actions` pull down
+____
 
 ====
 image::ocp-webui-hello3-storage-add.png[Add Storage]
@@ -674,24 +720,27 @@ image::ocp-webui-hello3-storage-add.png[Add Storage]
 
 Since we have not configured a PVC for our use, you will be directed to the *Create Storage* page.
 
-Select `Create Storage` and you will be presented a dialog for setting up a persistent volume claim (PVC).
+____
+select `Create Storage`
 
-====
-image::ocp-webui-hello3-storage-pvc.png[Create Storage]
-====
-
-Use the following parameters.
+Use the following details:
 
 .Key-Values for Create Storage
 [horizontal]
 *Name*:: hello-webui3-claim
 *Size*:: 1 GiB
 
-Click `Create`.  You will now be returned to the previous screen to complete the task of Add Storage.
+Click `Create`.  
+____
 
 ====
-image::ocp-webui-hello3-storage-details.png[Storage Details]
+image::ocp-webui-hello3-storage-pvc.png[Create Storage]
 ====
+
+You will now be returned to the previous screen to complete the task of Add Storage.
+
+____
+Complete the storage set up with the following details
 
 Use the following parameters.
 
@@ -700,24 +749,16 @@ Use the following parameters.
 *Storage*:: hello-webui3-claim
 *Mount Path*:: /var/www/html
 
-Click `Add`.  Openshift will now initiate a redployment of our app using the new configuration which includes NFS storage.
+select `Add`
+____
 
-=== Expose Route
+====
+image::ocp-webui-hello3-storage-details.png[Storage Details]
+====
 
-Mouse-over and select *Applications->Routes*
+Openshift will now initiate a redployment of our app using the new configuration which includes NFS storage.
 
-Click `Create Route`
-
-Fill in the details as follows (using defaults unless specified otherwise).
-
-.Key-Values for Application Configuration
-[horizontal]
-*Name*:: hello-webui3
-*Hostname*:: hello-webui3.cloud.example.com
-
-Click `Create`
-
-=== Verify
+=== Validation
 
 Mouse-over `Application` and select `Routes`.  Click on the URL provided in the Hostname column.  You should get the helloworld output.
 
