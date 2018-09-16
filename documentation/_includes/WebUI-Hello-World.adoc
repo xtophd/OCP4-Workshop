@@ -464,7 +464,7 @@ Mission accomplished.
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
 
-IMPORTANT:  Again, it is critical to understand that this is not a recommended solution to deploying an application into production.  This solution reduces your overall security by changes project attributes.  This solution is also non-persistent.  If the application is stopped and restarted, or fails and restarts ... the changes you introduced to the image by manually copying index.html to the image will not be restored.
+IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, or fails and restarts ... the changes you introduced to the image by manually copying index.html to the image will not be restored.
 
 // ----------------------------------------------------------------------------------------------------
 // --- Authentic Solution #3
