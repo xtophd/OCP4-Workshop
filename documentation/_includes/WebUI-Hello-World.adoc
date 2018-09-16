@@ -1057,7 +1057,7 @@ metadata: {}
 Now from the WebUI, let us deploy the Dockerfile based application.  For this final exercise, there will be no screen shots provided.
 
 
-==== Create a Project
+=== Create a Project
 
 ____
 select `Create Project` from *My Projects* on the *Openshift Landing* page
@@ -1077,7 +1077,7 @@ ____
 select project `Hello WebUI` from *My Projects* on the *Openshift Landing* page
 ____
 
-==== Import YAML file
+=== Import YAML file (Deploy Image)
 
 NOTE: Make sure you have selected your new project before importing.  
 
