@@ -182,19 +182,27 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 
 === Exploring the Container
 
-On the left menu, mouse-over and select *Applications->Pods*.  Now click on the pod link to bring up it's details.
+____
+mouse-over and select 'Applications' -> 'Pods'
+
+select the pod link
+____
 
 ====
 image::ocp-webui-hello1-pod-overview.png[Pod Overview]
 ====
 
-One of the options in the pod details is to connect to the active pods terminal.  Proceed to click on `Terminal`.
+One of the options in the pod details is to connect to the active pods terminal.  
+
+____
+select `Terminal` from *Pod Details*
+____
 
 ====
 image::ocp-webui-hello1-pod-terminal.png[Pod Overview]
 ====
 
-Now that you have connected to the active container, have a look around.  These are identical exercises to those performed in the CLI version of hellow-world.  If you are familiar with the terminal activites you can skip to **Making an authentic "Hello, World!"**.
+Now that you have connected to a shell in the active container, have a look around.  These are identical exercises to those performed in the CLI version of hellow-world.  If you are familiar with the terminal activites you can skip to **Making an authentic "Hello, World!"**.
 
 Here are a few commands to explore the container's namespace (ie: environment).
 
@@ -429,7 +437,7 @@ For real world use cases, emptyDir is often used as a local cache.  Since the ba
 Never the less, it suits our needs for this exercise so let's proceed to configure an emptyDir.  The WebUI does not provide a ellegant solution configuring an emptyDir, so we will resort to editing the deployment configuration YAML.
 
 ____
-Mouse-over and select `Applications`->`Deployments`
+Mouse-over and select `Applications` -> `Deployments`
 
 Select `hello-webui2` deployment
 
