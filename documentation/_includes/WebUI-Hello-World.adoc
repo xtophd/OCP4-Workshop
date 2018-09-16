@@ -748,7 +748,7 @@ image::ocp-webui-hello3-verification.png[Verification]
 // ----------------------------------------------------------------------------------------------------
 
 
-== Hello-WebUI IV : Use Source Control (git)
+== Hello-WebUI IV : Use Source Control
 
 === Create a Project
 
@@ -794,6 +794,7 @@ _filters are added one at a time_
 select `Apache HTTP Server`
 
 select `Next`
+____
 
 ====
 image::ocp-webui-hello4-image-search.png[Image Search]
