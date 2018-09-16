@@ -346,7 +346,7 @@ If you didn't notice, the source for *index.html* came from an application that 
 === Validation
 
 ____
-Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
+Select exposed route `http://hello-webui.cloud.example.com` from the *Project Overview*
 ____
 
 ====
@@ -524,14 +524,12 @@ IMPORTANT:  Again, it is critical to understand that this is also NOT a recommen
 Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL for your expose route to verify your deployment.
 
 ____
-select `https://hello-webui.cloud.example.com` from *Hostname* column on *Routes Summary*
-____ 
+Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
+____
 
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
-
-
 
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
@@ -805,15 +803,15 @@ Entering details using defaults for all values unless specified below:
 
 Once you have filled in the details, select **Create**
 
-Now let's have a closer inspection.  
-
-Click "Continue to Project Overview"
-
 ====
 image::ocp-webui-hello4-app-overview.png[Application Overview]
 ====
 
-Finally, to verify the application is working properly click on the **URL**
+=== Validation
+
+____
+Select exposed route `http://hello-webui3.cloud.example.com` from the *Project Overview*
+____
 
 ====
 image::ocp-webui-hello4-verification.png[Application Verification]
