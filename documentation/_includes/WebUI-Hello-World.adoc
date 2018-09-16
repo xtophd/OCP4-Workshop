@@ -165,7 +165,7 @@ image::ocp-webui-hello1-route-details.png[Create Route]
 You should be returned to the Routes Overview page as shown.
 
 ====
-image::ocp-webui-hello1-routes-overview.png[Create Route]
+image::ocp-webui-hello1-project-overview2.png[Project Overview]
 ====
 
 ==== Interim Validation
