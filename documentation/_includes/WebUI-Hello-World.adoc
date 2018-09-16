@@ -47,9 +47,7 @@ You can always get to the *Openshift Landing* page by clicking on the "Openshift
 ____
 Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-Use the following details:
-
-.Key-Values for Create Project
+.Use following details for Create Project
 [horizontal]
 *Name*:: hello-webui
 *Display Name*:: Hello WebUI
@@ -108,9 +106,7 @@ Select `Deploy Image` from project *Overview* page
 
 Select `Image Name` radio button
 
-Use the following datails:
-
-.Key-Values for Image Specification
+.Use following datails for Image Specification
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
@@ -124,9 +120,9 @@ image::ocp-webui-hello1-image-name.png[Image Name]
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-Complete the data entry with the following details:
+_Complete the data entry_
 
-.Key-Values for Application Configuration
+.Use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui
 
@@ -154,9 +150,7 @@ Time to configure a *route* and expose our new application to the network.
 ____
 Select `Create Route` from *Project Overview*
 
-Use the following details (leave defaults unless specified otherwise):
-
-.Key-Values for Application Configuration
+.Use the following details for Create Route
 [horizontal]
 *Name*:: hello-webui
 *Hostname*:: hello-webui.cloud.example.com
@@ -284,15 +278,13 @@ select `Import YAML/JSON` from `Add to Project` pull down in *Navigation Bar*
 
 select `Browse`
 
-_Use the following deatils:_
-
-.Key-Values for Application Configuration
+.Use following details for Application Configuration
 [horizontal]
 *Filename*:: /var/tmp/webui-hello-namespace.txt
 
 select `Create`
 
-_A Confirmation dialog will appear_
+_A confirmation dialog will appear_
 
 select `Replace` from *Confirmation Dialog*
 
@@ -381,9 +373,7 @@ We begin this solution by repeating the steps to deploy a httpd base image.
 ____
 Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-Use the following details:
-
-.Key-Values for Create Project
+.Use following details for Create Project
 [horizontal]
 *Name*:: hello-webui2
 *Display Name*:: Hello WebUI II
@@ -409,9 +399,8 @@ Select `Deploy Image` from project *Overview* page
 
 Select `Image Name` radio button
 
-Use the following datails:
+.Use following datails Application Configuration
 
-.Key-Values for Application Configuration
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
@@ -421,9 +410,9 @@ ____
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-Complete the data entry with the following details:
+_Complete the data entry_
 
-.Key-Values for Application Configuration
+.Use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
 
@@ -441,9 +430,7 @@ image::ocp-webui-hello2-project-overview.png[Project Overview]
 ____
 Select `Create Route` from *Project *Overview*
 
-Use the following details (leave defaults unless specified otherwise):
-
-.Key-Values for Application Configuration
+.Use following details for Create Route
 [horizontal]
 *Name*:: hello-webui2
 *Hostname*:: hello-webui2.cloud.example.com
@@ -539,6 +526,7 @@ Provided that you have not been too efficient and completed exposing the route b
 ____
 select `https://hello-webui.cloud.example.com` from *Hostname* column on *Routes Summary*
 ____ 
+
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
 ====
@@ -556,9 +544,7 @@ image::ocp-webui-hello1-verification2.png[Verification]
 ____
 Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-Use the following details:
-
-.Key-Values for Create Project Dialog
+.Use following details for Create Project
 [horizontal]
 *Name*:: hello-webui3
 *Display Name*:: Hello WebUI III
@@ -586,9 +572,7 @@ Select `Deploy Image` from project *Overview* page
 
 Select `Image Name` radio button
 
-Use the following datails:
-
-.Key-Values for Application Configuration
+.Use following datails for Application Configuration
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
@@ -602,9 +586,9 @@ image::ocp-webui-hello3-yaml-import.png[Import YAML]
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-Complete the data entry with the following details:
+_Complete the data entry_
 
-.Key-Values for Application Configuration
+.Use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui3
 
@@ -619,9 +603,7 @@ Mouse-over and select *Applications->Routes*
 
 Click `Create Route`
 
-Fill in the details as follows (using defaults unless specified otherwise).
-
-.Key-Values for Application Configuration
+.Use following details for Create Route
 [horizontal]
 *Name*:: hello-webui3
 *Hostname*:: hello-webui3.cloud.example.com
@@ -675,15 +657,15 @@ Select `Import YAML/JSON` from project *Overview* page
 
 Select `Browse`
 
-Use the following details:
-
-.Key-Values for Import YAML
+.Use the following details Import YAML
 [horizontal]
 *Filename*:: /var/tmp/pv-hello-webui3.txt
 
 select `Create`
 
-select `Create Anyway` from *Confirmation Dialog*
+_A confirmation dialog will appear_
+
+select `Create Anyway`
 ____
 
 ====
