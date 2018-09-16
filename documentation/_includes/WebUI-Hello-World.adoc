@@ -95,15 +95,13 @@ As noted, the current working project is indicated in the pull down on the *Navi
 
 For the purposes of these introductory exercises, we are focused on `Applications`, `Builds` and `Storage`.  Other attributes of a *Project* will be covered in later units.
 
-____
-Select `Deploy Image` from project *Overview* page
-____
-
 ====
 image::ocp-webui-hello1-image-deploy.png[Image Deploy]
 ====
 
 ____
+Select `Deploy Image` from project *Overview* page
+
 Select `Image Name` radio button
 
 Use the following datails:
