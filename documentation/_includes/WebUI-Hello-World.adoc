@@ -268,7 +268,7 @@ Next, you will do a series of exercises detailing how to make adjustments to the
 // --- Authentic Solution #1
 // ----------------------------------------------------------------------------------------------------
 
-== Solution #1: Change Security Attribute
+== Hello-WebUI I : Change Security Attribute
 
 The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
 
@@ -337,7 +337,7 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 // --- Authentic Solution #2
 // ----------------------------------------------------------------------------------------------------
 
-== Solution #2: Use emptyDir
+== Hello-WebUI II : Use emptyDir
 
 As noted in solution #1, there is a security issue with the default UID and the filesystem permissions in base container's directory /var/www/html.  Solution #1 attacked the problem by changing the UID of the running process.
 
@@ -499,9 +499,9 @@ IMPORTANT:  Again, it is critical to understand that this is also NOT a recommen
 // --- Authentic Solution #3
 // ----------------------------------------------------------------------------------------------------
 
-=== Solution #3: Use NFS
+== Hello-WebUI III : Use NFS
 
-==== Create Project
+=== Create Project
 
 ____
 Select `Create Project` from *My Projects* on the *Openshift Landing* page
@@ -525,6 +525,28 @@ You should notice that your new project "Hello WebUI III" has been added to the 
 ____
 Select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
 ____
+
+=== Create Application
+
+As before, the next step is to `Deploy Image`
+
+====
+image::ocp-webui-hello3-yaml-import.png[Import YAML]
+====
+
+.Key-Values for Deploy Image
+[horizontal]
+*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+After typing in the Image Name, click the search icon to populate the image details and expose additional options.
+
+Scroll down and change the application name as follows.
+
+.Key-Values for Application Configuration
+[horizontal]
+*Name*:: hello-webui3
+
+Now click 'Deploy' and `Continue to the project overview`.
 
 ==== Create Persistent Volume (PV)
 
@@ -592,27 +614,6 @@ image::ocp-webui-hello3-yaml-confirmation.png[Confirm PV]
 
 Now click on `Close" and continue with your image deployment.
 
-==== Create Application
-
-As before, the next step is to `Deploy Image`
-
-====
-image::ocp-webui-hello3-yaml-import.png[Import YAML]
-====
-
-.Key-Values for Deploy Image
-[horizontal]
-*Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
-
-After typing in the Image Name, click the search icon to populate the image details and expose additional options.
-
-Scroll down and change the application name as follows.
-
-.Key-Values for Application Configuration
-[horizontal]
-*Name*:: hello-webui3
-
-Now click 'Deploy' and `Continue to the project overview`.
 
 ==== Create Persistent Volume Claim (PVC)
 
@@ -656,7 +657,7 @@ Use the following parameters.
 
 Click `Add`.  Openshift will now initiate a redployment of our app using the new configuration which includes NFS storage.
 
-==== Expose Route
+=== Expose Route
 
 Mouse-over and select *Applications->Routes*
 
@@ -671,7 +672,7 @@ Fill in the details as follows (using defaults unless specified otherwise).
 
 Click `Create`
 
-==== Verify
+=== Verify
 
 Mouse-over `Application` and select `Routes`.  Click on the URL provided in the Hostname column.  You should get the helloworld output.
 
@@ -683,10 +684,10 @@ image::ocp-webui-hello3-verification.png[Verification]
 // --- Authentic Solution #4
 // ----------------------------------------------------------------------------------------------------
 
-=== Solution #4: Use Source Control (git)
+== Hello-WebUI IV : Use Source Control (git)
 
 
-==== Create a Project
+=== Create a Project
 
 Go To Front Landing Page and select `Create Project`
 
@@ -704,7 +705,7 @@ Fill in the details as follows:
 
 And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
 
-==== Create an Application
+=== Create an Application
 
 Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
 
@@ -750,9 +751,11 @@ Finally, to verify the application is working properly click on the **URL**
 image::ocp-webui-hello4-verification.png[Application Verification]
 ====
 
+// ----------------------------------------------------------------------------------------------------
+// --- Authentic Solution #5
+// ----------------------------------------------------------------------------------------------------
 
-// --- Authentic Solution #5 ------------------------------------------
-=== Solution #5: Use Dockerfile
+=== Hello-WebUI V : Use Dockerfile
 
 So this solution is a bit more complicated.  As shown during the CLI exercises, deploying an application
 based on a Dockerfile is pretty trivial.  In fact, the `oc new-app` commandline was the shortest and had the least amount of typing of all the CLI helloworld examples.
@@ -970,7 +973,7 @@ From the Project Overview page
 [horizontal]
 *Filename*:: /var/tmp/bc-dockerfile.txt
 
-==== Create (expose) a Route
+=== Create (expose) a Route
 
 From the Applications->Routes page
 
@@ -979,7 +982,7 @@ From the Applications->Routes page
 *Name*:: hello-webui5
 *Hostname*:: hello-webui5.cloud.example.com
 
-==== Validate the Application
+=== Validate the Application
 
 Did it work?
 
