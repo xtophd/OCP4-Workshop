@@ -195,7 +195,7 @@ image::ocp-webui-hello1-pod-overview.png[Pod Overview]
 One of the options in the pods overview page (ie: Details, Environment, Logs, Terminal and Events) is to connect to the active pods terminal.  
 
 ____
-select `Terminal` from *Pods Overview*
+select `Terminal` from *Pods Summary*
 ____
 
 ====
@@ -340,7 +340,7 @@ ____
 
 select `Applications` -> `Pods` from *Menu*
 
-select `Terminal` from *Pod Details*
+select `Terminal` from *Pod Summary*
 ____
 
 Here you can access a shell, poke around again and most importantly install a helloworld *index.html*.  
@@ -467,7 +467,7 @@ For real world use cases, emptyDir is often used as a local cache.  Since the ba
 Never the less, it suits our needs for this exercise so let's proceed to configure an emptyDir.  The WebUI does not provide a ellegant solution configuring an emptyDir, so we will resort to editing the deployment configuration YAML.
 
 ____
-Mouse-over and select `Applications` -> `Deployments`
+select `Applications` -> `Deployments` from *Menu*
 
 Select `hello-webui2` deployment
 
@@ -506,14 +506,14 @@ ____
 Select `Save`.  
 ____
 
-Provided there are no errors, updating the deployment configuation like this will automatically trigger a new deployment of our application.
+Provided there are no errors, updating a deployment configuation in this manor will *automatically* trigger a new deployment of our application.
 
 ____
-Mouse-over and select `Applications`->`Pods`
+select `Applications` -> `Pods` from *Menu*
 
-Select Pod
+Select `hellow-webui2-????` pod
 
-Select `Terminal` tab from Pod details
+Select `Terminal` from *Pod Summary*
 ____
 
 From here you can access the shell, inspect the filesystem mounted on /var/www/html and install a helloworld *index.html* as shown below.
@@ -545,13 +545,14 @@ Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
 Use the following details:
 
-Fill in the details as follows:
-
 .Key-Values for Create Project Dialog
 [horizontal]
 *Name*:: hello-webui3
 *Display Name*:: Hello WebUI III
 *Description*:: My Third WebUI App
+
+Select `Create`
+____
 
 ====
 image::ocp-webui-hello1-project-create.png[Create Project]
