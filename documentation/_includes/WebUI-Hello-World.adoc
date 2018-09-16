@@ -81,7 +81,7 @@ After selecting a project, the WebUI changes it's layout to 3 main elements and 
   ** *Navicon*
   ** *Projects* pull down
   ** *Search Catalog*
-  ** *Add to Project*
+  ** *Add to Project* pull down
   . *Menu*
   ** *Overview*
   ** *Applications*
