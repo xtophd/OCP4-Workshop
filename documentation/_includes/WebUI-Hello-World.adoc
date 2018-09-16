@@ -284,12 +284,19 @@ select `Import YAML/JSON` from `Add to Project` pull down in *Navigation Bar*
 
 select `Browse`
 
-Use the following deatils:
+_Use the following deatils:_
+
 .Key-Values for Application Configuration
 [horizontal]
 *Filename*:: /var/tmp/webui-hello-namespace.txt
 
 select `Create`
+
+_A Confirmation dialog will appear_
+
+select `Replace` from *Confirmation Dialog*
+
+select `Close` 
 ____
 
 ====
@@ -302,14 +309,6 @@ Before you selected `Create` you had an opportunity to inspect the file.  The on
 image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
 ====
     
-A Confirmation dialog will appear
-
-____
-select `Replace` from *Confirmation Dialog*
-
-select `Close` 
-____
-
 You should be returned to the project overview page.
 
 ==== Redeploy the Application
