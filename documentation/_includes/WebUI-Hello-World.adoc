@@ -346,25 +346,33 @@ In this solution, we are going to create a volume (ie: filesystem) which provide
 
 We begin this solution by repeating the steps to deploy a httpd base image.
 
-=== Create a Project
+==== Create a Project
 
-Go To Front Landing Page and select `Create Project`
+____
+Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-====
-image::ocp-webui-hello1-project-create.png[Create Project]
-====
+Use the following details:
 
-Fill in the details as follows:
-
-.Key-Values for Create Project Dialog
+.Key-Values for Create Project
 [horizontal]
 *Name*:: hello-webui2
 *Display Name*:: Hello WebUI II
 *Description*:: My Second WebUI App
 
-And now click `Create`.  You should notice that your new project has been added to the list on the right.  Now select the new `Wello WebUI II` project from the list on the right to continue to the next step.  The current project is denoted in the top left hand corner.
+Select `Create` when complete
+____
 
-=== Create an Application
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
+
+You should notice that your new project "Hello WebUI II" has been added to the list on the right.  
+
+____
+Select project `Hello WebUI II` from *My Projects* on the *Openshift Landing* page
+____
+
+==== Create an Application
 
 The next step is to select `Deploy Image` and fill in the following details.
 
@@ -388,7 +396,7 @@ Click `Deploy` and then `Continue to Project Overview`
 image::ocp-webui-hello2-project-overview.png[Project Overview]
 ====
 
-=== Expose a Route
+==== Expose a Route
 
 On the left menu, mouse-over and select  *Applications->Routes*.
 
@@ -502,7 +510,8 @@ If all of this is confusing, don't worry about it now.  What it boils down to is
 
 The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
 
-From the *Project Overview* page select `Import YAML/JSON`.
+____
+Select `Import YAML/JSON` from project *Overview* page
 
 ====
 image::ocp-webui-hello3-yaml-import.png[Import YAML]
