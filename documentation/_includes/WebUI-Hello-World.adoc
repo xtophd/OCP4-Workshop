@@ -985,7 +985,7 @@ Did it work?
 image::ocp-webui-hello5-verification.png[Application Verification]
 ====
 
-=== Additional References
+== Additional References
 
 link:https://docs.openshift.com/container-platform/3.9/install_config/storage_examples/shared_storage.html[Sharing an NFS mount across two persistent volume claims]
 
