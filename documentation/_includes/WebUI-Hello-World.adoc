@@ -187,7 +187,7 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 ____
 select `Applications` -> `Pods` from *Menu*
 
-select the pod link
+select `hello-webui-?-????` from pods list
 ____
 
 ====
