@@ -54,7 +54,7 @@ Use the following details:
 *Display Name*:: Hello WebUI
 *Description*:: My First WebUI App
 
-Select `Create` when complete
+Select `Create`
 ____
 
 ====
@@ -247,7 +247,7 @@ Normally files serverd by httpd go into /var/www/html, but the security-consciou
 
 .sh-4.2$
 ----
-cd /var/www/
+cd /var/www
     
 ls -la
 
@@ -342,7 +342,7 @@ Here you can access a shell, poke around again and most importantly install a he
 ----
 id
 
-cd /var/www/html
+cd /var/www
 
 ls -la
 
@@ -389,7 +389,7 @@ Use the following details:
 *Display Name*:: Hello WebUI II
 *Description*:: My Second WebUI App
 
-Select `Create` when complete
+Select `Create`
 ____
 
 ====
@@ -402,7 +402,7 @@ ____
 Select project `Hello WebUI II` from *My Projects* on the *Openshift Landing* page
 ____
 
-=== Create an Application
+=== Deploy an Image
 
 ____
 Select `Deploy Image` from project *Overview* page
@@ -457,6 +457,8 @@ You should be returned to the Routes Overview page as shown.
 image::ocp-webui-hello2-routes-overview.png[Create Route]
 ====
 
+=== Modify the Project, Build or Deployment
+
 Now comes the step of configuring our new volume (ie: filesystem).  For this purpose we are utilizing a special type of volume called an "emptyDir".  This type of volume is created when a Pod is assigned to a Node, and exists as long as that Pod is running on that node.  What does that mean?  It means that the volume is *NOT* persistent and that data stored in the volume will be lost when the pod is stopped.  It also means that the volume will be *empty* when the pod starts (hence the name: emptyDir).
 
 For real world use cases, emptyDir is often used as a local cache.  Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
@@ -505,6 +507,8 @@ ____
 
 Provided there are no errors, updating a deployment configuation in this manor will *automatically* trigger a new deployment of our application.
 
+==== Explore the Container
+
 ____
 select `Applications` -> `Pods` from *Menu*
 
@@ -517,6 +521,12 @@ From here you can access the shell, inspect the filesystem mounted on /var/www/h
 
 .sh-4.2$
 ----
+id
+
+cd /var/www/
+
+ls -la
+
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
@@ -561,7 +571,7 @@ ____
 Select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
 ____
 
-=== Create Application
+=== Deply an Image
 
 As before, the next step is to `Deploy Image`
 
