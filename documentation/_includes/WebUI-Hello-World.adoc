@@ -270,9 +270,10 @@ Next, you will do a series of exercises detailing how to make adjustments to the
 [Discrete]
 == Deploying authentic "Hello, World!" Applications
 
+
 // ----------------------------------------------------------------------------------------------------
-// --- Authentic Solution #1
 // ----------------------------------------------------------------------------------------------------
+
 
 == Hello-WebUI I : Change Security Attribute
 
@@ -320,18 +321,31 @@ What you have done by modifying the project security attributes is configure the
 
 Let us proceed with completing our first "helloworld" deployment.
 
-Mouse-over and select *Applications->Pods*.
+____
 
-Here you can use the `Terminal` feature to access a shell, poke around and install a helloworld *index.html*.  
+select `Applications` -> `Pods` from *Menu*
+
+select `Terminal` from *Pod Details*
+____
+
+Here you can access a shell, poke around again and most importantly install a helloworld *index.html*.  
 
 .sh-4.2$
 ----
+id
+
+cd /var/www/html
+
+ls -la
+
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
 If you didn't notice, the source for *index.html* came from an application that was deployed during the CLI exercises.  Final step is to verify the application is functioning as expected.
 
-From the *Project Overview* page, click on the link (http://hello-webui2.cloud.example.com) provided on the right side above the Deployment Config line.
+____
+Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
+____
 
 ====
 image::ocp-webui-hello1-verification2.png[Verification]
@@ -339,9 +353,10 @@ image::ocp-webui-hello1-verification2.png[Verification]
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
+
 // ----------------------------------------------------------------------------------------------------
-// --- Authentic Solution #2
 // ----------------------------------------------------------------------------------------------------
+
 
 == Hello-WebUI II : Use emptyDir
 
@@ -501,9 +516,10 @@ image::ocp-webui-hello1-verification2.png[Verification]
 
 IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
 
+
 // ----------------------------------------------------------------------------------------------------
-// --- Authentic Solution #3
 // ----------------------------------------------------------------------------------------------------
+
 
 == Hello-WebUI III : Use NFS
 
@@ -686,9 +702,10 @@ Mouse-over `Application` and select `Routes`.  Click on the URL provided in the 
 image::ocp-webui-hello3-verification.png[Verification]
 ====
 
+
 // ----------------------------------------------------------------------------------------------------
-// --- Authentic Solution #4
 // ----------------------------------------------------------------------------------------------------
+
 
 == Hello-WebUI IV : Use Source Control (git)
 
@@ -757,9 +774,10 @@ Finally, to verify the application is working properly click on the **URL**
 image::ocp-webui-hello4-verification.png[Application Verification]
 ====
 
+
 // ----------------------------------------------------------------------------------------------------
-// --- Authentic Solution #5
 // ----------------------------------------------------------------------------------------------------
+
 
 === Hello-WebUI V : Use Dockerfile
 
