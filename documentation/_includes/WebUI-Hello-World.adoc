@@ -183,7 +183,7 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 === Exploring the Container
 
 ____
-mouse-over and select `Applications` -> `Pods`
+select `Applications` -> `Pods` from *Menu*
 
 select the pod link
 ____
@@ -192,10 +192,10 @@ ____
 image::ocp-webui-hello1-pod-overview.png[Pod Overview]
 ====
 
-One of the options in the pod details is to connect to the active pods terminal.  
+One of the options in the pods overview page (ie: Details, Environment, Logs, Terminal and Events) is to connect to the active pods terminal.  
 
 ____
-select `Terminal` from *Pod Details*
+select `Terminal` from *Pods Overview*
 ____
 
 ====
@@ -279,9 +279,18 @@ Next, you will do a series of exercises detailing how to make adjustments to the
 
 The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
 
-For our first solution, we are going to adjust the current project's security attribute by importing a YAML config file.
+For our first solution, we are going to adjust the current project's security attributes by importing a YAML config file.  
 
-Proceed to click on the left menu `Overview` tab.  The main bar across the top should still show *Hello WebUI* as our selected project.   In the upper right corner you should see a pull-down labeled `Add to Project`.  From there, select `Import YAML/JSON`.
+____
+select `Import YAML/JSON` from `Add to Project` pull down in *Navigation Bar*
+
+Use the following deatils:
+.Key-Values for Application Configuration
+[horizontal]
+*Filename*:: /var/tmp/webui-hello-namespace.txt
+
+select `Create`
+____
 
 ====
 image::ocp-webui-hello1-add-to-project.png[Add To Project]
@@ -289,35 +298,33 @@ image::ocp-webui-hello1-add-to-project.png[Add To Project]
 
 Now you can either type in the YAML configuration file, but for convenience one has been provided.
 
-====
-image::ocp-webui-hello1-yaml-import.png[Import YAML]
-====
-
-User the `Browse` button to find and load the following file.
-
-.Key-Values for Application Configuration
-[horizontal]
-*Filename*:: /var/tmp/webui-hello-namespace.txt
-
 Once the file has been loaded, proceed to click on `Create`.
 
 ====
 image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
 ====
     
-A Confirmation dialog will appear to which we will simply clink on `Replace`.
+A Confirmation dialog will appear
 
-Now click on `Close` and you will be returned to the project overview page.
+____
+select `Replace` from *Confirmation Dialog*
+
+select `Close` 
+____
+
+You should be returned to the project overview page.
 
 Since our modification only affected "Project" attributes, nothing triggered an automatice redeployment of the application.  Thus, you will need to initiate a new deployment manually.  
 
-From the *Project Overview* page, click on the three vertical dots on the far right of the deployment configuration, and select `Deploy`
+____
+select `Deploy` from *three vertical dots* (far right) on *Project Overview*
+____
 
 ====
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 ====
 
-What you have done by modifying the project security attributes is configure the effective UID of deployed application to be 1001 which now enables permission to write in /var/www/html.  It is not as insecure as enabling root priviledges, but already far less secure than then previous configuration.
+What you have done by modifying the project security attributes is configure the effective UID of the soon to be redeployed application to be 1001.  This modification now enables permission to write in /var/www/html.  It is not as insecure as simply enabling root priviledges for the process, but already far less secure than then the previous configuration.
 
 Let us proceed with completing our first "helloworld" deployment.
 
