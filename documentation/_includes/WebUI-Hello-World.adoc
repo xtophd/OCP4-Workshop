@@ -606,14 +606,14 @@ ____
 === Expose Route
 
 _____
-Select `Create Route` from *Project *Overview*
+select `Create Route` from *Project *Overview*
 
-.Use following details for Create Route
+.use following details for Create Route
 [horizontal]
 *Name*:: hello-webui3
 *Hostname*:: hello-webui3.cloud.example.com
 
-Select `Create`
+select `Create`
 ____
 
 === Modify the Project, Build or Deployment
