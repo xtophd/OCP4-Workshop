@@ -374,23 +374,30 @@ ____
 
 ==== Create an Application
 
-The next step is to select `Deploy Image` and fill in the following details.
+Select `Deploy Image` from project *Overview* page
 
-Click the radio button next to `Image Name` and enter the values as shown below.
+Select `Image Name` radio button
+
+Use the following datails:
 
 .Key-Values for Application Configuration
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Click the `Search` icon to advance to the final phase of this deployment.
+Press `Return` after entering the image name
+____
 
-Now you are presented with a description of the specified image.  Scroll down a bit and change the *Name* as shown below.
+If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
+____
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
 
-Click `Deploy` and then `Continue to Project Overview`
+Select `Deploy` 
+
+Select the `Continue to Project Overview` link
+____
 
 ====
 image::ocp-webui-hello2-project-overview.png[Project Overview]
@@ -398,18 +405,20 @@ image::ocp-webui-hello2-project-overview.png[Project Overview]
 
 ==== Expose a Route
 
-On the left menu, mouse-over and select  *Applications->Routes*.
+____
+Select `Create Route` from project *Overview*
 
-Proceed to click on `Create Route`.
-
-Fill in the details as follows (using defaults unless specified otherwise).
+Use the following details (leave defaults unless specified otherwise):
 
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
 *Hostname*:: hello-webui2.cloud.example.com
 
-Proceed to click `Create`.  You should be returned to the Routes Overview page as shown.
+Select `Create`
+____
+
+You should be returned to the Routes Overview page as shown.
 
 ====
 image::ocp-webui-hello2-routes-overview.png[Create Route]
@@ -421,11 +430,13 @@ For real world use cases, emptyDir is often used as a local cache.  Since the ba
 
 Never the less, it suits our needs for this exercise so let's proceed to configure an emptyDir.  The WebUI does not provide a ellegant solution configuring an emptyDir, so we will resort to editing the deployment configuration YAML.
 
-Mouse-over and select *Applications->Deployments*
+____
+Mouse-over and select `Applications`->`Deployments`
 
-Select the `hello-webui2` deployment
+Select `hello-webui2` deployment
 
-From the `Actions` pull-down, select `Edit Yaml`
+Select `Edit Yaml` from `Actions` pull-down
+____
 
 In the editing block (window), scroll down to line 44 or thereabouts and find *name: hello-webui2*.  On the next line, insert the following block:
 
@@ -455,11 +466,21 @@ volumes:
 image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
 ====
 
-Select `Save`.  Provided there are no errors, updating the deployment configuation like this will automatically trigger a new deployment of our application.
+____
+Select `Save`.  
+____
 
-Mouse-over and select *Applications->Pods*
+Provided there are no errors, updating the deployment configuation like this will automatically trigger a new deployment of our application.
 
-Select the Pod and then use the `Terminal` feature found in the Pod Details page.  From there you can access the shell, inspect the filesystem mounted on /var/www/html and install a helloworld *index.html* as shown below.
+____
+Mouse-over and select `Applications`->`Pods`
+
+Select Pod
+
+Select `Terminal` tab from Pod details
+____
+
+From here you can access the shell, inspect the filesystem mounted on /var/www/html and install a helloworld *index.html* as shown below.
 
 .sh-4.2$
 ----
