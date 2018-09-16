@@ -158,15 +158,13 @@ Use the following details (leave defaults unless specified otherwise):
 [horizontal]
 *Name*:: hello-webui
 *Hostname*:: hello-webui.cloud.example.com
+
+Select `Create`
 ____
 
 ====
 image::ocp-webui-hello1-route-details.png[Create Route]
 ====
-
-____
-Select `Create`
-____
 
 You should be returned to the Routes Overview page as shown.
 
@@ -176,7 +174,7 @@ image::ocp-webui-hello1-routes-overview.png[Create Route]
 
 === Validate Application
 
-Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided in the **Hostname** column to verify that the application is working as expected.
+Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided in the *Hostname* column to verify that the application is working as expected.
 
 You should see the standard Red Hat Enterprise Linux Test Page.  If you get an error response, it is probably an indication that the build is still in progress.  Just wait a minute and try again.
 
