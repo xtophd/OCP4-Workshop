@@ -91,7 +91,7 @@ After selecting a project, the WebUI changes it's layout to 3 main elements and 
   ** *Monitoring*
   ** *Catalog*
   
-As noted, the current working project is denoted in a pull down on the *Navigation Bar*.  This is important to monitor to ensure your actions are being applied to the correct project.
+As noted, the current working project is indicated in the pull down on the *Navigation Bar*.  This is important to monitor to ensure your actions are being applied to the correct project.
 
 For the purposes of these introductory exercises, we are focused on `Applications`, `Builds` and `Storage`.  Other attributes of a *Project* will be covered in later units.
 
