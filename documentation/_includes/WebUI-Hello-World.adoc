@@ -261,13 +261,14 @@ The primary thing we are trying to point out here is that the UID the process is
 
 Next, you will do a series of exercises detailing how to make adjustments to the project in order to deploy a real helloworld applications.
 
-== Making an authentic "Hello, World!"
+[Discrete]
+== Deploying authentic "Hello, World!" Applications
 
 // ----------------------------------------------------------------------------------------------------
 // --- Authentic Solution #1
 // ----------------------------------------------------------------------------------------------------
 
-=== Solution #1: Change Security Attribute
+== Solution #1: Change Security Attribute
 
 The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
 
@@ -336,7 +337,7 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 // --- Authentic Solution #2
 // ----------------------------------------------------------------------------------------------------
 
-=== Solution #2: Use emptyDir
+== Solution #2: Use emptyDir
 
 As noted in solution #1, there is a security issue with the default UID and the filesystem permissions in base container's directory /var/www/html.  Solution #1 attacked the problem by changing the UID of the running process.
 
@@ -344,7 +345,7 @@ In this solution, we are going to create a volume (ie: filesystem) which provide
 
 We begin this solution by repeating the steps to deploy a httpd base image.
 
-==== Create a Project
+=== Create a Project
 
 ____
 Select `Create Project` from *My Projects* on the *Openshift Landing* page
@@ -370,7 +371,7 @@ ____
 Select project `Hello WebUI II` from *My Projects* on the *Openshift Landing* page
 ____
 
-==== Create an Application
+=== Create an Application
 
 ____
 Select `Deploy Image` from project *Overview* page
@@ -402,7 +403,7 @@ ____
 image::ocp-webui-hello2-project-overview.png[Project Overview]
 ====
 
-==== Expose a Route
+=== Expose a Route
 
 ____
 Select `Create Route` from project *Overview*
