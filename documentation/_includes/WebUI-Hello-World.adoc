@@ -655,9 +655,10 @@ spec:
 <7> the NFS server (can also be specified by IP address)
 
 ____
-Select `Import YAML/JSON` from project *Overview* page
 
-Select `Browse`
+select `Import YAML/JSON` from `Add to Project` pull down on *Navigation Bar*
+
+select `Browse`
 
 .Use the following details Import YAML
 [horizontal]
@@ -668,6 +669,8 @@ select `Create`
 _A confirmation dialog will appear_
 
 select `Create Anyway`
+
+select `Close`
 ____
 
 ====
@@ -682,52 +685,40 @@ image::ocp-webui-hello3-yaml-pv.png[Create PV]
 image::ocp-webui-hello3-yaml-confirmation.png[Confirm PV]
 ====
 
-____
-select `Close`
-____
+That is it.  The Persistent Volume (PV) has been created.
 
 
 ==== Create Persistent Volume Claim (PVC)
 
 ____
-select `Applications` -> `Deployments` from *Menu*
+select `Applications` -> `Storage` from *Menu*
 
-select *hello-webui3* from *Deployments Summary*
-
-select `Add Storage` from `Actions` pull down
-____
-
-====
-image::ocp-webui-hello3-storage-add.png[Add Storage]
-====
-
-Since we have not configured a PVC for our use, you will be directed to the *Create Storage* page.
-
-____
 select `Create Storage`
 
-Use the following details:
-
-.Key-Values for Create Storage
+.Use following details for Create Storage
 [horizontal]
 *Name*:: hello-webui3-claim
 *Size*:: 1 GiB
 
 Click `Create`.  
+
 ____
 
 ====
 image::ocp-webui-hello3-storage-pvc.png[Create Storage]
 ====
 
-You will now be returned to the previous screen to complete the task of Add Storage.
+You will now be returned to the *Storage Summary* page.  Next it is time to add a volume specification to the deployment configuartion.
 
 ____
-Complete the storage set up with the following details
 
-Use the following parameters.
+select `Applications` -> `Deployments` from *Menu*
 
-.Key-Values for Storage Details
+select `hello-webui3`
+
+select `Add Storage` from `Actions` pull down
+
+.Use following details for Add Storage
 [horizontal]
 *Storage*:: hello-webui3-claim
 *Mount Path*:: /var/www/html
@@ -739,11 +730,13 @@ ____
 image::ocp-webui-hello3-storage-details.png[Storage Details]
 ====
 
-Openshift will now initiate a redployment of our app using the new configuration which includes NFS storage.
+Openshift will now initiate a redeployment of the application using the new configuration which includes NFS storage.
 
 === Validation
 
-Mouse-over `Application` and select `Routes`.  Click on the URL provided in the Hostname column.  You should get the helloworld output.
+____
+Select exposed route `http://hello-webui3.cloud.example.com` from the *Project Overview*
+____
 
 ====
 image::ocp-webui-hello3-verification.png[Verification]
@@ -756,28 +749,50 @@ image::ocp-webui-hello3-verification.png[Verification]
 
 == Hello-WebUI IV : Use Source Control (git)
 
-
 === Create a Project
 
-Go To Front Landing Page and select `Create Project`
+____
+Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-====
-image::ocp-webui-hello1-project-create.png[Create Project]
-====
-
-Fill in the details as follows:
-
-.Key-Values for Create Project Dialog
+.Use following details for Create Project
 [horizontal]
 *Name*:: hello-webui4
 *Display Name*:: Hello WebUI IV
 *Description*:: My Fourth WebUI App
 
-And now click `Create`.  You should notice that your new project has been added to the list on the right of the display and that your current project has been set as well.  The current project is denoted in the top left hand corner.
+Select `Create`
+____
 
-=== Create an Application
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
 
-Using the Search bar, search for *httpd* and select the *QUICKSTART HTTPD* result.
+You should notice that your new project "Hello WebUI IV" has been added to the list on the right.
+
+____
+Select project `Hello WebUI IV` from *My Projects* on the *Openshift Landing* page
+____
+
+
+=== Deploy an Image
+
+Instead of specifying the image by name, let us use the `Browse Catalog` to find it.
+
+____
+select `Browse Catalog` from *Project Overview*
+
+select `Filter` pull down
+
+_Filters are added one at a time_
+
+.Use following details for Filter Search
+[horizontal]
+*Filter by Keyword*:: httpd
+*Publisher:: Red Hat, Inc.
+
+select `Apache HTTP Server`
+
+select `Next`
 
 ====
 image::ocp-webui-hello4-image-search.png[Image Search]
@@ -795,17 +810,17 @@ Now you are presented with a series of options to configure the applicaton.
 image::ocp-webui-hello4-app-details.png[Application Details]
 ====
 
-Entering details using defaults for all values unless specified below:
+____
+_Complete data entry_
 
-.Key-Values for Application Configuration
+.Use following details for Deployment Configuration
 [horizontal]
-*Add to Project*:: Hello WebUI IV
 *Name*:: hello-webui4
 *Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
 *Context Directory*:: /src/helloworld
 *Application Hostname*:: hello-webui4.cloud.example.com
 
-Once you have filled in the details, select **Create**
+select `Create`
 
 ====
 image::ocp-webui-hello4-app-overview.png[Application Overview]
