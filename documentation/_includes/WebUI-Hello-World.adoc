@@ -11,6 +11,9 @@ endif::[]
 :imagesdir: ./_images
 
 
+:toc:
+
+
 = WebUI: Hello World
 
 This unit will mimic (as closely as possible) the exerices done in the CLI version of Hello World.
