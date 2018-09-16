@@ -591,6 +591,7 @@ image::ocp-webui-hello3-yaml-import.png[Import YAML]
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
+
 _complete the data entry_
 
 .use following details for Application Configuration
