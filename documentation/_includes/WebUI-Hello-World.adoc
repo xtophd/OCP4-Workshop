@@ -856,7 +856,7 @@ image::ocp-webui-hello4-verification.png[Application Verification]
 // ----------------------------------------------------------------------------------------------------
 
 
-=== Hello-WebUI V : Use Dockerfile
+== Hello-WebUI V : Use Dockerfile
 
 So this solution is a bit more complicated.  As shown during the CLI exercises, deploying an application
 based on a Dockerfile is pretty trivial.  In fact, the `oc new-app` commandline was the shortest and had the least amount of typing of all the CLI helloworld examples.
