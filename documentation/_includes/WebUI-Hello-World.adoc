@@ -284,6 +284,8 @@ For our first solution, we are going to adjust the current project's security at
 ____
 select `Import YAML/JSON` from `Add to Project` pull down in *Navigation Bar*
 
+select `Browse`
+
 Use the following deatils:
 .Key-Values for Application Configuration
 [horizontal]
@@ -296,9 +298,7 @@ ____
 image::ocp-webui-hello1-add-to-project.png[Add To Project]
 ====
 
-Now you can either type in the YAML configuration file, but for convenience one has been provided.
-
-Once the file has been loaded, proceed to click on `Create`.
+Before you selected `Create` you had an opportunity to inspect the file.  The only change to the project's security attributes is _openshift.io/sascc.uid-range:1001/10000_.  This is identical to the changes made during the CLI Hello World exercises using the `oc edit project` command line.
 
 ====
 image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
