@@ -17,12 +17,15 @@ This unit will mimic (as closely as possible) the exerices done in the CLI versi
 
 The objective is to step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform. Again, we are going to do it several different ways to illustrate some best and worst practices of container usage.
 
-There are 4 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
+There are 5 fundamental steps to deploying an application in the Openshift Container Platform via the WebUI:
 
   . **login** - sign-on with proper credentials
   . **Create a Project**
   . **Create an Application**
   . **Expose a Route**
+  . **Modify the Project, Build or Deployment**
+
+NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do step-5 last.
 
 Let's get started.
 
@@ -148,7 +151,7 @@ You just completed configuring Openshift to create a new application called *web
 Time to configure a *route* and expose our new application to the network.
 
 ____
-Select `Create Route` from project *Overview*
+Select `Create Route` from *Project Overview*
 
 Use the following details (leave defaults unless specified otherwise):
 
@@ -267,21 +270,11 @@ The primary thing we are trying to point out here is that the UID the process is
 
 Next, you will do a series of exercises detailing how to make adjustments to the project in order to deploy a real helloworld applications.
 
-[Discrete]
-== Deploying authentic "Hello, World!" Applications
-
-
-// ----------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------
-
-
-== Hello-WebUI I : Change Security Attribute
-
-NOTE: For consistancy, it should be noted that normal steps to deploying an application (Create Project, Create Application, Expose Route) where all don in the section above.  This exercise only modifies the existing projet.
+=== Modify the Project, Build or Deployment
 
 The Openshift WebUI does not provide a native dialog for modifying all project attributes.  So, for this first objective you are either left with steps outlined in the CLI Helloworld exercises (ie: *oc edit namespace webui-hello*) OR using the `Import YAML/JSON` functionality of the WebUI.  
 
-=== Edit Project Attributes
+==== Edit Project Attributes
 
 For our first solution, we are going to adjust the current project's security attributes by importing a YAML config file.  
 
@@ -318,7 +311,7 @@ ____
 
 You should be returned to the project overview page.
 
-=== Redeploy the Application
+==== Redeploy the Application
 
 Since our modification only affected "Project" attributes, nothing triggered an automatice redeployment of the application.  Thus, you will need to initiate a new deployment manually.  
 
@@ -426,6 +419,8 @@ ____
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
+Complete the data entry with the following details:
+
 .Key-Values for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
@@ -442,7 +437,7 @@ image::ocp-webui-hello2-project-overview.png[Project Overview]
 === Expose a Route
 
 ____
-Select `Create Route` from project *Overview*
+Select `Create Route` from *Project *Overview*
 
 Use the following details (leave defaults unless specified otherwise):
 
