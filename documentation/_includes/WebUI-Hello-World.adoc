@@ -798,17 +798,11 @@ select `Next`
 image::ocp-webui-hello4-image-search.png[Image Search]
 ====
 
-You will then be presented with an overview of the container image. Select `Next` to move to the application configuration data entry dialog.
-
 ====
 image::ocp-webui-hello4-image-details.png[Image Details]
 ====
 
 Now you are presented with a series of options to configure the applicaton.
-
-====
-image::ocp-webui-hello4-app-details.png[Application Details]
-====
 
 ____
 _Complete data entry_
@@ -821,6 +815,13 @@ _Complete data entry_
 *Application Hostname*:: hello-webui4.cloud.example.com
 
 select `Create`
+
+Select the `Continue to Project Overview` link
+
+====
+image::ocp-webui-hello4-app-details.png[Application Details]
+====
+
 
 ====
 image::ocp-webui-hello4-app-overview.png[Application Overview]
@@ -1041,23 +1042,42 @@ Now from the WebUI, let us deploy the Dockerfile based application.  For this fi
 
 ==== Create a Project
 
-From the Openshift Front Landing page
+____
+Select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-.Key-Values for Create Project Dialog
+.Use following details for Create Project
 [horizontal]
 *Name*:: hello-webui5
 *Display Name*:: Hello WebUI V
 *Description*:: My Fifth WebUI App
 
+Select `Create`
+____
+
+You should notice that your new project "Hello WebUI V" has been added to the list on the right.
+
+____
+select project `Hello WebUI` from *My Projects* on the *Openshift Landing* page
+____
+
 ==== Import YAML file
 
-NOTE: Make sure you have selected your new project before importing.
+NOTE: Make sure you have selected your new project before importing.  
 
-From the Project Overview page
+____
+select 'Import YAML/JSON' from *Project Overview*
 
-.Key-Values for Import YAML
+select `Browse`
+
+.Use following details for Import YAML
 [horizontal]
 *Filename*:: /var/tmp/bc-dockerfile.txt
+
+select `Create`
+
+select `Continue to Project Overview` link
+____
+
 
 === Create (expose) a Route
 
