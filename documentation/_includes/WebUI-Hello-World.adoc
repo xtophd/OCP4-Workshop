@@ -24,7 +24,6 @@ There are 6 fundamental steps to deploying an application in the Openshift Conta
   . *Create an Application*
   . *Expose a Route*
   . *Modify the Project, Build or Deployment*
-  . *Validation*
 
 NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do step-5 last.
 
@@ -269,7 +268,7 @@ sh: testfile: Permission denied
 
 The primary thing we are trying to point out here is that the UID the process is running with (ie: **1000120000**) does not have permissions to write to any part of the container filesystem except traditionally open directories like **/tmp** or **/var/tmp**.  In effect, that makes this base container alone rather useless for running real world applications.
 
-Next, you will do a series of exercises detailing how to make adjustments to the project in order to deploy a real helloworld applications.
+Next, you will do a series of steps to make adjustments to the project in order to deploy a more usable helloworld application.
 
 === Modify the Project, Build or Deployment
 
@@ -328,7 +327,7 @@ What you have done by modifying the project security attributes is configure the
 
 Let us proceed with completing our first "helloworld" deployment.
 
-=== Explore the Container
+==== Explore the Container
 
 ____
 
