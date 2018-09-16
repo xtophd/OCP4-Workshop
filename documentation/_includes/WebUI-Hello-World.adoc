@@ -30,7 +30,7 @@ Let's get started.
 
 === Sign-on as admin
 
-Please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
+If you have not already done so, please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
 
 ====
 image::ocp-webui-login-04.png[Login]
