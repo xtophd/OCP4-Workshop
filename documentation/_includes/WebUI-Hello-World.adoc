@@ -183,7 +183,7 @@ image::ocp-webui-hello1-verification.png[Application Verification]
 === Exploring the Container
 
 ____
-mouse-over and select 'Applications' -> 'Pods'
+mouse-over and select `Applications` -> `Pods`
 
 select the pod link
 ____
