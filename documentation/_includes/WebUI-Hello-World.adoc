@@ -496,7 +496,7 @@ Fundamentally, a volume is just a directory, possibly with some data in it, whic
 
 In the language of Kubernettes, a PV is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster.  A Persistent Volume Claim (PVC) is a request for storage by a user (deployment).
 
-Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespaced (ie: they don't belong to projects).  They belong to are are available to the whole cluster.
+Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespaced (ie: they don't belong to projects).  They belong to, and are available to,  the whole cluster.
 
 If all of this is confusing, don't worry about it now.  What it boils down to is that storage configuration in Openshift behaves like 2 magenets.  You have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Once configured, if the attributes of a PV and PVC match then like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
 
