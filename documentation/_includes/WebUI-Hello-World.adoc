@@ -524,7 +524,7 @@ ls -la
 curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
-==== Validation
+=== Validation
 
 IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
 
