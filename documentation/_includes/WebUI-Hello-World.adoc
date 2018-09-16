@@ -372,6 +372,7 @@ ____
 
 ==== Create an Application
 
+____
 Select `Deploy Image` from project *Overview* page
 
 Select `Image Name` radio button
