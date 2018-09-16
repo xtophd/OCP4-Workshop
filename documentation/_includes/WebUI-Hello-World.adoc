@@ -173,7 +173,7 @@ You should be returned to the Routes Overview page as shown.
 image::ocp-webui-hello1-routes-overview.png[Create Route]
 ====
 
-=== Validate Application
+==== Validation
 
 Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided in the *Hostname* column to verify that the application is working as expected.
 
@@ -183,7 +183,7 @@ You should see the standard Red Hat Enterprise Linux Test Page.  If you get an e
 image::ocp-webui-hello1-verification.png[Application Verification]
 ====
 
-=== Explore the Container
+==== Explore the Container
 
 ____
 select `Applications` -> `Pods` from *Menu*
@@ -350,6 +350,8 @@ curl helloworld3.cloud.example.com > /var/www/html/index.html
 ----
 
 If you didn't notice, the source for *index.html* came from an application that was deployed during the CLI exercises.  Final step is to verify the application is functioning as expected.
+
+==== Validation
 
 ____
 Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
