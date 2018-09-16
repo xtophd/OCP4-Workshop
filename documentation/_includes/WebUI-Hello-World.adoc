@@ -45,7 +45,7 @@ image::ocp-webui-login-04.png[Login]
 You can always get to the *Openshift Landing* page by clicking on the "Openshift Container Platform" logo in the top left corner.  
 
 ____
-Select `Create Project` from *My Projects* on the *Openshift Landing* page
+select `Create Project` from *My Projects* on the *Openshift Landing* page
 
 .Use following details for Create Project
 [horizontal]
@@ -53,7 +53,7 @@ Select `Create Project` from *My Projects* on the *Openshift Landing* page
 *Display Name*:: Hello WebUI
 *Description*:: My First WebUI App
 
-Select `Create`
+select `Create`
 ____
 
 ====
@@ -64,7 +64,7 @@ image::ocp-webui-hello1-project-create.png[Create Project]
 You should notice that your new project "Hello WebUI" has been added to the list on the right.
 
 ____
-Select project `Hello WebUI` from *My Projects* on the *Openshift Landing* page
+select project `Hello WebUI` from *My Projects* on the *Openshift Landing* page
 ____
 
 ====
@@ -102,15 +102,15 @@ image::ocp-webui-hello1-image-deploy.png[Image Deploy]
 ====
 
 ____
-Select `Deploy Image` from project *Overview* page
+select `Deploy Image` from project *Overview* page
 
-Select `Image Name` radio button
+select `Image Name` radio button
 
-.Use following datails for Image Specification
+.use following datails for Image Specification
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Press `Return` after entering the image name
+press `Return` after entering the image name
 ____
 
 ====
@@ -120,15 +120,15 @@ image::ocp-webui-hello1-image-name.png[Image Name]
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-_Complete the data entry_
+_complete the data entry_
 
-.Use following details for Application Configuration
+.use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui
 
-Select `Deploy` 
+select `Deploy` 
 
-Select the `Continue to Project Overview` link
+select the `Continue to Project Overview` link
 ____
 
 ====
@@ -148,14 +148,14 @@ You just completed configuring Openshift to create a new application called *web
 Time to configure a *route* and expose our new application to the network.
 
 ____
-Select `Create Route` from *Project Overview*
+select `Create Route` from *Project Overview*
 
-.Use the following details for Create Route
+.use the following details for Create Route
 [horizontal]
 *Name*:: hello-webui
 *Hostname*:: hello-webui.cloud.example.com
 
-Select `Create`
+select `Create`
 ____
 
 ====
@@ -173,7 +173,7 @@ image::ocp-webui-hello1-project-overview2.png[Project Overview]
 Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL provided along the top of *Project Overview* page.
 
 ____
-Select exposed route `http://hello-webui.cloud.example.com` from the Project Overview
+select exposed route `http://hello-webui.cloud.example.com` from the Project Overview
 ____
 
 You should see the standard Red Hat Enterprise Linux Test Page.  If you get an error response, it is probably an indication that the build is still in progress.  Just wait a minute and try again.
@@ -282,13 +282,13 @@ select `Import YAML/JSON` from `Add to Project` pull down in *Navigation Bar*
 
 select `Browse`
 
-.Use following details for Application Configuration
+.use following details for Application Configuration
 [horizontal]
 *Filename*:: /var/tmp/webui-hello-namespace.txt
 
 select `Create`
 
-_A confirmation dialog will appear_
+_a confirmation dialog will appear_
 
 select `Replace` from *Confirmation Dialog*
 
@@ -350,7 +350,7 @@ If you didn't notice, the source for *index.html* came from an application that 
 === Validation
 
 ____
-Select exposed route `http://hello-webui.cloud.example.com` from the *Project Overview*
+select exposed route `http://hello-webui.cloud.example.com` from the *Project Overview*
 ____
 
 ====
@@ -375,15 +375,15 @@ We begin this solution by repeating the steps to deploy a httpd base image.
 === Create a Project
 
 ____
-Select `Create Project` from *My Projects* on the *Openshift Landing* page
+select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-.Use following details for Create Project
+.use following details for Create Project
 [horizontal]
 *Name*:: hello-webui2
 *Display Name*:: Hello WebUI II
 *Description*:: My Second WebUI App
 
-Select `Create`
+select `Create`
 ____
 
 ====
@@ -393,36 +393,36 @@ image::ocp-webui-hello1-project-create.png[Create Project]
 You should notice that your new project "Hello WebUI II" has been added to the list on the right.  
 
 ____
-Select project `Hello WebUI II` from *My Projects* on the *Openshift Landing* page
+select project `Hello WebUI II` from *My Projects* on the *Openshift Landing* page
 ____
 
 === Deploy an Image
 
 ____
-Select `Deploy Image` from project *Overview* page
+select `Deploy Image` from project *Overview* page
 
-Select `Image Name` radio button
+select `Image Name` radio button
 
-.Use following datails Application Configuration
+.use following datails Application Configuration
 
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Press `Return` after entering the image name
+press `Return` after entering the image name
 ____
 
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-_Complete the data entry_
+_complete the data entry_
 
-.Use following details for Application Configuration
+.use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui2
 
-Select `Deploy` 
+select `Deploy` 
 
-Select the `Continue to Project Overview` link
+select the `Continue to Project Overview` link
 ____
 
 ====
@@ -432,14 +432,14 @@ image::ocp-webui-hello2-project-overview.png[Project Overview]
 === Expose a Route
 
 ____
-Select `Create Route` from *Project *Overview*
+select `Create Route` from *Project *Overview*
 
-.Use following details for Create Route
+.use following details for Create Route
 [horizontal]
 *Name*:: hello-webui2
 *Hostname*:: hello-webui2.cloud.example.com
 
-Select `Create`
+select `Create`
 ____
 
 You should be returned to the Routes Overview page as shown.
@@ -461,7 +461,7 @@ select `Applications` -> `Deployments` from *Menu*
 
 Select `hello-webui2` deployment
 
-Select `Edit Yaml` from `Actions` pull-down
+select `Edit Yaml` from `Actions` pull-down
 ____
 
 In the editing block (window), scroll down to line 44 or thereabouts and find *name: hello-webui2*.  On the next line, insert the following block:
@@ -493,7 +493,7 @@ image::ocp-webui-hello2-yaml-edit2.png[YAML Edit 2]
 ====
 
 ____
-Select `Save`.  
+select `Save`
 ____
 
 Provided there are no errors, updating a deployment configuation in this manor will *automatically* trigger a new deployment of our application.
@@ -503,9 +503,9 @@ Provided there are no errors, updating a deployment configuation in this manor w
 ____
 select `Applications` -> `Pods` from *Menu*
 
-Select `hellow-webui2-????` pod
+select `hellow-webui2-????` pod
 
-Select `Terminal` from *Pod Summary*
+select `Terminal` from *Pod Summary*
 ____
 
 From here you can access the shell, inspect the filesystem mounted on /var/www/html and install a helloworld *index.html* as shown below.
@@ -528,7 +528,7 @@ IMPORTANT:  Again, it is critical to understand that this is also NOT a recommen
 Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL for your expose route to verify your deployment.
 
 ____
-Select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
+select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
 ____
 
 ====
@@ -544,15 +544,15 @@ image::ocp-webui-hello1-verification2.png[Verification]
 === Create Project
 
 ____
-Select `Create Project` from *My Projects* on the *Openshift Landing* page
+select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-.Use following details for Create Project
+.use following details for Create Project
 [horizontal]
 *Name*:: hello-webui3
 *Display Name*:: Hello WebUI III
 *Description*:: My Third WebUI App
 
-Select `Create`
+select `Create`
 ____
 
 ====
@@ -562,7 +562,7 @@ image::ocp-webui-hello1-project-create.png[Create Project]
 You should notice that your new project "Hello WebUI III" has been added to the list on the right.
 
 ____
-Select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
+select project `Hello WebUI III` from *My Projects* on the *Openshift Landing* page
 ____
 
 === Deploy an Image
@@ -570,15 +570,15 @@ ____
 As before, the next step is to `Deploy Image`
 
 ____
-Select `Deploy Image` from project *Overview* page
+select `Deploy Image` from project *Overview* page
 
-Select `Image Name` radio button
+select `Image Name` radio button
 
 .Use following datails for Application Configuration
 [horizontal]
 *Image Name*:: registry.access.redhat.com/rhscl/httpd-24-rhel7
 
-Press `Return` after entering the image name
+press `Return` after entering the image name
 ____
 
 ====
@@ -588,29 +588,28 @@ image::ocp-webui-hello3-yaml-import.png[Import YAML]
 If the image name was entered correctly, when you press `Return` (or hit the `Search` icon) you will see a brief summary of the specified image and additional parameters will appear in order to complete this phase.  Scroll down a bit and change the resource *Name* as shown below.
 
 ____
-_Complete the data entry_
+_complete the data entry_
 
-.Use following details for Application Configuration
+.use following details for Application Configuration
 [horizontal]
 *Name*:: hello-webui3
 
-Select `Deploy` 
+select `Deploy` 
 
-Select the `Continue to Project Overview` link
+select the `Continue to Project Overview` link
 ____
 
 === Expose Route
 
-Mouse-over and select *Applications->Routes*
-
-Click `Create Route`
+Select `Create Route` from *Project *Overview*
 
 .Use following details for Create Route
 [horizontal]
 *Name*:: hello-webui3
 *Hostname*:: hello-webui3.cloud.example.com
 
-Click `Create`
+Select `Create`
+____
 
 === Modify the Project, Build or Deployment
 
@@ -660,13 +659,13 @@ select `Import YAML/JSON` from `Add to Project` pull down on *Navigation Bar*
 
 select `Browse`
 
-.Use the following details Import YAML
+.use the following details Import YAML
 [horizontal]
 *Filename*:: /var/tmp/pv-hello-webui3.txt
 
 select `Create`
 
-_A confirmation dialog will appear_
+_a confirmation dialog will appear_
 
 select `Create Anyway`
 
@@ -695,13 +694,12 @@ select `Applications` -> `Storage` from *Menu*
 
 select `Create Storage`
 
-.Use following details for Create Storage
+.use following details for Create Storage
 [horizontal]
 *Name*:: hello-webui3-claim
 *Size*:: 1 GiB
 
-Click `Create`.  
-
+select `Create`.  
 ____
 
 ====
@@ -718,7 +716,7 @@ select `hello-webui3`
 
 select `Add Storage` from `Actions` pull down
 
-.Use following details for Add Storage
+.use following details for Add Storage
 [horizontal]
 *Storage*:: hello-webui3-claim
 *Mount Path*:: /var/www/html
@@ -752,15 +750,15 @@ image::ocp-webui-hello3-verification.png[Verification]
 === Create a Project
 
 ____
-Select `Create Project` from *My Projects* on the *Openshift Landing* page
+select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-.Use following details for Create Project
+.use following details for Create Project
 [horizontal]
 *Name*:: hello-webui4
 *Display Name*:: Hello WebUI IV
 *Description*:: My Fourth WebUI App
 
-Select `Create`
+select `Create`
 ____
 
 ====
@@ -770,7 +768,7 @@ image::ocp-webui-hello1-project-create.png[Create Project]
 You should notice that your new project "Hello WebUI IV" has been added to the list on the right.
 
 ____
-Select project `Hello WebUI IV` from *My Projects* on the *Openshift Landing* page
+select project `Hello WebUI IV` from *My Projects* on the *Openshift Landing* page
 ____
 
 
@@ -783,7 +781,7 @@ select `Browse Catalog` from *Project Overview*
 
 select `Filter` pull down
 
-_Filters are added one at a time_
+_filters are added one at a time_
 
 .Use following details for Filter Search
 [horizontal]
@@ -805,9 +803,9 @@ image::ocp-webui-hello4-image-details.png[Image Details]
 Now you are presented with a series of options to configure the applicaton.
 
 ____
-_Complete data entry_
+_complete data entry_
 
-.Use following details for Deployment Configuration
+.use following details for Deployment Configuration
 [horizontal]
 *Name*:: hello-webui4
 *Git Repository URL*:: https://github.com/xtophd/OCP-Workshop
@@ -816,7 +814,8 @@ _Complete data entry_
 
 select `Create`
 
-Select the `Continue to Project Overview` link
+select the `Continue to Project Overview` link
+____
 
 ====
 image::ocp-webui-hello4-app-details.png[Application Details]
@@ -830,7 +829,7 @@ image::ocp-webui-hello4-app-overview.png[Application Overview]
 === Validation
 
 ____
-Select exposed route `http://hello-webui3.cloud.example.com` from the *Project Overview*
+select exposed route `http://hello-webui3.cloud.example.com` from the *Project Overview*
 ____
 
 ====
@@ -1043,15 +1042,15 @@ Now from the WebUI, let us deploy the Dockerfile based application.  For this fi
 ==== Create a Project
 
 ____
-Select `Create Project` from *My Projects* on the *Openshift Landing* page
+select `Create Project` from *My Projects* on the *Openshift Landing* page
 
-.Use following details for Create Project
+.use following details for Create Project
 [horizontal]
 *Name*:: hello-webui5
 *Display Name*:: Hello WebUI V
 *Description*:: My Fifth WebUI App
 
-Select `Create`
+select `Create`
 ____
 
 You should notice that your new project "Hello WebUI V" has been added to the list on the right.
@@ -1088,7 +1087,11 @@ From the Applications->Routes page
 *Name*:: hello-webui5
 *Hostname*:: hello-webui5.cloud.example.com
 
-=== Validate the Application
+=== Validation
+
+____
+Select exposed route `http://hello-webui5.cloud.example.com` from the *Project Overview*
+____
 
 Did it work?
 
