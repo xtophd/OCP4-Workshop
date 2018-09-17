@@ -8,6 +8,8 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+:toc:
+
 = CLI: Hello World
 
 [discrete]
