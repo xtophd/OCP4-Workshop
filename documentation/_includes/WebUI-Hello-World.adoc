@@ -753,7 +753,7 @@ image::ocp-webui-hello3-verification.png[Verification]
 // ----------------------------------------------------------------------------------------------------
 
 
-== Hello-WebUI IV : Use Source Control
+== Hello-WebUI IV : Use Source Control (git)
 
 === Create a Project
 
