@@ -705,6 +705,7 @@ select `Create Storage`
 .use following details for Create Storage
 [horizontal]
 *Name*:: hello-webui3-claim
+*Access Mode*:: Shared Access (RWX)
 *Size*:: 1 GiB
 
 select `Create`.  
