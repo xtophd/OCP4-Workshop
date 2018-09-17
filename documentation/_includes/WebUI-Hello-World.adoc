@@ -38,7 +38,7 @@ Let's get started.
 
 === Sign-on as admin
 
-If you have not already done so, please proceed to login to the Openshift WebUI as user *admin*.  Instructions for doing so are outlined in the unit *WebUI: First Time Login*.
+Now sign-on to Openshift with username `admin` and password `redhat`.
 
 ====
 image::ocp-webui-login-04.png[Login]
