@@ -1,5 +1,5 @@
 :sectnums:
-:sectnumlevels: 3
+:sectnumlevels: 2
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
@@ -640,7 +640,7 @@ helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                        
 
 NOTE: Notice how the ACCESS MODES are defined as RWO (Read Write Once).  Under normal circumstances a NFS volume being used as a persistent volume would be defined as RWM (Red Write Many) since NFS supports more than one POD mounting an export for read write usage.  In order to isolate activities and keep things simple for the introductory exercises, we opted to use RWO.
 
-=== Modify the Project, Build or Deployment
+==== Modify the Deployment Config
 
 Now that the storage prep work is complete, it is time to modify the deployment configuration with the storage information.
 
