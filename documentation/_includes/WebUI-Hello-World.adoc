@@ -10,9 +10,9 @@ endif::[]
 :units_dir: units
 :imagesdir: ./_images
 
-= WebUI: Hello World
-
 :toc:
+
+= WebUI: Hello World
 
 [discrete]
 == Preface
