@@ -715,7 +715,9 @@ ____
 image::ocp-webui-hello3-storage-pvc.png[Create Storage]
 ====
 
-You will now be returned to the *Storage Summary* page.  Next it is time to add a volume specification to the deployment configuartion.
+You will now be returned to the *Storage Summary* page.  You should see the *Status* as "Bound to volume nfs-hellowebui".
+
+Next it is time to add a volume specification to the deployment configuartion.
 
 ____
 
