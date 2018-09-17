@@ -447,7 +447,7 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-== Hello World II - Use emptyDir
+== Hello World II : Use emptyDir
 
 For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
 
@@ -539,21 +539,48 @@ TIP: Why does the POD version start with '2' this time instead of '1'?
 
 TIP: What would happen if this app were to be scaled up?  Would new PODs contain our helloworld HTML?
 
-NOTE: Important to note that any filesystems mounted with emptyDir is non-persistant and will be destoyed when the container is stoppped.
+NOTE: Important to note that any filesystems mounted with emptyDir are non-persistant and will be destoyed when the container is stoppped.
 
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-=== Solution #3 - Use NFS
+== Hello-World II : Use NFS
 
 The purpose of this unit is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our next solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
 
 During the pre-installation phase of this lab, the host workshop.example.com was configured with an NFS server and an export called /exports/helloworld.  Let's simply mount that within the container to demonstrate our "Hello, World!" again.
 
+=== Create a Project
+
 .[root@master ~]#
 ----
 oc new-project helloworld3 --description="My Third OCP App" --display-name="Hello World III"
-    
+----
+
+=== Deploy an Image
+
+.[root@master ~]#
+----
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
+----
+
+=== Expose a Route
+
+.[root@master ~]#
+----    
+oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
+----
+
+=== Modify the Project, Build or Deployment
+
+Now it is time to define our persistent storage parameters for out application deployment.  The Workstation host in your OCP workshop has been configured with an NFS server that is already exporting helloworld HTML.  The only goal here is to mount that volume at /var/www/html within our POD.
+
+There is a more thourough explination of storage in the WebUI portion of this workshop, so for now let's avoid technical talk and just go through the motion.
+
+==== Create a PV (Persistent Volume)
+
+.[root@master ~]#
+----    
 oc create -f /var/tmp/nfs-pv-01.yml
 ----
 
@@ -575,6 +602,8 @@ NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STO
 nfs-pv-01   5Gi        RWO            Recycle          Available                                      7s
 ----
 
+==== Create a PVC (Persistent Volume Claim)
+
 Now create the persistent volume claim. 
 
 .[root@master ~]#
@@ -587,6 +616,8 @@ oc create -f /var/tmp//helloworld3-pv-claim.yml
 ----
 persistentvolumeclaim "helloworld3-claim" created
 ----
+
+==== Check Storage Status
 
 Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *helloworld-pv*
 
@@ -609,30 +640,31 @@ helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                        
 
 NOTE: Notice how the ACCESS MODES are defined as RWO (Read Write Once).  Under normal circumstances a NFS volume being used as a persistent volume would be defined as RWM (Red Write Many) since NFS supports more than one POD mounting an export for read write usage.  In order to isolate activities and keep things simple for the introductory exercises, we opted to use RWO.
 
+=== Modify the Project, Build or Deployment
 
-
-Now that the storage prep-work is complete, we can proceed: 
-
-  * create the pod, 
-  * assign the storage 
-  * expose the route.
+Now that the storage prep work is complete, it is time to modify the deployment configuration with the storage information.
 
 .[root@master ~]#
 ----
-oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
-
 oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld3-claim
 
-oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
+oc rollout status dc/hello-app3
+----
 
-oc get pods
+NOTE: You will need to wait until the pod is deplyed before you can validate the application.
 
-curl http://helloworld3.cloud.example.com
+=== Validation
+
+.[root@master ~]#
+----
+/var/tmp/cheat-validate-app.sh
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
+Validating output from helloworld3.cloud.example.com
+
 <html>
 <body>
 Hello, World!
