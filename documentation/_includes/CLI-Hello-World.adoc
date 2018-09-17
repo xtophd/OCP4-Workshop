@@ -59,16 +59,12 @@ oc project default
 
 === Create a Project
 
-The *project* is openshift's ... yada yada ...  Users, roles, applications, services, routes, et al... are all tied together in a **project** definition.  
+We begin by creating a *Project*.
 
 .[root@master ~]#
 ----
 oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
-----
 
-
-.[root@master ~]#
-----
 oc get projects
 ----
 
@@ -90,6 +86,8 @@ openshift-node                                     Active
 openshift-template-service-broker                  Active
 openshift-web-console                              Active
 ----
+
+We can gather some more information about our new *Project* using `oc describe project`
 
 .[root@master ~]#
 ----    
@@ -118,20 +116,20 @@ Resource limits:        <none>
 
 === Deploy an Image
 
-We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
+We are not quite ready to start building our own container images from scratch, so we will leverage an existing one available from the RedHat's Container Registry.
 
 .[root@master ~]#
 ----
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 ----
 
-You just instructed Openshift to create a new application called **hello-app**.  Without getting caught up in the details, basically what happens is:
+You just instructed Openshift to create a new application called *hello-app*.  Without getting caught up in the details, basically what happens is:
 
-  * Openshift checks the local catalog for an existing copy of the specified image **httpd-24-rhel7**
+  * Openshift checks the local catalog for an existing copy of the specified image *httpd-24-rhel7*
   * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Registry and adds it to the local catalog
-  * A **Container Creating Container** is initiated to contruct the desired image (ie: customizations or source integration)
-  * A **Deployment Container** is initiated to launch the desired image
-  * and *Voi La!!!* The container is deployed and ready to go to work.
+  * A *Container Creating Container* is initiated to contruct the desired image (ie: customizations or source integration)
+  * A *Deployment Container* is initiated to launch the desired image
+  * and Voi La!!! The container is deployed and ready to go to work.
 
 Now let's have a closer inspection with a couple different commands.  
 
