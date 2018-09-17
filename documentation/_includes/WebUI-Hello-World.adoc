@@ -791,7 +791,7 @@ _filters are added one at a time_
 .Use following details for Filter Search
 [horizontal]
 *Filter by Keyword*:: httpd
-*Publisher:: Red Hat, Inc.
+*Publisher*:: Red Hat, Inc.
 
 select `Apache HTTP Server`
 
