@@ -10,11 +10,12 @@ endif::[]
 :units_dir: units
 :imagesdir: ./_images
 
+= WebUI: Hello World
 
 :toc:
 
-
-= WebUI: Hello World
+[discrete]
+==Preface
 
 This unit will mimic (as closely as possible) the exerices done in the CLI version of Hello World.
 
