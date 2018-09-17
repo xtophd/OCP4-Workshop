@@ -13,11 +13,11 @@ endif::[]
 
 This guide is intended to support a series of workshop exercises for individuals getting familiar with Red Hat's Openshift  Container Platform.
 
-This is not an official Red Hat sponsered effort although I am currently employeed by Red Hat.  Rather this is a tool I use to teach myself and those I interact with professionally about new and emerging technologies.
+This is not an official Red Hat sponsored effort although I am currently employeed by Red Hat.  Rather this is a tool I use to teach myself and those I interact with professionally about new and emerging technologies.
 
 In the spirit of Opensource, I am attempting to make my work publicly accessible for reuse by others.  But be advised that this is my first attempt at using GitHub and ascii-doc. So please be patient as I navigate my way through managing a day job while building out this project (workshop).  At some point I will stop editing in the master branch :-0
 
-NOTE:  This whole effort is done using official Red Hat software and although things can be set up to work with upstream software components (CentOS, Origin, etc...) I current do not have the bandwidth to support the development and testing of alternate build environments.
+NOTE:  This whole effort is done using official Red Hat software and although things can be set up to work with upstream software components (CentOS, Origin, etc...) I currently do not have the bandwidth to support the development and testing of alternate build environments.
 
 = Conventions Used
 
@@ -62,15 +62,25 @@ openshift-web-console                              Active
 ----
 <1> This is the line we are interested in with a special note
 
-== Key Values for Dialog Entry
+== Executing tasks in the WebUI
 
-When working with exercises in Web User Interface (WebUI), key-value data will be presented in a lists like this:
+Notice that key value pairs for data entry are presented in a matrix.
 
-.Key-Values for Create Project Dialog
+____
+select `Create Project` from *My Projects* on the *Openshift Landing* page
+
+.Use following details for Create Project
 [horizontal]
-*Name*:: webui-hello1
-*Display Name*:: WebUI Hello 1
-*Description*:: {leave blank}
+*Name*:: hello-webui
+*Display Name*:: Hello WebUI
+*Description*:: My First WebUI App
+
+select `Create`
+____
+
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
 
 [discrete]
 == End of Unit
