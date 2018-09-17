@@ -675,14 +675,21 @@ Hello, World!
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-=== Solution #4 - Use Source Control (git)
+== Solution #4 - Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we will initiate a container deployment which will pull the source code and layer it into a base container (ie: source to images / S2I) and deploy it as a single unified image.
+
+=== Create a Project
 
 .[root@master ~]#
 ----
 oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hello World IV"   
-     
+----
+
+=== Deploy an Image
+
+.[root@master ~]#
+----  
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app4
     
 oc logs -f bc/hello-app4
@@ -710,23 +717,45 @@ Pushed 5/5 layers, 100% complete
 Push successful
 ----
 
+A couple more commands to help inspect the status of our application deployment
+
+.[root@master ~]#
+----  
+oc get events
+
+oc rollout status dc/hello-app4
+----
+
+=== Expose a Route
 
 Now we can run a few more commands to increase our familiarity with deployment process
 
+.[root@master ~]#
+----
+oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
+----
+
+=== Modify the Project, Build or Deployment
+
+In this deployment model, there is no post-modifications we need to make to the deployment configuration.
+
+=== Validation
 
 .[root@master ~]#
 ----
-oc get builds
-    
-oc get pods
-    
-oc get events
-    
-oc rollout status dc/hello-app4
-    
-oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
-    
-curl http://helloworld4.cloud.example.com
+/var/tmp/cheat-validate-app.sh
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Validating output from helloworld3.cloud.example.com
+
+<html>
+<body>
+Hello, World!
+</body>
+</html>
 ----
 
 // -------------------------------------------------------------------------------------------------------------
@@ -753,28 +782,58 @@ CMD /usr/libexec/s2i/run
 Expose 8080
 ----
 
+=== Create a Project
+
 .[root@master ~]#
 ----
 oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hello World V"   
-     
+----
+
+=== Deploy an Image
+
+.[root@master ~]#
+----
 oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
     
 oc logs -f bc/hello-app5
-    
-oc get builds
-    
-oc get pods
-    
-oc get events
-    
+
 oc rollout status dc/hello-app5
-    
-oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
-    
-curl http://helloworld5.cloud.example.com
 ----
 
-== Clean Up (Optional)
+=== Expose a Route
+
+.[root@master ~]#
+----
+oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
+----
+
+=== Modify the Project, Build or Deployment
+
+In this deployment model, there is no post-modifications we need to make to the deployment configuration.
+
+=== Validation
+
+.[root@master ~]#
+----
+/var/tmp/cheat-validate-app.sh
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Validating output from helloworld5.cloud.example.com
+
+<html>
+<body>
+Hello, World!
+</body>
+</html>
+----
+
+
+== Clean Up (Informational Only)
+
+NOTE: We utilize the deployed applications from these exercises for the unit covering the WebUI.  We provide the commands needed for general cleanup as informatino only.
 
 .[root@master ~]#
 ----
@@ -801,8 +860,6 @@ oc delete pv helloworld-pv
 
 oc get pods --all-namespaces -o wide
 ----
-
-== Conclusion
 
 [discrete]
 == End of Unit
