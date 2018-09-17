@@ -698,7 +698,7 @@ That is it.  The Persistent Volume (PV) has been created.
 ==== Create Persistent Volume Claim (PVC)
 
 ____
-select `Applications` -> `Storage` from *Menu*
+select `Storage` from *Menu*
 
 select `Create Storage`
 
