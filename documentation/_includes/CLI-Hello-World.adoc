@@ -544,7 +544,7 @@ NOTE: Important to note that any filesystems mounted with emptyDir are non-persi
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-== Hello-World II : Use NFS
+== Hello-World III : Use NFS
 
 The purpose of this unit is not to boil the ocean with "Hello, World!".  Rather we are trying to provide basic principals of how a container functions.  So with that in mind, our next solution will be to utilize some network storage (ie: NFS) to provide the common source for our helloworld web server.
 
@@ -675,7 +675,7 @@ Hello, World!
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-== Solution #4 - Use Source Control (git)
+== Hello-World IV : Use Source Control (git)
 
 Next we will implement the ideal solution.  Using a source code repository we will initiate a container deployment which will pull the source code and layer it into a base container (ie: source to images / S2I) and deploy it as a single unified image.
 
