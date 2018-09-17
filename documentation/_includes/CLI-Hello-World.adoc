@@ -447,22 +447,44 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
-=== Solution #2 - Use emptyDir
+== Hello World II - Use emptyDir
 
 For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
 
 Never the less, it suits our needs for this exercise so let’s proceed to configure Pod that uses an emptyDir as a volume mounted under /var/www/html.
 
+=== Create a Project
+
 .[root@master ~]#
 ----
 oc new-project helloworld2 --description="My Second OCP App" --display-name="Hello World II"
-    
+----
+
+=== Deploy an Image
+
+.[root@master ~]#
+----    
 oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
-    
-oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
-    
+----
+
+=== Expose a Route
+
+.[root@master ~]#
+----
 oc expose service hello-app2 --hostname=helloworld2.cloud.example.com
-    
+----
+
+=== Modify the Project, Build or Deployment
+
+.[root@master ~]#
+----
+oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
+----
+
+Use the following command to track the status of your deployment.
+
+.[root@master ~]#
+----    
 oc rollout status dc/hello-app2
 ----
 
@@ -490,6 +512,18 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 ----
 My pod = hello-app2-2-92cwr
 Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
+----
+
+=== Validation
+
+.[root@master ~]#
+----
+/var/tmp/cheat-validate-app.sh
+----
+
+.Your output should look like this
+[source,indent=4]
+----
 Validating output from helloworld2.cloud.example.com
 
 <html>
@@ -499,31 +533,11 @@ Hello, World!
 </html>
 ----
 
-OR, if you want to do things by hand here are the steps.
-
-.[root@master ~]#
-----
-oc get pods
-
-oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
-    
-curl http://helloworld2.cloud.example.com
-----
-
-.Your output should look like this
-[source,indent=4]
-----
-<html>
-<body>
-Hello, World!
-</body>
-</html>
-----
-
+If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.  Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche use cases.
 
 TIP: Why does the POD version start with '2' this time instead of '1'?
 
-If you happen to rsh into the container namespace, have a look at the permissions of /var/www/html.  You will notice that it matches the process uid.  Although it is not considered a best practice to inject files into a container during runtime, this method has it's niche use cases.
+TIP: What would happen if this app were to be scaled up?  Would new PODs contain our helloworld HTML?
 
 NOTE: Important to note that any filesystems mounted with emptyDir is non-persistant and will be destoyed when the container is stoppped.
 
