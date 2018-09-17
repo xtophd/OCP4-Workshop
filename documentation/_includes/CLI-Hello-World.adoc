@@ -10,16 +10,23 @@ endif::[]
 
 = CLI: Hello World
 
+[discrete]
+== Preface
+
 A "Hello, World!" program is traditionally used to illustrate the basic syntax of a programming language.  The program merely outputs or displays "Hello, World!" to a user. Due to it's simplicity in nature, it is often the very first program people write when learning a new language or platform.
 
-This exercise will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.  In fact, we are going to do it several different ways to illustrate some best and worst practices of container usage.
+These exercises will step through everything needed to bring a "Hello, World!" program online in our Openshift Container Platform.  We are going to do it several different ways to illustrate some best and worst practices of container usage.
 
-There are 4 fundamental steps to deploying an application in the Openshift Container Platform:
+There are 6 fundamental steps to deploying an application in the Openshift Container Platform:
 
-  . **oc login** - sign-on with proper credentials
-  . **oc new project** - create a project
-  . **oc new-app** - create an application
-  . **oc expose** - expose the service (route)
+  . *Credentials:* oc login
+  . *Create a Project:* oc new project 
+  . *Deploy an Image:* oc new-app
+  . *Expose a Route:* oc export
+  . *Modify the Project, Build or Deployment*
+  . *Validation*
+  
+NOTE: Arguably, in a production environment step-5 (making modifications) would normally be done before step-4 (exposing a route).  However, the end result is the same and it helps the repeatable consistancy of these exercises to just do things in this order.
 
 == My First Application
 
@@ -107,7 +114,7 @@ Quota:                  <none>
 Resource limits:        <none>
 ----
 
-=== Create an Application from a Container Image
+=== Deploy an Image
 
 We are not quite ready to start building our own container images, so we will leverage an existing one available from the RedHat's Container Registry.
 
@@ -134,10 +141,6 @@ oc get pods
     
 oc get services
 ----
-
-
-
-
 
 The IP address shown for the service is the internal non-routable network for the pod.  From any node in the cluster, we can test the pod for application functionality before exposing the service to the public. 
 
@@ -194,7 +197,8 @@ NAME        HOST/PORT                      PATH      SERVICES    PORT       TERM
 hello-app   helloworld.cloud.example.com             hello-app   8080-tcp                 None
 ----
 
-=== Validate Application
+[discrete]
+=== Interim Validation
 
 .[root@master ~]#
 ----
@@ -215,8 +219,7 @@ curl -s http://helloworld.cloud.example.com | grep "Test Page"
 <h1>Red Hat Enterprise Linux <strong>Test Page</strong></h1>
 ----
 
-
-
+[discrete]
 === Exploring the Container
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
@@ -299,12 +302,7 @@ When you are done exploring the container namespace, exit the shell and return t
 exit
 ----
 
-== Making an authentic "Hello, World!"
-
-// -------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------
-
-=== Solution #1 - Change Security Attributes
+=== Modify the Project, Build or Deployment
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *helloworld* project.
     
@@ -384,6 +382,7 @@ drwxr-xr-x.  2 default root   6 May  9 13:18 html
 exit
 ----
 
+
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
 There is a sample script in /var/tmp to make life a little easier.
@@ -398,14 +397,9 @@ There is a sample script in /var/tmp to make life a little easier.
 ----
 My pod = hello-app-2-np9vs
 Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
-Validating output from helloworld.cloud.example.com
-
-<html>
-<body>
-Hello, World!
-</body>
-</html>
 ----
+
+
 
 OR if you prefer to do the steps manually, here are the commands.
 
@@ -418,14 +412,32 @@ oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
 curl http://helloworld.cloud.example.com
 ----
 
+=== Validation
+
+There is a sample script in /var/tmp to make life a little easier.
+
+.[root@master ~]#
+----
+/var/tmp/cheat-validate-app.sh
+----
+
 .Your output should look like this
 [source,indent=4]
 ----
+Validating output from helloworld.cloud.example.com
+
 <html>
 <body>
 Hello, World!
 </body>
 </html>
+----
+
+OR if you prefer to do the steps manually, here are the commands.
+
+.[root@master ~]#
+----    
+curl http://helloworld.cloud.example.com
 ----
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
