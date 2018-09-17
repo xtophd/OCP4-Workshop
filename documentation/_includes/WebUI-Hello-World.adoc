@@ -799,7 +799,7 @@ select `Next`
 ____
 
 ====
-image::ocp-webui-hello4-image-search.png[Image Search]
+image::ocp-webui-hello4-catalog-filter.png[Catalog Filter]
 ====
 
 ====
