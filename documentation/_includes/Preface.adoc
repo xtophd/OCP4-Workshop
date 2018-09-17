@@ -31,6 +31,8 @@ WARNING: Critical information which could help you avoid major set backs
 
 == Executing tasks on the CLI
 
+=== Input
+
 Each block of commands to execute will be label with the expected *user-id* and *host*.  To enhance cut & paste efficiency, the command prompt is omitted from each line.
 
 .[root@master ~]#
@@ -38,7 +40,7 @@ Each block of commands to execute will be label with the expected *user-id* and 
 oc get projects
 ----
 
-== Output
+=== Output
 
 Sample output will be titled with _'Your output should look like this'_ and also be indented to help with visual identification.  Sometimes there will also be footnotes and/or callouts.
 
