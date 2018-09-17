@@ -23,7 +23,7 @@ The objective is to step through everything needed to bring a "Hello, World!" pr
 
 There are 6 fundamental steps to deploying an application in the Openshift Container Platform:
 
-  . *login* - sign-on with proper credentials
+  . *Credentials* - sign-on with proper id and permissions
   . *Create a Project*
   . *Deploy an Image*
   . *Expose a Route*
