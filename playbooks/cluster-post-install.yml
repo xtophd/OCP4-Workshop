@@ -48,7 +48,10 @@
         owner: root
         group: root
         mode: 0644
-  
+      with_items:
+        - {src: 'nfs-pv-02.j2',dest: '/var/tmp/nfs-pv-02.txt'}
+        - {src: 'nfs-pv-03.j2',dest: '/var/tmp/nfs-pv-03.txt'}
+
     - name: "TEMPLATE create /var/tmp/nfs-pv-03.txt"
       template:
         src: nfs-pv-03.j2
@@ -114,13 +117,16 @@
         group: root
         mode: 0644
 
-    - name: "TEMPLATE create /var/tmp/cheat-install-helloworld.sh"
+    - name: "TEMPLATE install cheat-(scripts) in /var/tmp"
       template:
         src: cheat-install-helloworld.j2
         dest: /var/tmp/cheat-install-helloworld.sh
         owner: root
         group: root
         mode: 0744
+      with_items:
+        - {src: 'cheat-validate-app.j2',dest: '/var/tmp/cheat-validate-app.sh'}
+        - {src: 'cheat-validate-service.j2',dest: '/var/tmp/cheat-validate-service'}
 
     - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
       template:
@@ -137,23 +143,10 @@
         owner: root
         group: root
         mode: 0644
-
-    - name: "TEMPLATE create /var/tmp/nfs-pv-02.yml"
-      template:
-        src: nfs-pv-02.j2
-        dest: /var/tmp/nfs-pv-02.yml
-        owner: root
-        group: root
-        mode: 0644
-  
-    - name: "TEMPLATE create /var/tmp/nfs-pv-03.yml"
-      template:
-        src: nfs-pv-03.j2
-        dest: /var/tmp/nfs-pv-03.yml
-        owner: root
-        group: root
-        mode: 0644
-
+      with_items:
+        - {src: 'nfs-pv-02.j2',dest: '/var/tmp/nfs-pv-02.yml'}
+        - {src: 'nfs-pv-03.j2',dest: '/var/tmp/nfs-pv-03.yml'}
+        
     - name: "CMD deleting existing OCP router"
       shell: 
         cmd: |
