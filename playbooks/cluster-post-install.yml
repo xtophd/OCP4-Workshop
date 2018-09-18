@@ -106,8 +106,6 @@
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
-        src: cheat-install-helloworld.j2
-        dest: /var/tmp/cheat-install-helloworld.sh
         owner: root
         group: root
         mode: 0744
