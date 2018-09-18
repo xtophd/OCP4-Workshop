@@ -123,7 +123,7 @@ I have 2 simple goals:
 ** What's in it for operators
 ** What's in it for developers
 
-So while the OCP installer runs for the next 20 minutes, your presenter may opt to provide a brief presentation.  Valuable topics include _(in the future I hope to provide links to brief documents on the topics below)_:
+So while the OCP installer runs for the next 20 minutes, your presenter (perhaps there is a sponsor?) may opt to provide a brief discussion on a related topic.  Valuable themes include _(in the future I hope to provide links to brief documents on the topics below)_:
 
 * "An Introduction to Openshift"
 * "Modern Application Development"
