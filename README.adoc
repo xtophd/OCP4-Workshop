@@ -1,5 +1,7 @@
 # OCP-Workshop
 
+= Welcome
+
 This project is designed to set up a minimal Openshift environment for conducting workshops (training sessions).
 These procedures are currently only being developed and tested using RavelloSystems cloud with a known blueprint.
 
@@ -7,8 +9,16 @@ Finally,at the moment this effort is using Openshift Container Platform 3.9 on R
 
 **Entitlements ARE Required**
 
+= Why Another Workshop?
+
+I believe that my philosophy is a little different than most.  Personally, I learn most efficiently by way of "micro successes".  Do something small, succeed and then build up on that success.  I am also very hands-on and learn better with a hammer versus a printed instruction manual.
+
+So rather than devising a complex environment with a complex solution to demonstrate how capable Openshift is with a lot of new industry terminology many still don't understand, I opt to put it in your hands, start small and build.
+
+Having said that, eventually I do plan to expand this workshop with increasingly complex tasks and exercises.  I want to include Operational tasks like monitoring and troubleshooting along with development tasks like setting up a completely automated CI/CD pipeline.
+
 Please continue to the 'documentation' folder and begin with the "OCP-Workshop.adoc"
 
-Or just lick this link:
+Or just click this link:
 
 link:./documentation/OCP-Workshop.adoc[OCP-Workshop Guide]
