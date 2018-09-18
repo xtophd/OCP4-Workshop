@@ -136,6 +136,8 @@ Now let's have a closer inspection with a couple different commands.
 .[root@master ~]#
 ----
 oc status
+
+oc get dc
     
 oc get pods
     
@@ -149,6 +151,15 @@ Run `oc get pods` and `oc get services` several times to watch the changes as de
 .Your output should look like this
 [source,indent=4]
 ----
+In project Hello World (helloworld) on server https://master.example.com:8443                
+                                                                                             
+svc/hello-app - 172.30.253.4 ports 8080, 8443                                                
+  dc/hello-app deploys istag/hello-app:latest                                                
+    deployment #1 deployed 13 minutes ago - 1 pod 
+
+NAME        REVISION   DESIRED   CURRENT   TRIGGERED BY                                      
+hello-app   1          1         1         config,image(hello-app:latest)
+
 NAME                READY     STATUS    RESTARTS   AGE
 hello-app-1-74v6s   1/1       Running   0          44s
 
