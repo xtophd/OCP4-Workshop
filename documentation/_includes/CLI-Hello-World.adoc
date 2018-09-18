@@ -419,8 +419,6 @@ OR if you prefer to do the steps manually, here are the commands.
 oc get pods
 
 oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
-    
-curl http://helloworld.cloud.example.com
 ----
 
 === Validation
