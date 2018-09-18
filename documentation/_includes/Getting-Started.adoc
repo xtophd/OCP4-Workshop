@@ -28,7 +28,7 @@ Red Hat's official documentation can be found publicly with the links provided b
 
 Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find "Minishift", a tool that helps you run OKD locally by launching a single-node OKD cluster inside a virtual machine. With Minishift you can try out OKD or develop with it, day-to-day, on your local machine.
 
-    * https://www.okd.io/minishift/
+    * link://https://www.okd.io/minishift/[Minishift]
 
 With that stated, the steps of preparing and installing OCP have been condensed into 3 scripts which call a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
