@@ -120,7 +120,7 @@
         group: root
         mode: 0644
 
-    - name: "TEMPLATE create /var/tmp/nfs-pv-01.yml"
+    - name: "TEMPLATE install YAML PV spec samples in /var/tmp"
       template:
         src: nfs-pv-01.j2
         dest: /var/tmp/nfs-pv-01.yml
