@@ -16,7 +16,7 @@ The default and recommended method for interacting with the Openshift Container 
 
 === Become the user *root* user on *workstation*
 
-Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.  With that said, proceed to sign-on to the host *workstation* as user *student* and then use `sudo` to elevate your priviledges to *root*
+Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.  With that said, proceed to sign-on to the host *workstation* as user *student* and then use `sudo` to elevate your privileges to *root*
 
 .[student@workstation ~]$
 ----    
@@ -25,7 +25,7 @@ sudo -i
 
 === Connect to host master.example.com
 
-As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not and established `root` user session.
+As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not an established `root` user session.
 
 Proceed to connect to host *master*.
 

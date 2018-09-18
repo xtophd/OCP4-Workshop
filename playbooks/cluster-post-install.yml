@@ -122,6 +122,14 @@
         group: root
         mode: 0744
 
+    - name: "create /var/tmp/cheat-validate-app.sh"
+      copy:
+        src: cheat-validate-app.sh
+        dest: /var/tmp
+        owner: root
+        group: root
+        mode: 0744
+
     - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
       template:
         src: helloworld3-pv-claim.j2
