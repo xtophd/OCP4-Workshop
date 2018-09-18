@@ -19,4 +19,8 @@ Please continue to the 'documentation' folder and begin with the "OCP-Workshop.a
 
 Or just click this link:
 
-link:./documentation/OCP-Workshop.adoc[OCP-Workshop Guide]
+  . link:./documentation/OCP-Workshop.adoc[OCP-Workshop Guide]
+
+Lastly, if you are looking for means to get started right away with a tiny openshift environment, I would suggest having a look at Minishift.
+
+  . https://www.okd.io/minishift/
