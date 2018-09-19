@@ -424,16 +424,18 @@ My pod = hello-app-2-np9vs
 Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
 ----
 
-
-
 OR if you prefer to do the steps manually, here are the commands.
 
-.[root@master ~]#
+
+[NOTE]
+====
+Manaul steps to rsh to POD
 ----
 oc get pods
 
 oc cp /var/tmp/helloworld.html {{ POD NAME }}:/var/www/html/index.html
 ----
+====
 
 === Validation
 
