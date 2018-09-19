@@ -189,7 +189,6 @@ oc get services
 
 curl http://{ip_address}}:8080
 ----
-Use the 'Cluster-IP' address from output of `oc get services` to build the URL for *curl*.
 ====
 
 This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
