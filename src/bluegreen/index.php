@@ -11,4 +11,5 @@ if (( $envColor == 'blue') || ($envColor == 'green')) {
 $output = [ 'COLOR' => $myColor ];
 
 echo json_encode( $output );
+echo "\n";
 ?>
