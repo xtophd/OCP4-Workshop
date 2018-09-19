@@ -197,7 +197,7 @@ This illustrates that the application is alive and providing output as expected.
 
 In Openshift, routers are the processes responsible for making services accessible to the outside world.  Routers run as containers on nodes.  Therefore, the nodes where routers run must be reachable themselves.
 
-Let's create a route for our new applciation.
+Let's create a route for our new application.
 
 .[root@master ~]#
 ----
