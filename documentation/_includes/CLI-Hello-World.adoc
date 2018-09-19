@@ -174,21 +174,28 @@ We can also monitor the deployment of the application by running `oc rollout sta
 oc rollout status dc/hello-app
 ----
 
-Once the **hello-app-1-????** is in a 'Running' state, you can proceed with the next step.  Use the 'Cluster-IP' address from output of `oc get services` to perform the following **curl**.
-
-.[root@master ~]#
-----
-curl http://{ip_address}}:8080
-----
-
-This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
-
-There is also sample script in /var/tmp to make life a little easier when testing the service output in the future.
+Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.
 
 .[root@master ~]#
 ----
 /var/tmp/cheat-validate-service.sh
 ----
+
+[NOTE]
+====
+_Alternate command(s)s to verify POD service_
+----
+oc get services
+
+curl http://{ip_address}}:8080
+----
+Use the 'Cluster-IP' address from output of `oc get services` to build the URL for *curl*.
+====
+
+This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
+
+There is also sample script in /var/tmp to make life a little easier when testing the service output in the future.
+
 
 === Expose a Route
 
@@ -249,9 +256,9 @@ Once again, there is a sample script easily connect to the POD's shell.
 /var/tmp/cheat-rsh-pod.sh
 ----
 
-OR, if you prefer the manual steps you can run the following comamnds.
-
-.[root@master ~]#
+[NOTE]
+====
+_Alternate manaul steps to rsh to POD_
 ----
 oc get pods
 
@@ -424,12 +431,9 @@ My pod = hello-app-2-np9vs
 Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
 ----
 
-OR if you prefer to do the steps manually, here are the commands.
-
-
 [NOTE]
 ====
-Manaul steps to rsh to POD
+_Alternate command(s) to rsh to POD_
 ----
 oc get pods
 
@@ -458,12 +462,13 @@ Hello, World!
 </html>
 ----
 
-OR if you prefer to do the steps manually, here are the commands.
-
-.[root@master ~]#
+[NOTE]
+====
+_Alternate command(s) to validate application_
 ----    
 curl http://helloworld.cloud.example.com
 ----
+====
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
