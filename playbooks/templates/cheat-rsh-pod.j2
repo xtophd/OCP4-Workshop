@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## This script on snipes the pod name and runs oc rsh ${PODNAME}
+
+PODNAME=`oc get pods --no-headers | awk '{ print $1 }'`
+
+echo "DETERMINED POD NAME: ${PODNAME}"
+echo "BASH EXEC: oc rsh ${PODNAME}"
+echo ""
+
+exec oc rsh ${PODNAME}
