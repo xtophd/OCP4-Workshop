@@ -328,12 +328,12 @@ openshift.io/sa.scc.uid-range: 1001/10000
 ----
 
 Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
-    
+
 .[root@master ~]#
 ----
 oc rollout latest dc/hello-app
 
-watch oc get pods
+oc get pods -w
 ----
 
 Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.
