@@ -183,6 +183,13 @@ curl http://{ip_address}}:8080
 
 This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
 
+There is also sample script in /var/tmp to make life a little easier when testing the service output in the future.
+
+.[root@master ~]#
+----
+/var/tmp/cheat-validate-service.sh
+----
+
 === Expose a Route
 
 In Openshift, routers are the processes responsible for making services accessible to the outside world.  Routers run as containers on nodes.  Therefore, the nodes where routers run must be reachable themselves.
@@ -396,7 +403,7 @@ exit
 
 To save time and avoid the complexity of editing an HTML file, we will just copy an exist file into the running container.
 
-There is a sample script in /var/tmp to make life a little easier.
+You can use the sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
