@@ -110,10 +110,10 @@
         group: root
         mode: 0744
       with_items:
-        - {src: 'cheat-install-helloworld.j2',dest: '/var/tmp/cheat-install-helloworld.sh'}
-        - {src: 'cheat-validate-app.j2',dest: '/var/tmp/cheat-validate-app.sh'}
-        - {src: 'cheat-validate-service.j2',dest: '/var/tmp/cheat-validate-service.sh'}
-        - {src: 'cheat-rsh-pod.j2',dest: '/var/tmp/cheat-rsh-pod.sh'}
+        - {src: 'cheat-install-helloworld.j2',dest: '/usr/local/bin/cheat-install-helloworld.sh'}
+        - {src: 'cheat-validate-app.j2',dest: '/usr/local/bin/cheat-validate-app.sh'}
+        - {src: 'cheat-validate-service.j2',dest: '/usr/local/bin/cheat-validate-service.sh'}
+        - {src: 'cheat-rsh-pod.j2',dest: '/usr/local/bin/cheat-rsh-pod.sh'}
 
     - name: "create /var/tmp/cheat-validate-app.sh"
       copy:
