@@ -1,5 +1,3 @@
-<html>
-  <body>
 <?php
 
 $envColor = getenv("COLOR");
@@ -9,8 +7,8 @@ if (( $envColor == 'blue') || ($envColor == 'green')) {
 } else {
   $myColor = 'grey';
 } 
+    
+$output = [ 'COLOR' => $myColor ];
 
-echo "$myColor\n" ;
+echo json_encode( $output );
 ?>
-  </body>
-</html>
