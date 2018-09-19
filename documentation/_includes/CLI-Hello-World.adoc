@@ -183,7 +183,7 @@ Once the **hello-app-1-????** is in a 'Running' state, you can proceed with veri
 
 [NOTE]
 ====
-_Alternate command(s)s to verify POD service_
+_Alternate command(s) to verify POD service_
 ----
 oc get services
 
@@ -257,7 +257,7 @@ Once again, there is a sample script easily connect to the POD's shell.
 
 [NOTE]
 ====
-_Alternate manaul steps to rsh to POD_
+_Alternate command(s) to rsh to POD_
 ----
 oc get pods
 
@@ -433,7 +433,7 @@ Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
 
 [NOTE]
 ====
-_Alternate command(s) to rsh to POD_
+_Alternate command(s) to copy index.html to POD_
 ----
 oc get pods
 
