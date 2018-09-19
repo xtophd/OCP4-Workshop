@@ -242,6 +242,15 @@ curl -s http://helloworld.cloud.example.com | grep "Test Page"
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
+Once again, there is a sample script easily connect to the POD's shell.
+
+.[root@master ~]#
+----
+/var/tmp/cheat-rsh-pod.sh
+----
+
+OR, if you prefer the manual steps you can run the following comamnds.
+
 .[root@master ~]#
 ----
 oc get pods
