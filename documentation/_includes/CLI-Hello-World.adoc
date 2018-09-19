@@ -174,16 +174,16 @@ We can also monitor the deployment of the application by running `oc rollout sta
 oc rollout status dc/hello-app
 ----
 
-Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.
+Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-service.sh
+cheat-validate-service.sh
 ----
 
 [NOTE]
 ====
-_Alternate command(s) to verify POD service_
+_Native command(s) to verify POD service_
 ----
 oc get services
 
@@ -192,9 +192,6 @@ curl http://{ip_address}}:8080
 ====
 
 This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
-
-There is also sample script in /var/tmp to make life a little easier when testing the service output in the future.
-
 
 === Expose a Route
 
@@ -248,7 +245,7 @@ curl -s http://helloworld.cloud.example.com | grep "Test Page"
 
 Now we will take a moment to poke around the container namespace.  We need the pods full name in order to connect to a shell within the container.
 
-Once again, there is a sample script easily connect to the POD's shell.
+Once again, there is a sample script to easily connect to the POD's shell.
 
 .[root@master ~]#
 ----
@@ -257,7 +254,7 @@ Once again, there is a sample script easily connect to the POD's shell.
 
 [NOTE]
 ====
-_Alternate command(s) to rsh to POD_
+_Native command(s) to rsh to POD_
 ----
 oc get pods
 
@@ -427,13 +424,15 @@ You can use the sample script in /var/tmp to make life a little easier.
 .Your output should look like this
 [source,indent=4]
 ----
-My pod = hello-app-2-np9vs
+DETERMINED POD = hello-app-2-qvsl8
+BASH EXEC: oc cp /var/tmp/helloworld.html hello-app-2-qvsl8:/var/www/html/index.html
+
 Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
 ----
 
 [NOTE]
 ====
-_Alternate command(s) to copy index.html to POD_
+_Native command(s) to copy index.html to POD_
 ----
 oc get pods
 
@@ -453,7 +452,8 @@ There is a sample script in /var/tmp to make life a little easier.
 .Your output should look like this
 [source,indent=4]
 ----
-Validating output from helloworld.cloud.example.com
+DETECTERMINED ROUTE: helloworld.cloud.example.com
+EXEC: curl helloworld.cloud.example.com
 
 <html>
 <body>
@@ -538,7 +538,7 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 .Your output should look like this
 [source,indent=4]
 ----
-My pod = hello-app2-2-92cwr
+
 Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
 ----
 
@@ -552,7 +552,8 @@ Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
 .Your output should look like this
 [source,indent=4]
 ----
-Validating output from helloworld2.cloud.example.com
+DETECTERMINED ROUTE: helloworld.cloud.example.com
+EXEC: curl helloworld.cloud.example.com
 
 <html>
 <body>
