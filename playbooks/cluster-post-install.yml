@@ -112,7 +112,8 @@
       with_items:
         - {src: 'cheat-install-helloworld.j2',dest: '/var/tmp/cheat-install-helloworld.sh'}
         - {src: 'cheat-validate-app.j2',dest: '/var/tmp/cheat-validate-app.sh'}
-        - {src: 'cheat-validate-service.j2',dest: '/var/tmp/cheat-validate-service'}
+        - {src: 'cheat-validate-service.j2',dest: '/var/tmp/cheat-validate-service.sh'}
+        - {src: 'cheat-rsh-pod.j2',dest: '/var/tmp/cheat-rsh-pod.sh'}
 
     - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
       template:
