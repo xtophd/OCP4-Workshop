@@ -8,5 +8,7 @@ DST="${MYPOD}:/var/www/html/index.html"
 echo "DETERMINED POD = ${MYPOD}"
 echo "BASH EXEC: oc cp ${SRC} ${DST}"
 echo ""
+
+echo "Copying ${SRC} to ${DST}"
  
 exec oc cp ${SRC} ${DST}
