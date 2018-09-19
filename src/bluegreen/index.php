@@ -1,3 +1,5 @@
+<html>
+  <body>
 <?php
 
 $envColor = getenv("COLOR");
@@ -9,5 +11,6 @@ if (( $envColor == 'blue') || ($envColor == 'green')) {
 } 
 
 echo "$mycolor" ;
-
 ?>
+  </body>
+</html>
