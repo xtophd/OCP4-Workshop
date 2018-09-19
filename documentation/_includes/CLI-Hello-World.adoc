@@ -223,7 +223,7 @@ hello-app   helloworld.cloud.example.com             hello-app   8080-tcp       
 curl http://helloworld.cloud.example.com
 ----
 
-The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific so we can verify a function httpd server.  
+The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific so we can verify a functional httpd server.  
 
 .[root@master ~]#
 ----
