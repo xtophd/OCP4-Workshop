@@ -5,7 +5,7 @@ MYPOD=`oc get pods --no-headers | awk '{ print $1 }'`
 SRC="/var/tmp/helloworld.html"
 DST="${MYPOD}:/var/www/html/index.html"
 
-echo "My pod = ${MYPOD}"
-echo "Copying ${SRC} to ${DST}"
+echo "DETERMINED POD = ${MYPOD}"
+echo "BASH EXEC: oc cp ${SRC} ${DST}"
  
-oc cp ${SRC} ${DST}
+exec oc cp ${SRC} ${DST}
