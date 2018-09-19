@@ -427,7 +427,7 @@ You can use the sample script in /var/tmp to make life a little easier.
 DETERMINED POD = hello-app-2-qvsl8
 BASH EXEC: oc cp /var/tmp/helloworld.html hello-app-2-qvsl8:/var/www/html/index.html
 
-Copying /var/tmp/helloworld.html to hello-app-2-np9vs:/var/www/html/index.html
+Copying /var/tmp/helloworld.html to hello-app-2-qvs18:/var/www/html/index.html
 ----
 
 [NOTE]
