@@ -2,7 +2,7 @@
 
 MYROUTE=`oc get routes --no-headers | awk '{ print $2 }'`
 
-echo "Validating output from ${MYROUTE}"
-echo ""
+echo "DETECTERMINED route: ${MYROUTE}"
+echo "EXEC: curl ${MYROUTE}"
 
-curl ${MYROUTE}
+exec curl ${MYROUTE}
