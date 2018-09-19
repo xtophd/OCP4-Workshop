@@ -24,7 +24,7 @@ There are 6 fundamental steps to deploying an application in the Openshift Conta
   . *Credentials:* oc login
   . *Create a Project:* oc new project 
   . *Deploy an Image:* oc new-app
-  . *Expose a Route:* oc export
+  . *Expose a Route:* oc expose
   . *Modify the Project, Build or Deployment*
   . *Validation*
   
@@ -116,7 +116,7 @@ Resource limits:        <none>
 
 === Deploy an Image
 
-We are not quite ready to start building our own container images from scratch, so we will leverage an existing one available from the RedHat's Container Registry.
+We are not quite ready to start building our own container images from scratch, so we will leverage an existing one available from the Red Hat's Container Catalog.
 
 .[root@master ~]#
 ----
@@ -126,7 +126,7 @@ oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
 You just instructed Openshift to create a new application called *hello-app*.  Without getting caught up in the details, basically what happens is:
 
   * Openshift checks the local catalog for an existing copy of the specified image *httpd-24-rhel7*
-  * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Registry and adds it to the local catalog
+  * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Catalog and adds it to the local catalog
   * A *Container Creating Container* is initiated to contruct the desired image (ie: customizations or source integration)
   * A *Deployment Container* is initiated to launch the desired image
   * and Voi La!!! The container is deployed and ready to go to work.
@@ -281,18 +281,18 @@ ps -ef
 [source,indent=4]
 ----
 UID         PID   PPID  C STIME TTY          TIME CMD
-default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
-default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      74      0  0 17:50 ?        00:00:00 /bin/sh
-default      84     74  0 17:50 ?        00:00:00 ps -ef
+1000120+      1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
+1000120+     24      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     25      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     26      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     27      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     74      0  0 17:50 ?        00:00:00 /bin/sh
+1000120+     84     74  0 17:50 ?        00:00:00 ps -ef
 ----
 
 Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
@@ -353,7 +353,7 @@ oc get pods -w
 ----
 
 Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.
-Never the less, after rolling out the new pod kubenettes will (by default) shutoff and remove older 
+Never the less, after rolling out the new pod kubernetes will (by default) shutoff and remove older 
 versions of the pod.
 
 .Your output should look like this
@@ -674,7 +674,7 @@ oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVo
 oc rollout status dc/hello-app3
 ----
 
-NOTE: You will need to wait until the pod is deplyed before you can validate the application.
+NOTE: You will need to wait until the pod is deployed before you can validate the application.
 
 === Validation
 
@@ -846,17 +846,13 @@ In this deployment model, there is no post-modifications we need to make to the 
 ----
 Validating output from helloworld5.cloud.example.com
 
-<html>
-<body>
-Hello, World!
-</body>
-</html>
+<HTML><BODY><H1>Hello, World!</H1></BODY></HTML>
 ----
 
 
 == Clean Up (Informational Only)
 
-NOTE: We utilize the deployed applications from these exercises for the unit covering the WebUI.  We provide the commands needed for general cleanup as informatino only.
+NOTE: We utilize the deployed applications from these exercises for the unit covering the WebUI.  We provide the commands needed for general cleanup as information only.
 
 .[root@master ~]#
 ----

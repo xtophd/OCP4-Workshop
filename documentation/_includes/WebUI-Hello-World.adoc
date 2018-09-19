@@ -145,7 +145,7 @@ The *Project Overview* page provides a high-level view of the project you just c
 image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
-You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with fact you've initiated the build and deployment of a containerized application.
+You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with the fact you've initiated the build and deployment of a containerized application.
 
 === Expose a Route
 
@@ -234,18 +234,18 @@ ps -ef
 [source,indent=4]
 ----
 UID         PID   PPID  C STIME TTY          TIME CMD
-default       1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
-default      24      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      25      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      26      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      27      1  0 14:26 ?        00:00:00 /usr/bin/cat
-default      28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
-default      74      0  0 17:50 ?        00:00:00 /bin/sh
-default      84     74  0 17:50 ?        00:00:00 ps -ef
+1000120+      1      0  0 14:26 ?        00:00:03 httpd -D FOREGROUND
+1000120+     24      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     25      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     26      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     27      1  0 14:26 ?        00:00:00 /usr/bin/cat
+1000120+     28      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     29      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     31      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     35      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     37      1  0 14:26 ?        00:00:18 httpd -D FOREGROUND
+1000120+     74      0  0 17:50 ?        00:00:00 /bin/sh
+1000120+     84     74  0 17:50 ?        00:00:00 ps -ef
 ----
 
 Normally files serverd by httpd go into /var/www/html, but the security-conscious random uid does not have permissions to write to this directory (or any other directory than the tmp dirs).
@@ -325,7 +325,7 @@ ____
 image::ocp-webui-hello1-redeploy.png[Re-Deploy]
 ====
 
-What you have done by modifying the project security attributes is configure the effective UID of the soon to be redeployed application to be 1001.  This modification now enables permission to write in /var/www/html.  It is not as insecure as simply enabling root priviledges for the process, but already far less secure than then the previous configuration.
+What you have done by modifying the project security attributes is configure the effective UID of the soon to be redeployed application to be 1001.  This modification now enables permission to write in /var/www/html.  It is not as insecure as simply enabling root privileges for the process, but already far less secure than then the previous configuration.
 
 Let us proceed with completing our first "helloworld" deployment.
 
@@ -531,7 +531,7 @@ curl helloworld3.cloud.example.com > /var/www/html/index.html
 
 IMPORTANT:  Again, it is critical to understand that this is also NOT a recommended solution to deploying an application into production on Openshift.  This solution utilizes an emptyDir storage volume which is non-persistent.  If the application is stopped and restarted, fails and restarts, is scaled up ... the changes you introduced to the single image by manually copying index.html to the image will not be replicated or restored.
 
-Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL for your expose route to verify your deployment.
+Provided that you have not been too efficient and completed exposing the route before the build finished, you can now click on the URL for your exposed route to verify your deployment.
 
 ____
 select exposed route `http://hello-webui2.cloud.example.com` from the *Project Overview*
@@ -621,17 +621,17 @@ ____
 
 === Modify the Project, Build or Deployment
 
-Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In soluttion #2, we use a volume type of "emptyDir".
+Fundamentally, a volume is just a directory, possibly with some data in it, which is accessible to the Containers in a Pod. How that directory comes to be, the medium that backs it, and the contents of it are determined by the particular volume type used.  In solution #2, we use a volume type of "emptyDir".
 
-In the language of Kubernettes, a PV is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster.  A Persistent Volume Claim (PVC) is a request for storage by a user (deployment).
+In the language of Kubernetes, a PV is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster.  A Persistent Volume Claim (PVC) is a request for storage by a user (deployment).
 
 Lastly, Persistent Volumes (PV) are "cluster" objects and thus are not namespaced (ie: they don't belong to projects).  They belong to, and are available to,  the whole cluster.
 
-If all of this is confusing, don't worry about it now.  What it boils down to is that storage configuration in Openshift behaves like 2 magenets.  You have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Once configured, if the attributes of a PV and PVC match then like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
+If all of this is confusing, don't worry about it now.  What it boils down to is that storage configuration in Openshift behaves like 2 magnets.  You have to configure a PV (with certain attributes) and a PVC (with certain attributes).  Once configured, if the attributes of a PV and PVC match then like magnets they'll find each other and bind.  Once a PV and PVC are bound, the volume is ready for use.
 
 ==== Create Persistent Volume (PV)
 
-The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was does in the CLI counterpart to this exercise.
+The WebUI does not currently provide a convinient dialog for creating PVs, thus we will import a YAML configuration file similar to what was done in the CLI counterpart to this exercise.
 
 A sample YAML file is provided on the workstation to make this process easy.  It should look similar to one outlined below.
 
@@ -870,7 +870,7 @@ image::ocp-webui-hello4-verification.png[Application Verification]
 So this solution is a bit more complicated.  As shown during the CLI exercises, deploying an application
 based on a Dockerfile is pretty trivial.  In fact, the `oc new-app` commandline was the shortest and had the least amount of typing of all the CLI helloworld examples.
 
-Using the WebUI, there is currently no method to natively invoke a *Docker Build Strategy*.  Thus we are left with the option of importing a YAML configuration file.  Once again, this workshop has provided a sample file to make the exercise fairly simply to execute.  However, we are going to spend some time discussing it in detail.  This will hopefully shed some light on how Openshift (ie: Kubernettes) functions.
+Using the WebUI, there is currently no method to natively invoke a *Docker Build Strategy*.  Thus we are left with the option of importing a YAML configuration file.  Once again, this workshop has provided a sample file to make the exercise fairly simply to execute.  However, we are going to spend some time discussing it in detail.  This will hopefully shed some light on how Openshift (ie: Kubernetes) functions.
 
 First let us begin with how this YAML file was built.  That's simple, we used the `oc new-app` CLI tool.
 
