@@ -12,5 +12,7 @@ $output = [ 'COLOR' => $myColor ];
 
 echo json_encode( $output );
 
+phpinfo();
+
 echo "\n";
 ?>
