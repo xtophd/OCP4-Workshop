@@ -2,17 +2,16 @@
 
 $myColor = 'grey';
 
-$envColor = getenv("COLOR");
+$envColor    = getenv("myCOLOR");
 
 if (( $envColor == 'blue') || ($envColor == 'green')) {
   $myColor = $envColor;
 }
 
-$output = [ 'COLOR' => $myColor ];
+$output = [ 'HOSTNAME' =>  getenv("HOSTNAME"); ];
+$output = [ 'myCOLOR' => $myColor ];
 
 echo json_encode( $output );
-
-phpinfo();
 
 echo "\n";
 ?>
