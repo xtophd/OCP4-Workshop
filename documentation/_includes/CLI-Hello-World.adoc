@@ -538,6 +538,8 @@ cheat-install-helloworld.sh
 .Your output should look like this
 [source,indent=4]
 ----
+DETERMINED POD = hello-app2-2-92cwr
+BASH EXEC: oc cp /var/tmp/helloworld.html hello-app2-2-92cwr:/var/www/html/index.html
 
 Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
 ----
