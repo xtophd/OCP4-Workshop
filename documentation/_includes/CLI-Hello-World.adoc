@@ -249,7 +249,7 @@ Once again, there is a sample script to easily connect to the POD's shell.
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-rsh-pod.sh
+cheat-rsh-pod.sh
 ----
 
 [NOTE]
@@ -374,7 +374,7 @@ Next we will once again connect to the containers shell and explore the changes 
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-rsh-pod.sh
+cheat-rsh-pod.sh
 ----
 
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
@@ -418,7 +418,7 @@ You can use the sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-install-helloworld.sh
+cheat-install-helloworld.sh
 ----
 
 .Your output should look like this
@@ -446,7 +446,7 @@ There is a sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-app.sh
+cheat-validate-app.sh
 ----
 
 .Your output should look like this
@@ -532,7 +532,7 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-install-helloworld.sh
+cheat-install-helloworld.sh
 ----
 
 .Your output should look like this
@@ -546,7 +546,7 @@ Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-app.sh
+cheat-validate-app.sh
 ----
 
 .Your output should look like this
@@ -686,7 +686,7 @@ NOTE: You will need to wait until the pod is deployed before you can validate th
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-app.sh
+cheat-validate-app.sh
 ----
 
 .Your output should look like this
@@ -772,7 +772,7 @@ In this deployment model, there is no post-modifications we need to make to the 
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-app.sh
+cheat-validate-app.sh
 ----
 
 .Your output should look like this
@@ -844,7 +844,7 @@ In this deployment model, there is no post-modifications we need to make to the 
 
 .[root@master ~]#
 ----
-/var/tmp/cheat-validate-app.sh
+cheat-validate-app.sh
 ----
 
 .Your output should look like this
