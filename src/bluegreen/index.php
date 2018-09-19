@@ -3,9 +3,9 @@
 $envColor = getenv("COLOR");
 
 if (( $envColor == 'blue') || ($envColor == 'green')) {
-  $color = $envColor;
+  $myColor = $envColor;
 } else {
-  $color = 'grey';
+  $myColor = 'grey';
 } 
 
 echo "$mycolor" ;
