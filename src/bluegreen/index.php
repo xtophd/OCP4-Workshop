@@ -8,8 +8,8 @@ if (( $envColor == 'blue') || ($envColor == 'green')) {
   $myColor = $envColor;
 }
 
-$output = [ 'HOSTNAME' =>  getenv("HOSTNAME") ];
-$output = [ 'myCOLOR' => $myColor ];
+$output = [ 'HOSTNAME' =>  getenv("HOSTNAME"),
+            'myCOLOR'  => $myColor ];
 
 echo json_encode( $output );
 
