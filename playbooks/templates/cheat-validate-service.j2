@@ -5,7 +5,7 @@
 SERVICEIP=`oc get service --no-headers | awk '{ print $3 }'`
 SERVICEURL="http://${SERVICEIP}:8080"
 
-echo "Validating output from ${SERVICEURL}"
-echo ""
+echo "DETERMINED SERVICE: ${SERVICEURL}"
+echo "BASH EXEC: curl ${SERVICEURL}"
 
 curl ${SERVICEURL}
