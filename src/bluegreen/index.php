@@ -10,7 +10,7 @@ if (( $envColor == 'blue') || ($envColor == 'green')) {
   $myColor = 'grey';
 } 
 
-echo "$myColor" ;
+echo "$myColor\n" ;
 ?>
   </body>
 </html>
