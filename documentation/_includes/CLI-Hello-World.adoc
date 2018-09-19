@@ -857,7 +857,11 @@ cheat-validate-app.sh
 DETECTERMINED ROUTE: helloworld5.cloud.example.com
 EXEC: curl helloworld5.cloud.example.com
 
-<HTML><BODY><H1>Hello, World!</H1></BODY></HTML>
+<html>
+<body>
+Hello, World!
+</body>
+</html>
 ----
 
 
