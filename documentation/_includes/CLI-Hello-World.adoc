@@ -370,9 +370,7 @@ Next we will once again connect to the containers shell and explore the changes 
 
 .[root@master ~]#
 ----
-oc get pods
-    
-oc rsh {{ POD NAME }}
+/var/tmp/cheat-rsh-pod.sh
 ----
 
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
