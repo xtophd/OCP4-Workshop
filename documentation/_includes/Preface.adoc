@@ -65,6 +65,25 @@ openshift-web-console                              Active
 ----
 <1> This is the line we are interested in with a special note
 
+=== Alternate Commands
+
+The workshop often provides scripts to ease certain tasks and reduce the chance for errors.  This helps the class stay on task and reduces the likelyhood of disruption to the workshop delivery.  The native commands which the scripts utilize will be documented in the following way.
+
+.[root@master ~]#
+----
+cheat-validate-service.sh
+----
+
+[NOTE]
+====
+_Native command(s) to verify POD service_
+----
+oc get services
+
+curl http://{ip_address}}:8080
+----
+====
+
 == Executing tasks in the WebUI
 
 Notice that key value pairs for data entry are presented in a matrix.
