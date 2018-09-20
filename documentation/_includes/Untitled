@@ -1,0 +1,42 @@
+
+
+oc new-project bluegreen --description="Example with ENV VARs" --display-name="Blue Green"
+
+oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=bluegreen
+
+oc start-build bc/bluegreen
+
+oc logs -f bc/bluegreen
+
+## Not necessary, happens automatically as trigger after bc update
+
+oc rollout latest dc/bluegreen
+
+oc rollout status dc/bluegreen
+
+
+##
+
+oc env dc/bluegreen myCOLOR=blue
+
+cheat-validate-app.sh
+
+oc env dc/bluegreen myCOLOR=green
+
+cheat-validate-app.sh
+
+##
+
+oc scale --replicas=3 dc/bluegreen
+
+oc get pods -o wide
+
+### Build an app that:
+#   deploys in same project
+#   collects input from all worker pods and displays color
+#   maybe make it the same source, and switch into manager-mode/worker-mode via env
+    
+### Update dc with new color
+#   watch rollout
+
+
