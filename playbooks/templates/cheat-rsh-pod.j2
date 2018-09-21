@@ -4,7 +4,7 @@
 
 for PODNAME in `oc get pods --no-headers | awk '{ print $1 }'` ; do
 
-    re = "^.*-(.*)$"
+    re='^.*-(.*)$'
 
     if [[ ${PODNAME} =~ ${re} ]] && \
         [ "${BASH_REMATCH[1]}" != "deploy" ] && \
