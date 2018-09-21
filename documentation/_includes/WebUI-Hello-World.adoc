@@ -314,8 +314,6 @@ Before you selected `Create` you had an opportunity to inspect the file.  The on
 image::ocp-webui-hello1-yaml-create.png[Import YAML Create]
 ====
     
-You should be returned to the project overview page.
-
 ==== Redeploy the Application
 
 Since our modification only affected "Project" attributes, nothing triggered an automatice redeployment of the application.  Thus, you will need to initiate a new deployment manually.  
