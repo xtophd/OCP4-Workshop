@@ -612,13 +612,13 @@ There is a more thourough explination of storage in the WebUI portion of this wo
 
 .[root@master ~]#
 ----    
-oc create -f /var/tmp/helloworld3-pv.yml
+oc create -f /var/tmp/cli-hello3-pv.yml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolume "nfs-helloworld3" created
+persistentvolume "cli-hello3" created
 ----
 
 .[root@master ~]#
@@ -629,8 +629,8 @@ oc get pv
 .Your output should look like this
 [source,indent=4]
 ----
-NAME             CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-nfs-helloworld3  5Gi        RWO            Recycle          Available                                      7s
+NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
+cli-hello3  5Gi        RWM            Recycle          Available                                      7s
 ----
 
 ==== Create a PVC (Persistent Volume Claim)
@@ -639,13 +639,13 @@ Now create the persistent volume claim.
 
 .[root@master ~]#
 ----
-oc create -f /var/tmp/helloworld3-pv-claim.yml
+oc create -f /var/tmp/cli-hello3-claim.yml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolumeclaim "helloworld3-claim" created
+persistentvolumeclaim "cli-hello3-claim" created
 ----
 
 ==== Check Storage Status
@@ -662,11 +662,11 @@ oc get pvc
 .Your output should look like this
 [source,indent=4]
 ----
-NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                       STORAGECLASS   REASON    AGE
-nfs-pv-01   5Gi        RWO            Recycle          Bound     default/helloworld3-claim                            11m
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                        STORAGECLASS   REASON    AGE
+cli-hello3   5Gi        RWM            Retain           Bound     helloworld3/cli-hello3-claim                         11m
 
-NAME                STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                           58s
+NAME              STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+cli-hello-claim   Bound     cli-hello3  5Gi        RWM                           58s
 ----
 
 ==== Modify the Deployment Config
@@ -675,7 +675,7 @@ Now that the storage prep work is complete, it is time to modify the deployment 
 
 .[root@master ~]#
 ----
-oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=helloworld3-claim
+oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=cli-hello3-claim
 
 oc rollout status dc/hello-app3
 ----
