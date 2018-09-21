@@ -630,7 +630,7 @@ oc get pv
 [source,indent=4]
 ----
 NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-cli-hello3  5Gi        RWM            Recycle          Available                                      7s
+cli-hello3  5Gi        RWX            Recycle          Available                                      7s
 ----
 
 ==== Create a PVC (Persistent Volume Claim)
@@ -663,10 +663,10 @@ oc get pvc
 [source,indent=4]
 ----
 NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                        STORAGECLASS   REASON    AGE
-cli-hello3   5Gi        RWM            Retain           Bound     helloworld3/cli-hello3-claim                         11m
+cli-hello3   5Gi        RWX            Retain           Bound     helloworld3/cli-hello3-claim                         11m
 
 NAME              STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-cli-hello-claim   Bound     cli-hello3  5Gi        RWM                           58s
+cli-hello-claim   Bound     cli-hello3  5Gi        RWX                           58s
 ----
 
 ==== Modify the Deployment Config
