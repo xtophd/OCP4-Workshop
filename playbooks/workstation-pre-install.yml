@@ -13,9 +13,9 @@
         name="{{ item.name }}"
         state=stopped
         enabled=no
-      with_item:
-        - {name:'packagekit'}
-        - {name:'rhsmcertd'}
+      with_items:
+        - {name: 'packagekit'}
+        - {name: 'rhsmcertd'}
 
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
