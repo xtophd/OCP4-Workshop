@@ -472,7 +472,7 @@ Hello, World!
 
 [NOTE]
 ====
-_Alternate command(s) to validate application_
+_Native command(s) to validate application_
 ----    
 curl http://helloworld.cloud.example.com
 ----
