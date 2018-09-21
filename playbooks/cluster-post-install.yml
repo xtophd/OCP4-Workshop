@@ -33,18 +33,6 @@
         group: root
         mode: 0644
 
-    - name: "TEMPLATE install YAML PV spec samples in /var/tmp"
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        owner: root
-        group: root
-        mode: 0644
-      with_items:
-        - {src: 'nfs-pv-01.j2',dest: '/var/tmp/nfs-pv-01.txt'}
-        - {src: 'nfs-pv-02.j2',dest: '/var/tmp/nfs-pv-02.txt'}
-        - {src: 'nfs-pv-03.j2',dest: '/var/tmp/nfs-pv-03.txt'}
-
     - name: "TEMPLATE create /var/tmp/bc-dockerfile.txt"
       template:
         src: bc-dockerfile.j2
@@ -112,14 +100,6 @@
         - {src: 'cheat-validate-service.j2',dest: '/usr/local/bin/cheat-validate-service.sh'}
         - {src: 'cheat-rsh-pod.j2',dest: '/usr/local/bin/cheat-rsh-pod.sh'}
 
-    - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
-      template:
-        src: helloworld3-pv-claim.j2
-        dest: /var/tmp/helloworld3-pv-claim.yml
-        owner: root
-        group: root
-        mode: 0644
-
     - name: "TEMPLATE install YAML PV spec samples in /var/tmp"
       template:
         src: "{{ item.src }}"
@@ -128,9 +108,8 @@
         group: root
         mode: 0644
       with_items:
-        - {src: 'nfs-pv-01.j2',dest: '/var/tmp/nfs-pv-01.yml'}
-        - {src: 'nfs-pv-02.j2',dest: '/var/tmp/nfs-pv-02.yml'}
-        - {src: 'nfs-pv-03.j2',dest: '/var/tmp/nfs-pv-03.yml'}
+        - {src: 'helloworld3-pv.j2',dest: '/var/tmp/helloworld3-pv.yml'}
+        - {src: 'helloworld3-pv-claim.j2',dest: '/var/tmp/helloworld3-pv-claim.yml'}
         
     - name: "CMD deleting existing OCP router"
       shell: 
