@@ -612,13 +612,13 @@ There is a more thourough explination of storage in the WebUI portion of this wo
 
 .[root@master ~]#
 ----    
-oc create -f /var/tmp/nfs-pv-01.yml
+oc create -f /var/tmp/helloworld3-pv.yml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolume "nfs-pv-01" created
+persistentvolume "nfs-helloworld3" created
 ----
 
 .[root@master ~]#
@@ -629,8 +629,8 @@ oc get pv
 .Your output should look like this
 [source,indent=4]
 ----
-NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-nfs-pv-01   5Gi        RWO            Recycle          Available                                      7s
+NAME             CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
+nfs-helloworld3  5Gi        RWO            Recycle          Available                                      7s
 ----
 
 ==== Create a PVC (Persistent Volume Claim)
@@ -668,8 +668,6 @@ nfs-pv-01   5Gi        RWO            Recycle          Bound     default/hellowo
 NAME                STATUS    VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 helloworld3-claim   Bound     nfs-pv-01   5Gi        RWO                           58s
 ----
-
-NOTE: Notice how the ACCESS MODES are defined as RWO (Read Write Once).  Under normal circumstances a NFS volume being used as a persistent volume would be defined as RWM (Red Write Many) since NFS supports more than one POD mounting an export for read write usage.  In order to isolate activities and keep things simple for the introductory exercises, we opted to use RWO.
 
 ==== Modify the Deployment Config
 
