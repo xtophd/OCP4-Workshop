@@ -72,8 +72,8 @@
         state=started 
         enabled=yes
       with_items:
-        - { name:'nfs' }
-        - { name:'nfslock' }
+        - { name: 'nfs' }
+        - { name: 'nfslock' }
 
     - name: "TEMPLATE modify/install /etc/exports"
       template:
