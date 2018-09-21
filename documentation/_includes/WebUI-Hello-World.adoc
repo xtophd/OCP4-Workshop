@@ -641,7 +641,7 @@ A sample YAML file is provided on the workstation to make this process easy.  It
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-helloworld // <1>
+  name: nfs-hellowebui3 // <1>
 spec:
   capacity:
     storage: 5Gi  // <2>
