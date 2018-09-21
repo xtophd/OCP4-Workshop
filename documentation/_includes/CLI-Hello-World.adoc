@@ -353,11 +353,20 @@ Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
 ----
 oc rollout latest dc/hello-app
 
-oc get pods -w
+watch oc get pods
 ----
 
-Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.
-Never the less, after rolling out the new pod kubernetes will (by default) shutoff and remove older 
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.  Also note that the 'oc' command has a built in 'watch mode', although I prefer the output refresh of using the actual linux *watch* command.  Either way, just press CTRL-C to exit the `watch` process and return to your shell.
+
+[NOTE]
+====
+_Using the native watch mode for oc_
+----
+oc get pods -w
+----
+====
+
+After rolling out the new pod kubernetes will (by default) shutoff and remove older 
 versions of the pod.
 
 .Your output should look like this
@@ -368,7 +377,6 @@ hello-app-1-wbq42   0/1       Terminating   0          2h
 hello-app-2-lhvgp   1/1       Running       0          10s
 ----
 
-Just press CTRL-C to exit the `watch` process and return to your shell
 
 Next we will once again connect to the containers shell and explore the changes that were implemented by editing the security attributes.
 
