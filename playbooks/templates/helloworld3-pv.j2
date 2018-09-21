@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: helloworld3-pv
+  name: nfs-helloworld3
 spec:
   capacity:
     storage: 5Gi 
   accessModes:
   - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
   nfs: 
     path: /exports/helloworld
     server: workstation.example.com
-  persistentVolumeReclaimPolicy: Retain
+    readOnly: false
