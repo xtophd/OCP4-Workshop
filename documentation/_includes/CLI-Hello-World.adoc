@@ -638,7 +638,7 @@ oc get pv
 [source,indent=4]
 ----
 NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-cli-hello3  5Gi        RWX            Recycle          Available                                      7s
+cli-hello3  5Gi        RWX            Retain           Available                                      7s
 ----
 
 ==== Create a PVC (Persistent Volume Claim)
