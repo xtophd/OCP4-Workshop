@@ -639,7 +639,7 @@ Now create the persistent volume claim.
 
 .[root@master ~]#
 ----
-oc create -f /var/tmp//helloworld3-pv-claim.yml
+oc create -f /var/tmp/helloworld3-pv-claim.yml
 ----
 
 .Your output should look like this
