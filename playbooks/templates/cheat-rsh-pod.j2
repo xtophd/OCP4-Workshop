@@ -2,10 +2,19 @@
 
 ## This script on snipes the pod name and runs oc rsh ${PODNAME}
 
-PODNAME=`oc get pods --no-headers | awk '{ print $1 }'`
+for PODNAME in `oc get pods --no-headers | awk '{ print $1 }'` ; do
+    
+    re="^.*-(.*)$"
 
-echo "DETERMINED POD NAME: ${PODNAME}"
-echo "BASH EXEC: oc rsh ${PODNAME}"
-echo ""
+    [[ ${PODNAME} =~ $re ]] && lastfield="${BASH_REMATCH[1]}"
 
-exec oc rsh ${PODNAME}
+    if [ "${lastfield}" != "deploy" ] ; then
+
+        echo "DETERMINED POD NAME: ${PODNAME}"
+        echo "BASH EXEC: oc rsh ${PODNAME}"
+        echo ""
+
+        exec oc rsh ${PODNAME}
+
+    fi
+done
