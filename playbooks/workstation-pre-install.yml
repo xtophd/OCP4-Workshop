@@ -13,7 +13,7 @@
         name="{{ item.name }}"
         state=stopped
         enabled=no
-      with_items:
+      with_item:
         - {name:'packagekit'}
         - {name:'rhsmcertd'}
 
