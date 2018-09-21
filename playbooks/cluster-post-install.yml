@@ -112,14 +112,6 @@
         - {src: 'cheat-validate-service.j2',dest: '/usr/local/bin/cheat-validate-service.sh'}
         - {src: 'cheat-rsh-pod.j2',dest: '/usr/local/bin/cheat-rsh-pod.sh'}
 
-    - name: "create /var/tmp/cheat-validate-app.sh"
-      copy:
-        src: cheat-validate-app.sh
-        dest: /var/tmp
-        owner: root
-        group: root
-        mode: 0744
-
     - name: "TEMPLATE create /var/tmp/helloworld3-pv-claim.yml"
       template:
         src: helloworld3-pv-claim.j2
