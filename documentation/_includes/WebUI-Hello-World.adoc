@@ -299,7 +299,10 @@ _a confirmation dialog will appear_
 select `Replace` from *Confirmation Dialog*
 
 select `Close` 
+
+select `Overview` from *Menu*
 ____
+
 
 ====
 image::ocp-webui-hello1-add-to-project.png[Add To Project]
