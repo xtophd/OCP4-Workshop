@@ -1,14 +1,22 @@
 #!/bin/bash
 
-MYPOD=`oc get pods --no-headers | awk '{ print $1 }'`
+## This script on snipes the pod name and runs oc cp {src} podname:{dst}
 
-SRC="/var/tmp/helloworld.html"
-DST="${MYPOD}:/var/www/html/index.html"
+for PODNAME in `oc get pods --no-headers | awk '{ print $1 }'` ; do
+    
+    re="^.*-(.*)$"
 
-echo "DETERMINED POD = ${MYPOD}"
-echo "BASH EXEC: oc cp ${SRC} ${DST}"
-echo ""
+    if [[ "${PODNAME}" =~ $re ]] && \
+        [ "${BASH_REMATCH[1]}" != "deploy" ] && \
+        [ "${BASH_REMATCH[1]}" != "build" ] ; then
 
-echo "Copying ${SRC} to ${DST}"
+        echo "DETERMINED POD = ${MYPOD}"
+        echo "BASH EXEC: oc cp ${SRC} ${DST}"
+        echo ""
+
+        echo "Copying ${SRC} to ${DST}"
  
-exec oc cp ${SRC} ${DST}
+        exec oc cp ${SRC} ${DST}
+
+    fi
+done
