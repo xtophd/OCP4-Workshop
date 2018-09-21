@@ -1099,7 +1099,7 @@ select `Browse`
 
 .Use following details for Import YAML
 [horizontal]
-*Filename*:: /var/tmp/bc-dockerfile.txt
+*Filename*:: /var/tmp/webui-hello5-bc.yml
 
 select `Create`
 
