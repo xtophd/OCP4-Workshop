@@ -562,7 +562,7 @@ cheat-validate-app.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETECTERMINED ROUTE: helloworld2.cloud.example.com
+DETERMINED ROUTE: helloworld2.cloud.example.com
 EXEC: curl helloworld2.cloud.example.com
 
 <html>
@@ -700,7 +700,7 @@ cheat-validate-app.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETECTERMINED ROUTE: helloworld3.cloud.example.com
+DETERMINED ROUTE: helloworld3.cloud.example.com
 EXEC: curl helloworld3.cloud.example.com
 
 <html>
@@ -787,7 +787,7 @@ cheat-validate-app.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETECTERMINED ROUTE: helloworld4.cloud.example.com
+DETERMINED ROUTE: helloworld4.cloud.example.com
 EXEC: curl helloworld4.cloud.example.com
 
 <html>
@@ -860,7 +860,7 @@ cheat-validate-app.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETECTERMINED ROUTE: helloworld5.cloud.example.com
+DETERMINED ROUTE: helloworld5.cloud.example.com
 EXEC: curl helloworld5.cloud.example.com
 
 <html>
