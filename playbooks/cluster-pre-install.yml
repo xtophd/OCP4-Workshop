@@ -1,5 +1,5 @@
 ---
-- hosts: nodes
+- hosts: nodes masters
   tasks:
   
     - name: "PING all hosts to ensure we are alive and ready"
@@ -39,12 +39,12 @@
 
   tasks:
   
-    - name: "USER root password reset"
-      user: name=root    password="$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf."
-
-    - name: "USER student password reset"
-      user: name=student password="$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8"
-
+    - name: "USER create and/or reset users"
+      user: name={{ item.name }} password={{ item.password }}
+      with_itmes:
+        - {name: 'root',password: '$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf.'}
+        - {name: 'student',password: '$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8'}
+      
     - name: "TEMPLATE modify /etc/motd"
       template:
         src: motd.j2
@@ -52,7 +52,6 @@
         owner: root
         group: root
         mode: 0644
-
 
     - name: "YUM install misc required packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld state=installed
