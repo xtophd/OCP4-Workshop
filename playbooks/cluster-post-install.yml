@@ -68,15 +68,12 @@
 
     - name: "SERVICE enable and start nfs"
       service: 
-        name=nfs 
+        name="{{ item.name }}"
         state=started 
         enabled=yes
-
-    - name: "SERVICE enable and start nfslock"
-      service: 
-        name=nfslock
-        state=started 
-        enabled=yes
+      with_items:
+        - { name:'nfs' }
+        - { name:'nfslock' }
 
     - name: "TEMPLATE modify/install /etc/exports"
       template:
