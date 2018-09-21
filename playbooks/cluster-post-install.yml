@@ -17,29 +17,18 @@
         group: root
         mode: 0644  
 
-    - name: "TEMPLATE create /var/tmp/webui-hello-namespace.txt"
+    - name: "TEMPLATE create sample YAML spec files
       template:
-        src: webui-hello-namespace.j2
-        dest: /var/tmp/webui-hello-namespace.txt
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
         owner: root
         group: root
         mode: 0644
-
-    - name: "TEMPLATE create /var/tmp/pv-hello-webui3.txt"
-      template:
-        src: pv-hello-webui3.j2
-        dest: /var/tmp/pv-hello-webui3.txt
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: "TEMPLATE create /var/tmp/bc-dockerfile.txt"
-      template:
-        src: bc-dockerfile.j2
-        dest: /var/tmp/bc-dockerfile.txt
-        owner: root
-        group: root
-        mode: 0644
+      with_items:
+        - {src: "webui-hello2-namespace.j2", dest: "/var/tmp/webui-hello2-namespace.txt"}
+        - {src: "webui-hello3-pv.j2",        dest: "/var/tmp/webui-hello3-pv.txt"}
+        - {src: "webui-hello3-claim.j2",     dest: "/var/tmp/webui-hello3-claim.txt"}
+        - {src: "webui-hello5-bc.j2",        dest: "/var/tmp/webui-hello5-bc.txt"}
   
     - name: "FILE create path for exports/helloworld"
       file: 
@@ -95,12 +84,12 @@
         group: root
         mode: 0744
       with_items:
-        - {src: 'cheat-install-helloworld.j2',dest: '/usr/local/bin/cheat-install-helloworld.sh'}
-        - {src: 'cheat-validate-app.j2',dest: '/usr/local/bin/cheat-validate-app.sh'}
-        - {src: 'cheat-validate-service.j2',dest: '/usr/local/bin/cheat-validate-service.sh'}
-        - {src: 'cheat-rsh-pod.j2',dest: '/usr/local/bin/cheat-rsh-pod.sh'}
+        - {src: 'cheat-install-helloworld.j2', dest: '/usr/local/bin/cheat-install-helloworld.sh'}
+        - {src: 'cheat-validate-app.j2',       dest: '/usr/local/bin/cheat-validate-app.sh'}
+        - {src: 'cheat-validate-service.j2',   dest: '/usr/local/bin/cheat-validate-service.sh'}
+        - {src: 'cheat-rsh-pod.j2',            dest: '/usr/local/bin/cheat-rsh-pod.sh'}
 
-    - name: "TEMPLATE install YAML PV spec samples in /var/tmp"
+    - name: "TEMPLATE install sample YAML spec file"
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
@@ -108,8 +97,8 @@
         group: root
         mode: 0644
       with_items:
-        - {src: 'helloworld3-pv.j2',dest: '/var/tmp/helloworld3-pv.yml'}
-        - {src: 'helloworld3-pv-claim.j2',dest: '/var/tmp/helloworld3-pv-claim.yml'}
+        - {src: 'cli-hello3-pv.j2',    dest: '/var/tmp/cli-hello3-pv.yml'}
+        - {src: 'cli-hello3-claim.j2', dest: '/var/tmp/cli-hello3-claim.yml'}
         
     - name: "CMD deleting existing OCP router"
       shell: 
