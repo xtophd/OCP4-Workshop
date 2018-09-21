@@ -6,15 +6,12 @@ for PODNAME in `oc get pods --no-headers | awk '{ print $1 }'` ; do
     
     re="^.*-(.*)$"
 
-    [[ ${PODNAME} =~ $re ]] && lastfield="${BASH_REMATCH[1]}"
-
-    if [ "${lastfield}" != "deploy" ] ; then
+    if [[ ${PODNAME} =~ $re ]] && "${BASH_REMATCH[1]}" != "deploy" ] ; then
 
         echo "DETERMINED POD NAME: ${PODNAME}"
         echo "BASH EXEC: oc rsh ${PODNAME}"
         echo ""
 
         exec oc rsh ${PODNAME}
-
     fi
 done
