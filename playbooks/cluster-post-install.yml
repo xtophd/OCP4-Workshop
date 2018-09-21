@@ -17,7 +17,7 @@
         group: root
         mode: 0644  
 
-    - name: "TEMPLATE create sample YAML spec files
+    - name: "TEMPLATE create sample YAML spec files"
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
@@ -25,10 +25,10 @@
         group: root
         mode: 0644
       with_items:
-        - {src: "webui-hello2-namespace.j2", dest: "/var/tmp/webui-hello2-namespace.txt"}
-        - {src: "webui-hello3-pv.j2",        dest: "/var/tmp/webui-hello3-pv.txt"}
-        - {src: "webui-hello3-claim.j2",     dest: "/var/tmp/webui-hello3-claim.txt"}
-        - {src: "webui-hello5-bc.j2",        dest: "/var/tmp/webui-hello5-bc.txt"}
+        - {src: 'webui-hello2-namespace.j2', dest: '/var/tmp/webui-hello2-namespace.txt'}
+        - {src: 'webui-hello3-pv.j2',        dest: '/var/tmp/webui-hello3-pv.txt'}
+        - {src: 'webui-hello3-claim.j2',     dest: '/var/tmp/webui-hello3-claim.txt'}
+        - {src: 'webui-hello5-bc.j2',        dest: '/var/tmp/webui-hello5-bc.txt'}
   
     - name: "FILE create path for exports/helloworld"
       file: 
