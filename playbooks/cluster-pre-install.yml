@@ -1,5 +1,5 @@
 ---
-- hosts: nodes masters
+- hosts: nodes
   tasks:
   
     - name: "PING all hosts to ensure we are alive and ready"
@@ -40,7 +40,7 @@
   tasks:
   
     - name: "USER create and/or reset users"
-      user: name={{ item.name }} password={{ item.password }}
+      user: name="{{ item.name }}" password="{{ item.password }}"
       with_itmes:
         - {name: 'root',password: '$5$PK7KM9pT$AehNIMYtW22TEE.D0U3ORWCDFMFvARwJLf8YPvVgAf.'}
         - {name: 'student',password: '$5$OJx9uJm8$4VYM2llNxqX/7I4M3vXZM8ZJ9FE2msmHpcOqXlDesC8'}
