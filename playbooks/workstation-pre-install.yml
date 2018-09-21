@@ -8,17 +8,14 @@
 - hosts: workstation
   tasks:
 
-    - name: "SERVICE disable and stop packagekit"
+    - name: "SERVICE disable and stop unwanted services"
       service: 
-        name=packagekit
+        name="{{ item.name }}"
         state=stopped
         enabled=no
-
-    - name: "SERVICE disable and stop rhsmcertd"
-      service: 
-        name=rhsmcertd
-        state=stopped
-        enabled=no
+      with_items:
+        - {name:'packagekit'}
+        - {name:'rhsmcertd'}
 
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
