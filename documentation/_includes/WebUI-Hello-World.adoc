@@ -290,7 +290,7 @@ select `Browse`
 
 .use following details for Application Configuration
 [horizontal]
-*Filename*:: /var/tmp/webui-hello-namespace.txt
+*Filename*:: /var/tmp/webui-hello-namespace.yml
 
 select `Create`
 
@@ -641,7 +641,7 @@ A sample YAML file is provided on the workstation to make this process easy.  It
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-hellowebui3 // <1>
+  name: hello-webui3 // <1>
 spec:
   capacity:
     storage: 5Gi  // <2>
@@ -669,7 +669,7 @@ select `Browse`
 
 .use the following details Import YAML
 [horizontal]
-*Filename*:: /var/tmp/pv-hello-webui3.txt
+*Filename*:: /var/tmp/webui-hello3-pv.yml
 
 select `Create`
 
@@ -723,13 +723,13 @@ ____
 
 select `Applications` -> `Deployments` from *Menu*
 
-select `hello-webui3`
+select `webui-hello3`
 
 select `Add Storage` from `Actions` pull down
 
 .use following details for Add Storage
 [horizontal]
-*Storage*:: hello-webui3-claim
+*Storage*:: webui-hello3-claim
 *Mount Path*:: /var/www/html
 
 select `Add`
@@ -874,12 +874,17 @@ Using the WebUI, there is currently no method to natively invoke a *Docker Build
 
 First let us begin with how this YAML file was built.  That's simple, we used the `oc new-app` CLI tool.
 
-.[root@workstation ~]#
+
+[NOTE]
+====
+_Native command(s) to generate YML spec for dockerbuild_
 ----
 oc login master:8443 -u admin
      
 oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-webui5 --dry-run -o yaml
 ----
+====
+
 
 The output of the above command is listed below.  Step through it and notice the individual stanzas (denoted by the leading '-').  There are sections for: 
 
