@@ -607,7 +607,7 @@ select `Deploy`
 select the `Continue to Project Overview` link
 ____
 
-=== Expose Route
+=== Expose a Route
 
 ____
 select `Create Route` from *Project *Overview*
