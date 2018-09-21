@@ -3,10 +3,8 @@
 ## This script on snipes the pod name and runs oc rsh ${PODNAME}
 
 for PODNAME in `oc get pods --no-headers | awk '{ print $1 }'` ; do
-    
-    re="^.*-(.*)$"
 
-    if [[ "${PODNAME}" =~ $re ]] && \
+    if [[ "${PODNAME}" =~ "^.*-(.*)$" ]] && \
         [ "${BASH_REMATCH[1]}" != "deploy" ] && \
         [ "${BASH_REMATCH[1]}" != "build" ] ; then
 
