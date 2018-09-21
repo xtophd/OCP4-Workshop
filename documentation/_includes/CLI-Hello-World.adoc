@@ -460,7 +460,7 @@ cheat-validate-app.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETECTERMINED ROUTE: helloworld.cloud.example.com
+DETERMINED ROUTE: helloworld.cloud.example.com
 EXEC: curl helloworld.cloud.example.com
 
 <html>
