@@ -6,8 +6,8 @@ spec:
   capacity:
     storage: 5Gi 
   accessModes:
-  - ReadWriteOnce 
+  - ReadWriteMany
   nfs: 
     path: /exports/helloworld
     server: workstation.example.com
-  persistentVolumeReclaimPolicy: Recycle 
+  persistentVolumeReclaimPolicy: Retain
