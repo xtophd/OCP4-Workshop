@@ -25,7 +25,7 @@
         group: root
         mode: 0644
       with_items:
-        - {src: 'webui-hello2-namespace.j2', dest: '/var/tmp/webui-hello2-namespace.txt'}
+        - {src: 'webui-hello-namespace.j2',  dest: '/var/tmp/webui-hello-namespace.txt'}
         - {src: 'webui-hello3-pv.j2',        dest: '/var/tmp/webui-hello3-pv.txt'}
         - {src: 'webui-hello3-claim.j2',     dest: '/var/tmp/webui-hello3-claim.txt'}
         - {src: 'webui-hello5-bc.j2',        dest: '/var/tmp/webui-hello5-bc.txt'}
