@@ -720,7 +720,7 @@ ____
 
 select `Applications` -> `Deployments` from *Menu*
 
-select `webui-hello3`
+select `hello-webui3`
 
 select `Add Storage` from `Actions` pull down
 
