@@ -166,7 +166,7 @@ ____
 image::ocp-webui-hello1-route-details.png[Create Route]
 ====
 
-You should be returned to the Routes Overview page as shown.
+You should be returned to the *Project Overview* page as shown.  If you don't see the details, you probably just need to click on *>* to expand the deployment configuration.
 
 ====
 image::ocp-webui-hello1-project-overview2.png[Project Overview]
