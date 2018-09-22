@@ -60,7 +60,13 @@ _Additional tips on using 'screen'_
 # list available sessions
 screen -ls
 
-# to join a session
+# resume disconnected session
+screen -r {name}
+
+# disconnect sessions
+screen -d {name}
+
+# to join a session (multiuser)
 screen -x {name}
 
 #To enable multi user on active session
