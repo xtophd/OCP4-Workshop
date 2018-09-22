@@ -38,6 +38,39 @@ With that said, the steps of preparing and installing OCP in this workshop envir
 
 Using the connection information and credentials provided by the instructor, get yourselves signed into your workstation session.
 
+=== Enable 'screen' Terminal Session
+
+The `screen` utility can be very useful in workshop settings and is highly recommended.  It provides two key capabilities for us here:
+
+    . Session Persistance
+    ** If your ssh/siab connection is dropped or reset, you can resume the session after reconnecting.  Nothing is interrupted or lost.
+    . Sessions Sharing
+    ** An administration can join your session and shared the input/output.  This is particularly helpful in workshops utilizing remote options (ex: webex, bluejeans, etc...)
+    
+.[student@workstation ~]$ 
+----
+screen -m
+----
+
+[NOTE]
+====
+_Additional tips on using 'screen'_
+----
+
+_list available sessions_
+screen -ls
+
+_to join a session_
+screen -x {name}
+
+_To enable multi user on active session_
+ctrl-a :multiuser on
+
+----
+====
+
+
+
 === Become the root user
 
 In order to execute the pre-installation steps, we need to become the administrative user 'root'
