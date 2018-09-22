@@ -44,7 +44,7 @@ The `screen` utility can be very useful in workshop settings and is highly recom
 
     . Session Persistance
     ** If your ssh/siab connection is dropped or reset, you can resume the session after reconnecting.  Nothing is interrupted or lost.
-    . Sessions Sharing
+    . Session Sharing
     ** An administration can join your session and shared the input/output.  This is particularly helpful in workshops utilizing remote options (ex: webex, bluejeans, etc...)
     
 .[student@workstation ~]$ 
@@ -57,13 +57,13 @@ screen -m
 _Additional tips on using 'screen'_
 ----
 
-_list available sessions_
+# list available sessions
 screen -ls
 
-_to join a session_
+# to join a session
 screen -x {name}
 
-_To enable multi user on active session_
+#To enable multi user on active session
 ctrl-a :multiuser on
 
 ----
