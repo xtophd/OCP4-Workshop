@@ -514,9 +514,13 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 == Hello World II : Use emptyDir
 
+In this solution, we are going to create a volume (ie: filesystem) which provides sufficient read/write permissions for the default (and more secure) UID.  The type of volume we will be using is called an *emptyDir*.
+
 For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
 
-Never the less, it suits our needs for this exercise so let’s proceed to configure Pod that uses an emptyDir as a volume mounted under /var/www/html.
+For the purpose of this exercise, *emptyDir* suits our needs so let’s proceed to deploy and configure the pod to use an emptyDir as a volume mounted under /var/www/html.
+
+We begin this solution by repeating the steps to deploy a httpd base image.
 
 === Create a Project
 
