@@ -708,7 +708,7 @@ ____
 image::ocp-webui-hello3-storage-pvc.png[Create Storage]
 ====
 
-You will now be returned to the *Storage Summary* page.  You should see the *Status* as "Bound to volume nfs-hellowebui".
+You will now be returned to the *Storage Summary* page.  You should see the *Status* as "Bound to volume *webui-hello3*".
 
 ====
 image::ocp-webui-hello3-storage-summary.png[Create Storage]
