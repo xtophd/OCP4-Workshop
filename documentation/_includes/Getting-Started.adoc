@@ -104,7 +104,7 @@ node2.example.com          : ok=14   changed=11   unreachable=0    failed=0
 
 === Run the ocp-install script
 
-NOTE: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
+WARNING: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
 
 .[root@workstation OCP-Workshop]#
 ----
@@ -167,7 +167,7 @@ Service Catalog Install    : Complete (0:03:12)
 
 === Run the post install script
 
-NOTE: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
+WARNING: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 2 minutes.
 
 .[root@workstation OCP-Workshop]#
 ----
