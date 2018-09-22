@@ -66,6 +66,8 @@ We begin by creating a *Project*.
 oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
 
 oc get projects
+
+oc projects
 ----
 
 .Your output should look like this
@@ -85,6 +87,33 @@ openshift-infra                                    Active
 openshift-node                                     Active
 openshift-template-service-broker                  Active
 openshift-web-console                              Active
+
+----
+
+You can also use "oc projects" to get a list of projects along with a convenient asterisk indicating the current active project.
+
+.[root@master ~]#
+----
+oc projects
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+    default
+  * helloworld - Hello World
+    kube-public
+    kube-service-catalog
+    kube-system
+    logging
+    management-infra
+    openshift
+    openshift-infra
+    openshift-node
+    openshift-template-service-broker
+    openshift-web-console
+
+Using project "helloworld" on server "https://master.example.com:8443".
 ----
 
 We can gather some more information about our new *Project* using `oc describe project`
