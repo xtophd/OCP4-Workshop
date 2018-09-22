@@ -90,7 +90,7 @@ openshift-web-console                              Active
 
 ----
 
-You can also use "oc projects" to get a list of projects along with a convenient asterisk indicating the current active project.
+You can also use `oc projects` to get a list of projects along with a convenient asterisk indicating the current active project.
 
 .[root@master ~]#
 ----
@@ -385,7 +385,7 @@ oc rollout latest dc/hello-app
 watch oc get pods
 ----
 
-Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.  Also note that the 'oc' command has a built in 'watch mode', although I prefer the output refresh of using the actual linux *watch* command.  Either way, just press CTRL-C to exit the `watch` process and return to your shell.
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.  Also note that the 'oc' command has a built in 'watch mode', although I prefer the refreshed output provided by the linux *watch* command.  Either way, just press CTRL-C to exit either `watch` modes and return to your shell.
 
 [NOTE]
 ====
