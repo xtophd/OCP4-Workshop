@@ -58,7 +58,7 @@ git clone https://github.com/xtophd/OCP-Workshop
 
 === Run the pre-install script
 
-NOTE: It is important to be in the correct working directory for these installation procedures to function properly.  
+WARNING: It is important to be in the correct working directory for these installation procedures to function properly.  
 
 .[root@workstation ~]#
 ----
