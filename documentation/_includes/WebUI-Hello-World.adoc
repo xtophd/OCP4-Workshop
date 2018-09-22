@@ -678,10 +678,6 @@ select `Close`
 ____
 
 ====
-image::ocp-webui-hello3-yaml-import.png[Import YAML]
-====
-
-====
 image::ocp-webui-hello3-yaml-pv.png[Create PV]
 ====
 
