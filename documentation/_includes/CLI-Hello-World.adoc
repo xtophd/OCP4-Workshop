@@ -514,11 +514,11 @@ IMPORTANT: The solution you just completed is NOT a recommended solution on how 
 
 == Hello World II : Use emptyDir
 
-In this solution, we are going to create a volume (ie: filesystem) which provides sufficient read/write permissions for the default (and more secure) UID.  The type of volume we will be using is called an *emptyDir*.
+In this solution, instead of changing the project's security attributes to allow write access to /var/www/html we are going to mount a volume (ie: filesystem) which provides sufficient read/write permissions for the defacto process UID.  The type of volume we will be using is called an *emptyDir*.
 
-For real world use cases, emptyDir is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
+For real world use cases, *emptyDir* is often used as a local cache. Since the backing store for emptyDir comes from the local host it is often more performant than network base storage.
 
-For the purpose of this exercise, *emptyDir* suits our needs so let’s proceed to deploy and configure the pod to use an emptyDir as a volume mounted under /var/www/html.
+Although we are not technically using is for cache, *emptyDir* suits our needs so let’s proceed to deploy and configure the pod to mount an *emptyDir* volume under /var/www/html.
 
 We begin this solution by repeating the steps to deploy a httpd base image.
 
@@ -691,7 +691,7 @@ persistentvolumeclaim "cli-hello3-claim" created
 
 ==== Check Storage Status
 
-Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *helloworld-pv*
+Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/cli-hello3-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *cli-hello3*
 
 .[root@master ~]#
 ----
