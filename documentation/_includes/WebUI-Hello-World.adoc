@@ -726,7 +726,7 @@ select `Add Storage` from `Actions` pull down
 
 .use following details for Add Storage
 [horizontal]
-*Storage*:: webui-hello3-claim
+*Storage*:: hello-webui3-claim
 *Mount Path*:: /var/www/html
 
 select `Add`
