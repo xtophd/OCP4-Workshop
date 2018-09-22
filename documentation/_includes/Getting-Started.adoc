@@ -30,7 +30,7 @@ Also worth mentioning is the upstream Openshift community project (formally call
 
     * link://https://www.okd.io/minishift/[Minishift]
 
-With that stated, the steps of preparing and installing OCP in this workshop environment have been condensed into 3 scripts which execute a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
+With that said, the steps of preparing and installing OCP in this workshop environment have been condensed into 3 scripts which execute a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
 == Openshift Pre Installation
 
