@@ -449,11 +449,7 @@ select `Create Route` from *Project *Overview*
 select `Create`
 ____
 
-You should be returned to the Routes Overview page as shown.
-
-====
-image::ocp-webui-hello2-routes-overview.png[Create Route]
-====
+You should be returned to the *Project Overview* page.
 
 === Modify the Project, Build or Deployment
 
