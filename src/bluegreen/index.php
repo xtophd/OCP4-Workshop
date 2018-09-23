@@ -29,7 +29,12 @@ if ( $envMode == "watcher") {
     header("Refresh: 3;");
 
     $envRoute   = getenv("myRoute");
-                 
+
+    
+    echo json_decode(file_get_contents($myRoute), true);
+    
+    
+    
     // Collect route results until we get repetition, then exit
 
     // until workerStatus[HOSTNAME] != ''
