@@ -38,14 +38,14 @@ if ( $myMode == "watcher") {
                     'myHostname' => $j_array['myHostname'] ];
     
         echo json_encode( $output );        
-
-        echo "\n**\n";
         
         if ( $i_array["$myHostname"] == 'used' ) {
             break;    
         }
         
         $i_array["$myHostname"] = 'used';
+        
+        print_r $i_array;
     }
         
     // Collect route results until we get repetition, then exit
