@@ -13,18 +13,22 @@
 //
 
 // Initialize Variables
-$myColor  = 'unset';
-$myRoute  = 'unset';
+$myMode     = 'unset'
+$myColor    = 'unset';
+$myRoute    = 'unset';
+$myStatus   = 'ok'
+$myHostname = getenv("HOSTNAME");
 
 $envMode    = getenv("myMode");
 
 if ( $envMode == "watcher") {
 
+    $myMode= "watcher"
+    
     // Set a refresh header
     header("Refresh: 3;");
 
     $envRoute   = getenv("myRoute");
-
                  
     // Collect route results until we get repetition, then exit
 
@@ -33,33 +37,29 @@ if ( $envMode == "watcher") {
     //   workStatus[podStatus[myHostname]] = podstatus[myColor]
     //
 
-    $output = [ 'myMode'     => $envMode,
-                'myRoute'    => $myRoute, 
-                'myHostname' => getenv("HOSTNAME"),
-                'myStatus'   => "ok" ];
-
 } elseif ( $envMode == "worker" ) {
 
+    $myMode= "worker"
+    
     $envColor   = getenv("myColor");
 
     if (( $envColor == 'blue') || ($envColor == 'green') || ($envColor == 'red' )) {
         $myColor = $envColor;
     }
 
-    $output = [ 'myMode'     => $envMode,
-                'myColor'    => $myColor, 
-                'myHostname' => getenv("HOSTNAME"),
-                'myStatus'   => "ok" ];
-                
 } else {
 
     // This is essentially the error mode output
 
-    $output = [ 'myMode'     => "invalid",
-                'myColor'    => $myColor,
-                'myRoute'    => $myRoute,
-                'myStatus'   => "error" ];
+    $myStatus = "Invalid myMode"
+
 }
+
+$output = [ 'myMode'     => $myMode,
+            'myColor'    => $myColor,
+            'myRoute'    => $myRoute,
+            'myStatus'   => $myStatus,
+            'myHostname' => getenv("HOSTNAME") ];
 
 // Send output
 
