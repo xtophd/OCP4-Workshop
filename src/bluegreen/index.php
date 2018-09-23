@@ -43,9 +43,9 @@ if ( $myMode == "watcher") {
         
         if ( $i_array["$myHostname"] == 'used' ) {
             break;    
-        } else {
-             $i_array["$myHostname"] = 'used';
         }
+        
+        $i_array["$myHostname"] = 'used';
     }
         
     // Collect route results until we get repetition, then exit
