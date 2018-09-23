@@ -2,26 +2,32 @@
 
 oc new-project bluegreen --description="Example with ENV VARs" --display-name="Blue Green"
 
-oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=bluegreen
+oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=watcher
 
-oc start-build bc/bluegreen
+oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=worker
 
 oc logs -f bc/bluegreen
 
+oc expose service watcher --hostname=watcher.cloud.example.com
+oc expose service worker  --hostname=worker.cloud.example.com
+
+##  if you edit the source code and want to trigger a fresh build
+
+oc start-build bc/worker ; oc logs -f bc/worker
+
 ## Not necessary, happens automatically as trigger after bc update
 
-oc rollout latest dc/bluegreen
+oc rollout latest dc/worker
 
-oc rollout status dc/bluegreen
-
+oc rollout status dc/worker
 
 ##
 
-oc env dc/bluegreen myCOLOR=blue
+oc env dc/worker myColor=blue
 
 cheat-validate-app.sh
 
-oc env dc/bluegreen myCOLOR=green
+oc env dc/worker myColor=green
 
 cheat-validate-app.sh
 
