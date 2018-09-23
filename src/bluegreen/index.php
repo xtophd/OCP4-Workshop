@@ -20,7 +20,7 @@ $myRoute  = 'unset';
 
 $envMode    = getenv("myMode");
 
-if ( $envMode == "watcher) {
+if ( $envMode == "watcher") {
 
     // Set a refresh header
     header("Refresh: 3;");
