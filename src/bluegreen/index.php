@@ -49,7 +49,7 @@ if ( $myMode == "watcher") {
 
 } elseif ( $myMode == "worker" ) {
 
-    if (( $envColor != 'blue') || ($envColor != 'green') || ($envColor != 'red' )) {
+    if (( $myColor != 'blue') || ($myColor != 'green') || ($myColor != 'red' )) {
         $myStatus = "Invalid myColor";
     }
 
