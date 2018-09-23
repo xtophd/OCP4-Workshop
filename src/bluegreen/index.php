@@ -32,14 +32,16 @@ if ( $myMode == "watcher") {
         $j_array = json_decode(file_get_contents($myRoute), true);
 
         print_r ($j_array);
+        echo "\n";
     
-      //  $output = [ 'myMode'     => $j_array['myMode']['value'],
-      //             'myColor'    => $j_array['myColor']['value'],
-      //              'myRoute'    => $j_array['myRoute']['value'],
-      //              'myStatus'   => $j_array['myStatus']['value'],
-      //              'myHostname' => getenv("HOSTNAME") ];
+        $output = [ 'myMode'     => $j_array['myMode'],
+                    'myColor'    => $j_array['myColor'],
+                    'myRoute'    => $j_array['myRoute'],
+                    'myStatus'   => $j_array['myStatus'],
+                    'myHostname' => getenv("HOSTNAME") ];
     
-      //  echo json_encode( $output );        
+        echo json_encode( $output );        
+        echo "\n";
             
     // } while ();
         
