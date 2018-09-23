@@ -28,9 +28,10 @@ if ( $envMode == "watcher") {
     // Set a refresh header
     header("Refresh: 3;");
     
-    echo json_decode(file_get_contents($myRoute), true);
+    // echo json_decode(file_get_contents($myRoute), true);
     
-    
+    // echo file_get_contents($myRoute);
+   
     
     // Collect route results until we get repetition, then exit
 
