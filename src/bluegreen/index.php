@@ -31,7 +31,7 @@ if ( $myMode == "watcher") {
         
         $j_array = json_decode(file_get_contents($myRoute), true);
 
-        print_r $j_array;
+        print_r ($j_array);
     
       //  $output = [ 'myMode'     => $j_array['myMode']['value'],
       //             'myColor'    => $j_array['myColor']['value'],
