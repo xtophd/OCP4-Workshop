@@ -27,7 +27,7 @@ if ( $myMode == "watcher") {
     
     // echo json_decode(file_get_contents($myRoute), true);
 
-    h_array = array();
+    $h_array = array();
     
     while ( true )  {
         
