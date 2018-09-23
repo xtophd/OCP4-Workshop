@@ -47,6 +47,7 @@ if ( $envMode == "watcher") {
         $myColor = $envColor;
     } else {
         $myStatus = "Invalid myColor";
+    }
 
 } else {
 
