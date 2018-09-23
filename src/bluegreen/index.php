@@ -31,7 +31,7 @@ if ( $myMode == "watcher") {
         
         $j_array = json_decode(file_get_contents($myRoute), true);
 
-        if ( $i_array["$myHostname"] == 'used' ) {
+        if ( $i_array[$j_array['myHostname'] == 'used' ) {
             break;    
         }
         
