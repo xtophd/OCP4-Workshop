@@ -42,7 +42,7 @@ if ( $myMode == "watcher") {
         echo json_encode( $output );        
         echo "\n\n";
         
-        if ( h_array[$myHostname] == '' ) {
+        if ( h_array[$myHostname] != '' ) {
             break;    
         }
         
