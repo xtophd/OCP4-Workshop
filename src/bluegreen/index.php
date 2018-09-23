@@ -26,9 +26,16 @@ if ( $myMode == "watcher") {
     header("Refresh: 3;");
     
     // echo json_decode(file_get_contents($myRoute), true);
-    
-    echo file_get_contents($myRoute);
-    
+
+    // do {
+        
+        $results = json_decode(file_get_contents($myRoute), true);
+        
+       
+        echo "$results['myHostname]\n"
+        
+    // } while ();
+        
     // Collect route results until we get repetition, then exit
 
     // until workerStatus[HOSTNAME] != ''
