@@ -14,7 +14,6 @@
 
 // Initialize Variables
 $myColor  = 'unset';
-$myMode   = 'unset';
 $myRoute  = 'unset';
 
 $envMode    = getenv("myMode");
@@ -34,7 +33,7 @@ if ( $envMode == "watcher") {
     //   workStatus[podStatus[myHostname]] = podstatus[myColor]
     //
 
-    $output = [ 'myMode'     => $myMode,
+    $output = [ 'myMode'     => $envMode,
                 'myRoute'    => $myRoute, 
                 'myHostname' => getenv("HOSTNAME"),
                 'myStatus'   => "ok" ];
@@ -47,7 +46,7 @@ if ( $envMode == "watcher") {
         $myColor = $envColor;
     }
 
-    $output = [ 'myMode'     => $myMode,
+    $output = [ 'myMode'     => $envMode,
                 'myColor'    => $myColor, 
                 'myHostname' => getenv("HOSTNAME"),
                 'myStatus'   => "ok" ];
@@ -56,7 +55,7 @@ if ( $envMode == "watcher") {
 
     // This is essentially the error mode output
 
-    $output = [ 'myMode'     => $myMode,
+    $output = [ 'myMode'     => "invalid",
                 'myColor'    => $myColor,
                 'myRoute'    => $myRoute,
                 'myStatus'   => "error" ];
