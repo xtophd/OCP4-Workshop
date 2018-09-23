@@ -15,7 +15,7 @@ oc expose service worker  --hostname=worker.cloud.example.com
 
 oc start-build bc/worker ; oc logs -f bc/worker
 
-## Not necessary, happens automatically as trigger after bc update
+## 
 
 oc rollout latest dc/worker
 
@@ -33,16 +33,10 @@ cheat-validate-app.sh
 
 ##
 
+oc env dc/watcher myRoute=http://worker.cloud.exmaple.com
+
 oc scale --replicas=3 dc/bluegreen
 
 oc get pods -o wide
-
-### Build an app that:
-#   deploys in same project
-#   collects input from all worker pods and displays color
-#   maybe make it the same source, and switch into manager-mode/worker-mode via env
-    
-### Update dc with new color
-#   watch rollout
 
 
