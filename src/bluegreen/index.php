@@ -1,16 +1,15 @@
 <?php
 
+//  You set myMode, myColor, myRoute as ENV variables in the OCP deployment config
 //
 //  This program has 2 modes:
-//    myMode = worker myColor = {red,blue,grean}
-//      
-//      Output => myMode, myColor, HOSTNAME
+//    myMode = worker 
+//      Input: myColor = {red,blue,grean}
+//      Output: myMode, myColor, myHostname, myStatus
 //
-//    myMode = watcher myRoute = {exposed route to watch}
-//
-//      Output => matrix of results calling OCP route
-//
-//  You set myMode, myColor, myRoute are ENV variables in the OCP deployment config
+//    myMode = watcher 
+//      Input: myRoute = {exposed service (route) to watch}
+//      Output: matrix of results calling OCP route
 //
 
 // Initialize Variables
