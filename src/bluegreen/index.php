@@ -15,7 +15,7 @@
 // Initialize Variables
 $myMode     = 'unset';
 $myColor    = 'unset';
-$myRoute    = 'unset';
+$myRoute    = getenv("myRoute");
 $myStatus   = 'ok';
 $myHostname = getenv("HOSTNAME");
 
@@ -27,9 +27,6 @@ if ( $envMode == "watcher") {
     
     // Set a refresh header
     header("Refresh: 3;");
-
-    $envRoute   = getenv("myRoute");
-
     
     echo json_decode(file_get_contents($myRoute), true);
     
