@@ -25,8 +25,6 @@ if ( $myMode == "watcher") {
     // Set a refresh header
     header("Refresh: 3;");
     
-    // echo json_decode(file_get_contents($myRoute), true);
-
     $i_array = array();
     
     while ( true )  {
@@ -40,7 +38,8 @@ if ( $myMode == "watcher") {
                     'myHostname' => $j_array['myHostname'] ];
     
         echo json_encode( $output );        
-        echo "\n\n";
+
+        echo "\n**\n";
         
         if ( $i_array["$myHostname"] == 'used' ) {
             break;    
