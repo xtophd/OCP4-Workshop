@@ -23,7 +23,7 @@ $envMode    = getenv("myMode");
 
 if ( $envMode == "watcher") {
 
-    $myMode= "watcher"
+    $myMode= "watcher";
     
     // Set a refresh header
     header("Refresh: 3;");
@@ -39,7 +39,7 @@ if ( $envMode == "watcher") {
 
 } elseif ( $envMode == "worker" ) {
 
-    $myMode= "worker"
+    $myMode= "worker";
     
     $envColor   = getenv("myColor");
 
@@ -51,7 +51,7 @@ if ( $envMode == "watcher") {
 
     // This is essentially the error mode output
 
-    $myStatus = "Invalid myMode"
+    $myStatus = "Invalid myMode";
 
 }
 
