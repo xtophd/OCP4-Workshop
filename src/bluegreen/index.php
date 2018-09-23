@@ -49,15 +49,13 @@ if ( $myMode == "watcher") {
 
 } elseif ( $myMode == "worker" ) {
 
-    if (( $myColor != 'blue') || ($myColor != 'green') || ($myColor != 'red' )) {
-        $myStatus = "Invalid myColor";
+    if (( $myColor != 'blue') && ($myColor != 'green') && ($myColor != 'red' )) {
+        $myStatus = "Invalid Color";
     }
 
 } else {
 
-    // This is essentially the error mode output
-
-    $myStatus = "Invalid myMode";
+    $myStatus = "Invalid Mode";
 
 }
 
