@@ -41,7 +41,7 @@ if ( $myMode == "watcher") {
                     'myStatus'   => $j_array['myStatus'],
                     'myHostname' => $j_array['myHostname'] ];
     
-        echo json_encode( $output );        
+        echo json_encode($j_array);
         
         $i_array[$j_array['myHostname']] = 'used';
     }
