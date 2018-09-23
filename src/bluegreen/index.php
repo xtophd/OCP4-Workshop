@@ -16,7 +16,7 @@
 $myMode     = 'unset';
 $myColor    = 'unset';
 $myRoute    = 'unset';
-$myStatus   = 'ok'
+$myStatus   = 'ok';
 $myHostname = getenv("HOSTNAME");
 
 $envMode    = getenv("myMode");
