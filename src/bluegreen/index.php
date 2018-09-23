@@ -30,7 +30,7 @@ if ( $envMode == "watcher") {
     
     // echo json_decode(file_get_contents($myRoute), true);
     
-    // echo file_get_contents($myRoute);
+    echo file_get_contents($myRoute);
    
     
     // Collect route results until we get repetition, then exit
