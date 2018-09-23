@@ -42,10 +42,10 @@ if ( $myMode == "watcher") {
         echo json_encode( $output );        
         echo "\n\n";
         
-        if ( i_array["$myHostname"] == 'used' ) {
+        if ( $i_array["$myHostname"] == 'used' ) {
             break;    
         } else {
-             i_array["$myHostname"] = 'used';
+             $i_array["$myHostname"] = 'used';
         }
     }
         
