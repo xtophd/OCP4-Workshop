@@ -45,7 +45,8 @@ if ( $envMode == "watcher") {
 
     if (( $envColor == 'blue') || ($envColor == 'green') || ($envColor == 'red' )) {
         $myColor = $envColor;
-    }
+    } else {
+        $myStatus = "Invalid myColor";
 
 } else {
 
