@@ -13,7 +13,7 @@
 //
 
 // Initialize Variables
-$myMode     = 'unset'
+$myMode     = 'unset';
 $myColor    = 'unset';
 $myRoute    = 'unset';
 $myStatus   = 'ok'
