@@ -27,7 +27,9 @@ if ( $myMode == "watcher") {
     
     // echo json_decode(file_get_contents($myRoute), true);
 
-    // do {
+    h_array = array();
+    
+    while ( true )  {
         
         $j_array = json_decode(file_get_contents($myRoute), true);
 
@@ -35,12 +37,18 @@ if ( $myMode == "watcher") {
                     'myColor'    => $j_array['myColor'],
                     'myRoute'    => $j_array['myRoute'],
                     'myStatus'   => $j_array['myStatus'],
-                    'myHostname' => getenv("HOSTNAME") ];
+                    'myHostname' => $j_array['myHostname'] ];
     
         echo json_encode( $output );        
         echo "\n\n";
+        
+        if ( h_array[$myHostname] == '' ) {
+            break;    
+        }
+        
+        h_array[$myHostname] == $j_array['myHostname'];
             
-    // } while ();
+    }
         
     // Collect route results until we get repetition, then exit
 
