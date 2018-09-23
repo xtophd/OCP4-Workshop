@@ -25,25 +25,19 @@ if ( $myMode == "watcher") {
     // Set a refresh header
     header("Refresh: 3;");
     
-    $i_array = array();
+    $used_array = array();
     
     while ( true )  {
         
         $j_array = json_decode(file_get_contents($myRoute), true);
 
-        if ( $i_array[$j_array['myHostname']] == 'used' ) {
+        if ( $used_array[$j_array['myHostname']] == 'used' ) {
             break;    
         }
-        
-        $output = [ 'myMode'     => $j_array['myMode'],
-                    'myColor'    => $j_array['myColor'],
-                    'myRoute'    => $j_array['myRoute'],
-                    'myStatus'   => $j_array['myStatus'],
-                    'myHostname' => $j_array['myHostname'] ];
-    
-        echo json_encode($j_array);
-        
-        $i_array[$j_array['myHostname']] = 'used';
+            
+        echo json_encode( $j_array );
+
+        $used_array[$j_array['myHostname']] = 'used';
     }
         
     // Collect route results until we get repetition, then exit
