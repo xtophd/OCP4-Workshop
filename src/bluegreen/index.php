@@ -13,17 +13,14 @@
 //
 
 // Initialize Variables
-$myMode     = 'unset';
-$myColor    = 'unset';
+
+$myMode     = getenv("myMode");
+$myColor    = getenv("myColor");
 $myRoute    = getenv("myRoute");
-$myStatus   = 'ok';
 $myHostname = getenv("HOSTNAME");
+$myStatus   = 'ok';
 
-$envMode    = getenv("myMode");
-
-if ( $envMode == "watcher") {
-
-    $myMode= "watcher";
+if ( $myMode == "watcher") {
     
     // Set a refresh header
     header("Refresh: 3;");
@@ -31,7 +28,6 @@ if ( $envMode == "watcher") {
     // echo json_decode(file_get_contents($myRoute), true);
     
     echo file_get_contents($myRoute);
-   
     
     // Collect route results until we get repetition, then exit
 
@@ -40,15 +36,9 @@ if ( $envMode == "watcher") {
     //   workStatus[podStatus[myHostname]] = podstatus[myColor]
     //
 
-} elseif ( $envMode == "worker" ) {
+} elseif ( $myMode == "worker" ) {
 
-    $myMode= "worker";
-    
-    $envColor   = getenv("myColor");
-
-    if (( $envColor == 'blue') || ($envColor == 'green') || ($envColor == 'red' )) {
-        $myColor = $envColor;
-    } else {
+    if (( $envColor != 'blue') || ($envColor != 'green') || ($envColor != 'red' )) {
         $myStatus = "Invalid myColor";
     }
 
