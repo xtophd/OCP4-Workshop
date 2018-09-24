@@ -70,4 +70,6 @@ $output = [ 'myMode'     => $myMode,
 echo json_encode( $output );
 echo "\n";
 
+http_response_code(200);
+
 ?>
