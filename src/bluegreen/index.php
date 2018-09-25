@@ -26,7 +26,9 @@ if ( $myMode == "watcher") {
     header("Refresh: 3;");
     
     $used_array = array();
-    
+
+    // Collect route results until we get repetition, then exit
+
     while ( true )  {
         
         $j_array = json_decode(file_get_contents($myRoute), true);
@@ -40,13 +42,6 @@ if ( $myMode == "watcher") {
         $used_array[$j_array['myHostname']] = 'used';
     }
         
-    // Collect route results until we get repetition, then exit
-
-    // until workerStatus[HOSTNAME] != ''
-    //   podStatus = curl myRoute
-    //   workStatus[podStatus[myHostname]] = podstatus[myColor]
-    //
-
 } elseif ( $myMode == "worker" ) {
 
     if (( $myColor != 'blue') && ($myColor != 'green') && ($myColor != 'red' )) {
