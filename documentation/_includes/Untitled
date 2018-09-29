@@ -39,4 +39,12 @@ oc scale --replicas=3 dc/bluegreen
 
 oc get pods -o wide
 
+## Readiness & Liveness Probes
+
+## emptyDir for image caching volume
+
+## mysql DB for history/trending
+
+##
+
 
