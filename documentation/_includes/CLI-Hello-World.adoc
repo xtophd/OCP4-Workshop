@@ -652,7 +652,7 @@ TIP: Why does the POD version start with '2' this time instead of '1'?
 
 TIP: What would happen if this app were to be scaled up?  Would new PODs contain our helloworld HTML?
 
-NOTE: Important to note that any filesystems mounted with emptyDir are non-persistant and will be destoyed when the container is stoppped.
+NOTE: Important to note that any filesystems mounted with emptyDir is non-persistant and will be destoyed when the container is stopped.
 
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
