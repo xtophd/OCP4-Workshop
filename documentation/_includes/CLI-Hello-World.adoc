@@ -365,16 +365,48 @@ exit
 === Modify the Project, Build or Deployment
 
 For our first solution, we are going to adjust the current project's security attribute to enable some minor modifications to a deployed pod.  We begin by editing the *namespace attributes* of the *helloworld* project.
+First let's have a look at the current settings.
     
 .[root@master ~]#
 ----
-oc edit namespace helloworld
+oc describe namespace helloworld
 ----
 
-.Adjust the following attribute
+
+
+.Your output should look like this
+[source,indent=4]
 ----
-openshift.io/sa.scc.uid-range: 1001/10000
+Name:         helloworld
+Labels:       <none>
+Annotations:  openshift.io/description=My First OCP App
+              openshift.io/display-name=Hello World
+              openshift.io/requester=admin
+              openshift.io/sa.scc.mcs=s0:c11,c0
+              openshift.io/sa.scc.supplemental-groups=1000110000/10000
+              openshift.io/sa.scc.uid-range=1000110000/10000
+Status:       Active
+
+No resource quota.
+
+No resource limits.
 ----
+
+Now let us reconfigure the UID range openshift will use to deploy the container.
+
+.[root@master ~]#
+----
+oc patch namespace helloworld --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
+----
+
+[NOTE]
+====
+_Alternate method to edit security annotations_
+----
+oc edit namespace helloworld
+----
+Adjust the following attribute and save: "openshift.io/sa.scc.uid-range: 1001/10000"
+====        
 
 Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
 
