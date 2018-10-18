@@ -406,15 +406,14 @@ oc patch namespace helloworld --patch '{"metadata":{"annotations":{"openshift.io
 ----
 ====
 
-
-
 [NOTE]
 ====
 _Alternate method to edit security annotations_
 ----
 oc edit namespace helloworld
 ----
-Adjust the following attribute and save: "openshift.io/sa.scc.uid-range: 1001/10000"
+Adjust the following attribute: "openshift.io/sa.scc.uid-range: 1001/10000"
+Save and Exit
 ====        
 
 Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
