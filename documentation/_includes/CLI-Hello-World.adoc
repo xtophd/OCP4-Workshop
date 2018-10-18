@@ -413,6 +413,7 @@ _Alternate method to edit security annotations_
 oc edit namespace helloworld
 ----
 Adjust the following attribute: "openshift.io/sa.scc.uid-range: 1001/10000"
+
 Save and Exit
 ====        
 
