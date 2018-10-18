@@ -373,7 +373,6 @@ oc describe namespace helloworld
 ----
 
 
-
 .Your output should look like this
 [source,indent=4]
 ----
@@ -396,8 +395,18 @@ Now let us reconfigure the UID range openshift will use to deploy the container.
 
 .[root@master ~]#
 ----
+cheat-patch-namespace-helloworld.sh
+----
+
+[NOTE]
+====
+_Native command(s) to patch namespace security annotation_
+----
 oc patch namespace helloworld --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
 ----
+====
+
+
 
 [NOTE]
 ====
