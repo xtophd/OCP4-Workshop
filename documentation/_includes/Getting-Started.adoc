@@ -22,9 +22,9 @@ Red Hat's official documentation can be found publicly with the links provided b
 
     * link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html/installation_and_configuration/[Openshift 3.9 Installation and Configuration]
 
-    * link:https://kubernetes.io/docs/home/[Kubernettes]
+    * link:https://kubernetes.io/docs/home/[Kubernetes]
 
-    * link:https://kubernetes.io/docs/concepts/[Kubernettes Concepts]
+    * link:https://kubernetes.io/docs/concepts/[Kubernetes Concepts]
 
 Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find "Minishift", a tool that helps you run OKD locally by launching a single-node OKD cluster inside a virtual machine. With Minishift you can try out OKD or develop with it, day-to-day, on your local machine.
 
