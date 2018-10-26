@@ -550,6 +550,9 @@ curl http://helloworld.cloud.example.com
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
+TIP: The official method to allow processes in an Openshift application to use specific user-IDs is to configure a "Service Account" for the project.  There are more advanced exercises planned for this workshop which will include configuration of Service Accounts.  For now, if you are interested in a great abbreviated blog of the topic please read the following: link:https://blog.openshift.com/understanding-service-accounts-sccs/[Understanding Service Accounts and SCCs]
+
+
 // -------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------------
 
