@@ -134,6 +134,7 @@
             oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=workshop-src
             oc expose service workshop-src --hostname=workshop-src.cloud.example.com
           fi
+          oc project default
 
 
 - hosts: masters,nodes
