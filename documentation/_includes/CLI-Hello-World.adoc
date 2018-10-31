@@ -950,7 +950,7 @@ Hello, World!
 
 == Clean Up (Informational Only)
 
-NOTE: We utilize the deployed applications from these exercises for the unit covering the WebUI.  We provide the commands needed for general cleanup as information only.
+NOTE: We provide the commands needed for general cleanup as information only.  You can safely skip this section if you want to save some time.
 
 .[root@master ~]#
 ----
