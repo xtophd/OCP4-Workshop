@@ -349,10 +349,10 @@ cd /var/www
 
 ls -la
 
-curl helloworld3.cloud.example.com > /var/www/html/index.html
+curl workshop-src.cloud.example.com > /var/www/html/index.html
 ----
 
-If you didn't notice, the source for *index.html* came from an application that was deployed during the CLI exercises.  Final step is to verify the application is functioning as expected.
+If you didn't notice, the source for *index.html* came from an application that was deployed during the OCP post-install.  Final step is to verify the application is functioning as expected.
 
 === Validation
 
@@ -521,7 +521,7 @@ cd /var/www/
 
 ls -la
 
-curl helloworld3.cloud.example.com > /var/www/html/index.html
+curl workshop-src.cloud.example.com > /var/www/html/index.html
 ----
 
 === Validation
