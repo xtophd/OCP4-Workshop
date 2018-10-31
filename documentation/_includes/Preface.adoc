@@ -105,6 +105,9 @@ _Cut & Paste with Windows Desktop_
 ----
 CUT: Select Text with Mouse and then CTL+C
 PASTE: Select Browser Window and then CTL+SHIFT+V
+
+I have found that adding a 'space' after the PASTE command works nicely.
+
 ----
 ====
 
