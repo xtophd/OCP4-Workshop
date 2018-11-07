@@ -120,7 +120,7 @@ While the pre-install script runs, we can breifly review what actions are being 
 * OCP Cluster Node Actions
 ** reconfigure docker storage to use a block device
 ** enable and start firewalld
-** minimum Package installation
+** minimum package installation
 
 === Pre-Install Results
 
