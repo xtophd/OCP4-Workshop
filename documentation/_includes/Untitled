@@ -1,15 +1,45 @@
+:sectnums:
+:sectnumlevels: 2
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
+:toc:
 
+= Understanding Variables and Secrets
+
+== Variables
+
+=== Create a Project
+
+.[root@master ~]#
+----
 oc new-project bluegreen --description="Example with ENV VARs" --display-name="Blue Green"
+----
 
+=== Deploy an Image
+
+.[root@master ~]#
+----
 oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=watcher
 
 oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=worker
 
 oc logs -f bc/bluegreen
+----
 
+=== Expose a Route
+
+.[root@master ~]#
+----
 oc expose service watcher --hostname=watcher.cloud.example.com
+
 oc expose service worker  --hostname=worker.cloud.example.com
+----
 
 ##  if you edit the source code and want to trigger a fresh build
 
