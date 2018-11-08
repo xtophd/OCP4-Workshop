@@ -27,9 +27,9 @@ if ( $myMode == "watcher") {
     
     $used_array = array();
 
-    echo "<HTML><BODY>"
-    echo "<TABLE>"
-    echo "<TR><TH>Pod Name</TH><TH>Color</TH></TR>"
+    echo "<HTML><BODY>";
+    echo "<TABLE>";
+    echo "<TR><TH>Pod Name</TH><TH>Color</TH></TR>";
         
     // Collect route results until we get repetition, then exit
 
@@ -46,7 +46,7 @@ if ( $myMode == "watcher") {
         $used_array[$j_array['myHostname']] = 'used';
     }
 
-    echo "</TABLE>"
+    echo "</TABLE>";
     echo "</BODY></HTML>";
   
 } elseif ( $myMode == "worker" ) {
