@@ -41,9 +41,7 @@ if ( $myMode == "watcher") {
             break;    
         }
               
-        printf("<TR><TH>%s</TH><TH>%s</TH></TR>",$j_array['myHostname']],$j_array['myColor']])
-
-        echo "\n";
+        printf("<TR><TH>%s</TH><TH>%s</TH></TR>\n",$j_array['myHostname']],$j_array['myColor']])
 
         $used_array[$j_array['myHostname']] = 'used';
     }
@@ -57,22 +55,22 @@ if ( $myMode == "watcher") {
         $myStatus = "Invalid Color";
     }
 
-} else {
-
-    $myStatus = "Invalid Mode";
-
-}
-
-$output = [ 'myMode'     => $myMode,
+    $output = [ 'myMode'     => $myMode,
             'myColor'    => $myColor,
             'myRoute'    => $myRoute,
             'myStatus'   => $myStatus,
             'myHostname' => getenv("HOSTNAME") ];
 
-// Send output
+    // Send output
 
-echo json_encode( $output );
-echo "\n";
+    echo json_encode( $output );
+    echo "\n";
+     
+} else {
+
+    $myStatus = "Invalid Mode";
+
+}
 
 http_response_code(200);
 
