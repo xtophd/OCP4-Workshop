@@ -38,6 +38,7 @@ if ( $myMode == "watcher") {
         }
             
         echo json_encode( $j_array );
+        echo "\n";
 
         $used_array[$j_array['myHostname']] = 'used';
     }
@@ -63,7 +64,7 @@ $output = [ 'myMode'     => $myMode,
 // Send output
 
 echo json_encode( $output );
-echo "\r\n";
+echo "\n";
 
 http_response_code(200);
 
