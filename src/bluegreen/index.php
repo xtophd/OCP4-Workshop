@@ -28,6 +28,9 @@ if ( $myMode == "watcher") {
     $used_array = array();
 
     echo "<HTML><BODY>"
+    echo "<TABLE>"
+    echo "<TR><TH>Pod Name</TH><TH>Color</TH></TR>"
+        
     // Collect route results until we get repetition, then exit
 
     while ( true )  {
@@ -35,16 +38,19 @@ if ( $myMode == "watcher") {
         $j_array = json_decode(file_get_contents($myRoute), true);
 
         if ( $used_array[$j_array['myHostname']] == 'used' ) {
-            echo "</BODY></HTML>";
             break;    
         }
-            
-        echo json_encode( $j_array );
-        echo "<BR>";
+              
+        printf("<TR><TH>%s</TH><TH>%s</TH></TR>",$j_array['myHostname']],$j_array['myColor']])
+
+        echo "\n";
 
         $used_array[$j_array['myHostname']] = 'used';
     }
-        
+
+    echo "</TABLE>"
+    echo "</BODY></HTML>";
+  
 } elseif ( $myMode == "worker" ) {
 
     if (( $myColor != 'blue') && ($myColor != 'green') && ($myColor != 'red' )) {
