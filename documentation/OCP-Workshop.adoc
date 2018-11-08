@@ -19,7 +19,7 @@ include::{includedir}/Getting-Started.adoc[leveloffset=+1]
 
 include::{includedir}/CLI-First-Time-Login.adoc[leveloffset=+1]
 
-== CLI Hello World
+== CLI: Hello World
 
 include::{includedir}/CLI-Hello-World.adoc[leveloffset=+1]
 
