@@ -27,6 +27,7 @@ if ( $myMode == "watcher") {
     
     $used_array = array();
 
+    echo "<HTML><BODY>"
     // Collect route results until we get repetition, then exit
 
     while ( true )  {
@@ -34,11 +35,12 @@ if ( $myMode == "watcher") {
         $j_array = json_decode(file_get_contents($myRoute), true);
 
         if ( $used_array[$j_array['myHostname']] == 'used' ) {
+            echo "</BODY></HTML>";
             break;    
         }
             
         echo json_encode( $j_array );
-        echo "\n";
+        echo "<BR>";
 
         $used_array[$j_array['myHostname']] = 'used';
     }
