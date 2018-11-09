@@ -63,7 +63,7 @@ screen -ls
 # resume disconnected session
 screen -r {name}
 
-# disconnect sessions
+# disconnect current session
 screen -d {name}
 
 # to join a session (multiuser)
