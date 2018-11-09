@@ -71,8 +71,18 @@ if ( $myMode == "watcher") {
      
 } else {
 
-    $myStatus = "Invalid Mode";
+    $myStatus = "idle";
 
+    $output = [ 'myMode'     => $myMode,
+        'myColor'    => $myColor,
+        'myRoute'    => $myRoute,
+        'myStatus'   => $myStatus,
+        'myHostname' => getenv("HOSTNAME") ];
+
+    // Send output
+
+    echo json_encode( $output );
+    echo "\n";
 }
 
 http_response_code(200);
