@@ -45,7 +45,7 @@ if ( $myMode == "watcher") {
             ++$count;
         }
         
-        printf("<TR><TD>%d</TD><TD>%s</TD><TD BGCOLOR=%s>%s</TD></TR>\n",$count,$j_array['myHostname'],$j_array['myColor'],$j_array['myColor']);
+        printf("<TR><TD>%03d</TD><TD>%s</TD><TD BGCOLOR=%s>%s</TD></TR>\n",$count,$j_array['myHostname'],$j_array['myColor'],$j_array['myColor']);
      
     }
 
