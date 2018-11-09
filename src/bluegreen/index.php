@@ -39,11 +39,11 @@ if ( $myMode == "watcher") {
 
         if ( $used_array[$j_array['myHostname']] == 'used' ) {
             break;    
+        } else { 
+            $used_array[$j_array['myHostname']] = 'used';
         }
-              
-        printf("<TR><TH>%s</TH><TH>%s</TH></TR>\n",$j_array['myHostname'],$j_array['myColor']);
-
-        $used_array[$j_array['myHostname']] = 'used';
+        
+        printf("<TR><TD>%s</TD><TD>%s</TD></TR>\n",$j_array['myHostname'],$j_array['myColor']);
     }
 
     echo "</TABLE>";
