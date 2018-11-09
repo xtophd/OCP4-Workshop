@@ -41,7 +41,7 @@ if ( $myMode == "watcher") {
             break;    
         }
               
-        printf("<TR><TH>%s</TH><TH>%s</TH></TR>\n",$j_array['myHostname'],$j_array['myColor'])
+        printf("<TR><TH>%s</TH><TH>%s</TH></TR>\n",$j_array['myHostname'],$j_array['myColor']);
 
         $used_array[$j_array['myHostname']] = 'used';
     }
