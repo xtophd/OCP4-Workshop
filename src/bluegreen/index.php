@@ -43,7 +43,7 @@ if ( $myMode == "watcher") {
             $used_array[$j_array['myHostname']] = 'used';
         }
         
-        printf("<TR><TD>%s</TD><TD>%s</TD></TR>\n",$j_array['myHostname'],$j_array['myColor']);
+        printf("<TR><TD>%s</TD><TD BACKGROUND-COLOR=%s>%s</TD></TR>\n",$j_array['myHostname'],$j_array['myColor'],$j_array['myColor']);
     }
 
     echo "</TABLE>";
