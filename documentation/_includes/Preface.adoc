@@ -84,7 +84,27 @@ curl http://{ip_address}}:8080
 ----
 ====
 
-=== Using CUT & PASTE For CLI Exercises
+== Executing tasks in the WebUI
+
+Notice that key value pairs for data entry are presented in a matrix.
+
+____
+select `Create Project` from *My Projects* on the *Openshift Landing* page
+
+.Use following details for Create Project
+[horizontal]
+*Name*:: hello-webui
+*Display Name*:: Hello WebUI
+*Description*:: My First WebUI App
+
+select `Create`
+____
+
+====
+image::ocp-webui-hello1-project-create.png[Create Project]
+====
+
+== Using CUT & PASTE For CLI Exercises
 
 The official supported method of participation with this workshop is to use the provided console using a tool called "Shell In a Box".  This tool provides an SLL encrypted SSH session via your web browser.  If it hasn't been mentioned before, Chrome is the preferred browser.
 
@@ -111,7 +131,7 @@ I have found that adding a 'space' after the PASTE command works nicely.
 ----
 ====
 
-=== Using SCREEN for CLI Exercises
+== Using SCREEN for CLI Exercises
 
 The `screen` utility can be very useful in workshop settings and is highly recommended.  It provides two key capabilities for us here:
 
@@ -163,25 +183,7 @@ ctrl-a TAB
 ----
 ====
 
-== Executing tasks in the WebUI
 
-Notice that key value pairs for data entry are presented in a matrix.
-
-____
-select `Create Project` from *My Projects* on the *Openshift Landing* page
-
-.Use following details for Create Project
-[horizontal]
-*Name*:: hello-webui
-*Display Name*:: Hello WebUI
-*Description*:: My First WebUI App
-
-select `Create`
-____
-
-====
-image::ocp-webui-hello1-project-create.png[Create Project]
-====
 
 [discrete]
 == End of Unit
