@@ -72,9 +72,19 @@ screen -x {name}
 #To enable multi user on active session
 ctrl-a :multiuser on
 
+#To add an additional screen/shell
+ctrl-a C
+
+#To switch to Next screen/shell
+ctrl-a N
+
+#To Split Screen Horizontally
+ctrl-a S
+
+#To Move Cursor to other Split-Screen
+ctrl-a TAB
 ----
 ====
-
 
 
 === Become the root user
