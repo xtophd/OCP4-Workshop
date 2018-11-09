@@ -111,6 +111,57 @@ I have found that adding a 'space' after the PASTE command works nicely.
 ----
 ====
 
+=== Using SCREEN for CLI Exercises
+
+The `screen` utility can be very useful in workshop settings and is highly recommended.  It provides two key capabilities for us here:
+
+    . Session Persistance
+    ** If your ssh/siab connection is dropped or reset, you can resume the session after reconnecting.  Nothing is interrupted or lost.
+    . Session Sharing
+    ** An administration can join your session and shared the input/output.  This is particularly helpful in workshops utilizing remote options (ex: webex, bluejeans, etc...)
+
+To enable a `screen` session simply execute the following.
+
+.[student@workstation ~]#
+----
+screen -m
+----
+
+And now just continue as normal.
+
+[NOTE]
+====
+_Additional tips on using 'screen'_
+----
+
+# list available sessions
+screen -ls
+
+# resume disconnected session
+screen -r {name}
+
+# disconnect current session
+screen -d {name}
+
+# to join a session (multiuser)
+screen -x {name}
+
+#To enable multi user on active session
+ctrl-a :multiuser on
+
+#To add an additional screen/shell
+ctrl-a C
+
+#To switch to Next screen/shell
+ctrl-a N
+
+#To Split Screen Horizontally
+ctrl-a S
+
+#To Move Cursor to other Split-Screen
+ctrl-a TAB
+----
+====
 
 == Executing tasks in the WebUI
 
