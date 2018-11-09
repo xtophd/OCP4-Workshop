@@ -29,7 +29,7 @@ if ( $myMode == "watcher") {
     $used_array = array();
 
     echo "<HTML><BODY>\n";
-    echo "<TABLE STYLE=\"BODER:1px SOLID BLACK\"\n";
+    echo "<TABLE STYLE=\"BORDER:1px SOLID BLACK\"\n";
     echo "<TR><TH></TH><TH>Pod Name</TH><TH>Color</TH></TR>\n";
         
     // Collect route results until we get repetition, then exit
