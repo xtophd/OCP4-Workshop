@@ -23,7 +23,7 @@ In this unit, we will use a simple PHP based application to simulate and observe
 
 Take a moment to review the source for this exercise.  It is NOT very complicated.
 
-    *Source Code:* link:https://github.com/xtophd/OCP-Workshop/blob/master/src/bluegreen/index.php[index.php]
+*Source Code:* link:https://github.com/xtophd/OCP-Workshop/blob/master/src/bluegreen/index.php[index.php]
 
 This application uses a single code base to execute 2 different activities.  If left unconfigured, the application is "Idle".  Once configured the application is either a "Worker" or a "Watcher".  So the basic premise of this exercise is to deploy the same code base in 2 different Openshift applications and then configure one as a "Worker" and the other as a "Watcher".
 
