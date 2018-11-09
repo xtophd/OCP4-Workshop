@@ -10,37 +10,94 @@ endif::[]
 
 :toc:
 
-= Understanding Variables and Secrets
+= CLI: Blue Green Deployments
 
-*Source Code:* link:https://github.com/xtophd/OCP-Workshop/blob/master/src/bluegreen/index.php[index.php]
+In this unit, we will use a simple PHP based application to simulate and observe an application deployment, scaling adjustments and updates under different scenarios.  Topics covered will include: 
 
-== Prepare the Application
+  . Environment Variables,
+  . Secrets,
+  . Application Scaling,
+  . Rollbacks,
+  . Deployment Strategies, and
+  . Blue Green Updates using Routes
 
+Take a moment to review the source for this exercise.  It is NOT very complicated.
 
+    *Source Code:* link:https://github.com/xtophd/OCP-Workshop/blob/master/src/bluegreen/index.php[index.php]
+
+This application uses a single code base to execute 2 different activities.  If left unconfigured, the application is "Idle".  Once configured the application is either a "Worker" or a "Watcher".  So the basic premise of this exercise is to deploy the same code base in 2 different Openshift applications and then configure one as a "Worker" and the other as a "Watcher".
+
+Let's get started by repeating the 6 typical steps of deploying and application:
+
+  . *Credentials:* oc login
+  . *Create a Project:* oc new project 
+  . *Deploy an Image:* oc new-app
+  . *Expose a Route:* oc expose
+  . *Modify the Project, Build or Deployment*
+  . *Validation*
+
+== Initial Deployment of Blue Green
+
+=== Credentials
+
+NOTE: If you are continuing work from previous workshop exercises, chances are you can skip right to the nixt section.
+
+Ensure you are signed on to the `master.example.com` host as the user `root`.  Also ensure that your openshift crendential is `admin`.
+
+.[root@workstation ~]#
+----
+ssh master.example.com
+----
+
+.[root@master ~]# 
+----
+oc whoami
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+admin                                                                                 
+----
+
+If you are NOT signed in as `admin`, proceed to sign-on to Openshift.
+
+.Key-Values for Login
+[horizontal]
+*Username*:: admin
+*Password*:: redhat
+
+.[root@master ~]#
+----
+oc login -u admin
+----
 
 === Create a Project
 
 .[root@master ~]#
 ----
-oc new-project bluegreen --description="Example with ENV VARs" --display-name="Blue Green"
+oc new-project bluegreen --description="Workshop Blue Green Exercise" --display-name="Blue Green"
 ----
 
 === Deploy an Image
 
-We are going to create 2 applications using the same source.  One will be called "watcher" and the other "worker"
+As mentioned, we are going to create 2 applications using the same source.  One will be called "watcher" and the other "worker"
 
 .[root@master ~]#
 ----
 oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=watcher
 
 oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=worker
+----
 
-oc logs -f bc/worker
+We will pause here until the applications are built.  
 
+.[root@master ~]#
+----
 oc logs -f bc/watcher
 ----
 
-At this point we've deployed 2 applications which do nothing.  They will need additional configuration to activate.
+At this point we've deployed 2 applications which do nothing and report themselves as "Idle".
 
 === Expose a Route
 
@@ -74,8 +131,16 @@ oc env dc/watcher myMode=watcher myRoute=http://worker.cloud.example.com
 .[root@master ~]#
 ----
 oc scale --replicas=3 dc/worker
+----
 
+.[root@master ~]#
+----
 oc get pods -o wide
+----
+
+.[root@master ~]#
+----
+lynx -d http://watcher.cloud.example.com
 ----
 
 === Change Env Vars in Build Configs
@@ -83,13 +148,32 @@ oc get pods -o wide
 .[root@master ~]#
 ----
 oc env dc/worker myColor=green
-
-curl http://worker.cloud.example.com
 ----
 
+.[root@master ~]#
+----
+watch lynx -d http://watcher.cloud.example.com
+----
 
+.[root@master ~]#
+----
+oc scale --replicas=10 dc/worker
+----
 
+.[root@master ~]#
+----
+watch lynx -d http://watcher.cloud.example.com
+----
 
+.[root@master ~]#
+----
+oc env dc/worker myColor=blue
+----
+
+.[root@master ~]#
+----
+watch lynx -d http://watcher.cloud.example.com
+----
 
 == Secrets
 
@@ -112,14 +196,23 @@ Retreve general revision history
 oc rollout history dc/worker
 ----
 
-=== View Specific Revision Details
+=== Rollbacks
+
+==== View Revision History
 
 .[root@master ~]#
 ----
 oc rollout history dc/worker --revision=2
 ----
 
-=== Rolling Back Changes
+==== View Specific Revision Details
+
+.[root@master ~]#
+----
+oc rollout history dc/worker --revision=2
+----
+
+==== Rolling Back Changes
 
 .[root@master ~]#
 ----
@@ -140,11 +233,11 @@ The WebUI provides a relatively simple interface to modifying a strategy and it'
 
 === Scale Up Number of Workers
 
-To get a better sense of how deployments updates, let us add a few more pods to the deployment
+To get a better sense of how deployments update, let us add a few more pods to the deployment
 
 .[root@master ~]#
 ----
-oc scale --replicas=10 dc/worker
+oc scale --replicas=20 dc/worker
 ----
 
 === Watch a Rolling Update
