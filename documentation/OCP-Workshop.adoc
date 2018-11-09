@@ -31,6 +31,10 @@ include::{includedir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
 
 include::{includedir}/WebUI-Hello-World.adoc[leveloffset=+1]
 
+== CLI: Blue Green Deployments
+
+include::{includedir}/CLI-BlueGreen-Deployments.adoc[leveloffset=+1]
+
 
 [discrete]
 = The End
