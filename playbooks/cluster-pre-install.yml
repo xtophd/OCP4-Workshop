@@ -64,7 +64,7 @@
         mode: 0644
 
     - name: "YUM install misc required packages"
-      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld state=installed
+      yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld,lynx state=installed
 
     - name: "SERVICE STOP firewalld"
       service: name=firewalld state=stopped enabled=yes
