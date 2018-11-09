@@ -213,7 +213,7 @@ oc rollout history dc/worker
 oc rollout history dc/worker --revision=2
 ----
 
-==== View Specific Revision Details
+==== View Details of Secific Revision
 
 .[root@master ~]#
 ----
@@ -222,9 +222,18 @@ oc rollout history dc/worker --revision=2
 
 ==== Rolling Back Changes
 
+Here is an example of rolling back to the last revision
+
 .[root@master ~]#
 ----
 oc rollback dc/worker
+----
+
+Here is an example of rolling back to a specific revision
+
+.[root@master ~]#
+----
+oc rollback dc/worker --revision=2
 ----
 
 === Strategies
