@@ -118,12 +118,20 @@ Openshift environment variables are a means to pass key/value pairs from the und
 ----
 oc env dc/worker myMode=worker myColor=blue
 
+oc logs -f dc/worker
+
 curl http://worker.cloud.example.com
 ----
 
 .[root@master ~]#
 ----
 oc env dc/watcher myMode=watcher myRoute=http://worker.cloud.example.com
+
+oc logs -f dc/watcher
+
+curl http://watcher.example.com
+
+lynx -d http://watcher.example.com
 ----
 
 === Scale up 'worker' pods
