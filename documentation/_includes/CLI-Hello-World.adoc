@@ -66,8 +66,6 @@ We begin by creating a *Project*.
 oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
 
 oc get projects
-
-oc projects
 ----
 
 .Your output should look like this
