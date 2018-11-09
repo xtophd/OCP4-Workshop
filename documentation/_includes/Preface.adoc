@@ -175,6 +175,9 @@ ctrl-a C
 #To switch to Next screen/shell
 ctrl-a N
 
+#To review/navigate output history (use arrow keys, hit ESC to end)
+ctrl-a ESC
+
 #To Split Screen Horizontally
 ctrl-a S
 
