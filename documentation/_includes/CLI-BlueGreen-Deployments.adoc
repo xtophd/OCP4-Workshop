@@ -40,7 +40,7 @@ Let's get started by repeating the 6 typical steps of deploying and application:
 
 === Credentials
 
-NOTE: If you are continuing work from previous workshop exercises, chances are you can skip right to the nixt section.
+NOTE: If you are continuing work from previous workshop exercises, chances are you can skip right to the next section.
 
 Ensure you are signed on to the `master.example.com` host as the user `root`.  Also ensure that your openshift crendential is `admin`.
 
