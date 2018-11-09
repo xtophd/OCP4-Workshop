@@ -131,7 +131,7 @@ oc logs -f dc/watcher
 
 curl http://watcher.cloud.example.com
 
-lynx -d http://watcher.cloud.example.com
+lynx -dump http://watcher.cloud.example.com
 ----
 
 === Scale up 'worker' pods
@@ -148,7 +148,7 @@ oc get pods -o wide
 
 .[root@master ~]#
 ----
-lynx -d http://watcher.cloud.example.com
+lynx -dump http://watcher.cloud.example.com
 ----
 
 === Change Env Vars in Build Configs
@@ -160,7 +160,7 @@ oc env dc/worker myColor=green
 
 .[root@master ~]#
 ----
-watch lynx -d http://watcher.cloud.example.com
+watch lynx -dump http://watcher.cloud.example.com
 ----
 
 .[root@master ~]#
@@ -170,7 +170,7 @@ oc scale --replicas=10 dc/worker
 
 .[root@master ~]#
 ----
-watch lynx -d http://watcher.cloud.example.com
+watch lynx -dump http://watcher.cloud.example.com
 ----
 
 .[root@master ~]#
@@ -180,7 +180,7 @@ oc env dc/worker myColor=blue
 
 .[root@master ~]#
 ----
-watch lynx -d http://watcher.cloud.example.com
+watch lynx -dump http://watcher.cloud.example.com
 ----
 
 == Secrets
