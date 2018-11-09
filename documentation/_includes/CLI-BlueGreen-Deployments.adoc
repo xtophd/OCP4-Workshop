@@ -245,7 +245,7 @@ To get a better sense of how deployments update, let us add a few more pods to t
 
 .[root@master ~]#
 ----
-oc scale --replicas=20 dc/worker
+oc scale --replicas=10 dc/worker
 ----
 
 === Watch a Rolling Update
@@ -263,8 +263,49 @@ oc patch dc/worker --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
 
 === Watch a Recreate Update
 
+=== Set up a Blue Green Deployment
+
+To set up the environment for this exercise, first we want our exisiting worker app to be `blue`.
+
+.[root@master ~]#
+----
+oc env dc/worker myMode=worker myColor=blue
+---
+
+Now we can proceed to set up the `green` application.
+
+==== Deploy 3rd Application
+
+To shortend the steps required, we will provide the necessary environment variables on the `oc new-app` command-line.
+
+.[root@master ~]#
+----
+oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/bluegreen --name=worker-v2 -e myMode=worker -e myColor=green
+----
+
+.[root@master ~]#
+----
+oc logs -f bc/worker-v2
+----
 
 
+==== Expose a Route
+
+Skip this step for now, we are not ready to expose the route
+
+==== Scale Up
+
+.[root@master ~]#
+----
+oc scale --replicas=10 dc/worker-v2
+----
+
+==== Switch the Exposed Route
+
+.[root@master ~]#
+----
+oc patch route worker --patch '{"spec":{"to":{"name":"worker-v2"}}}'
+----
 
 == EXTRA STUFF
 
@@ -276,10 +317,6 @@ oc set env pod/p1 --list
 
 oc start-build bc/worker
 oc logs -f bc/worker
-
-=== emptyDir for image caching volume
-
-=== mysql DB for history/trending
 
 [discrete]
 == End of Unit
