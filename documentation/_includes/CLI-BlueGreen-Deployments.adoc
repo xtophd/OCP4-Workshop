@@ -236,7 +236,7 @@ Here is an example of rolling back to a specific revision
 oc rollback dc/worker --revision=2
 ----
 
-=== Strategies
+== Strategies
 
 A deployment strategy is an algorithym which is implemented when changing or upgrading an application. The goal is to invoke change whilst reducing downtime or disruption to the end user.
 
@@ -306,11 +306,22 @@ oc env dc/worker myMode=worker myColor=green
 Within a minute or so, you should see the pods (or more accurately the number of replicas) scale down to zero, and then scale back up with the new 'green' configuration.  This is expected behaviour from a 'recreate' deployment.
 
 
+=== Watch a Blue Green Update
 
+==== Scale Down Number of Workers
+
+To prevent any resource contention problems in our limited workshop environment, scale down the number of replicas to 5.
+
+.[root@master ~]#
+----
+oc scale --replicas=5 dc/worker
+----
 
 ==== Deploy 3rd Application
 
-To shortend the steps required, we will provide the necessary environment variables on the `oc new-app` command-line.
+At this point, you have dpeloyed 2 applications based on the same code base, one is configured as a `watched` and the other as a `worker`.  For the blue-green model to work, we need a parallel set of pods running with the new configuration.  
+
+Deploy another app and configure it as `green`.  To shortend the individual steps required, here is a consolidated `oc new-app` command  line that deploys the application with it's `green` environment configuration.
 
 .[root@master ~]#
 ----
@@ -322,24 +333,27 @@ oc new-app registry.access.redhat.com/rhscl/php-71-rhel7~https://github.com/xtop
 oc logs -f bc/worker-v2
 ----
 
-
-==== Expose a Route
-
-Skip this step for now, we are not ready to expose the route
+Wait until the deployment is complete.
 
 ==== Scale Up
 
+To match the scale of the existing `worker` application, we nede to scale up `worker-v2`
+
 .[root@master ~]#
 ----
-oc scale --replicas=10 dc/worker-v2
+oc scale --replicas=5 dc/worker-v2
 ----
 
 ==== Switch the Exposed Route
+
+Finally, the last step is to switch the service which acts as the ingres for the current exposed route for `worker`.
 
 .[root@master ~]#
 ----
 oc patch route worker --patch '{"spec":{"to":{"name":"worker-v2"}}}'
 ----
+
+Notice how fast and simple the app switches from old to new.  If someone deteremines there is a problem with the new application, you can just as easily switch back.
 
 == EXTRA STUFF
 
