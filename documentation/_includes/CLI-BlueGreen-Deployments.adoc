@@ -308,7 +308,12 @@ Within a minute or so, you should see the pods (or more accurately the number of
 
 === Watch a Blue Green Update
 
-==== Scale Down Number of Workers
+To set up the environment for this exercise, first we want our exisiting `worker` app to be `blue`.
+
+.[root@master ~]#
+----
+oc env dc/worker myMode=worker myColor=blue
+----
 
 To prevent any resource contention problems in our limited workshop environment, scale down the number of replicas to 5.
 
@@ -335,7 +340,7 @@ oc logs -f bc/worker-v2
 
 Wait until the deployment is complete.
 
-==== Scale Up
+==== Scale Up New Application
 
 To match the scale of the existing `worker` application, we nede to scale up `worker-v2`
 
