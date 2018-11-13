@@ -261,7 +261,7 @@ To set up the environment for this exercise, first we want our exisiting worker 
 
 .[root@master ~]#
 ----
-oc env dc/worker myMode=worker myColor=blue
+oc env dc/worker myColor=blue
 ----
 
 The default strategy is "rolling", so no configuration is required at this point.
@@ -270,7 +270,7 @@ As you hopefully have noticed by now, we can trigger a rollout simply by changin
 
 .[root@master ~]#
 ----
-oc env dc/worker myMode=worker myColor=green
+oc env dc/worker myColor=green
 ----
 
 Within a minute or so, you should see the pods changing their configuration from blue to green.  In particular, what you want to take notice of is that there is an over lab of time when both blue and green pods are running simultaneously.  This is expected behaviour from a 'rolling' deployment.
@@ -287,18 +287,18 @@ oc env dc/worker myMode=worker myColor=blue
 
 Wait until all pods are 'blue' before proceeding.
 
-Now you will reconfigure the deployment strategy to "Recreate".
+Reconfigure the deployment strategy to "Recreate".
 
 .[root@master ~]#
 ----
 oc patch dc/worker --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
 ----
 
-Now, we can trigger a rollout simply by changing an environment variable.
+Trigger a rollout by changing an environment variable.
 
 .[root@master ~]#
 ----
-oc env dc/worker myMode=worker myColor=green
+oc env dc/worker myColor=green
 ----
 
 Within a minute or so, you should see the pods (or more accurately the number of replicas) scale down to zero, and then scale back up with the new 'green' configuration.  This is expected behaviour from a 'recreate' deployment.
@@ -338,7 +338,7 @@ oc logs -f bc/worker-v2
 
 Wait until the deployment is complete.
 
-==== Scale Up New Application
+==== Scale Up the New Application
 
 To match the scale of the existing `worker` application, we nede to scale up `worker-v2`
 
