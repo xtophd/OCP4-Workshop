@@ -248,8 +248,6 @@ There are 3 fundamental strategies for rollouts:
 
 The WebUI provides a relatively simple interface to modifying a strategy and it's accompanying parameters.  From the command-line, we are currently left with `oc edit` or `oc patch`
 
-=== Scale Up Number of Workers
-
 To get a better sense of how deployments update, let us add a few more pods to the deployment
 
 .[root@master ~]#
@@ -379,3 +377,5 @@ link:../OCP-Workshop.adoc[Return to TOC]
 ////
 Always end files with a blank line to avoid include problems.
 ////
+=== Scale Up Number of Workers
+252
