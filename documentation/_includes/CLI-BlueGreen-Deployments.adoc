@@ -257,14 +257,14 @@ oc scale --replicas=10 dc/worker
 
 === Watch a Rolling Update
 
-To set up the environment for this exercise, first we want our exisiting worker app to be configure to `blue`.
+To set up the environment for this exercise, first we want our exisiting `worker` app to be configure to `blue`.
 
 .[root@master ~]#
 ----
 oc env dc/worker myColor=blue
 ----
 
-The default strategy is "rolling", so no configuration is required at this point.
+The default strategy is already "Rolling", so no configuration is required at this point.
 
 As you hopefully have noticed by now, we can trigger a rollout simply by changing an environment variable.
 
@@ -278,7 +278,7 @@ Within a minute or so, you should see the pods changing their configuration from
 
 === Watch a Recreate Update
 
-To set up the environment for this exercise, first we want our exisiting worker app to be `blue`.
+To set up the environment for this exercise, first we want our exisiting `worker` app to be `blue`.
 
 .[root@master ~]#
 ----
@@ -322,9 +322,9 @@ oc scale --replicas=5 dc/worker
 
 ==== Deploy 3rd Application
 
-At this point, you have dpeloyed 2 applications based on the same code base, one is configured as a `watched` and the other as a `worker`.  For the blue-green model to work, we need a parallel set of pods running with the new configuration.  
+At this point, you have dpeloyed 2 applications based on the same code base, one is configured as a `watched` and the other as a `worker`.  For the blue-green model to work, we need a parallel set of pods running with the new configuration called `worker-v2`.  
 
-Deploy another app and configure it as `green`.  To shortend the individual steps required, here is a consolidated `oc new-app` command  line that deploys the application with it's `green` environment configuration.
+To shortend the individual steps required, here is a consolidated `oc new-app` command  line that deploys the application with it's `green` environment configuration.
 
 .[root@master ~]#
 ----
