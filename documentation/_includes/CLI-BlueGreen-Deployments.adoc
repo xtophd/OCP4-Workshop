@@ -259,29 +259,54 @@ oc scale --replicas=10 dc/worker
 
 === Watch a Rolling Update
 
-
-
-
-
-=== Change the Deployment Strategy
+To set up the environment for this exercise, first we want our exisiting worker app to be configure to `blue`.
 
 .[root@master ~]#
 ----
-oc patch dc/worker --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
+oc env dc/worker myMode=worker myColor=blue
 ----
 
-=== Watch a Recreate Update
+The default strategy is "rolling", so no configuration is required at this point.
 
-=== Set up a Blue Green Deployment
+As you hopefully have noticed by now, we can trigger a rollout simply by changing an environment variable.
+
+.[root@master ~]#
+----
+oc env dc/worker myMode=worker myColor=green
+----
+
+Within a minute or so, you should see the pods changing their configuration from blue to green.  In particular, what you want to take notice of is that there is an over lab of time when both blue and green pods are running simultaneously.  This is expected behaviour from a 'rolling' deployment.
+
+
+=== Watch a Recreate Update
 
 To set up the environment for this exercise, first we want our exisiting worker app to be `blue`.
 
 .[root@master ~]#
 ----
 oc env dc/worker myMode=worker myColor=blue
----
+----
 
-Now we can proceed to set up the `green` application.
+Wait until all pods are 'blue' before proceeding.
+
+Now you will reconfigure the deployment strategy to "Recreate".
+
+.[root@master ~]#
+----
+oc patch dc/worker --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
+----
+
+Now, we can trigger a rollout simply by changing an environment variable.
+
+.[root@master ~]#
+----
+oc env dc/worker myMode=worker myColor=green
+----
+
+Within a minute or so, you should see the pods (or more accurately the number of replicas) scale down to zero, and then scale back up with the new 'green' configuration.  This is expected behaviour from a 'recreate' deployment.
+
+
+
 
 ==== Deploy 3rd Application
 
