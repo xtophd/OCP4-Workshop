@@ -841,8 +841,8 @@ select `Create Route` from *Project Overview*
 
 .use the following details for Create Route
 [horizontal]
-*Name*:: hello-webui5
-*Hostname*:: hello-webui5.cloud.example.com
+*Name*:: hello-webui4
+*Hostname*:: hello-webui4.cloud.example.com
 
 select `Create`
 ____
@@ -850,7 +850,7 @@ ____
 === Validation
 
 ____
-select exposed route `http://hello-webui3.cloud.example.com` from the *Project Overview*
+select exposed route `http://hello-webui4.cloud.example.com` from the *Project Overview*
 ____
 
 ====
