@@ -145,7 +145,7 @@ The *Project Overview* page provides a high-level view of the project you just c
 image::ocp-webui-hello1-project-overview.png[Project Overview]
 ====
 
-You just completed configuring Openshift to create a new application called *webui-hello* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with the fact you've initiated the build and deployment of a containerized application.
+You just completed configuring Openshift to create a new application called *hello-webui* based on a container image named *httpd-24-rhel7* being pulled from *registry.access.redhat.com*.  There is actually a lot more going on behind the scenes, but for now we'll be satisfied with the fact you've initiated the build and deployment of a containerized application.
 
 === Expose a Route
 
