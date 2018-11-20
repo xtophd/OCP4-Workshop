@@ -836,16 +836,7 @@ image::ocp-webui-hello4-app-overview.png[Application Overview]
 
 === Expose a Route
 
-____
-select `Create Route` from *Project Overview*
-
-.use the following details for Create Route
-[horizontal]
-*Name*:: hello-webui4
-*Hostname*:: hello-webui4.cloud.example.com
-
-select `Create`
-____
+Since we defined  the `Application Hostname` during the deployment phase, the exposed route has already be configured.  Nothing further to do here.
 
 === Validation
 
