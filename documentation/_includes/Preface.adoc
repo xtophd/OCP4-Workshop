@@ -185,7 +185,7 @@ ctrl-a S
 ctrl-a TAB
 
 #Kill all windows and terminate screen
-ctl-a ctrl-\
+ctl-a \
 ----
 ====
 
