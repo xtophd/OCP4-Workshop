@@ -1,0 +1,19 @@
+##
+## SUMMARY
+##   This is a configuration file for the 'screen' utility
+##   - splits the screen
+##   - execs a `watch` in bottom window
+##   - execs a shell in top window with focus
+##
+## Usage:
+##   screen -c [path]/bluegreen.rc  
+##
+
+split
+
+focus bottom
+  screen watch lynx --dump http://watcher.cloud.example.com
+
+focus top
+  screen
+
