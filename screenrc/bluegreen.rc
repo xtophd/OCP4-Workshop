@@ -15,5 +15,5 @@ focus bottom
   screen watch lynx --dump http://watcher.cloud.example.com
 
 focus top
-  screen
+  screen ssh master
 
