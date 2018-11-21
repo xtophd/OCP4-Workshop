@@ -183,6 +183,9 @@ ctrl-a S
 
 #To Move Cursor to other Split-Screen
 ctrl-a TAB
+
+#Kill all windows and terminate screen
+ctl-a ctrl-\
 ----
 ====
 
