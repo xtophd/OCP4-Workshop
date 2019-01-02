@@ -1,0 +1,24 @@
+---
+- hosts: docker
+  tasks:
+  
+    - name: "PING all hosts to ensure we are alive and ready"
+      ping:
+
+    - name: "YUM install docker docker-distribution"
+      yum: name=docker,docker-distribution state=installed
+
+    - name: "SERVICE STOP firewalld"
+      service: name=firewalld state=stopped enabled=no
+
+    - name: "SERVICE START docker"
+      service: name=docker state=started enabled=yes
+
+    - name: "SERVICE START docker-distribution"
+      service: name=docker-distribution state=started enabled=yes
+
+    - name: "CMD: Pull rhel7 image"
+      shell:                                                                                           
+        cmd: |                                                                                         
+          docker pull registry.access.redhat.com/rhel7
+          
