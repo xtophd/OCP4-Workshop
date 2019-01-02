@@ -15,14 +15,20 @@ endif::[]
 In this unit, we will get familiar with Docker Containers and the Docker CLI.  This is unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
-== Docker Installation
+== Getting Started with Docker Containers
 
+Installation and configuration of docker has been condensed into an Ansible Playbook for simplicity.
+
+
+=== Install Required Packages
 Install the required docker packages provided with the RHEL subscription.
 
 .[root@workstation ~]#
 ----
 yum install -y docker docker-registry
 ----
+
+=== Disable Services
 
 Disable incompatible services
 
@@ -31,6 +37,8 @@ Disable incompatible services
 systemctl stop firewalld
 systemctl disable firewalld
 ----
+
+=== Enable Services
 
 Enable Docker services
 
@@ -107,7 +115,7 @@ Kernel Version: 3.10.0-229.1.2.el7.x86_64
 Operating System: Red Hat Enterprise Linux Server 7.1 (Maipo)
 ----
 
-=== Your First Container
+== Your First Container
 
 .[root@master ~]#
 ----
