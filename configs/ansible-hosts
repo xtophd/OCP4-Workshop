@@ -39,7 +39,3 @@ master.example.com
 
 [etcd]
 master.example.com
-
-## Not related to OCP cluster, but used for Docker Fundamentals exercises
-[docker]
-docker.example.com
