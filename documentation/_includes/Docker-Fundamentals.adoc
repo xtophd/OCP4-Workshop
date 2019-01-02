@@ -12,7 +12,7 @@ endif::[]
 
 = Docker Fundamentals
 
-In this unit, we will get familiar with Docker Containers and the Docker CLI.  This is unit is designed to explain and highlight 
+In this unit, we will get familiar with Docker Containers and the Docker CLI.  This unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
 == Getting Started with Docker Containers
