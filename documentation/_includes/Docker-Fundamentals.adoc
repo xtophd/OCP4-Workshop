@@ -15,42 +15,75 @@ endif::[]
 In this unit, we will get familiar with Docker Containers and the Docker CLI.  This unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
-== Getting Started with Docker Containers
+== Docker Installation and Setup
+
+=== Run the docker-install script
 
 Installation and configuration of docker has been condensed into an Ansible Playbook for simplicity.
 
+.[root@workstation ~]#
+----
+cd ~/OCP-Workshop
+bash 04-docker-install.sh
+----
 
-=== Install Required Packages
-Install the required docker packages provided with the RHEL subscription.
+You can review the playbook if you have any questions as to the steps required to install docker.  The installation takes about 2 minutes to complete.
+
+.Your output should look like this
+[source,indent=4]
+----
+## Calling ansible playbook: ./playbooks/docker-install.yml
+
+PLAY [docker] **********************************************
+
+TASK [Gathering Facts] *************************************
+ok: [docker.example.com]
+
+TASK [PING all hosts to ensure we are alive and ready] *****
+ok: [docker.example.com]
+
+TASK [YUM install docker docker-distribution] **************
+changed: [docker.example.com]
+
+TASK [SERVICE STOP firewalld] ******************************
+ok: [docker.example.com]
+
+TASK [SERVICE START docker] ********************************
+changed: [docker.example.com]
+
+TASK [SERVICE START docker-distribution] *******************
+changed: [docker.example.com]
+
+TASK [CMD: Pull rhel7 image] *******************************
+changed: [docker.example.com]
+
+PLAY RECAP *************************************************
+docker.example.com         : ok=7    changed=4    unreachable=0    failed=0
+
+real    1m49.861s
+user    0m14.865s
+sys     0m8.440s
+----
+
+=== Connect to System : docker.example.com
+
+There is a dedicated VM we will use for the docker exercises.  From workstation.example.com, you should be able to ssh to docker.example.com as 'root' without any prompts for credentials.
 
 .[root@workstation ~]#
 ----
-yum install -y docker docker-registry
+ssh docker.example.com
 ----
 
-=== Disable Services
+Now you are ready to begin your exercises with docker.
 
-Disable incompatible services
 
-.[root@workstation ~]#
-----
-systemctl stop firewalld
-systemctl disable firewalld
-----
+== Docker Basics
 
-=== Enable Services
+=== Networking
 
-Enable Docker services
+Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.  First, have look at the network.
 
-NOTE: as of RHEL 7.5, 'docker-registry' was replaced with 'docker-distribution'
-
-.[root@workstation ~]#
-----
-systemctl enable docker docker-distribution
-systemctl start docker docker-distribution
-----
-
-.[root@workstation ~]#
+.[root@docker ~]#
 ----
 iptables -L
 ----
@@ -59,74 +92,110 @@ iptables -L
 [source,indent=4]
 ----
 Chain INPUT (policy ACCEPT)
-target     prot opt source               destination         
+target     prot opt source               destination
 
-Chain FORWARD (policy ACCEPT)
-target     prot opt source               destination         
-DOCKER     all  --  anywhere             anywhere            
+Chain FORWARD (policy DROP)
+target     prot opt source               destination
+DOCKER-ISOLATION  all  --  anywhere             anywhere
+DOCKER     all  --  anywhere             anywhere
 ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
-ACCEPT     all  --  anywhere             anywhere            
-ACCEPT     all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
 
 Chain OUTPUT (policy ACCEPT)
-target     prot opt source               destination         
+target     prot opt source               destination
 
 Chain DOCKER (1 references)
 target     prot opt source               destination
+
+Chain DOCKER-ISOLATION (1 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
 ----
 
-=== Pull a RHEL Image
+=== Docker Info
 
-.[root@workstation ~]#
-----
-docker pull registry.access.redhat.com/rhel7
-----
+Now have a look at the general docker information.
 
-=== Review Docker Info
-
-.[root@workstation ~]#
+.[root@docker ~]#
 ----
-docker pull registry.access.redhat.com/rhel7
+docker info
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
 Containers: 0
-Images: 3
-Storage Driver: devicemapper
- Pool Name: docker-253:1-34827849-pool
- Pool Blocksize: 65.54 kB
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 1
+Server Version: 1.13.1
+Storage Driver: overlay2
  Backing Filesystem: xfs
- Data file: /dev/loop0
- Metadata file: /dev/loop1
- Data Space Used: 864.7 MB
- Data Space Total: 107.4 GB
- Data Space Available: 6.657 GB
- Metadata Space Used: 1.073 MB
- Metadata Space Total: 2.147 GB
- Metadata Space Available: 2.146 GB
- Udev Sync Supported: true
- Data loop file: /var/lib/docker/devicemapper/devicemapper/data
- Metadata loop file: /var/lib/docker/devicemapper/devicemapper/metadata
- Library Version: 1.02.93-RHEL7 (2015-01-28)
-Execution Driver: native-0.2
-Kernel Version: 3.10.0-229.1.2.el7.x86_64
-Operating System: Red Hat Enterprise Linux Server 7.1 (Maipo)
+ Supports d_type: false
+ Native Overlay Diff: true
+Logging Driver: journald
+Cgroup Driver: systemd
+Plugins:
+ Volume: local
+ Network: bridge host macvlan null overlay
+ Authorization: rhel-push-plugin
+Swarm: inactive
+Runtimes: docker-runc runc
+Default Runtime: docker-runc
+Init Binary: /usr/libexec/docker/docker-init-current
+containerd version:  (expected: aa8187dbd3b7ad67d8e5e3a15115d3eef43a7ed1)
+runc version: 5eda6f6fd0c2884c2c8e78a6e7119e8d0ecedb77 (expected: 9df8b306d01f59d3a8029be411de015b7304dd8f)
+init version: fec3683b971d9c3ef73f284f176672c44b448662 (expected: 949e6facb77383876aeff8a6944dde66b3089574)
+Security Options:
+ seccomp
+  WARNING: You're not using the default seccomp profile
+  Profile: /etc/docker/seccomp.json
+ selinux
+Kernel Version: 3.10.0-862.9.1.el7.x86_64
+Operating System: Red Hat Enterprise Linux
+OSType: linux
+Architecture: x86_64
+Number of Docker Hooks: 3
+CPUs: 1
+Total Memory: 1.796 GiB
+Name: docker.example.com
+ID: L3CI:Z35C:C6FW:3OYK:OPJM:KMZY:VRHZ:YR7C:OEIP:EZW4:FYEM:RN3A
+Docker Root Dir: /var/lib/docker
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://registry.access.redhat.com/v1/
+WARNING: bridge-nf-call-iptables is disabled
+WARNING: bridge-nf-call-ip6tables is disabled
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+Registries: registry.access.redhat.com (secure), docker.io (secure)
 ----
+
 
 == Your First Container
 
-.[root@master ~]#
+=== Hello World
+
+.[root@docker ~]#
 ----
-docker run rhel echo "hello world"
+docker run rhel7 echo "hello world"
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+hello world
 ----
 
 Well that was really boring!! What did we learn from this?  For starters, you should have noticed how fast the container launched and then concluded.  Compare that with traditinal virtualization where you power up, wait for bios, what for grub, wait for the boot kernel, final pivot root to a running OS and then finally the application launches.
 
 Let us run a few more commands to see what else we can gleen.
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 docker info
 
@@ -134,15 +203,15 @@ docker ps -a
 ----
 
 
-.[root@master ~]#
+.[root@mdocker ~]#
 ----
-docker run rhel echo "hello world"
+docker run rhel7 echo "hello world"
 
 docker ps -a
 ----
 
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 docker ps -a
 
@@ -151,7 +220,7 @@ docker rm <CONTAINER-ID> <CONTAINER-ID>
 docker info
 ----
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 docker run -v /usr/sbin:/usr/sbin --rm rhel /usr/sbin/ip addr show eth0
 ----
