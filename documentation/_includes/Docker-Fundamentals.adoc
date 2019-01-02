@@ -124,7 +124,7 @@ docker run rhel echo "hello world"
 
 Well that was really boring!! What did we learn from this?  For starters, you should have noticed how fast the container launched and then concluded.  Compare that with traditinal virtualization where you power up, wait for bios, what for grub, wait for the boot kernel, final pivot root to a running OS and then finally the application launches.
 
-Let us run a few more commands to see what else this exercise offered.
+Let us run a few more commands to see what else we can gleen.
 
 .[root@master ~]#
 ----
@@ -178,5 +178,3 @@ link:../OCP-Workshop.adoc[Return to TOC]
 ////
 Always end files with a blank line to avoid include problems.
 ////
-=== Scale Up Number of Workers
-252
