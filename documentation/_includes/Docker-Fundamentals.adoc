@@ -1,0 +1,174 @@
+:sectnums:
+:sectnumlevels: 2
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+:toc:
+
+= Docker Fundamentals
+
+In this unit, we will get familiar with Docker Containers and the Docker CLI.  This is unit is designed to explain and highlight 
+some of the significant security concerns around the native Docker approach to Linux containers.
+
+== Docker Installation
+
+Install the required docker packages provided with the RHEL subscription.
+
+.[root@workstation ~]#
+----
+yum install -y docker docker-registry
+----
+
+Disable incompatible services
+
+.[root@workstation ~]#
+----
+systemctl stop firewalld
+systemctl disable firewalld
+----
+
+Enable Docker services
+
+NOTE: as of RHEL 7.5, 'docker-registry' was replaced with 'docker-distribution'
+
+.[root@workstation ~]#
+----
+systemctl enable docker docker-distribution
+systemctl start docker docker-distribution
+----
+
+.[root@workstation ~]#
+----
+iptables -L
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+DOCKER     all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+ACCEPT     all  --  anywhere             anywhere            
+ACCEPT     all  --  anywhere             anywhere            
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain DOCKER (1 references)
+target     prot opt source               destination
+----
+
+=== Pull a RHEL Image
+
+.[root@workstation ~]#
+----
+docker pull registry.access.redhat.com/rhel7
+----
+
+=== Review Docker Info
+
+.[root@workstation ~]#
+----
+docker pull registry.access.redhat.com/rhel7
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Containers: 0
+Images: 3
+Storage Driver: devicemapper
+ Pool Name: docker-253:1-34827849-pool
+ Pool Blocksize: 65.54 kB
+ Backing Filesystem: xfs
+ Data file: /dev/loop0
+ Metadata file: /dev/loop1
+ Data Space Used: 864.7 MB
+ Data Space Total: 107.4 GB
+ Data Space Available: 6.657 GB
+ Metadata Space Used: 1.073 MB
+ Metadata Space Total: 2.147 GB
+ Metadata Space Available: 2.146 GB
+ Udev Sync Supported: true
+ Data loop file: /var/lib/docker/devicemapper/devicemapper/data
+ Metadata loop file: /var/lib/docker/devicemapper/devicemapper/metadata
+ Library Version: 1.02.93-RHEL7 (2015-01-28)
+Execution Driver: native-0.2
+Kernel Version: 3.10.0-229.1.2.el7.x86_64
+Operating System: Red Hat Enterprise Linux Server 7.1 (Maipo)
+----
+
+=== Your First Container
+
+.[root@master ~]#
+----
+docker run rhel echo "hello world"
+----
+
+Well that was really boring!! What did we learn from this?  For starters, you should have noticed how fast the container launched and then concluded.  Compare that with traditinal virtualization where you power up, wait for bios, what for grub, wait for the boot kernel, final pivot root to a running OS and then finally the application launches.
+
+Let us run a few more commands to see what else this exercise offered.
+
+.[root@master ~]#
+----
+docker info
+
+docker ps -a
+----
+
+
+.[root@master ~]#
+----
+docker run rhel echo "hello world"
+
+docker ps -a
+----
+
+
+.[root@master ~]#
+----
+docker ps -a
+
+docker rm <CONTAINER-ID> <CONTAINER-ID>
+
+docker info
+----
+
+.[root@master ~]#
+----
+docker run -v /usr/sbin:/usr/sbin --rm rhel /usr/sbin/ip addr show eth0
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+4: eth0: <NO-CARRIER,BROADCAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state DOWN 
+    link/ether 02:42:ac:11:00:01 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:1/64 scope link tentative 
+       valid_lft forever preferred_lft forever
+----
+
+
+
+
+[discrete]
+== End of Unit
+
+link:../OCP-Workshop.adoc[Return to TOC]
+
+////
+Always end files with a blank line to avoid include problems.
+////
+=== Scale Up Number of Workers
+252
