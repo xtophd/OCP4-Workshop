@@ -202,6 +202,11 @@ docker info
 docker ps -a
 ----
 
+.Your output should look like this
+[source,indent=4]
+----
+Coming Soon...
+----
 
 .[root@mdocker ~]#
 ----
@@ -210,15 +215,27 @@ docker run rhel7 echo "hello world"
 docker ps -a
 ----
 
+.Your output should look like this
+[source,indent=4]
+----
+Coming Soon...
+----
+
+
+Using the container UID from the about output, you can now clean up the 'exited' containers.
 
 .[root@docker ~]#
 ----
-docker ps -a
-
 docker rm <CONTAINER-ID> <CONTAINER-ID>
 
 docker info
 ----
+
+Now let us run a command to report the network configuration from within the a container's namespace.  In this instance, then image that we are using (ie: rhel7) does not have the traditional commmandline utilities a user might expect.  For example, tool to configure network interfaces like 'ifconfig' simply aren't there.
+
+So for this exercise, you will leverage something called a 'bind mount' to effectively mirror a portion of the hosts filesystem inside the container.  Bind mounts are declared using the '-v' option.  In the example below, /usr/bin from the host will be exposed and accessible to the containers namespace mounted at 'usr/bin'.
+
+NOTE: Using bind mounts is generally suitable for debugging, but not a good practice as a design decision for enterprise container strategies.  After all, creating dependencies between applications and host operating systems is what we are trying to get away from.
 
 .[root@docker ~]#
 ----
@@ -235,6 +252,48 @@ docker run -v /usr/sbin:/usr/sbin --rm rhel /usr/sbin/ip addr show eth0
     inet6 fe80::42:acff:fe11:1/64 scope link tentative 
        valid_lft forever preferred_lft forever
 ----
+
+Since this container is very short lived, there is not too much more we can learn from this.  Next you will learn more about the innards of a container image and it's running namespace by deploying an image which runs a long lived application.
+
+=== You First Application
+
+
+.[root@docker ~]#
+----
+mkdir -p /var/www/html
+echo "Server up and running" > /var/www/html/test.txt
+restorecon -Rv /var/www
+docker run -d -p 8000:8000 --name="python_web" \
+    -v /usr/sbin:/usr/sbin \
+    -v /usr/bin:/usr/bin \
+    -v /usr/lib64:/usr/lib64 \
+    -v /var/www/html:/var/www/html \
+    -w /var/www/html  \
+    rhel /bin/python -m SimpleHTTPServer 8000
+----
+
+
+.[root@docker ~]#
+----
+netstat -tulpn | grep 8000
+
+curl localhost:8000/test.txt
+----
+
+
+.Your output should look like this
+[source,indent=4]
+----
+Coming Soon...
+----
+
+
+
+
+
+
+
+
 
 
 
