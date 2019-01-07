@@ -510,27 +510,44 @@ Notice above how there is now a dedicated mount point for /usr/bin.  Bind-Mounts
 
 == Your First Containerized Application
 
+=== Setup
+
 .[root@docker ~]#
 ----
 mkdir -p /var/www/html
+
 echo "Server up and running" > /var/www/html/test.txt
+
 restorecon -Rv /var/www
-docker run -d -p 8000:8000 --name="python_web" \
-    -v /usr/sbin:/usr/sbin \
+----
+
+=== Deployment
+
+.[root@docker ~]#
+----
+docker run -d --name="python_web" \
     -v /usr/bin:/usr/bin \
     -v /usr/lib64:/usr/lib64 \
     -v /var/www/html:/var/www/html \
     -w /var/www/html  \
+    -p 8000:8000 \
     rhel /bin/python -m SimpleHTTPServer 8000
 ----
+
+=== Validation
 
 
 .[root@docker ~]#
 ----
 netstat -tulpn | grep 8000
+----
 
+
+.[root@docker ~]#
+----
 curl localhost:8000/test.txt
 ----
+
 
 
 .Your output should look like this
