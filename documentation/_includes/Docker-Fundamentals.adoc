@@ -96,6 +96,33 @@ Now you are ready to begin your exercises with docker.
 
 == Docker Basics
 
+=== Daemon Status
+
+.[root@docker ~]#
+----
+systemctl status docker
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2019-01-07 12:41:55 EST; 2h 46min ago
+     Docs: http://docs.docker.com
+ Main PID: 2860 (dockerd-current)
+    Tasks: 35
+   Memory: 14.7M
+   CGroup: /system.slice/docker.service
+           ├─ 406 /usr/libexec/docker/docker-proxy-current -proto tcp -host-ip 0.0.0.0 -host-port 8000 -container-ip 172.17.0.2 -container-port 8000
+           ├─ 410 /usr/bin/docker-containerd-shim-current d8319a624c80ff5b8ce5afc049efc636fc500954b1e8383076feebfcb4549279 /var/run/docker/libcontainerd/d8319a624c80ff5b8ce5afc049efc636fc500954b1e8383076feebfc...
+           ├─2860 /usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --authorization-plugin=rhel-push-plugin --exec-opt native.cgroupdriver...
+           └─2864 /usr/bin/docker-containerd-current -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd ...
+
+<... SNIP ...>
+----
+
+
 === Host Networking
 
 Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.  First, have look at the network.
@@ -204,6 +231,7 @@ Insecure Registries:
 Live Restore Enabled: false
 Registries: registry.access.redhat.com (secure), docker.io (secure)
 ----
+
 
 
 == Your First Container
@@ -521,6 +549,8 @@ echo "Server up and running" > /var/www/html/test.txt
 restorecon -Rv /var/www
 ----
 
+
+
 === Deployment
 
 .[root@docker ~]#
@@ -531,10 +561,92 @@ docker run -d --name="python_web" \
     -v /var/www/html:/var/www/html \
     -w /var/www/html  \
     -p 8000:8000 \
-    rhel /bin/python -m SimpleHTTPServer 8000
+    rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
 
+
+
 === Validation
+
+.[root@docker ~]#
+----
+pgrep -laf SimpleHttp
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+423 /bin/python -m SimpleHTTPServer 8000
+----
+
+On the host, we see a python process running using module SimpleHTTPServie on port 8000.  That's good!
+
+Now let's introduce a commandline utility 'lsns' to check out the namespaces.
+
+.[root@docker ~]#
+----
+lsns
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+        NS TYPE  NPROCS   PID USER   COMMAND
+4026531836 pid      126     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026531837 user     127     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026531838 uts      126     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026531839 ipc      126     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026531840 mnt      122     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026531856 mnt        1    13 root   kdevtmpfs
+4026531956 net      126     1 root   /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+4026532143 mnt        1   491 root   /usr/lib/systemd/systemd-udevd
+4026532162 mnt        1   611 chrony /usr/sbin/chronyd
+4026532163 mnt        1   635 root   /usr/sbin/NetworkManager --no-daemon
+4026532170 mnt        1   423 root   /bin/python -m SimpleHTTPServer 8000
+4026532171 uts        1   423 root   /bin/python -m SimpleHTTPServer 8000
+4026532172 ipc        1   423 root   /bin/python -m SimpleHTTPServer 8000
+4026532173 pid        1   423 root   /bin/python -m SimpleHTTPServer 8000
+4026532175 net        1   423 root   /bin/python -m SimpleHTTPServer 8000
+----
+
+Again on the host, we see a python process running using the mnt uts ipc pid and net namespaces.  That's good too!
+
+Well since we explored namespaces, we may as well have a look and discuss the control-groups aligned with our process.
+
+.[root@docker ~]#
+----
+systemd-cgls 
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+├─1 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+├─user.slice
+│ └─user-0.slice
+│   └─session-11.scope
+│     ├─ 728 systemd-cgls
+│     ├─ 729 systemd-cgls
+│     ├─2941 sshd: root@pts/0
+│     └─2944 -bash
+└─system.slice
+  ├─docker-d8319a624c80ff5b8ce5afc049efc636fc500954b1e8383076feebfcb4549279.scope
+  │ └─423 /bin/python -m SimpleHTTPServer 8000
+  ├─docker.service
+  │ ├─ 406 /usr/libexec/docker/docker-proxy-current -proto tcp -host-ip 0.0.0.0 -host-port 8000 -container-ip 172.17.0.2 -container-port 8000
+  │ ├─ 410 /usr/bin/docker-containerd-shim-current d8319a624c80ff5b8ce5afc049efc636fc500954b1e8383076feebfcb4549279 /var/run/docker/libcontainerd/d8319a624c80ff5b8ce5afc049efc636fc500954b1e8383076feebfcb4549279 /
+  │ ├─2860 /usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --authorization-plugin=rhel-push-plugin --exec-opt native.cgroupdriver=systemd -
+  │ └─2864 /usr/bin/docker-containerd-current -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --shim doc
+  ├─docker-distribution.service
+  │ └─2323 /usr/bin/registry serve /etc/docker-distribution/registry/config.yml
+  ├─rhel-push-plugin.service
+  │ └─2229 /usr/libexec/docker/rhel-push-plugin
+  ├─dm-event.service
+  │ └─2075 /usr/sbin/dmeventd -f
+  ├─rsyslog.service
+  │ └─906 /usr/sbin/rsyslogd -n
+  <... SNIP ...>
+----
 
 
 .[root@docker ~]#
@@ -542,28 +654,184 @@ docker run -d --name="python_web" \
 netstat -tulpn | grep 8000
 ----
 
+.Your output should look like this
+[source,indent=4]
+----
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      903/sshd
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      1208/master
+tcp6       0      0 :::8000                 :::*                    LISTEN      406/docker-proxy-cu
+tcp6       0      0 :::5000                 :::*                    LISTEN      2323/registry
+tcp6       0      0 :::22                   :::*                    LISTEN      903/sshd
+tcp6       0      0 ::1:25                  :::*                    LISTEN      1208/master
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           602/avahi-daemon: r
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           611/chronyd
+udp        0      0 0.0.0.0:58000           0.0.0.0:*                           602/avahi-daemon: r
+udp6       0      0 ::1:323                 :::*                                611/chronyd
+----
+
+Just pointing out that that there is now a service hanging on port 8000 proxying the network traffic to the container.
+
+Now let us see if the simple web server is working.
 
 .[root@docker ~]#
 ----
 curl localhost:8000/test.txt
 ----
 
-
-
 .Your output should look like this
 [source,indent=4]
 ----
-Coming Soon...
+Server up and running
+----
+
+=== Cleanup
+
+.[root@docker ~]#
+----
+docker stop python_web
+
+docker rm python_web
 ----
 
 
 
+== Exploring Container Security
+
+Now it is time to examine security.  Start be re-launching the container from our last exercise.
+
+=== Standard (lack-of) Security
+
+.[root@docker ~]#
+----
+docker run -d --name="python_web" \
+    -v /usr/bin:/usr/bin \
+    -v /usr/lib64:/usr/lib64 \
+    -v /var/www/html:/var/www/html \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+----
+
+Now you will start a shell that inherits the namespaces from 'python_web'.
+
+.[root@docker ~]#
+----
+docker exec -it python_web bash
+----
+
+
+.[root@CONTAINER-ID ~]#
+----
+echo "Hello From My Container" > /usr/bin/tryme.txt
+
+exit
+----
+
+
+.[root@docker ~]#
+----
+docker stop python_web
+
+docker rm python_web
+----
+
+=== Manual Incremental Security Improvements
+
+.[root@docker ~]#
+----
+docker run -d --name="python_web" \
+    -v /usr/bin:/usr/bin:ro \
+    -v /usr/lib64:/usr/lib64:ro \
+    -v /var/www/html:/var/www/html:ro \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+----
+
+
+.[root@docker ~]#
+----
+docker exec -it python_web bash
+----
+
+
+.[root@CONTAINER-ID ~]#
+----
+echo "Hello From My Container" > /usr/bin/tryme-again.txt
+
+exit
+----
+
+.[root@docker ~]#
+----
+cat /usr/bin/tryme.txt
+----
+
+.[root@docker ~]#
+----
+docker stop python_web
+
+docker rm python_web
+----
 
 
 
+=== Strong Security Blanket with SELinux
+
+.[root@docker ~]#
+----
+setenforce enforcing
+----
+
+.[root@docker ~]#
+----
+getenforce
+----
+
+.[root@docker ~]#
+----
+docker run -d --name="python_web" \
+    -v /usr/bin:/usr/bin \
+    -v /usr/lib64:/usr/lib64 \
+    -v /var/www/html:/var/www/html \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+----
 
 
+.[root@docker ~]#
+----
+docker exec -it python_web bash
+----
 
+
+.[root@CONTAINER-ID ~]#
+----
+echo "Hello From My Container" > /usr/bin/tryme-again.txt
+----
+
+.[root@CONTAINER-ID ~]#
+----
+getenforce
+
+exit
+----
+
+.[root@docker ~]#
+----
+ps -efZ | grep SimpleHTTP
+----
+
+
+.[root@docker ~]#
+----
+docker stop python_web
+
+docker rm python_web
+----
 
 
 [discrete]
