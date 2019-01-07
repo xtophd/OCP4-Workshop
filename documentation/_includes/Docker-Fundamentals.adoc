@@ -845,8 +845,6 @@ echo "Custom Server up and running" > /var/www/html/custom.txt
 restorecon -Rv /var/www
 ----
 
-
-
 === Deployment
 
 .[root@docker ~]#
@@ -907,7 +905,7 @@ docker run -d --name="custom_web" \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
 
-=== Validate
+=== Validatationof Custom Image
 
 .[root@docker ~]#
 ----
