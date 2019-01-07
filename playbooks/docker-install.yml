@@ -1,12 +1,49 @@
 ---
 - hosts: docker
-  tasks:
+
+handlers:
+    - name: reconfig storage step-1
+      service: name=docker state=stopped enabled=yes
+      notify: reconfig storage step-2
+      
+    - name: reconfig storage step-2
+      shell: 
+        cmd: |
+          rm -f /etc/sysconfig/docker-storage
+          rm -rf /var/lib/docker
+          vgs docker-vg && vgremove --force docker-vg
+          pvs /dev/vdb1 && pvremove --force /dev/vdb1
+          wipefs -a /dev/vdb
+          docker-storage-setup
+      notify: reconfig storage step-3
+          
+    - name: reconfig storage step-3
+      service: name=docker state=started enabled=yes
+
+tasks:
   
     - name: "PING all hosts to ensure we are alive and ready"
       ping:
 
     - name: "YUM install docker docker-distribution"
       yum: name=docker,docker-distribution state=installed
+      
+    - name: "TEMPLATE modify /etc/motd"
+      template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
+      template:
+        src: docker-storage-setup.j2
+        dest: /etc/sysconfig/docker-storage-setup
+        owner: root
+        group: root
+        mode: 0644
+      notify: reconfig storage step-1
 
     - name: "SERVICE STOP firewalld"
       service: name=firewalld state=stopped enabled=no
