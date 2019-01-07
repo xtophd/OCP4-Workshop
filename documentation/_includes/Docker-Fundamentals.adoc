@@ -801,12 +801,10 @@ docker run -d --name="python_web" \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
 
-
 .[root@docker ~]#
 ----
 docker exec -it python_web bash
 ----
-
 
 .[root@CONTAINER-ID ~]#
 ----
@@ -825,7 +823,6 @@ exit
 ps -efZ | grep SimpleHTTP
 ----
 
-
 .[root@docker ~]#
 ----
 docker stop python_web
@@ -833,6 +830,91 @@ docker stop python_web
 docker rm python_web
 ----
 
+
+
+== Creating a Custom Image
+
+=== Setup
+
+.[root@docker ~]#
+----
+mkdir -p /var/www/html
+
+echo "Custom Server up and running" > /var/www/html/custom.txt
+
+restorecon -Rv /var/www
+----
+
+
+
+=== Deployment
+
+.[root@docker ~]#
+----
+docker run -d --name="python_web" \
+    -v /usr/bin:/usr/bin \
+    -v /usr/lib64:/usr/lib64 \
+    -v /var/www/html:/mnt \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+----
+
+=== Customize
+
+.[root@docker ~]#
+----
+docker exec -it python_web bash
+----
+
+
+.[root@CONTAINER-ID ~]#
+----
+mkdir -p /var/www/html
+
+cp /mnt/custom.txt /var/www/html/custom.txt
+
+exit
+----
+
+
+.[root@docker ~]#
+----
+curl localhost:8000/custom.txt
+----
+
+=== Save
+
+.[root@docker ~]#
+----
+docker stop python_web
+
+docker commit -m "Custom Image" -a "Student" python_web custom_web
+----
+
+.[root@docker ~]#
+----
+docker images
+----
+
+=== Deployment of Custom Image
+
+.[root@docker ~]#
+----
+docker run -d --name="custom_web" \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+----
+
+=== Validate
+
+.[root@docker ~]#
+----
+curl localhost:8000/custom.txt
+----
+
+=== Cleanup
 
 [discrete]
 == End of Unit
