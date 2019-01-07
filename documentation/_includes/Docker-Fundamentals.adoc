@@ -198,15 +198,77 @@ Let us run a few more commands to see what else we can gleen.
 .[root@docker ~]#
 ----
 docker info
+----
 
+.Your output should look like this
+[source,indent=4]
+----
+Containers: 1
+ Running: 0
+ Paused: 0
+ Stopped: 1
+Images: 1
+Server Version: 1.13.1
+Storage Driver: overlay2
+ Backing Filesystem: xfs
+ Supports d_type: false
+ Native Overlay Diff: true
+Logging Driver: journald
+Cgroup Driver: systemd
+Plugins:
+ Volume: local
+ Network: bridge host macvlan null overlay
+ Authorization: rhel-push-plugin
+Swarm: inactive
+Runtimes: docker-runc runc
+Default Runtime: docker-runc
+Init Binary: /usr/libexec/docker/docker-init-current
+containerd version:  (expected: aa8187dbd3b7ad67d8e5e3a15115d3eef43a7ed1)
+runc version: 5eda6f6fd0c2884c2c8e78a6e7119e8d0ecedb77 (expected: 9df8b306d01f59d3a8029be411de015b7304dd8f)
+init version: fec3683b971d9c3ef73f284f176672c44b448662 (expected: 949e6facb77383876aeff8a6944dde66b3089574)
+Security Options:
+ seccomp
+  WARNING: You're not using the default seccomp profile
+  Profile: /etc/docker/seccomp.json
+ selinux
+Kernel Version: 3.10.0-862.9.1.el7.x86_64
+Operating System: Red Hat Enterprise Linux
+OSType: linux
+Architecture: x86_64
+Number of Docker Hooks: 3
+CPUs: 1
+Total Memory: 1.796 GiB
+Name: docker.example.com
+ID: XL2H:E335:S6UF:BYHT:OHQ2:6LEJ:ZZQK:A2KA:PBUX:CASW:NRFA:AGM2
+Docker Root Dir: /var/lib/docker
+Debug Mode (client): false
+Debug Mode (server): false
+Registry: https://registry.access.redhat.com/v1/
+WARNING: bridge-nf-call-iptables is disabled
+WARNING: bridge-nf-call-ip6tables is disabled
+Experimental: false
+Insecure Registries:
+ 127.0.0.0/8
+Live Restore Enabled: false
+Registries: registry.access.redhat.com (secure), docker.io (secure)
+----
+
+.[root@docker ~]#
+----
 docker ps -a
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-Coming Soon...
+CONTAINER ID  IMAGE  COMMAND                CREATED              STATUS                          PORTS               NAMES
+2f0a2c755a7a  rhel7  "echo 'hello world'"   About a minute ago   Exited (0) About a minute ago                       focused_knuth
 ----
+
+
+
+
+
 
 .[root@mdocker ~]#
 ----
