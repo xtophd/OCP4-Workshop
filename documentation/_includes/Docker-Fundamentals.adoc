@@ -19,7 +19,7 @@ some of the significant security concerns around the native Docker approach to L
 
 === Run the docker-install script
 
-Installation and configuration of docker has been condensed into an Ansible Playbook for simplicity.
+Installation and configuration of docker has been condensed into an Ansible Playbook for simplicity.  This installation also closely mimics the configuration used for supporting Openshift.  Primarily, the default storage configuration was changed to utilize logical volumes instead of the default filesystem based layout.
 
 .[root@workstation ~]#
 ----
@@ -34,35 +34,52 @@ You can review the playbook if you have any questions as to the steps required t
 ----
 ## Calling ansible playbook: ./playbooks/docker-install.yml
 
-PLAY [docker] **********************************************
+PLAY [docker] *****************************************************************************************************************************
 
-TASK [Gathering Facts] *************************************
+TASK [Gathering Facts] ********************************************************************************************************************
 ok: [docker.example.com]
 
-TASK [PING all hosts to ensure we are alive and ready] *****
+TASK [PING all hosts to ensure we are alive and ready] ************************************************************************************
 ok: [docker.example.com]
 
-TASK [YUM install docker docker-distribution] **************
+TASK [YUM install docker docker-distribution] *********************************************************************************************
 changed: [docker.example.com]
 
-TASK [SERVICE STOP firewalld] ******************************
+TASK [TEMPLATE modify /etc/motd] **********************************************************************************************************
+changed: [docker.example.com]
+
+TASK [TEMPLATE install /etc/sysconf/docker-storage-setup] *********************************************************************************
+changed: [docker.example.com]
+
+TASK [SERVICE STOP firewalld] *************************************************************************************************************
 ok: [docker.example.com]
 
-TASK [SERVICE START docker] ********************************
+TASK [SERVICE START docker] ***************************************************************************************************************
 changed: [docker.example.com]
 
-TASK [SERVICE START docker-distribution] *******************
+TASK [SERVICE START docker-distribution] **************************************************************************************************
 changed: [docker.example.com]
 
-TASK [CMD: Pull rhel7 image] *******************************
+TASK [CMD: Pull rhel7 image] **************************************************************************************************************
 changed: [docker.example.com]
 
-PLAY RECAP *************************************************
-docker.example.com         : ok=7    changed=4    unreachable=0    failed=0
+RUNNING HANDLER [reconfig storage step-1] *************************************************************************************************
+changed: [docker.example.com]
 
-real    1m49.861s
-user    0m14.865s
-sys     0m8.440s
+RUNNING HANDLER [reconfig storage step-2] *************************************************************************************************
+ [WARNING]: Consider using file module with state=absent rather than running rm
+
+changed: [docker.example.com]
+
+RUNNING HANDLER [reconfig storage step-3] *************************************************************************************************
+changed: [docker.example.com]
+
+PLAY RECAP ********************************************************************************************************************************
+docker.example.com         : ok=12   changed=9    unreachable=0    failed=0
+
+real    1m59.845s
+user    0m16.577s
+sys     0m7.443s
 ----
 
 === Connect to System : docker.example.com
@@ -129,12 +146,27 @@ Containers: 0
  Running: 0
  Paused: 0
  Stopped: 0
-Images: 1
+Images: 0
 Server Version: 1.13.1
-Storage Driver: overlay2
+Storage Driver: devicemapper
+ Pool Name: docker--vg-docker--pool
+ Pool Blocksize: 524.3 kB
+ Base Device Size: 10.74 GB
  Backing Filesystem: xfs
- Supports d_type: false
- Native Overlay Diff: true
+ Data file:
+ Metadata file:
+ Data Space Used: 19.92 MB
+ Data Space Total: 4.266 GB
+ Data Space Available: 4.246 GB
+ Metadata Space Used: 40.96 kB
+ Metadata Space Total: 12.58 MB
+ Metadata Space Available: 12.54 MB
+ Thin Pool Minimum Free Space: 426.2 MB
+ Udev Sync Supported: true
+ Deferred Removal Enabled: true
+ Deferred Deletion Enabled: true
+ Deferred Deleted Device Count: 0
+ Library Version: 1.02.146-RHEL7 (2018-01-22)
 Logging Driver: journald
 Cgroup Driver: systemd
 Plugins:
@@ -161,13 +193,11 @@ Number of Docker Hooks: 3
 CPUs: 1
 Total Memory: 1.796 GiB
 Name: docker.example.com
-ID: L3CI:Z35C:C6FW:3OYK:OPJM:KMZY:VRHZ:YR7C:OEIP:EZW4:FYEM:RN3A
+ID: JNRB:NRG2:DZMK:XJJF:4Z2Z:NJMI:E24H:3WGJ:FCGE:XN5K:HM6O:QVAX
 Docker Root Dir: /var/lib/docker
 Debug Mode (client): false
 Debug Mode (server): false
 Registry: https://registry.access.redhat.com/v1/
-WARNING: bridge-nf-call-iptables is disabled
-WARNING: bridge-nf-call-ip6tables is disabled
 Experimental: false
 Insecure Registries:
  127.0.0.0/8
@@ -236,10 +266,25 @@ Containers: 2
  Stopped: 2
 Images: 1
 Server Version: 1.13.1
-Storage Driver: overlay2
+Storage Driver: devicemapper
+ Pool Name: docker--vg-docker--pool
+ Pool Blocksize: 524.3 kB
+ Base Device Size: 10.74 GB
  Backing Filesystem: xfs
- Supports d_type: false
- Native Overlay Diff: true
+ Data file:
+ Metadata file:
+ Data Space Used: 310.9 MB
+ Data Space Total: 4.266 GB
+ Data Space Available: 3.955 GB
+ Metadata Space Used: 147.5 kB
+ Metadata Space Total: 12.58 MB
+ Metadata Space Available: 12.44 MB
+ Thin Pool Minimum Free Space: 426.2 MB
+ Udev Sync Supported: true
+ Deferred Removal Enabled: true
+ Deferred Deletion Enabled: true
+ Deferred Deleted Device Count: 0
+ Library Version: 1.02.146-RHEL7 (2018-01-22)
 Logging Driver: journald
 Cgroup Driver: systemd
 Plugins:
@@ -266,13 +311,11 @@ Number of Docker Hooks: 3
 CPUs: 1
 Total Memory: 1.796 GiB
 Name: docker.example.com
-ID: XL2H:E335:S6UF:BYHT:OHQ2:6LEJ:ZZQK:A2KA:PBUX:CASW:NRFA:AGM2
+ID: JNRB:NRG2:DZMK:XJJF:4Z2Z:NJMI:E24H:3WGJ:FCGE:XN5K:HM6O:QVAX
 Docker Root Dir: /var/lib/docker
 Debug Mode (client): false
 Debug Mode (server): false
 Registry: https://registry.access.redhat.com/v1/
-WARNING: bridge-nf-call-iptables is disabled
-WARNING: bridge-nf-call-ip6tables is disabled
 Experimental: false
 Insecure Registries:
  127.0.0.0/8
@@ -360,27 +403,25 @@ UID        PID  PPID  C STIME TTY          TIME CMD
 root         1     0  0 16:39 ?        00:00:00 ps -ef
 ----
 
-=== Filesystem
-
-
-
 === Network
 
 Now let us run a command to report the network configuration from within the a container's namespace.
 
 .[root@docker ~]#
 ----
-docker run rhel7 /usr/sbin/ip addr show eth0
+docker run rhel7 ip addr show eth0
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-container_linux.go:247: starting container process caused "exec: \"/usr/sbin/ip\": stat /usr/sbin/ip: no such file or directory"
-/usr/bin/docker-current: Error response from daemon: oci runtime error: container_linux.go:247: starting container process caused "exec: \"/usr/sbin/ip\": stat /usr/sbin/ip: no such file or directory".
+container_linux.go:247: starting container process caused "exec: \"ip\": executable file not found in $PATH"
+/usr/bin/docker-current: Error response from daemon: oci runtime error: container_linux.go:247: starting container process caused "exec: \"ip\": executable file not found in $PATH".
 ----
 
-In this instance, then image that we are using (ie: rhel7) does not have the traditional commmandline utilities a user might expect.  For example, a common tools to configure network interfaces like 'ip' simply aren't there.
+What just happened?
+
+For the most part, containers are not meant for interactive (user) sessions.  In this instance, then image that we are using (ie: rhel7) does not have the traditional commmandline utilities a user might expect.  Common tools to configure network interfaces like 'ip' simply aren't there.
 
 So for this exercise, we leverage something called a 'bind mount' to effectively mirror a portion of the host's filesystem into the container's namespace.  Bind mounts are declared using the '-v' option.  In the example below, /usr/sbin from the host will be exposed and accessible to the containers namespace mounted at '/usr/bin' (ie: /usr/sbin:/usr/sbin).
 
@@ -402,11 +443,70 @@ docker run -v /usr/sbin:/usr/sbin --rm rhel7 /usr/sbin/ip addr show eth0
        valid_lft forever preferred_lft forever
 ----
 
+A couple more commands to understand the network setup.
 
+Let us begin by examining the '/etc/hosts' file.
 
+.[root@docker ~]#
+----
+docker run --rm rhel7 cat /etc/hosts
+----
 
+How does the container resolve hostnames (ie: DNS)?
 
+.[root@docker ~]#
+----
+docker run --rm rhel7 cat /etc/resolv.conf
+----
 
+Take a look at the routing table.
+Pay attention now, the route command is in '/usr/bin'.  Take a look at the routing table for the container namespace.
+
+.[root@docker ~]#
+----
+docker run -v /usr/bin:/usr/bin --rm rhel7 /usr/bin/route -n
+----
+
+=== Filesystem
+
+.[root@docker ~]#
+----
+docker run rhel7 df -h
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+/dev/mapper/docker-253:1-33666640-20cf8eb18a0841286bb681bf8694ce2d60cab4c4ce027347025dd253edd52975   10G  259M  9.8G   3% /
+tmpfs                                                                                               920M     0  920M   0% /dev
+tmpfs                                                                                               920M     0  920M   0% /sys/fs/cgroup
+/dev/mapper/rhel_pwob--r7-root                                                                      8.5G  2.3G  6.3G  27% /etc/hosts
+shm                                                                                                  64M     0   64M   0% /dev/shm
+tmpfs                                                                                               920M     0  920M   0% /proc/scsi
+tmpfs                                                                                               920M     0  920M   0% /sys/firmware
+----
+
+You were introduced to Bind-Mounts in the previous section.  Let us examine what the filesystems looks like with an active Bind-Mount.
+
+.[root@docker ~]#
+----
+docker run -v /usr/bin:/usr/bin rhel7 df -h
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Filesystem                                                                                          Size  Used Avail Use% Mounted on
+/dev/mapper/docker-253:1-33666640-0173b6e98755b921811ba7ea405de9c47ebc16721271e5fc29b09e9e18807e64   10G  259M  9.8G   3% /
+tmpfs                                                                                               920M     0  920M   0% /dev
+tmpfs                                                                                               920M     0  920M   0% /sys/fs/cgroup
+/dev/mapper/rhel_pwob--r7-root                                                                      8.5G  2.3G  6.3G  27% /usr/bin
+shm                                                                                                  64M     0   64M   0% /dev/shm
+tmpfs                                                                                               920M     0  920M   0% /proc/scsi
+tmpfs                                                                                               920M     0  920M   0% /sys/firmware
+----
+
+Notice above how there is now a dedicated mount point for /usr/bin.  Bind-Mounts can be a very powerful tool (primarily for diagnostics) to termporarily inject tools and files that are not normally part of a container image.  Using bind mounts as a design decision for enterprise container strategies is folly.  Creating direct dependencies between containerized applications and host operating systems is what we are trying to get away from.
 
 == Your First Containerized Application
 
