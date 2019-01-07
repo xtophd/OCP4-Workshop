@@ -79,7 +79,7 @@ Now you are ready to begin your exercises with docker.
 
 == Docker Basics
 
-=== Networking
+=== Host Networking
 
 Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.  First, have look at the network.
 
@@ -197,16 +197,43 @@ Let us run a few more commands to see what else we can gleen.
 
 .[root@docker ~]#
 ----
+docker ps -a
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+CONTAINER ID        IMAGE               COMMAND                CREATED              STATUS                          PORTS               NAMES
+2f0a2c755a7a        rhel7               "echo 'hello world'"   About a minute ago   Exited (0) About a minute ago                       focused_knuth
+----
+
+Now let us run the exact same command again.
+
+.[root@mdocker ~]#
+----
+docker run rhel7 echo "hello world"
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+hello world
+----
+
+Check out 'docker info' one more time and you should notice a few changes.
+
+.[root@mdocker ~]#
+----
 docker info
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-Containers: 1
+Containers: 2
  Running: 0
  Paused: 0
- Stopped: 1
+ Stopped: 2
 Images: 1
 Server Version: 1.13.1
 Storage Driver: overlay2
@@ -253,6 +280,12 @@ Live Restore Enabled: false
 Registries: registry.access.redhat.com (secure), docker.io (secure)
 ----
 
+You should notice that the number of containers has incremented to 2, and that the amount of storage consumed has grown.  
+
+=== Cleanup
+
+Run 'docker ps -a' to the IDs of the exited containers.
+
 .[root@docker ~]#
 ----
 docker ps -a
@@ -261,64 +294,121 @@ docker ps -a
 .Your output should look like this
 [source,indent=4]
 ----
-CONTAINER ID  IMAGE  COMMAND                CREATED              STATUS                          PORTS               NAMES
-2f0a2c755a7a  rhel7  "echo 'hello world'"   About a minute ago   Exited (0) About a minute ago                       focused_knuth
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS                      PORTS               NAMES
+8cb4816f016d        rhel7               "echo 'hello world'"   2 minutes ago       Exited (0) 2 minutes ago                        focused_swirles
+2f0a2c755a7a        rhel7               "echo 'hello world'"   13 minutes ago      Exited (0) 13 minutes ago                       focused_knuth
 ----
 
-
-
-
-
-
-.[root@mdocker ~]#
-----
-docker run rhel7 echo "hello world"
-
-docker ps -a
-----
-
-.Your output should look like this
-[source,indent=4]
-----
-Coming Soon...
-----
-
-
-Using the container UID from the about output, you can now clean up the 'exited' containers.
+Using the container UIDs from the above output, you can now clean up the 'exited' containers.
 
 .[root@docker ~]#
 ----
 docker rm <CONTAINER-ID> <CONTAINER-ID>
-
-docker info
 ----
 
-Now let us run a command to report the network configuration from within the a container's namespace.  In this instance, then image that we are using (ie: rhel7) does not have the traditional commmandline utilities a user might expect.  For example, tool to configure network interfaces like 'ifconfig' simply aren't there.
+Now you should be able to run 'docker ps -a' again, and the results should come back empty.
 
-So for this exercise, you will leverage something called a 'bind mount' to effectively mirror a portion of the hosts filesystem inside the container.  Bind mounts are declared using the '-v' option.  In the example below, /usr/bin from the host will be exposed and accessible to the containers namespace mounted at 'usr/bin'.
+.[root@docker ~]#
+----
+docker ps -a
+----
+
+
+
+
+== Understanding Container Namespaces
+
+=== UTS / Hostname
+
+.[root@docker ~]#
+----
+docker run rhel7 cat /proc/sys/kernel/hostname
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+c60f5bff9560
+----
+
+So what we have learned is that the hostname in the container's namespace is NOT the same as the host platform (docker.example.com).  It is unique and is by default identical to the container's ID.  You can verify this with 'docker ps- a'.
+
+.[root@docker ~]#
+----
+docker ps -a
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                      PORTS               NAMES
+c60f5bff9560        rhel7               "cat /proc/sys/ker..."   42 seconds ago       Exited (0) 41 seconds ago                       zealous_austin
+----
+
+
+=== Process ID
+
+.[root@docker ~]#
+----
+docker run rhel7 ps -ef
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 16:39 ?        00:00:00 ps -ef
+----
+
+=== Filesystem
+
+
+
+=== Network
+
+Now let us run a command to report the network configuration from within the a container's namespace.
+
+.[root@docker ~]#
+----
+docker run rhel7 /usr/sbin/ip addr show eth0
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+container_linux.go:247: starting container process caused "exec: \"/usr/sbin/ip\": stat /usr/sbin/ip: no such file or directory"
+/usr/bin/docker-current: Error response from daemon: oci runtime error: container_linux.go:247: starting container process caused "exec: \"/usr/sbin/ip\": stat /usr/sbin/ip: no such file or directory".
+----
+
+In this instance, then image that we are using (ie: rhel7) does not have the traditional commmandline utilities a user might expect.  For example, a common tools to configure network interfaces like 'ip' simply aren't there.
+
+So for this exercise, we leverage something called a 'bind mount' to effectively mirror a portion of the host's filesystem into the container's namespace.  Bind mounts are declared using the '-v' option.  In the example below, /usr/sbin from the host will be exposed and accessible to the containers namespace mounted at '/usr/bin' (ie: /usr/sbin:/usr/sbin).
 
 NOTE: Using bind mounts is generally suitable for debugging, but not a good practice as a design decision for enterprise container strategies.  After all, creating dependencies between applications and host operating systems is what we are trying to get away from.
 
 .[root@docker ~]#
 ----
-docker run -v /usr/sbin:/usr/sbin --rm rhel /usr/sbin/ip addr show eth0
+docker run -v /usr/sbin:/usr/sbin --rm rhel7 /usr/sbin/ip addr show eth0
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-4: eth0: <NO-CARRIER,BROADCAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state DOWN 
-    link/ether 02:42:ac:11:00:01 brd ff:ff:ff:ff:ff:ff
-    inet 172.17.0.1/16 scope global eth0
+16: eth0@if17: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.17.0.2/16 scope global eth0
        valid_lft forever preferred_lft forever
-    inet6 fe80::42:acff:fe11:1/64 scope link tentative 
+    inet6 fe80::42:acff:fe11:2/64 scope link tentative
        valid_lft forever preferred_lft forever
 ----
 
-Since this container is very short lived, there is not too much more we can learn from this.  Next you will learn more about the innards of a container image and it's running namespace by deploying an image which runs a long lived application.
 
-=== You First Application
 
+
+
+
+
+== Your First Containerized Application
 
 .[root@docker ~]#
 ----
@@ -348,7 +438,6 @@ curl localhost:8000/test.txt
 ----
 Coming Soon...
 ----
-
 
 
 
