@@ -7,3 +7,4 @@ echo ""
 echo "## Calling ansible playbook: ./playbooks/docker-install.yml"
 echo ""
 time ansible-playbook -i ./configs/docker-hosts ./playbooks/docker-install.yml
+
