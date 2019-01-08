@@ -24,28 +24,7 @@
     - name: "YUM install httpd-utils"
       yum: name=httpd-tools state=installed
 
-
-
-
 - hosts: nodes
-  handlers:
-    - name: reconfig storage step-1
-      service: name=docker state=stopped enabled=yes
-      notify: reconfig storage step-2
-      
-    - name: reconfig storage step-2
-      shell: 
-        cmd: |
-          rm -f /etc/sysconfig/docker-storage
-          rm -rf /var/lib/docker
-          vgs docker-vg && vgremove --force docker-vg
-          pvs /dev/vdb1 && pvremove --force /dev/vdb1
-          wipefs -a /dev/vdb
-          docker-storage-setup
-      notify: reconfig storage step-3
-          
-    - name: reconfig storage step-3
-      service: name=docker state=started enabled=yes
 
   tasks:
   
@@ -88,3 +67,25 @@
         group: root
         mode: 0644
       notify: reconfig storage step-1
+
+    - name: "SERVICE ensure docker is stopped"
+      service: name=docker state=stopped enabled=yes
+      
+    - name: "CMD prepare docker storage"
+      shell: 
+        cmd: |
+          rm -f /etc/sysconfig/docker-storage
+          rm -rf /var/lib/docker
+          vgs docker-vg && vgremove --force docker-vg
+          pvs /dev/vdb1 && pvremove --force /dev/vdb1
+          wipefs -a /dev/vdb
+          
+    - name: "CMD configure docker storage"
+      shell: 
+        cmd: |         
+          docker-storage-setup
+          
+    - name: "SERVICE start docker daemon"
+      service: name=docker state=started enabled=yes
+
+
