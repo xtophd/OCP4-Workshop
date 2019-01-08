@@ -67,7 +67,7 @@ cd ~
 git clone https://github.com/xtophd/OCP-Workshop
 ----
 
-=== Run the pre-install script
+=== Run the install-openshift script
 
 WARNING: It is important to be in the correct working directory for these installation procedures to function properly.  
 
@@ -76,17 +76,20 @@ WARNING: It is important to be in the correct working directory for these instal
 cd ~/OCP-Workshop
 ----
 
-Now you are ready to proceed with executing the pre-install steps.  This typically runs for about 3-5 minutes.    
+Now you are ready to proceed with executing the openshift isntallation.  This typically runs for about 30-40 minutes.  
 
 .[root@workstation OCP-Workshop]#
 ----
-bash 01-pre-install-script.sh
+bash install-openshift.sh
 ----
 
-While the pre-install script runs, we can breifly review what actions are being performed.  There are 2 primary activities:
+If you examine the install script, it breaks the installation into 3 parts: pre-install, install & post-install.
+
+== Openshift Pre-Installation
+
+The pre-installation performs 2 primary activities:
 
 * Workstation Actions
-** install ansible inventory (/etc/ansible/hosts)
 ** minimum package installation
 
 * OCP Cluster Node Actions
@@ -94,35 +97,14 @@ While the pre-install script runs, we can breifly review what actions are being 
 ** enable and start firewalld
 ** minimum package installation
 
-=== Pre-Install Results
-
-NOTE: Please verify that PLAY RECAP reports 0 errors for all hosts.  If you encountered errors, stop here and notify an instructor.
-
-Here is the tail end of a sample output following a successfull run of the pre-install script and ansible playbooks.
-
-.Your output should look like this
-[source,indent=4]
-----
-PLAY RECAP **********
-master.example.com         : ok=16   changed=12   unreachable=0    failed=0 // <1>
-node1.example.com          : ok=14   changed=11   unreachable=0    failed=0 
-node2.example.com          : ok=14   changed=11   unreachable=0    failed=0 
-----
-<1> All "failed" results should = 0
-
-
 == Openshift Installation
 
-=== Run the ocp-install script
+This portion excutes the official Openshift Installer playbook.  
 
-WARNING: Again, it is important to be in the correct working directory for this to function properly.  This typically runs for about 20-25 minutes.
+== Openshift Post-Installation
 
-.[root@workstation OCP-Workshop]#
-----
-bash 02-ocp-install-script.sh
-----
+The post-install has very little to do with openshift itself.  The post-install deploys various configuration files and scripts which are used during the workshop exercises.  Additionally, the post-install configures NFS storage host for use as a persistent volume.  More on that topic later.
 
-[discrete]
 === A Few Words While the Installer Runs
 
 So you might be asking yourself, *why* another workshop?  What's different about this one?
