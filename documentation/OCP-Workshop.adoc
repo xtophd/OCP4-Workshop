@@ -15,6 +15,10 @@ include::{includedir}/Preface.adoc[leveloffset=+1]
 
 include::{includedir}/Getting-Started.adoc[leveloffset=+1]
 
+== Docker: Fundamentals
+
+include::{includedir}/Docker-Fundamentals.adoc[leveloffset=+1]
+
 == CLI: First Time Login
 
 include::{includedir}/CLI-First-Time-Login.adoc[leveloffset=+1]
