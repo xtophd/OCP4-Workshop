@@ -63,7 +63,7 @@ Now that you have logged in to Openshift using the *oc* command, you are ready t
 [discrete]
 == End of Unit
 
-*Next:* link:CLI-Hello-World.adoc[CLI: Hello-World]
+*Next:* link:CLI-Hello-World.adoc[OCP CLI: Hello-World]
 
 link:../OCP-Workshop.adoc[Return to TOC]
 
