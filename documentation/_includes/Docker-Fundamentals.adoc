@@ -962,7 +962,7 @@ exit
 
 .[root@dworkstation ~]#
 ----
-hostname
+uname -n
 
 whoami
 ----
