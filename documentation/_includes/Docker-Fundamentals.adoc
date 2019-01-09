@@ -744,12 +744,19 @@ How was it possible that a process running in a containerized namespace was able
 WARNING: Containers require strong INFOSEC practices.  Merely deploying applications in native containers does NOT provide ANY additional security benefits.
 
 This seems rather innocent, but consider the normal use of containers today:
-  . A developer wants to deploy an application using a mongo-db container
-  . The developer pulls a mongo-db container image from Docker Hub and builds the app
-  . The developer deploys the container(s)
+
+  . A developer wants to deploy an application using mongo-db
+  . The developer pulls a mongo-db container image from Docker Hub
+  . The developer builds the application and integrates it with the container image
+  . The developer deploys the container image
   . That was easy...
 
-Containerized applications are easy to deploy, after all that is one of the key benefits.  But how do you know what vulnerabilities or trojans ship along with the selected container image (ie: what's inside)?  Who will maintain and patch the image going forward?  How can you protrect your environment from weak design practices?
+Containerized applications are easy to deploy, after all that is one of the key benefits.  However, some key points need to be asked and addressed:
+
+  . What's inside?  (ie: known vulnerabilities and/or trojans)
+  . Who will maintain and patch the image going forward? (ie: unknown vulnerabilities, fixes, updates)
+  . How will you maintain and patch images going forwars? (ie: audit)
+  . How can you protect your environment from weak design practices? (ie: everything does not need to run as root)
 
 === Manual Incremental Security Improvements
 
@@ -790,7 +797,7 @@ docker stop python_web
 docker rm python_web
 ----
 
-=== Strong Security Blanket with SELinux
+=== Strong Security with SELinux
 
 .[root@docker ~]#
 ----
