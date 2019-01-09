@@ -787,7 +787,7 @@ exit
 
 .[root@docker ~]#
 ----
-cat /usr/bin/tryme.txt
+cat /usr/bin/tryme-again.txt
 ----
 
 .[root@docker ~]#
