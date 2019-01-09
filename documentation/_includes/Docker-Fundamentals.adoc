@@ -790,12 +790,20 @@ exit
 cat /usr/bin/tryme-again.txt
 ----
 
+.Your output should look like this
+[source,indent=4]
+----
+bash: /usr/bin/tryme-again.txt: Read-only file system
+----
+
 .[root@docker ~]#
 ----
 docker stop python_web
 
 docker rm python_web
 ----
+
+
 
 === Strong Security with SELinux
 
@@ -830,10 +838,14 @@ docker exec -it python_web bash
 echo "Hello From My Container" > /usr/bin/tryme-again.txt
 ----
 
+.Your output should look like this
+[source,indent=4]
+----
+bash: /usr/bin/tryme-again.txt: Permission denied
+----
+
 .[root@CONTAINER-ID ~]#
 ----
-getenforce
-
 exit
 ----
 
