@@ -18,6 +18,21 @@ The default and recommended method for interacting with the Openshift Container 
 
 Since you probably just completed the installation steps, you are more than likely already signed on with the proper credentials.  If you are not the user *root* on the *workstation* host, use the steps outlined in link:Getting-Started.adoc[Getting Started]  to get signed on.
 
+.[root@workstation ~]#
+----
+uname -n
+
+whoami
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+workstation.example.com
+
+root
+----
+
 Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.
 
 === Connect to host master.example.com
