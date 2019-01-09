@@ -8,14 +8,6 @@
 
 - hosts: workstation
   tasks:
-  
-    - name: "TEMPLATE modify /etc/motd"
-      template:
-        src: motd.j2
-        dest: /etc/motd
-        owner: root
-        group: root
-        mode: 0644  
 
     - name: "TEMPLATE create sample YAML spec files"
       template:
