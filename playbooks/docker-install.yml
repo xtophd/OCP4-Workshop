@@ -22,7 +22,7 @@
 
     - name: "TEMPLATE modify /etc/motd"
       template:
-        src: motd.j2
+        src: motd-docker.j2
         dest: /etc/motd
         owner: root
         group: root
