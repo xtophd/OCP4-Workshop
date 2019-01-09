@@ -952,6 +952,31 @@ docker kill $(docker ps -q)
 docker rm $(docker ps -a -q)
 ----
 
+== Exit System and Return: workstation.example.com
+
+.[root@docker ~]#
+----
+exit
+----
+
+
+.[root@dworkstation ~]#
+----
+hostname
+
+whoami
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+workstation.example.com
+
+root
+----
+
+Now you are ready to proceed to the next unit.
+
 [discrete]
 == End of Unit
 
