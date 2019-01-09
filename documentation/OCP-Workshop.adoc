@@ -19,23 +19,23 @@ include::{includedir}/Getting-Started.adoc[leveloffset=+1]
 
 include::{includedir}/Docker-Fundamentals.adoc[leveloffset=+1]
 
-== CLI: First Time Login
+== OCP CLI: First Time Login
 
 include::{includedir}/CLI-First-Time-Login.adoc[leveloffset=+1]
 
-== CLI: Hello World
+== OCP CLI: Hello World
 
 include::{includedir}/CLI-Hello-World.adoc[leveloffset=+1]
 
-== WebUI: First Time Login
+== OCP WebUI: First Time Login
 
 include::{includedir}/WebUI-First-Time-Login.adoc[leveloffset=+1]
 
-== WebUI: Hello World
+== OCP WebUI: Hello World
 
 include::{includedir}/WebUI-Hello-World.adoc[leveloffset=+1]
 
-== CLI: Blue Green Deployments
+== OCP CLI: Blue Green Deployments
 
 include::{includedir}/CLI-BlueGreen-Deployments.adoc[leveloffset=+1]
 
