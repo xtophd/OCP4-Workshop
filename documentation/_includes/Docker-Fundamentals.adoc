@@ -955,7 +955,7 @@ docker rm $(docker ps -a -q)
 [discrete]
 == End of Unit
 
-*Next:* link:CLI-First-Time-Login.adoc[CLI: First Time Login]
+*Next:* link:CLI-First-Time-Login.adoc[OCP CLI: First Time Login]
 
 link:../OCP-Workshop.adoc[Return to TOC]
 
