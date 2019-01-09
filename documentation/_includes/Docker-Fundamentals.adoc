@@ -960,7 +960,7 @@ exit
 ----
 
 
-.[root@dworkstation ~]#
+.[root@workstation ~]#
 ----
 uname -n
 
