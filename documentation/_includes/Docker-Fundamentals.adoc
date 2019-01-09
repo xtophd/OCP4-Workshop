@@ -15,74 +15,7 @@ endif::[]
 In this unit, we will get familiar with Docker Containers and the Docker CLI.  This unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
-== Docker Installation and Setup
-
-=== Run the docker-install script
-
-Installation and configuration of docker has been condensed into an Ansible Playbook for simplicity.  This installation also closely mimics the configuration used for supporting Openshift.  Primarily, the default storage configuration was changed to utilize logical volumes instead of the default filesystem based layout.
-
-.[root@workstation ~]#
-----
-cd ~/OCP-Workshop
-bash 04-docker-install.sh
-----
-
-You can review the playbook if you have any questions as to the steps required to install docker.  The installation takes about 2 minutes to complete.
-
-.Your output should look like this
-[source,indent=4]
-----
-## Calling ansible playbook: ./playbooks/docker-install.yml
-
-PLAY [docker] *****************************************************************************************************************************
-
-TASK [Gathering Facts] ********************************************************************************************************************
-ok: [docker.example.com]
-
-TASK [PING all hosts to ensure we are alive and ready] ************************************************************************************
-ok: [docker.example.com]
-
-TASK [YUM install docker docker-distribution] *********************************************************************************************
-changed: [docker.example.com]
-
-TASK [TEMPLATE modify /etc/motd] **********************************************************************************************************
-changed: [docker.example.com]
-
-TASK [TEMPLATE install /etc/sysconf/docker-storage-setup] *********************************************************************************
-changed: [docker.example.com]
-
-TASK [SERVICE STOP firewalld] *************************************************************************************************************
-ok: [docker.example.com]
-
-TASK [SERVICE START docker] ***************************************************************************************************************
-changed: [docker.example.com]
-
-TASK [SERVICE START docker-distribution] **************************************************************************************************
-changed: [docker.example.com]
-
-TASK [CMD: Pull rhel7 image] **************************************************************************************************************
-changed: [docker.example.com]
-
-RUNNING HANDLER [reconfig storage step-1] *************************************************************************************************
-changed: [docker.example.com]
-
-RUNNING HANDLER [reconfig storage step-2] *************************************************************************************************
- [WARNING]: Consider using file module with state=absent rather than running rm
-
-changed: [docker.example.com]
-
-RUNNING HANDLER [reconfig storage step-3] *************************************************************************************************
-changed: [docker.example.com]
-
-PLAY RECAP ********************************************************************************************************************************
-docker.example.com         : ok=12   changed=9    unreachable=0    failed=0
-
-real    1m59.845s
-user    0m16.577s
-sys     0m7.443s
-----
-
-=== Connect to System : docker.example.com
+== Connect to System : docker.example.com
 
 There is a dedicated VM we will use for the docker exercises.  From workstation.example.com, you should be able to ssh to docker.example.com as 'root' without any prompts for credentials.
 
@@ -92,7 +25,6 @@ ssh docker.example.com
 ----
 
 Now you are ready to begin your exercises with docker.
-
 
 == Docker Basics
 
