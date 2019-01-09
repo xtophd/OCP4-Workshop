@@ -424,7 +424,7 @@ Pay attention now, the route command is in '/usr/bin'.  Take a look at the routi
 
 .[root@docker ~]#
 ----
-docker run -v /usr/bin:/usr/bin --rm rhel7 /usr/bin/route -n
+docker run -v /usr/sbin:/usr/sbin --rm rhel7 route -n
 ----
 
 === Filesystem
