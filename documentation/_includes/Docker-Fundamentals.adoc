@@ -945,6 +945,13 @@ curl localhost:8000/custom.txt
 
 === Cleanup
 
+.[root@docker ~]#
+----
+docker kill $(docker ps -q)
+
+docker rm $(docker ps -a -q)
+----
+
 [discrete]
 == End of Unit
 
