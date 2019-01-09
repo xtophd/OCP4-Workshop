@@ -498,6 +498,39 @@ tmpfs                                                                           
 
 Notice above how there is now a dedicated mount point for /usr/bin.  Bind-Mounts can be a very powerful tool (primarily for diagnostics) to termporarily inject tools and files that are not normally part of a container image.  Using bind mounts as a design decision for enterprise container strategies is folly.  Creating direct dependencies between containerized applications and host operating systems is what we are trying to get away from.
 
+== Essential Docker Commands
+
+*docker images* - list images
+
+*docker ps* - lists running containers
+
+*docker pull* - pulls (copies) container image from repository (ie: redhat and/or docker hub)
+
+*docker run* - run a docker container
+
+*docker logs* - display logs of a container (can be used with --follow)
+
+*docker rm* - remove one or more containers
+
+*docker rmi* - remove one or more images
+
+*docker stop* - stops one or more containers
+
+*docker kill $(docker ps -q)* - kill all running containers
+
+*docker rm $(docker ps -a -q)* - deletes all stopped containers
+
+
+Let us clean up your environment before proceeding
+
+.[root@docker ~]#
+----
+docker kill $(docker ps -q)
+
+docker rm $(docker ps -a -q)
+----
+
+
 == Your First Containerized Application
 
 === Setup
@@ -532,7 +565,7 @@ docker run -d --name="python_web" \
 
 .[root@docker ~]#
 ----
-pgrep -laf SimpleHttp
+pgrep -laf SimpleHTTP
 ----
 
 .Your output should look like this
