@@ -669,6 +669,25 @@ docker stop python_web
 docker rm python_web
 ----
 
+Now that you have cleaned up your containers, take a last look at your host.
+
+.[root@docker ~]#
+----
+cat /usr/bin/tryme.txt
+----
+
+How was it possible that a process running in a containerized namespace was able to affect the filesystem of our host.  
+  
+WARNING: Containers require strong INFOSEC practices.  Merely deploying applications in native containers does NOT provide ANY additional security benefits.
+
+This seems rather innocent, but consider the normal use of containers today:
+  . A developer wants to deploy an application using a mongo-db container
+  . The developer pulls a mongo-db container image from Docker Hub and builds the app
+  . The developer deploys the container(s)
+  . That was easy...
+
+Containerized applications are easy to deploy, after all that is one of the key benefits.  But how do you know what vulnerabilities or trojans ship along with the selected container image (ie: what's inside)?  Who will maintain and patch the image going forward?  How can you protrect your environment from weak design practices?
+
 === Manual Incremental Security Improvements
 
 .[root@docker ~]#
@@ -707,8 +726,6 @@ docker stop python_web
 
 docker rm python_web
 ----
-
-
 
 === Strong Security Blanket with SELinux
 
