@@ -933,7 +933,7 @@ docker images
 docker run -d --name="custom_web" \
     -w /var/www/html  \
     -p 8000:8000 \
-    rhel7 /bin/python -m SimpleHTTPServer 8000
+    custom_web /bin/python -m SimpleHTTPServer 8000
 ----
 
 === Validatationof Custom Image
