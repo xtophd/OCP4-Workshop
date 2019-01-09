@@ -917,6 +917,8 @@ curl localhost:8000/custom.txt
 [discrete]
 == End of Unit
 
+*Next:* link:CLI-First-Time-Login.adoc[CLI: First Time Login]
+
 link:../OCP-Workshop.adoc[Return to TOC]
 
 ////
