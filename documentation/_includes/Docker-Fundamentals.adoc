@@ -26,13 +26,19 @@ ssh docker.example.com
 
 Now you are ready to begin your exercises with docker.
 
-== Docker Basics
+== Host Configuration
+
+Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.
 
 === Daemon Status
+
+First we begin by verifying that all the required services are running.
 
 .[root@docker ~]#
 ----
 systemctl status docker
+
+systemctl status docker-distribution
 ----
 
 .Your output should look like this
@@ -54,10 +60,22 @@ systemctl status docker
 <... SNIP ...>
 ----
 
+=== Host Storage Configuration
+
+.[root@docker ~]#
+----
+pvs
+
+vgs
+
+lvs
+----
+
+Insert paragraph about storage configuration and what was done in playbook
 
 === Host Networking
 
-Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.  First, have look at the network.
+Now have look at the network.
 
 .[root@docker ~]#
 ----
@@ -88,6 +106,10 @@ Chain DOCKER-ISOLATION (1 references)
 target     prot opt source               destination
 RETURN     all  --  anywhere             anywhere
 ----
+
+Insert a paragraph about docker network configuration and how ingress traffic is routed to the containers.
+
+== Docker Basics
 
 === Docker Info
 
@@ -164,7 +186,9 @@ Live Restore Enabled: false
 Registries: registry.access.redhat.com (secure), docker.io (secure)
 ----
 
-=== Docker Info
+=== Docker Image Management
+
+==== Current List of Images
 
 Now have a look at the general docker information.
 
@@ -177,6 +201,37 @@ docker images
 [source,indent=4]
 ----
 Coming Soon...
+----
+
+==== How to Pull Images
+
+.[root@docker ~]#
+----
+docker pull rhel7.5
+----
+
+
+.[root@docker ~]#
+----
+docker pull rhel6
+----
+
+Insert talk about tags...
+
+Insert talk about versions of rhel supported...
+
+Later you will create a custom image based on an official Red Hat Enterprise Linux container image.
+
+==== How to Remove Images
+
+.[root@docker ~]#
+----
+docker images
+----
+
+.[root@docker ~]#
+----
+docker rmi rhel6
 ----
 
 == Your First Container
