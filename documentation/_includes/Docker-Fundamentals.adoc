@@ -164,7 +164,20 @@ Live Restore Enabled: false
 Registries: registry.access.redhat.com (secure), docker.io (secure)
 ----
 
+=== Docker Info
 
+Now have a look at the general docker information.
+
+.[root@docker ~]#
+----
+docker images
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+Coming Soon...
+----
 
 == Your First Container
 
