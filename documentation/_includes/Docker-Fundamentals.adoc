@@ -15,7 +15,7 @@ endif::[]
 In this unit, we will get familiar with Docker Containers and the Docker CLI.  This unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
-== Connect to System : docker.example.com
+== Connect to Host
 
 There is a dedicated VM we will use for the docker exercises.  From workstation.example.com, you should be able to ssh to docker.example.com as 'root' without any prompts for credentials.
 
@@ -26,7 +26,7 @@ ssh docker.example.com
 
 Now you are ready to begin your exercises with docker.
 
-== Host Configuration
+== Review Host Configuration
 
 Before you start launching containers everywhere, let us take a moment to explore the host and discuss a few things.
 
@@ -233,6 +233,36 @@ docker images
 ----
 docker rmi rhel6
 ----
+
+=== Essential Docker Commands
+
+*docker images* - list images
+
+*docker ps* - lists running containers
+
+*docker pull* - pulls (copies) container image from repository (ie: redhat and/or docker hub)
+
+*docker run* - run a docker container
+
+*docker logs* - display logs of a container (can be used with --follow)
+
+*docker rm* - remove one or more containers
+
+*docker rmi* - remove one or more images
+
+*docker stop* - stops one or more containers
+
+*docker kill $(docker ps -q)* - kill all running containers
+
+*docker rm $(docker ps -a -q)* - deletes all stopped containers
+
+
+
+
+
+
+
+
 
 == Your First Container
 
@@ -565,28 +595,6 @@ tmpfs                                                                           
 ----
 
 Notice above how there is now a dedicated mount point for /usr/bin.  Bind-Mounts can be a very powerful tool (primarily for diagnostics) to termporarily inject tools and files that are not normally part of a container image.  Using bind mounts as a design decision for enterprise container strategies is folly.  Creating direct dependencies between containerized applications and host operating systems is what we are trying to get away from.
-
-== Essential Docker Commands
-
-*docker images* - list images
-
-*docker ps* - lists running containers
-
-*docker pull* - pulls (copies) container image from repository (ie: redhat and/or docker hub)
-
-*docker run* - run a docker container
-
-*docker logs* - display logs of a container (can be used with --follow)
-
-*docker rm* - remove one or more containers
-
-*docker rmi* - remove one or more images
-
-*docker stop* - stops one or more containers
-
-*docker kill $(docker ps -q)* - kill all running containers
-
-*docker rm $(docker ps -a -q)* - deletes all stopped containers
 
 
 Let us clean up your environment before proceeding
