@@ -109,6 +109,28 @@ RETURN     all  --  anywhere             anywhere
 
 Insert a paragraph about docker network configuration and how ingress traffic is routed to the containers.
 
+=== Security Enhanced Linux (SELinux)
+
+
+
+
+.[root@docker ~]#
+----
+grep OPTIONS /etc/sysconfig/docker
+----
+
+.Your output should look like this
+[source,indent=4]
+----
+OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false'
+----
+
+Red Hat enables the docker daemon flag '--selinux-enabled' by default. This results in the docker daemon setting SELinux labels on all executed containers and stronger security through access controls in the Linux kernel.  This 'labelling' allows the Linux kernel to apply rigid rules to practically any activity that executes within a container image.  As you will witness later, containers are an easy means to introduce risk into your environment and using SELinux in enforcing mode can provide a substantial barrier to harm.
+
+For the purposes of this workshop you begin with docker enabled for SELinux, but SELinux itself is set to 'permissive' mode. This logs the violation events without disrupting process execution.
+
+NOTE: For more information on '--selinux-enable', read link:https://www.projectatomic.io/blog/2016/07/docker-selinux-flag/[What does --selinux-enabled do?] by Dan Walsh
+
 == Docker Basics
 
 === Docker Info
