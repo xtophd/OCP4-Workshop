@@ -223,7 +223,7 @@ Insert talk about versions of rhel supported...
 
 Later you will create a custom image based on an official Red Hat Enterprise Linux container image.
 
-[NOTE] The link:https://access.redhat.com/containers[Red Hat Container Catalog] (RHCC) provides a convenient service to locate certified container images built and supported by Red Hat.  You can also view the "security evaluation" for each image.
+NOTE: The link:https://access.redhat.com/containers[Red Hat Container Catalog] (RHCC) provides a convenient service to locate certified container images built and supported by Red Hat.  You can also view the "security evaluation" for each image.
 
 ==== How to Remove Images
 
@@ -615,7 +615,7 @@ By default, the docker daemon runs applications with rot privileges.  As you wil
 
 User Namespaces and container security are covered more thoroughly in the Openshift parts of this workshop.
 
-[NOTE] For more information on configuring the docker daemon with User Namespaces please see link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/index[Getting Started With Containers]
+NOTE: For more information on configuring the docker daemon with User Namespaces please see link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/index[Getting Started With Containers]
 
 == Your First Containerized Application
 
