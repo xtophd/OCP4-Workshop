@@ -445,7 +445,7 @@ docker ps -a
 
 
 
-== Understanding Container Namespaces
+== Exploring Container Namespaces
 
 === UTS / Hostname
 
