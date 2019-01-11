@@ -11,6 +11,7 @@ endif::[]
 :imagesdir: ./_images
 
 :toc:
+:toclevels: 1
 
 = WebUI: Hello World
 
