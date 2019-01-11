@@ -228,10 +228,9 @@ docker images
 .Your output should look like this
 [source,indent=4]
 ----
-Coming Soon...
+REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
+registry.access.redhat.com/rhel7   latest              5edf42cf4ed8        7 weeks ago         203 MB
 ----
-
-
 
 ==== How to Pull Images
 
@@ -461,7 +460,7 @@ docker run rhel7 cat /proc/sys/kernel/hostname
 c60f5bff9560
 ----
 
-So what we have learned is that the hostname in the container's namespace is NOT the same as the host platform (docker.example.com).  It is unique and is by default identical to the container's ID.  You can verify this with 'docker ps- a'.
+So what we have learned is that the hostname in the container's namespace is NOT the same as the host platform (docker.example.com).  It is unique and is by default identical to the container's ID.  You can verify this with 'docker ps -a'.
 
 .[root@docker ~]#
 ----
@@ -656,8 +655,6 @@ echo "Server up and running" > /var/www/html/test.txt
 restorecon -Rv /var/www
 ----
 
-
-
 === Deployment
 
 .[root@docker ~]#
@@ -670,8 +667,6 @@ docker run -d --name="python_web" \
     -p 8000:8000 \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
-
-
 
 === Validation
 
