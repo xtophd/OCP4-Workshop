@@ -131,6 +131,11 @@ For the purposes of this workshop you begin with docker enabled for SELinux, but
 
 NOTE: For more information on '--selinux-enable', read link:https://www.projectatomic.io/blog/2016/07/docker-selinux-flag/[What does --selinux-enabled do?] by Dan Walsh
 
+NOTE: For more information on SELinux, read link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index[SELinux User's and Administrator's Guide]
+
+
+
+
 == Docker Basics
 
 === Docker Info
