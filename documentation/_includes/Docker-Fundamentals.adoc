@@ -217,9 +217,7 @@ docker pull rhel7.5
 docker pull rhel6
 ----
 
-Insert talk about tags...
-
-Insert talk about versions of rhel supported...
+Container images can also be tagged with convenient (ie:custom names).  This could make it more intuitive to understand what they contain, esspecialy after an image has been customized.
 
 Later you will create a custom image based on an official Red Hat Enterprise Linux container image.
 
