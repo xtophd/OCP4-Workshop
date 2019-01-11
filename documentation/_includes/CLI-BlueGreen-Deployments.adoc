@@ -194,11 +194,11 @@ Secrets decouple sensitive content from the pods that use it.  They can be mount
 
 === Consumig Secrets in Pods
 
-== Deployments
+== Deployments and Rollbacks
 
 === View Available Revisions
 
-Retreve general revision history
+Retrieve general revision history
 
 .[root@master ~]#
 ----
