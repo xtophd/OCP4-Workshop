@@ -237,7 +237,7 @@ Here is an example of rolling back to a specific revision
 oc rollback dc/worker --revision=2
 ----
 
-== Strategies
+== Deployment Strategies
 
 A deployment strategy is an algorithym which is implemented when changing or upgrading an application. The goal is to invoke change whilst reducing downtime or disruption to the end user.
 
