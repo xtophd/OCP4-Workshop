@@ -203,13 +203,14 @@ docker images
 Coming Soon...
 ----
 
+
+
 ==== How to Pull Images
 
 .[root@docker ~]#
 ----
 docker pull rhel7.5
 ----
-
 
 .[root@docker ~]#
 ----
@@ -221,6 +222,8 @@ Insert talk about tags...
 Insert talk about versions of rhel supported...
 
 Later you will create a custom image based on an official Red Hat Enterprise Linux container image.
+
+[NOTE] The link:https://access.redhat.com/containers[Red Hat Container Catalog] (RHCC) provides a convenient service to locate certified container images built and supported by Red Hat.  You can also view the "security evaluation" for each image.
 
 ==== How to Remove Images
 
@@ -606,6 +609,13 @@ docker kill $(docker ps -q)
 docker rm $(docker ps -a -q)
 ----
 
+=== User
+
+By default, the docker daemon runs applications with rot privileges.  As you will see later, this creates an enormous security risk.  You can however configure docker to enable a user namespaces mapping option which allows you to run applications with root privilege inside a container, but have them run as a different non-privileged user on the host.  At this time only a single UID and GID can be mapped per daemon.
+
+User Namespaces and container security are covered more thoroughly in the Openshift parts of this workshop.
+
+[NOTE] For more information on configuring the docker daemon with User Namespaces please see link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html-single/getting_started_with_containers/index[Getting Started With Containers]
 
 == Your First Containerized Application
 
