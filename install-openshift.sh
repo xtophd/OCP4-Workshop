@@ -11,14 +11,14 @@ if [ ! -e "${myInventory}" ] ; then
    exit
 fi
 
-
 time ansible-playbook -i ${myInventory} -5 \
-   ./playbooks/workstation-pre-install.yml \
-
-## ** WARNING ** WARNING ** WARNING ***
-## We have to break up the workstation and cluster playbook runs because the 
-## workstation playbook (above) installs ansible libraries.  So ansible needs 
-## to exit to run properly the next time (below)
+   ./playbooks/workstation-pre-install.yml
+   
+## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
+##  We have to break up the workstation and cluster playbook runs because the 
+##  workstation playbook (above) installs ansible libraries.  So ansible needs 
+##  to exit to run properly the next time (below).  Don't consolidate!!!
+## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 
 time ansible-playbook -i ${myInventory} -5 \
    ./playbooks/cluster-pre-install.yml \
