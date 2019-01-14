@@ -5,7 +5,14 @@
   
     - name: "PING all hosts to ensure we are alive and ready"
       ping:
-
+      
+   - name: "CMD disable yum plugins for rhn and subscription-manager"
+      shell: 
+        cmd: |          
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/rhnplugin.conf
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/subscription-manager.conf
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/product-id.conf
+      
     - name: "YUM install docker docker-distribution"
       yum: name=docker,docker-distribution state=installed
 
