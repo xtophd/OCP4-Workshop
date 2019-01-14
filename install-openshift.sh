@@ -7,15 +7,17 @@
 myInventory="./configs/ocp-workshop"
 
 if [ ! -e "${myInventory}" ] ; then
-   echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
-   exit
+    echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
+    exit
 fi
 
-time ansible-playbook -i ${myInventory} -5 \
-   ./playbooks/workstation-pre-install.yml
+time ansible-playbook -i ${myInventory} -5 ./playbooks/workstation-pre-install.yml
    
 ## If previous cmd exited non-zero then exit
-[ "$?" -ne "0" ] && exit
+if [ "$?" -ne "0" ] ; then
+    echo "ERROR: previous command exited non-zero, check errors and try again"
+    exit
+fi
    
 ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 ##  We have to break up the workstation and cluster playbook runs because the 
@@ -24,6 +26,6 @@ time ansible-playbook -i ${myInventory} -5 \
 ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 
 time ansible-playbook -i ${myInventory} -5 \
-   ./playbooks/cluster-pre-install.yml \
-   /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml \
-   ./playbooks/cluster-post-install.yml
+    ./playbooks/cluster-pre-install.yml \
+    /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml \
+    ./playbooks/cluster-post-install.yml
