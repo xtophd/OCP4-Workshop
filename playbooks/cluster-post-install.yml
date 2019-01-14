@@ -129,11 +129,18 @@
           oc project default
 
 
-- hosts: masters,nodes
+- hosts: all
   tasks:
   
     - name: "CMD cleaning yum content"
       shell: 
         cmd: |
           yum clean all
-  
+          
+    - name: "TEMPLATE placing ocp-install-completed file"
+      template:
+        src: "ocp-install-completed.j2"
+        dest: "/root/ocp-install-completed.txt"
+        owner: root
+        group: root
+        mode: 0644
