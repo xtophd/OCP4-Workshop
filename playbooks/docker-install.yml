@@ -6,7 +6,7 @@
     - name: "PING all hosts to ensure we are alive and ready"
       ping:
       
-   - name: "CMD disable yum plugins for rhn and subscription-manager"
+    - name: "CMD disable yum plugins for rhn and subscription-manager"
       shell: 
         cmd: |          
           sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/rhnplugin.conf
