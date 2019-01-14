@@ -1,4 +1,7 @@
 ## Not related to OCP cluster, but used for Docker Fundamentals exercises
 
+[workstation]
+workstation.example.com
+
 [docker]
 docker.example.com
