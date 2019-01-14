@@ -27,6 +27,13 @@
         - {name: 'libvirtd'}
         - {name: 'dnsmasq'}
 
+    - name: "CMD disable yum plugins for rhn and subscription-manager"
+      shell: 
+        cmd: |          
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/rhnplugin.conf
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/subscription-manager.conf
+          sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/product-id.conf
+
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
         name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools,lynx 
