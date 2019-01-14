@@ -137,10 +137,10 @@
         cmd: |
           yum clean all
           
-    - name: "TEMPLATE placing ocp-install-completed file"
+    - name: "TEMPLATE placing openshift-install-completed file"
       template:
-        src: "ocp-install-completed.j2"
-        dest: "/root/ocp-install-completed.txt"
+        src: "install-completed-msg.j2"
+        dest: "/root/openshift-install-completed.txt"
         owner: root
         group: root
         mode: 0644
