@@ -14,6 +14,9 @@ fi
 time ansible-playbook -i ${myInventory} -5 \
    ./playbooks/workstation-pre-install.yml
    
+## If previous cmd exited non-zero then exit
+[ "$?" -ne "0" ] && exit
+   
 ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 ##  We have to break up the workstation and cluster playbook runs because the 
 ##  workstation playbook (above) installs ansible libraries.  So ansible needs 
