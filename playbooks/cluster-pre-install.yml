@@ -73,7 +73,6 @@
         owner: root
         group: root
         mode: 0644
-      notify: reconfig storage step-1
 
     - name: "SERVICE ensure docker is stopped"
       service: name=docker state=stopped enabled=yes
