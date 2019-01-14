@@ -70,3 +70,12 @@
       shell:
         cmd: |
           docker pull registry.access.redhat.com/rhel7
+
+    - name: "TEMPLATE placing docker-install-completed file"
+      template:
+        src: "install-completed-msg.j2"
+        dest: "/root/docker-install-completed.txt"
+        owner: root
+        group: root
+        mode: 0644
+
