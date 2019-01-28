@@ -852,8 +852,8 @@ This seems rather innocent, but consider the normal use of containers today:
 Containerized applications are easy to deploy, after all that is one of the key benefits.  However, some key points need to be asked and addressed:
 
   . What's inside?  (ie: known vulnerabilities and/or trojans)
-  . Who will maintain and patch the image going forward? (ie: unknown vulnerabilities, fixes, updates)
-  . How will you maintain and patch images going forwars? (ie: audit)
+  . Who will maintain and patch the base image going forward? (ie: unknown vulnerabilities, fixes, updates)
+  . How will YOU maintain and patch image customizations going forward? (ie: audit)
   . How can you protect your environment from weak design practices? (ie: everything does not need to run as root)
 
 === Manual Incremental Security Improvements
