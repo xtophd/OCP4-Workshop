@@ -72,7 +72,7 @@ vgs
 lvs
 ----
 
-Insert paragraph about storage configuration and what was done in playbook
+By default, docker is configured to use an Overlay filesystem for it's containers in /var/lib/docker.  For this lab however, we have opted to configure the host to use logical volumes as the storage backend for the container images.  By using the lvm commands 'pvs', 'vgs' and 'lvs' you should see a dedicated volume group 'docker-vg' configured for use.  This matches the configuration of the Openshift deployment in this workshop.
 
 === Host Networking
 
@@ -108,12 +108,10 @@ target     prot opt source               destination
 RETURN     all  --  anywhere             anywhere
 ----
 
-Insert a paragraph about docker network configuration and how ingress traffic is routed to the containers.
+
+Docker prefers to manage the localnetwork configuration and is therefore NOT compatible with the 'firewalld' service.  On this host, 'firewalld' has already been disabled.  In the case of Openshift, kubernettes manages the network layer and IS compatible with 'firewalld'.
 
 === Security Enhanced Linux (SELinux)
-
-
-
 
 .[root@docker ~]#
 ----
@@ -126,16 +124,13 @@ grep OPTIONS /etc/sysconfig/docker
 OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false'
 ----
 
-Red Hat enables the docker daemon flag '--selinux-enabled' by default. This results in the docker daemon setting SELinux labels on all executed containers and stronger security through access controls in the Linux kernel.  This 'labelling' allows the Linux kernel to apply rigid rules to practically any activity that executes within a container image.  As you will witness later, containers are an easy means to introduce risk into your environment and using SELinux in enforcing mode can provide a substantial barrier to harm.
+Red Hat enables the docker daemon flag '--selinux-enabled' by default. This results in the docker daemon setting SELinux labels on all executed containers and strengthens security through access controls in the Linux kernel.  This 'labelling' allows the Linux kernel to apply rigid rules to practically any activity that executes within a container image.  As you will witness later, containers are an easy means to introduce risk into your environment and using SELinux in enforcing mode can provide a substantial barrier to harm.
 
-For the purposes of this workshop you begin with docker enabled for SELinux, but SELinux itself is set to 'permissive' mode. This logs the violation events without disrupting process execution.
+For the purposes of this workshop you begin with docker enabled for SELinux, but SELinux itself is set to 'permissive' mode. This logs the security events without disrupting process execution.
 
 NOTE: For more information on '--selinux-enable', read link:https://www.projectatomic.io/blog/2016/07/docker-selinux-flag/[What does --selinux-enabled do?] by Dan Walsh
 
 NOTE: For more information on SELinux, read link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index[SELinux User's and Administrator's Guide]
-
-
-
 
 == Docker Basics
 
@@ -284,14 +279,6 @@ docker rmi rhel6
 
 *docker rm $(docker ps -a -q)* - deletes all stopped containers
 
-
-
-
-
-
-
-
-
 == Your First Container
 
 === Hello World
@@ -307,7 +294,14 @@ docker run rhel7 echo "hello world"
 hello world
 ----
 
-Well that was really boring!! What did we learn from this?  For starters, you should have noticed how fast the container launched and then concluded.  Compare that with traditinal virtualization where you power up, wait for bios, what for grub, wait for the boot kernel, final pivot root to a running OS and then finally the application launches.
+Well that was really boring!! What did we learn from this?  For starters, you should have noticed how fast the container launched and then concluded.  Compare that with traditinal virtualization where:
+    * you power up, 
+    * wait for bios, 
+    * wait for grub, 
+    * wait for the kernel to boot and initialize resources,
+    * pivot root, 
+    * launch all the services, and then finally
+    * run the application
 
 Let us run a few more commands to see what else we can gleen.
 
@@ -442,9 +436,6 @@ Now you should be able to run 'docker ps -a' again, and the results should come 
 docker ps -a
 ----
 
-
-
-
 == Exploring Container Namespaces
 
 === UTS / Hostname
@@ -460,7 +451,7 @@ docker run rhel7 cat /proc/sys/kernel/hostname
 c60f5bff9560
 ----
 
-So what we have learned is that the hostname in the container's namespace is NOT the same as the host platform (docker.example.com).  It is unique and is by default identical to the container's ID.  You can verify this with 'docker ps -a'.
+So what we have learned here is that the hostname in the container's namespace is NOT the same as the host platform (docker.example.com).  It is unique and is by default identical to the container's ID.  You can verify this with 'docker ps -a'.
 
 .[root@docker ~]#
 ----
