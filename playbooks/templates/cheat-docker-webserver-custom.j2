@@ -1,0 +1,14 @@
+mkdir -p /var/www/html
+
+echo "Custom Server up and running" > /var/www/html/custom.txt
+
+restorecon -Rv /var/www
+
+docker run -d --name="python_web" \
+    -v /usr/bin:/usr/bin \
+    -v /usr/lib64:/usr/lib64 \
+    -v /var/www/html:/mnt \
+    -w /var/www/html  \
+    -p 8000:8000 \
+    rhel7 /bin/python -m SimpleHTTPServer 8000
+    
