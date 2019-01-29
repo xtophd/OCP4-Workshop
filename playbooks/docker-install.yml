@@ -71,6 +71,18 @@
         cmd: |
           docker pull registry.access.redhat.com/rhel7
 
+    - name: "TEMPLATE install cheat scripts"
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: 0755
+      with_items:
+        - {src: 'cheat-docker-webserver.j2',  dest: '/usr/local/bin/cheat-docker-webserver.j2'}
+        - {src: 'cheat-docker-webserver-ro.j2',  dest: '/usr/local/bin/cheat-docker-webserver-ro.j2'}
+  
+
 - hosts: all
 
   tasks:
