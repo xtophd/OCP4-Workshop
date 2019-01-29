@@ -648,7 +648,14 @@ restorecon -Rv /var/www
 
 === Deployment
 
-.[root@docker ~]#
+.[root@master ~]#
+----
+cheat-docker-webserver.sh
+----
+
+[NOTE]
+====
+_Native command(s) to deploy SimpleHTTPServer_
 ----
 docker run -d --name="python_web" \
     -v /usr/bin:/usr/bin \
@@ -658,6 +665,7 @@ docker run -d --name="python_web" \
     -p 8000:8000 \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
+====
 
 === Validation
 
@@ -796,7 +804,14 @@ Now it is time to examine security.  Start be re-launching the container from ou
 
 === Standard (lack-of) Security
 
-.[root@docker ~]#
+.[root@master ~]#
+----
+cheat-docker-webserver.sh
+----
+
+[NOTE]
+====
+_Native command(s) to deploy SimpleHTTPServer_
 ----
 docker run -d --name="python_web" \
     -v /usr/bin:/usr/bin \
@@ -806,6 +821,7 @@ docker run -d --name="python_web" \
     -p 8000:8000 \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
+====
 
 Now you will start a shell that inherits the namespaces from 'python_web'.
 
@@ -813,7 +829,6 @@ Now you will start a shell that inherits the namespaces from 'python_web'.
 ----
 docker exec -it python_web bash
 ----
-
 
 .[root@CONTAINER-ID ~]#
 ----
@@ -858,7 +873,14 @@ Containerized applications are easy to deploy, after all that is one of the key 
 
 === Manual Incremental Security Improvements
 
-.[root@docker ~]#
+.[root@master ~]#
+----
+cheat-docker-webserver-ro.sh
+----
+
+[NOTE]
+====
+_Native command(s) to deploy SimpleHTTPServer Read-Only_
 ----
 docker run -d --name="python_web" \
     -v /usr/bin:/usr/bin:ro \
@@ -868,6 +890,7 @@ docker run -d --name="python_web" \
     -p 8000:8000 \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
+====
 
 
 .[root@docker ~]#
@@ -915,7 +938,14 @@ setenforce enforcing
 getenforce
 ----
 
-.[root@docker ~]#
+.[root@master ~]#
+----
+cheat-docker-webserver.sh
+----
+
+[NOTE]
+====
+_Native command(s) to deploy SimpleHTTPServer_
 ----
 docker run -d --name="python_web" \
     -v /usr/bin:/usr/bin \
@@ -925,6 +955,7 @@ docker run -d --name="python_web" \
     -p 8000:8000 \
     rhel7 /bin/python -m SimpleHTTPServer 8000
 ----
+====
 
 .[root@docker ~]#
 ----
