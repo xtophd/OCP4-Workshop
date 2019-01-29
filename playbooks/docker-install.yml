@@ -82,6 +82,7 @@
         - {src: 'cheat-docker-webserver.j2',  dest: '/usr/local/bin/cheat-docker-webserver.sh'}
         - {src: 'cheat-docker-webserver-ro.j2',  dest: '/usr/local/bin/cheat-docker-webserver-ro.sh'}
         - {src: 'cheat-docker-webserver-custom.j2',  dest: '/usr/local/bin/cheat-docker-webserver-custom.sh'}
+        - {src: 'cheat-docker-cleanup.j2',  dest: '/usr/local/bin/cheat-docker-cleanup.sh'}
   
 
 - hosts: all
