@@ -14,7 +14,7 @@ The default and recommended method for interacting with the Openshift Container 
 
 == Login to OCP Cluster
 
-=== Verify Your Crendentials
+=== Verify Your Credentials
 
 Since you probably just completed the installation steps, you are more than likely already signed on with the proper credentials.  If you are not the user *root* on the *workstation* host, use the steps outlined in link:Getting-Started.adoc[Getting Started]  to get signed on.
 
