@@ -79,9 +79,9 @@
         group: root
         mode: 0755
       with_items:
-        - {src: 'cheat-docker-webserver.j2',  dest: '/usr/local/bin/cheat-docker-webserver.j2'}
-        - {src: 'cheat-docker-webserver-ro.j2',  dest: '/usr/local/bin/cheat-docker-webserver-ro.j2'}
-        - {src: 'cheat-docker-webserver-custom.j2',  dest: '/usr/local/bin/cheat-docker-webserver-custom.j2'}
+        - {src: 'cheat-docker-webserver.j2',  dest: '/usr/local/bin/cheat-docker-webserver.sh'}
+        - {src: 'cheat-docker-webserver-ro.j2',  dest: '/usr/local/bin/cheat-docker-webserver-ro.sh'}
+        - {src: 'cheat-docker-webserver-custom.j2',  dest: '/usr/local/bin/cheat-docker-webserver-custom.sh'}
   
 
 - hosts: all
