@@ -9,4 +9,4 @@ docker run -d -p 8000:8000 --name="python_web" \
     -v /usr/lib64:/usr/lib64:ro \
     -v /var/www/html:/var/www/html:ro \
     -w /var/www/html  \
-    rhel /bin/python -m SimpleHTTPServer 8000
+    rhel7 /bin/python -m SimpleHTTPServer 8000
