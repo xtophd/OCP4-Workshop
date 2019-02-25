@@ -49,7 +49,7 @@ oreg_auth_user=955154|ocp-workshop
 oreg_auth_password=eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiJiZWY4OTc4ZmI5Zjc0OGMzODY2YmE4YWE3YzhiNTZhZiJ9.qKExNd_bugfdVp3plbTEYxzan4d158ASOjwjOzpV5L5KgnyJ0iEJEh0urOd4VSBgHMZGXq5SMo7BWTfLa1l3pVi2xP-zyrONxqK3JMS2ptuu8Y3WX_z5gh8N1yXHNsXWLgv_nzqPwu-K-3X0RWOtquvdvcfOKNNL3_IWMRB1meDedSOooaTc5xgZlOw4YTNnUkifpZAlUrLeP9JVSr1foIpDhvAbURfJGW8ZBMFUNjF-KJ1520jLfAtsGW1507ZVQbpSTIIIY-UfH7XBYhihTkTO4v8RNb7NM-e8mJ188mzRD1ZfEJFPzcKXJeX8SpH8wqmgZD6HYG9tHkl0m0Z_AaFpP_YSHnU9OvwTC_cAslhR-q9p9tAk7vc-q-ymqR_C8TaRYUCDrHsgI3IrfVlfSgz2dTARKOovP3BP_zXxR1AXopj1cJeUOjT_17-7-__xs7V_-1gbl8mffr8C_S_xMA86_k1O7lGIcsNpmZwp3bck8_2Ionl7jymQVHDp3Hvl4uBQ8h1mJYwK-_DPpdOpWnEzpcC1CMw875UMHy5WsJmV41sqJWcOozs9zSJfMVvdckZTZ4qOqarH1J6I7baGBcstKF4EpAnNmiHBB6xWnLYVMY8RiqYsWWR_JGRyC79tvdJ2sMuSTHTH80zKcTmcWsNa5SEZ11Fnyq7Qp7D353A
 
 # For Operator Framework Images
-openshift_additional_registry_credentials=[{'host':'registry.connect.redhat.com','user':'HANGE_ME_REGISTRY_SERVICE_ACCOUNT','password':'CHANGE_ME_SERVICE_KEY','test_image':'mongodb/enterprise-operator:0.3.2'}]
+openshift_additional_registry_credentials=[{'host':'registry.connect.redhat.com','user':'CHANGE_ME_REGISTRY_SERVICE_ACCOUNT','password':'CHANGE_ME_SERVICE_KEY','test_image':'mongodb/enterprise-operator:0.3.2'}]
 
 # Update examples to point to oreg_url
 openshift_examples_modify_imagestreams=false
@@ -129,14 +129,14 @@ openshift_master_console_port=443
 
 #Default:  openshift_master_cluster_method=native
 # Internal cluster name
-openshift_master_cluster_hostname=openshift-console-int.example.com
+openshift_master_cluster_hostname=master.example.com
 
 # Note: use if using different internal & external FQDN (ie. using LB) 
 # set the external cluster name here
-openshift_master_cluster_public_hostname=openshift-console-ext.example.com
+openshift_master_cluster_public_hostname=master.example.com
 
 # NOTE: Default wildcard domain for applications
-openshift_master_default_subdomain=apps.example.com
+openshift_master_default_subdomain=cloud.example.com
 
 # Audit log
 # openshift_master_audit_config={"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
@@ -310,40 +310,32 @@ lb1.example.com
 
 [masters]
 master1.example.com
-master2.example.com
-master3.example.com
 
 [etcd]
 master1.example.com
-master2.example.com
-master3.example.com
 
 [nodes]
 ## These are the masters
 master1.example.com openshift_node_group_name='node-config-master' openshift_node_problem_detector_install=true
-master2.example.com openshift_node_group_name='node-config-master' openshift_node_problem_detector_install=true
-master3.example.com openshift_node_group_name='node-config-master' openshift_node_problem_detector_install=true
 
 ## These are infranodes
 infranode1.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
-infranode2.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
-infranode3.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
 
 ## These are regular App nodes
+#node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
+#node2.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
+#node3.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
+
+## These are regular App nodes with OCS hyperconverged
 node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
 node2.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
 node3.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
 
-## These are regular App nodes with OCS hyperconverged
-ocs-node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-ocs-node2.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-ocs-node3.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-
 
 [glusterfs]
-ocs-node1.example.com glusterfs_devices='[ "/dev/xvdd" ]'
-ocs-node2.example.com glusterfs_devices='[ "/dev/xvdd" ]'
-ocs-node3.example.com glusterfs_devices='[ "/dev/xvdd" ]'
+node1.example.com glusterfs_devices='[ " {{ myGlusterDev }} " ]'
+node2.example.com glusterfs_devices='[ " {{ myGlusterDev }} " ]'
+node3.example.com glusterfs_devices='[ " {{ myGlusterDev }} " ]'
 
 
 [workstation]
