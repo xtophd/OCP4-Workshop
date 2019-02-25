@@ -80,9 +80,14 @@
           rm -f /etc/sysconfig/docker-storage
           rm -rf /var/lib/docker
           vgs docker-vg && vgremove --force docker-vg
-          pvs /dev/vdb1 && pvremove --force /dev/vdb1
-          wipefs -a /dev/vdb
-          
+          pvs {{ myDockerDev }}1 && pvremove --force {{ myDockerDev }}1
+          wipefs -a {{ myDockerDev }}
+
+    - name: "CMD prepare gluster storage"
+      shell: 
+        cmd: |
+          wipefs -a {{ myGlusterDev }}
+
     - name: "CMD configure docker storage"
       shell: 
         cmd: |         
