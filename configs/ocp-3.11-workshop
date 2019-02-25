@@ -8,6 +8,7 @@ myOrganization = "ExampleCom"
 myAdminName = "admin"
 myAdminPW = "redhat"
 myGlusterDev = "/dev/vdc"
+myDockerDev = "/dev/vdb"
 myDomain= "example.com"
 myWildcardDNS = "cloud.example.com"
 
