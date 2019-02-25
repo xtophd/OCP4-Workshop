@@ -1,0 +1,41 @@
+
+[OSEv3:children]
+nodes
+masters
+nfs
+etcd
+
+[OSEv3:vars]
+openshift_master_cluster_public_hostname=None
+openshift_master_default_subdomain=cloud.example.com
+ansible_ssh_user=root
+openshift_master_cluster_hostname=None
+openshift_hostname_check=false
+deployment_type=openshift-enterprise
+openshift_release=v3.9
+os_firewall_use_firewalld=true
+openshift_disable_check=disk_availability,docker_storage,memory_availability
+oreg_url_master=registry.access.redhat.com/openshift3/ose-${component}:${version}
+oreg_url_node=registry.access.redhat.com/openshift3/ose-${component}:${version}
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+## Having problems with openshift_ansible_service_broker stealing storage (PV).  Disable for now
+## https://github.com/openshift/openshift-ansible/issues/7305#issuecomment-395045769
+ansible_service_broker_install=false
+ansible_service_broker_remove=true
+
+[workstation]
+workstation.example.com
+
+[nodes]
+master.example.com openshift_node_labels="{'region':'infra','zone':'default'}" openshift_schedulable=true
+node1.example.com openshift_node_labels="{'region': 'primary', 'zone': 'east'}"
+node2.example.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
+
+[masters]
+master.example.com
+
+[nfs]
+master.example.com
+
+[etcd]
+master.example.com
