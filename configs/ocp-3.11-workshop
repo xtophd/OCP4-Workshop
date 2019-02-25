@@ -345,6 +345,10 @@ ocs-node1.example.com glusterfs_devices='[ "/dev/xvdd" ]'
 ocs-node2.example.com glusterfs_devices='[ "/dev/xvdd" ]'
 ocs-node3.example.com glusterfs_devices='[ "/dev/xvdd" ]'
 
+
+[workstation]
+workstation.example.com
+
 #
 # END OF FILE
 #
