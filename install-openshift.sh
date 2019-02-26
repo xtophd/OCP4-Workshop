@@ -11,7 +11,7 @@ if [ ! -e "${myInventory}" ] ; then
     exit
 fi
 
-time ansible-playbook -i ${myInventory} -f 5 ./playbooks/workstation-pre-install.yml
+time ansible-playbook -i ${myInventory} -f 5 ./playbooks/ocp-3.9-prep-workstation.yml
    
 ## If previous cmd exited non-zero then exit
 if [ "$?" -ne "0" ] ; then
@@ -26,6 +26,6 @@ fi
 ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 
 time ansible-playbook -i ${myInventory} -f 5 \
-    ./playbooks/cluster-pre-install.yml \
+    ./playbooks/ocp-3.9-prep-cluster.yml \
     /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml \
-    ./playbooks/cluster-post-install.yml
+    ./playbooks/ocp-3.9-post-cluster.yml
