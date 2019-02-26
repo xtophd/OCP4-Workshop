@@ -22,7 +22,6 @@
       yum: name=httpd-tools state=installed
 
 - hosts: nodes
-
   tasks:
   
     - name: "CMD disable yum plugins for rhn and subscription-manager"
@@ -83,11 +82,6 @@
           pvs {{ myDockerDev }}1 && pvremove --force {{ myDockerDev }}1
           wipefs -a {{ myDockerDev }}
 
-    - name: "CMD prepare gluster storage"
-      shell: 
-        cmd: |
-          wipefs -a {{ myGlusterDev }}
-
     - name: "CMD configure docker storage"
       shell: 
         cmd: |         
@@ -96,3 +90,10 @@
     - name: "SERVICE start docker daemon"
       service: name=docker state=started enabled=yes
 
+- hosts : glusterfs
+  tasks:
+  
+    - name: "CMD prepare gluster storage"
+      shell: 
+        cmd: |
+          wipefs -a {{ myGlusterDev }}
