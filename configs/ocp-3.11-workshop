@@ -319,17 +319,17 @@ glusterfs
 lb1.example.com
 
 [masters]
-master1.example.com
+master.example.com
 
 [etcd]
-master1.example.com
+master.example.com
 
 [nodes]
 ## These are the masters
-master1.example.com openshift_node_group_name='node-config-master' openshift_node_problem_detector_install=true
+master.example.com openshift_node_group_name='node-config-master' openshift_node_problem_detector_install=true
 
 ## These are infranodes
-infranode1.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
+# infranode1.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
 
 ## These are regular App nodes
 #node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
