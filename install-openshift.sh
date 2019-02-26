@@ -4,7 +4,7 @@
 ##     on the control host (ie: workstation)
 ##     CWD =  ~root/OCP-Workshop
 
-myInventory="./configs/ocp-workshop"
+myInventory="./configs/ocp-3.9-workshop"
 
 if [ ! -e "${myInventory}" ] ; then
     echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
