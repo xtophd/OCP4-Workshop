@@ -170,9 +170,9 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
 ###########################################################################
 
 # htpasswd Authentication
-# NOTE: read initial identities in htpasswd format from /root/htpasswd.openshift
+# NOTE: this creates a new htpasswd file
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
-openshift_master_htpasswd_file=/root/htpasswd.openshift
+openshift_master_htpasswd_users={'admin': '$apr1$v7ZkLqBT$q7uAmBIxMBUBDZK0jPdNX.', 'operator': '$apr1$v7ZkLqBT$q7uAmBIxMBUBDZK0jPdNX.'} 
 
 # Other Identity Providers 
 # https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html
