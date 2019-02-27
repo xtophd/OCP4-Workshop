@@ -92,6 +92,11 @@
     - name: "YUM install httpd-utils"
       yum: name=httpd-tools state=installed
 
+    - name: "CMD creating /root/htpasswd.openshift"
+      shell:
+        cmd: |
+          htpasswd -c /root/htpasswd.openshift
+
 - hosts: glusterfs
 
   tasks:
