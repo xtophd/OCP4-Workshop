@@ -1,30 +1,11 @@
 ---
 - hosts: nodes
   tasks:
-  
-    - name: "PING all hosts to ensure we are alive and ready"
-      ping:
 
-    ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
-    ##
-    ##   We SHOULD use an appropriate perf profile in the real world,
-    ##   but we should NEVER enable nobarrier in the real world.
-    ##
-    ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
-    
-    - name: change performance profile                                                                 
-      shell:                                                                                           
-        cmd: |                                                                                         
-          tuned-adm profile virtual-guest                                                              
-          mount -o remount,nobarrier /                                                                 
-
-- hosts: masters
-  tasks:
-  
-    - name: "YUM install httpd-utils"
-      yum: name=httpd-tools state=installed
-
-- hosts: nodes
+    - name: "CMD enable yum  repos for ocp 3.9"
+      shell:
+        cmd: |
+          sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/ose3.9-latest.repo
 
   tasks:
   
@@ -53,7 +34,7 @@
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld,lynx state=installed
 
     - name: "SERVICE STOP firewalld"
-      service: name=firewalld state=stopped enabled=yes
+      service: name=firewalld state=stopped enabled=yes masked=no
 
     - name: "CMD flushing any existing iptable rules"
       shell: 
@@ -61,7 +42,7 @@
           iptables -F
 
     - name: "SERVICE START firewalld"
-      service: name=firewalld state=started enabled=yes
+      service: name=firewalld state=started enabled=yes masked=no
 
     - name: "YUM install docker-1.13.1"
       yum: name=docker-1.13.1 state=installed
@@ -94,4 +75,22 @@
     - name: "SERVICE start docker daemon"
       service: name=docker state=started enabled=yes
 
+    ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
+    ##
+    ##   We SHOULD use an appropriate perf profile in the real world,
+    ##   but we should NEVER enable nobarrier in the real world.
+    ##
+    ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
+    
+    - name: "CMD change performance profile (**NOTE** NOT FOR PRODUCTION)
+      shell:                                                                                           
+        cmd: |                                                                                         
+          tuned-adm profile virtual-guest                                                              
+          mount -o remount,nobarrier /                                                                 
+
+- hosts: masters
+  tasks:
+  
+    - name: "YUM install httpd-utils"
+      yum: name=httpd-tools state=installed
 

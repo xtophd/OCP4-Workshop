@@ -12,6 +12,9 @@ myDockerDev = "/dev/vdb"
 myDomain= "example.com"
 myWildcardDNS = "cloud.example.com"
 
+myRegistryID="955154|ocp-workshop"
+myRegistryPW="eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiJiZWY4OTc4ZmI5Zjc0OGMzODY2YmE4YWE3YzhiNTZhZiJ9.qKExNd_bugfdVp3plbTEYxzan4d158ASOjwjOzpV5L5KgnyJ0iEJEh0urOd4VSBgHMZGXq5SMo7BWTfLa1l3pVi2xP-zyrONxqK3JMS2ptuu8Y3WX_z5gh8N1yXHNsXWLgv_nzqPwu-K-3X0RWOtquvdvcfOKNNL3_IWMRB1meDedSOooaTc5xgZlOw4YTNnUkifpZAlUrLeP9JVSr1foIpDhvAbURfJGW8ZBMFUNjF-KJ1520jLfAtsGW1507ZVQbpSTIIIY-UfH7XBYhihTkTO4v8RNb7NM-e8mJ188mzRD1ZfEJFPzcKXJeX8SpH8wqmgZD6HYG9tHkl0m0Z_AaFpP_YSHnU9OvwTC_cAslhR-q9p9tAk7vc-q-ymqR_C8TaRYUCDrHsgI3IrfVlfSgz2dTARKOovP3BP_zXxR1AXopj1cJeUOjT_17-7-__xs7V_-1gbl8mffr8C_S_xMA86_k1O7lGIcsNpmZwp3bck8_2Ionl7jymQVHDp3Hvl4uBQ8h1mJYwK-_DPpdOpWnEzpcC1CMw875UMHy5WsJmV41sqJWcOozs9zSJfMVvdckZTZ4qOqarH1J6I7baGBcstKF4EpAnNmiHBB6xWnLYVMY8RiqYsWWR_JGRyC79tvdJ2sMuSTHTH80zKcTmcWsNa5SEZ11Fnyq7Qp7D353A"
+
 # Configuring your inventory file
 # https://docs.openshift.com/container-platform/3.11/install/configuring_inventory_file.html
 
@@ -55,11 +58,11 @@ openshift_enable_olm=true
 
 # NOTE: Need credentials from: https://access.redhat.com/terms-based-registry/
 oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
-oreg_auth_user=955154|ocp-workshop
-oreg_auth_password=eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiJiZWY4OTc4ZmI5Zjc0OGMzODY2YmE4YWE3YzhiNTZhZiJ9.qKExNd_bugfdVp3plbTEYxzan4d158ASOjwjOzpV5L5KgnyJ0iEJEh0urOd4VSBgHMZGXq5SMo7BWTfLa1l3pVi2xP-zyrONxqK3JMS2ptuu8Y3WX_z5gh8N1yXHNsXWLgv_nzqPwu-K-3X0RWOtquvdvcfOKNNL3_IWMRB1meDedSOooaTc5xgZlOw4YTNnUkifpZAlUrLeP9JVSr1foIpDhvAbURfJGW8ZBMFUNjF-KJ1520jLfAtsGW1507ZVQbpSTIIIY-UfH7XBYhihTkTO4v8RNb7NM-e8mJ188mzRD1ZfEJFPzcKXJeX8SpH8wqmgZD6HYG9tHkl0m0Z_AaFpP_YSHnU9OvwTC_cAslhR-q9p9tAk7vc-q-ymqR_C8TaRYUCDrHsgI3IrfVlfSgz2dTARKOovP3BP_zXxR1AXopj1cJeUOjT_17-7-__xs7V_-1gbl8mffr8C_S_xMA86_k1O7lGIcsNpmZwp3bck8_2Ionl7jymQVHDp3Hvl4uBQ8h1mJYwK-_DPpdOpWnEzpcC1CMw875UMHy5WsJmV41sqJWcOozs9zSJfMVvdckZTZ4qOqarH1J6I7baGBcstKF4EpAnNmiHBB6xWnLYVMY8RiqYsWWR_JGRyC79tvdJ2sMuSTHTH80zKcTmcWsNa5SEZ11Fnyq7Qp7D353A
+oreg_auth_user="{{ myRegistryID }}"
+oreg_auth_password="{{ myRegistryPW }}"
 
 # For Operator Framework Images
-openshift_additional_registry_credentials=[{'host':'registry.connect.redhat.com','user':'CHANGE_ME_REGISTRY_SERVICE_ACCOUNT','password':'CHANGE_ME_SERVICE_KEY','test_image':'mongodb/enterprise-operator:0.3.2'}]
+openshift_additional_registry_credentials=[{'host':'registry.connect.redhat.com','user':'{{ myRegistryID }}','password':'{{ myRegistryPW }}','test_image':'mongodb/enterprise-operator:0.3.2'}]
 
 # Update examples to point to oreg_url
 openshift_examples_modify_imagestreams=false
@@ -214,7 +217,7 @@ openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
 
 # Store Metrics for 2 days
-openshift_metrics_duration=2
+openshift_metrics_duration=1
 
 # Suggested Quotas and limits for Prometheus components:
 openshift_prometheus_memory_requests=2Gi
@@ -250,9 +253,9 @@ openshift_logging_es_pvc_size=20Gi
 # using glusterfs block
 openshift_logging_es_pvc_storage_class_name='glusterfs-storage-block'
 # requires a minimum of 8Gi RAM available
-openshift_logging_es_memory_limit=8Gi
+openshift_logging_es_memory_limit=4Gi
 openshift_logging_es_cluster_size=1
-openshift_logging_curator_default_days=2
+openshift_logging_curator_default_days=1
 
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
