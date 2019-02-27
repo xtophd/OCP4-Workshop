@@ -91,7 +91,6 @@
       shell: 
         cmd: |
           oc login -u system:admin
-          htpasswd -b /root/htpasswd.openshift admin redhat
           oc adm policy add-cluster-role-to-user cluster-admin admin
 
     - name: "CMD creating workshop-src pod for hellowolrd"
