@@ -34,6 +34,11 @@
           sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/subscription-manager.conf
           sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/product-id.conf
 
+    - name: "CMD enable yum  repos for ocp 3.9"
+      shell:
+        cmd: |
+          sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/ose3.9-latest.repo
+
     - name: "YUM install atomic-openshift-{utils,clients} plus misc required packages"
       yum: 
         name=atomic-openshift-utils,atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools,lynx 
