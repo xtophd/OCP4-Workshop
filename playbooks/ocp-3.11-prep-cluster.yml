@@ -93,45 +93,6 @@
         cmd: |
           mount -a
 
-################################################################################
-##
-## The 3.11 installer handles this stuff now
-##
-##
-##
-##
-#    - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
-#      template:
-#        src: docker-storage-setup.j2
-#        dest: /etc/sysconfig/docker-storage-setup
-#        owner: root
-#        group: root
-#        mode: 0644
-##
-##
-##
-#    - name: "CMD prepare and wipe docker storage"
-#      shell: 
-#        cmd: |
-#          rm -f /etc/sysconfig/docker-storage
-#          rm -rf /var/lib/docker
-#          vgs docker-vg && vgremove --force docker-vg
-#          pvs {{ myDockerDev }} && pvremove --force {{ myDockerDev }}
-#          wipefs -a {{ myDockerDev }}
-##
-##
-##
-#    - name: "CMD configure docker storage"
-#      shell: 
-#        cmd: |         
-#          docker-storage-setup
-##
-##
-##
-#    - name: "SERVICE start docker daemon"
-#      service: name=docker state=started enabled=yes
-################################################################################
-
     ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
     ##
     ##   We SHOULD use an appropriate perf profile in the real world,
@@ -143,8 +104,9 @@
       shell:                                                                                           
         cmd: |                                                                                         
           tuned-adm profile virtual-guest                                                              
-          mount -o remount,nobarrier /                                                                 
-
+          mount -o remount,nobarrier /
+          mount -o remount,nobarrier /var/lib/docker
+          
 - hosts: masters
   tasks:
   
