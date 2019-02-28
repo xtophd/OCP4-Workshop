@@ -28,7 +28,7 @@
         group: root
         mode: 0644
 
-    - name: "YUM install misc required packages"
+    - name: "YUM install misc packages"
       yum: name=wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,firewalld,lynx state=installed
 
     - name: "SERVICE STOP firewalld"
@@ -42,36 +42,95 @@
     - name: "SERVICE START firewalld"
       service: name=firewalld state=started enabled=yes masked=no
 
-    - name: "YUM install docker-1.13.1"
-      yum: name=docker-1.13.1 state=installed
+    - name: "YUM uninstall docker (openshift installer will add it back)"
+      yum: name=docker state=absent
 
-    - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
-      template:
-        src: docker-storage-setup.j2
-        dest: /etc/sysconfig/docker-storage-setup
-        owner: root
-        group: root
-        mode: 0644
+    - name: "FILE remove /etc/sysconfig/docker-storage-setup"
+      file: path=/etc/sysconfig/docker-storage-setup state=absent
 
-    - name: "SERVICE ensure docker is stopped"
-      service: name=docker state=stopped enabled=yes
-      
-    - name: "CMD prepare and wipe docker storage"
-      shell: 
+    - name: "CMD (STORAGE CLEANUP) unmount previous filesystems"
+      shell:
         cmd: |
-          rm -f /etc/sysconfig/docker-storage
-          rm -rf /var/lib/docker
-          vgs docker-vg && vgremove --force docker-vg
-          pvs {{ myDockerDev }} && pvremove --force {{ myDockerDev }}
-          wipefs -a {{ myDockerDev }}
-          
-    - name: "CMD configure docker storage"
-      shell: 
-        cmd: |         
-          docker-storage-setup
-          
-    - name: "SERVICE start docker daemon"
-      service: name=docker state=started enabled=yes
+          if grep -q {{ item.mount }} /proc/mounts ; then umount {{ item.mount }} ; fi
+      with_items:
+        - {dev: "{{ myDockerDev }}", vg: "{{ myDockerVG }}", lv: "{{ myDockerLV }}",    mount: '/var/lib/docker'}
+
+    - name: "CMD (STORAGE CLEANUP) cleanup previous volumegroups and physical volumes"
+      shell:
+        cmd: |
+          if vgs "{{ item.vg }}" ; then vgremove --force "{{ item.vg }}" ; fi
+          if pvs "{{ item.dev }}" ; then  pvremove --force "{{ item.dev }}" ; fi
+      with_items:
+        - {dev: "{{ myDockerDev }}", vg: "{{ myDockerVG }}", lv: "{{ myDockerLV }}",    mount: '/var/lib/docker'}
+
+    - name: "CMD (STORAGE CLEANUP) wipe devices"
+      shell:
+        cmd: |
+          wipefs -a "{{ item.dev }}"
+      with_items:
+        - {dev: "{{ myDockerDev }}", vg: "{{ myDockerVG }}", lv: "{{ myDockerLV }}",    mount: '/var/lib/docker'}
+
+    - name: "CMD (STORAGE PREP) set up storage requirements (PV, VG, LV)"
+      shell:
+        cmd: |
+          pvcreate "{{ myDockerDev }}"
+          vgcreate "{{ myDockerVG }}" "{{ myDockerDev }}"
+          lvcreate -l 100%FREE   -n "{{ myDockerLV}}" "{{ myDockerVG }}"
+      with_items:
+        - {dev: "{{ myDockerDev }}", vg: "{{ myDockerVG }}", lv: "{{ myDockerLV }}",    mount: '/var/lib/docker'}
+
+    - name: "CMD (STORAGE PREP) create filesystems, mount points and fstab entries"
+      shell:
+        cmd: |
+          mkfs -t xfs /dev/{{ item.vg }}/{{ item.lv }}
+          mkdir -p {{ item.mount }}
+          grep -q {{ item.mount }} /etc/fstab || echo "/dev/{{ item.vg }}/{{ item.lv }} {{ item.mount }} xfs defaults 0 0" >> /etc/fstab
+      with_items:
+        - {dev: "{{ myDockerDev }}", vg: "{{ myDockerVG }}", lv: "{{ myDockerLV }}",    mount: '/var/lib/docker'}
+
+    - name: "CMD (STORAGE PREP) mount everything"
+      shell:
+        cmd: |
+          mount -a
+
+################################################################################
+##
+## The 3.11 installer handles this stuff now
+##
+##
+##
+##
+#    - name: "TEMPLATE install /etc/sysconf/docker-storage-setup"
+#      template:
+#        src: docker-storage-setup.j2
+#        dest: /etc/sysconfig/docker-storage-setup
+#        owner: root
+#        group: root
+#        mode: 0644
+##
+##
+##
+#    - name: "CMD prepare and wipe docker storage"
+#      shell: 
+#        cmd: |
+#          rm -f /etc/sysconfig/docker-storage
+#          rm -rf /var/lib/docker
+#          vgs docker-vg && vgremove --force docker-vg
+#          pvs {{ myDockerDev }} && pvremove --force {{ myDockerDev }}
+#          wipefs -a {{ myDockerDev }}
+##
+##
+##
+#    - name: "CMD configure docker storage"
+#      shell: 
+#        cmd: |         
+#          docker-storage-setup
+##
+##
+##
+#    - name: "SERVICE start docker daemon"
+#      service: name=docker state=started enabled=yes
+################################################################################
 
     ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
     ##
