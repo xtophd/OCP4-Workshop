@@ -635,7 +635,7 @@ docker rm $(docker ps -a -q)
 
 === User
 
-By default, the docker daemon runs applications with rot privileges.  As you will see later, this creates an enormous security risk.  You can however configure docker to enable a user namespaces mapping option which allows you to run applications with root privilege inside a container, but have them run as a different non-privileged user on the host.  At this time only a single UID and GID can be mapped per daemon.
+By default, the docker daemon runs applications with root privileges.  As you will see later, this creates an enormous security risk.  You can however configure docker to enable a user namespaces mapping option which allows you to run applications with root privilege inside a container, but have them run as a different non-privileged user on the host.  At this time only a single UID and GID can be mapped per daemon.
 
 User Namespaces and container security are covered more thoroughly in the Openshift parts of this workshop.
 
