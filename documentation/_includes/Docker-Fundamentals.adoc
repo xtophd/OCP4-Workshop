@@ -16,6 +16,14 @@ endif::[]
 In this unit, we will get familiar with Docker Containers and the Docker CLI.  This unit is designed to explain and highlight 
 some of the significant security concerns around the native Docker approach to Linux containers.
 
+[discrete]
+== Additional Reference Materials
+
+NOTE: You are not required to reference any additional resources for these exercises.  This is informational only.
+
+    * link:https://developers.redhat.com/blog/2018/02/22/container-terminology-practical-introduction/[A Practical Introduction to Container Terminology - Scott McCarty]
+
+
 == Connect to Host
 
 There is a dedicated VM we will use for the docker exercises.  From workstation.example.com, you should be able to ssh to docker.example.com as 'root' without any prompts for credentials.
