@@ -36,7 +36,8 @@ ansible_become=yes
 openshift_deployment_type=openshift-enterprise
 
 # WARNING: only disable these checks in LAB/TEST environments
-openshift_disable_check="disk_availability,memory_availability,docker_image_availability"
+# openshift_disable_check="disk_availability,memory_availability,docker_image_availability"
+openshift_disable_check="disk_availability,memory_availability"
 
 # OpenShift Version:
 openshift_release=3.11.69
