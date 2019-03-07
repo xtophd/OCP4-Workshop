@@ -140,6 +140,7 @@ openshift_storage_glusterfs_heketi_image="registry.access.redhat.com/rhgs3/rhgs-
 ### OpenShift Master Vars
 ###########################################################################
 
+## Because we are running the router on the master:443, we need to move api and console to master:8443
 openshift_master_api_port=8443
 openshift_master_console_port=8443
 
