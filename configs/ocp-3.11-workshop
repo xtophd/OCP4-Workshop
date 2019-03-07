@@ -140,8 +140,8 @@ openshift_storage_glusterfs_heketi_image="registry.access.redhat.com/rhgs3/rhgs-
 ### OpenShift Master Vars
 ###########################################################################
 
-openshift_master_api_port=443
-openshift_master_console_port=443
+openshift_master_api_port=8443
+openshift_master_console_port=8443
 
 #Default:  openshift_master_cluster_method=native
 # Internal cluster name
