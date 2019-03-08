@@ -275,7 +275,7 @@ openshift_logging_eventrouter_nodeselector={"node-role.kubernetes.io/infra": "tr
 #openshift_registry_selector='node-role.kubernetes.io/infra=true'
 
 # NOTE: Qty should NOT exceed the number of infra nodes
-openshift_hosted_router_replicas=2
+openshift_hosted_router_replicas=1
 
 # openshift_hosted_router_certificate={"certfile": "/path/to/router.crt", "keyfile": "/path/to/router.key", "cafile": "/path/to/router-ca.crt"}
 
