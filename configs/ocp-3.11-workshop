@@ -213,6 +213,7 @@ openshift_metrics_install_metrics=True
 
 # Usign Glusterfs or glusterfs-block
 openshift_metrics_cassandra_storage_type=dynamic
+openshift_metrics_cassandra_pvc_size=20GB
 # If not specified will use "default" storage class
 #openshift_metrics_cassandra_pvc_storage_class_name='glusterfs-storage-block'
 
