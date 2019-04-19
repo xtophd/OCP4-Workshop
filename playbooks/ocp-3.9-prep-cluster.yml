@@ -1,13 +1,11 @@
 ---
-- hosts: nodes
+- hosts: nodes masters
   tasks:
 
     - name: "CMD enable yum  repos for ocp 3.9"
       shell:
         cmd: |
           sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/ose3.9-latest.repo
-
-  tasks:
   
     - name: "CMD disable yum plugins for rhn and subscription-manager"
       shell: 
