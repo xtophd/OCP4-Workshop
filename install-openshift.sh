@@ -54,7 +54,7 @@ fi
 ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
 
 for i in ${myPlaybooks} ; do
-    time ansible-playbook -i ${myInventory} -f 20 -vvv ${i} 
+    time ansible-playbook -i ${myInventory} -f 20 ${i} 
    
     ## If previous cmd exited non-zero then exit
     if [ "$?" -ne "0" ] ; then
