@@ -82,7 +82,7 @@
     ##
     ## *** WARNING *** WARNING *** WARNING *** WARNING *** WARNING *** 
     
-    - name: "CMD change performance profile (**NOTE** NOT FOR PRODUCTION)
+    - name: "CMD change performance profile (**NOTE** NOT FOR PRODUCTION)"
       shell:                                                                                           
         cmd: |                                                                                         
           tuned-adm profile virtual-guest                                                              
@@ -93,4 +93,3 @@
   
     - name: "YUM install httpd-utils"
       yum: name=httpd-tools state=installed
-
