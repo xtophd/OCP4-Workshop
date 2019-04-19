@@ -64,7 +64,7 @@
           rm -f /etc/sysconfig/docker-storage
           rm -rf /var/lib/docker
           vgs docker-vg && vgremove --force docker-vg
-          pvs /dev/vdb1 && pvremove --force /dev/vdb1
+          pvs /dev/vdb && pvremove --force /dev/vdb
           wipefs -a /dev/vdb
           
     - name: "CMD configure docker storage"
