@@ -41,6 +41,6 @@
 
     - name: "YUM install atomic-openshift-clients plus misc required packages"
       yum: 
-        name=atomic-openshift-clients,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools,lynx 
+        name=atomic-openshift-clients,openshift-ansible,wget,git,net-tools,bind-utils,yum-utils,iptables-services,bridge-utils,bash-completion,kexec-tools,sos,psacct,nfs-utils,nfs4-acl-tools,lynx 
         state=installed
 
