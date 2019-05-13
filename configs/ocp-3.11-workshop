@@ -40,7 +40,7 @@ openshift_deployment_type=openshift-enterprise
 openshift_disable_check="disk_availability,memory_availability"
 
 # OpenShift Version:
-openshift_release=3.11.69
+openshift_release=3.11.82
 
 # Node Groups
 # openshift_node_groups=[{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true','runtime=docker']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true','runtime=docker']}, {'name': 'node-config-glusterfs', 'labels': ['runtime=docker']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true','runtime=docker'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
