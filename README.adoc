@@ -11,7 +11,7 @@ Finally,at the moment this effort is using Openshift Container Platform 3.9 on R
 
 I believe that my philosophy is a little different than most.  Personally, I learn most efficiently by way of "micro successes".  Do something small, succeed and then build up on that success.  I am also very hands-on and learn better with a hammer versus a printed instruction manual.
 
-So rather than devising a complex environment with a complex solution to demonstrate how capable Openshift is with a lot of new industry terminology many still don't understand, I opt to put it in your hands, start small and build.
+So rather than devising a complex environment with a complex solution to demonstrate how capable Openshift is, I opt to put it in your hands, start small, build and learn.
 
 Having said that, eventually I do plan to expand this workshop with increasingly complex tasks and exercises.  I want to include Operational tasks like monitoring and troubleshooting along with development tasks like setting up a completely automated CI/CD pipeline.
 
