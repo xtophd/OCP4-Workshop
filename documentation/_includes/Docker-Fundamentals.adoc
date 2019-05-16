@@ -327,7 +327,7 @@ CONTAINER ID        IMAGE               COMMAND                CREATED          
 
 Now let us run the exact same command again.
 
-.[root@mdocker ~]#
+.[root@docker ~]#
 ----
 docker run rhel7 echo "hello world"
 ----
@@ -656,7 +656,7 @@ restorecon -Rv /var/www
 
 === Deployment
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 cheat-docker-webserver.sh
 ----
@@ -812,7 +812,7 @@ Now it is time to examine security.  Start be re-launching the container from ou
 
 === Standard (lack-of) Security
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 cheat-docker-webserver.sh
 ----
@@ -881,7 +881,7 @@ Containerized applications are easy to deploy, after all that is one of the key 
 
 === Manual Incremental Security Improvements
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 cheat-docker-webserver-ro.sh
 ----
@@ -946,7 +946,7 @@ setenforce enforcing
 getenforce
 ----
 
-.[root@master ~]#
+.[root@docker ~]#
 ----
 cheat-docker-webserver.sh
 ----
