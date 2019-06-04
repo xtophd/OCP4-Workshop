@@ -1,26 +1,26 @@
+:gitrepo: https://github.com/xtophd/RHEL7-Workshop
+:docsdir: docs
+:includedir: _include
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: ./_include/_images/
+
 = OCP-Workshop
 
-This project is designed to set up a minimal Openshift environment for conducting workshops (training sessions).
-These procedures are currently only being developed and tested using RavelloSystems cloud with a known blueprint.
+Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
 
-Finally,at the moment this effort is using Openshift Container Platform 3.9 on Red Hat Enterprise Linux 7.5
+Master document for this branch can be found here:
 
-**Entitlements ARE Required**
+* link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
 
-= Why Another Workshop?
-
-I believe that my philosophy is a little different than most.  Personally, I learn most efficiently by way of "micro successes".  Do something small, succeed and then build up on that success.  I am also very hands-on and learn better with a hammer versus a printed instruction manual.
-
-So rather than devising a complex environment with a complex solution to demonstrate how capable Openshift is, I opt to put it in your hands, start small, build and learn.
-
-Having said that, eventually I do plan to expand this workshop with increasingly complex tasks and exercises.  I want to include Operational tasks like monitoring and troubleshooting along with development tasks like setting up a completely automated CI/CD pipeline.
-
-Please continue to the 'documentation' folder and begin with the "OCP-Workshop.adoc"
-
-Or just click this link:
-
-  * link:./documentation/OCP-Workshop.adoc[OCP-Workshop Guide]
-
-Lastly, if you are looking for means to get started right away with a tiny openshift environment, I would suggest having a look at Minishift.
+If you are looking for a means to get started right away with a tiny openshift environment, I would suggest having a look at Minishift.
 
   * https://www.okd.io/minishift/
