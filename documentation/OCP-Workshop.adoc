@@ -105,7 +105,7 @@ There are three options to complete the lab.
   . Skip downloading the ssh-key and simply use a local terminal with credentials provided by your instructors
   . The last bullet of the LAB INFORMATION page, provides a link 'to consoles'.  By clicking that link, you can get true console access to "0WORKSTATION".  
 
-NOTE: you will need true console (GUI) on "0WORKSTATION" for the *Wayland* and *Web Console* units.
+NOTE: you will need true console (GUI) on "WORKSTATION" for the *WebUI* units.
 
 [discrete]
 == Openshift Container Platform: EXERCISES
