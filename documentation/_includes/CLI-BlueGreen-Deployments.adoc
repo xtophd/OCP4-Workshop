@@ -373,10 +373,9 @@ oc logs -f bc/worker
 [discrete]
 == End of Unit
 
-link:../OCP-Workshop.adoc[Return to TOC]
+link:../OCP-Workshop.adoc#toc[Return to TOC]
 
 ////
 Always end files with a blank line to avoid include problems.
 ////
-=== Scale Up Number of Workers
-252
+
