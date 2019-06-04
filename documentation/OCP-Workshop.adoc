@@ -3,6 +3,13 @@
 :doctype: book
 :sectnums:
 :sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 = Openshift Container Platform Hands-On Workshop
 
