@@ -1119,7 +1119,7 @@ Now you are ready to proceed to the next unit.
 
 *Next:* link:CLI-First-Time-Login.adoc[OCP CLI: First Time Login]
 
-link:../OCP-Workshop.adoc[Return to TOC]
+link:../OCP-Workshop.adoc#toc[Return to TOC]
 
 ////
 Always end files with a blank line to avoid include problems.
