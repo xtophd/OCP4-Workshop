@@ -78,21 +78,21 @@ openshift_docker_hosted_registry_insecure=true
 ### OpenShift Container Storage (OCS)
 ###########################################################################
 
-openshift_master_dynamic_provisioning_enabled=true
+#openshift_master_dynamic_provisioning_enabled=true
 
 #
 # Enable Glusterfs Storageclass
 #
 
 # default namespace = glusterfs
-openshift_storage_glusterfs_namespace=openshift-storage
-openshift_storage_glusterfs_storageclass=true
-openshift_storage_glusterfs_storageclass_default=true
+#openshift_storage_glusterfs_namespace=openshift-storage
+#openshift_storage_glusterfs_storageclass=true
+#openshift_storage_glusterfs_storageclass_default=true
 
 #
 # Enable Glusterfs Block Storageclass
 #
-openshift_storage_glusterfs_block_deploy=false
+#openshift_storage_glusterfs_block_deploy=false
 #openshift_storage_glusterfs_block_host_vol_create=true
 # NOTE: host_vol_size is effectively an upper limit on the size of glusterblock volumes 
 # unless you manually create larger GlusterFS block-hosting volumes
@@ -116,19 +116,19 @@ openshift_storage_glusterfs_block_deploy=false
 # GlusterFS version
 #  Complete OpenShift GlusterFS Configuration README
 #   https://github.com/openshift/openshift-ansible/tree/master/roles/openshift_storage_glusterfs
-openshift_storage_glusterfs_version=v3.11
-openshift_storage_glusterfs_block_version=v3.11
-openshift_storage_glusterfs_s3_version=v3.11
-openshift_storage_glusterfs_heketi_version=v3.11
+#openshift_storage_glusterfs_version=v3.11
+#openshift_storage_glusterfs_block_version=v3.11
+#openshift_storage_glusterfs_s3_version=v3.11
+#openshift_storage_glusterfs_heketi_version=v3.11
 
 # Container image to use for glusterfs pods
-openshift_storage_glusterfs_image="registry.access.redhat.com/rhgs3/rhgs-server-rhel7:v3.11"
+#openshift_storage_glusterfs_image="registry.access.redhat.com/rhgs3/rhgs-server-rhel7:v3.11"
 
 # Container image to use for glusterblock-provisioner pod
-openshift_storage_glusterfs_block_image="registry.access.redhat.com/rhgs3/rhgs-gluster-block-prov-rhel7:v3.11"
+#openshift_storage_glusterfs_block_image="registry.access.redhat.com/rhgs3/rhgs-gluster-block-prov-rhel7:v3.11"
 
 # Container image to use for heketi pods
-openshift_storage_glusterfs_heketi_image="registry.access.redhat.com/rhgs3/rhgs-volmanager-rhel7:v3.11"
+#openshift_storage_glusterfs_heketi_image="registry.access.redhat.com/rhgs3/rhgs-volmanager-rhel7:v3.11"
 
 ## If using a dedicated glusterfs_registry cluster
 # openshift_storage_glusterfs_registry_version=v3.11
