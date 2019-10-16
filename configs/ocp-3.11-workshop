@@ -239,41 +239,37 @@ openshift_prometheus_alertbuffer_memory_limit=300Mi
 openshift_prometheus_alertbuffer_cpu_limit=200m
 
 
-# Grafana
-openshift_grafana_node_selector={"node-role.kubernetes.io/infra":"true"}
-openshift_grafana_storage_type=pvc
-openshift_grafana_pvc_size=2Gi
-openshift_grafana_node_exporter=true
+## Grafana
+#openshift_grafana_node_selector={"node-role.kubernetes.io/infra":"true"}
+#openshift_grafana_storage_type=pvc
+#openshift_grafana_pvc_size=2Gi
+#openshift_grafana_node_exporter=true
 #openshift_grafana_sc_name=glusterfs-storage
 
 ########################
 # Cluster Logging
 ########################
 
-openshift_logging_install_logging=True
-openshift_logging_install_eventrouter=True
+#openshift_logging_install_logging=True
+#openshift_logging_install_eventrouter=True
 
-openshift_logging_es_pvc_dynamic=true
-openshift_logging_es_pvc_size=20Gi
-# using glusterfs block
-openshift_logging_es_pvc_storage_class_name='glusterfs-storage-block'
-# requires a minimum of 8Gi RAM available
-openshift_logging_es_memory_limit=2Gi
-openshift_logging_es_cluster_size=1
-openshift_logging_curator_default_days=1
+#openshift_logging_es_pvc_dynamic=true
+#openshift_logging_es_pvc_size=20Gi
+## using glusterfs block
+#openshift_logging_es_pvc_storage_class_name='glusterfs-storage-block'
+## requires a minimum of 8Gi RAM available
+#openshift_logging_es_memory_limit=2Gi
+#openshift_logging_es_cluster_size=1
+#openshift_logging_curator_default_days=1
 
-openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_logging_eventrouter_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_logging_eventrouter_nodeselector={"node-role.kubernetes.io/infra": "true"}
 
 ###########################################################################
 ### OpenShift Router and Registry Vars
 ###########################################################################
-
-# default selectors for router and registry services
-#openshift_router_selector='node-role.kubernetes.io/infra=true'
-#openshift_registry_selector='node-role.kubernetes.io/infra=true'
 
 # NOTE: Qty should NOT exceed the number of infra nodes
 openshift_hosted_router_replicas=1
@@ -332,25 +328,10 @@ master.example.com
 ## My master is an 'infra' node also: node-config-master-infra
 master.example.com openshift_node_group_name='node-config-master-infra' openshift_node_problem_detector_install=true
 
-## No dedicated infranodes in my setup
-## infranode1.example.com openshift_node_group_name='node-config-infra' openshift_node_problem_detector_install=true
-
 ## These are regular App nodes
-##node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-##node2.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-##node3.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-
-## These are regular App nodes with OCS hyperconverged
 node1.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
 node2.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
 node3.example.com openshift_node_group_name='node-config-compute' openshift_node_problem_detector_install=true
-
-
-[glusterfs]
-node1.example.com glusterfs_devices='[ "{{ myGlusterDev }}" ]'
-node2.example.com glusterfs_devices='[ "{{ myGlusterDev }}" ]'
-node3.example.com glusterfs_devices='[ "{{ myGlusterDev }}" ]'
-
 
 [workstation]
 workstation.example.com
@@ -358,12 +339,3 @@ workstation.example.com
 #
 # END OF FILE
 #
-
-
-
-
-
-
-
-
-
