@@ -17,12 +17,11 @@ endif::[]
 == Presented By
 
   * Christoph Doerbeck 
-  * William Caban Babilonia
 
 [discrete]
 == Introduction
 
-This guide is intended to support a series of workshop exercises for individuals getting familiar with Red Hat's Openshift  Container Platform.
+This guide is intended to support a series of workshop exercises for individuals getting familiar with Red Hat's Openshift  Container Platform version 4.
 
 This is not an official Red Hat sponsored effort although I am currently employeed by Red Hat.  Rather this is a tool I use to teach myself and those I interact with professionally about new and emerging technologies.
 
