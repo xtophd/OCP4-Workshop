@@ -15,7 +15,7 @@ endif::[]
 
 = OCP3-Workshop
 
-NOTE: This project is now in Maintenance Mode as efforts have switch to OCP4
+NOTE: *THIS PROJECT IS NOW IN MAINTENANCE MODE.  EFFORTS HAVE SWITCHED TO OCP4*
 
 Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
 
