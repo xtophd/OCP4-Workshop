@@ -1,7 +1,7 @@
 ## Not related to OCP cluster, but used for Docker Fundamentals exercises
 
-[workstation]
+[bastion]
 workstation.example.com
 
-[docker]
-docker.example.com
+[podman]
+workstation.example.com
