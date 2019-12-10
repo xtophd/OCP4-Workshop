@@ -47,7 +47,7 @@ In order to execute the pre-installation steps, we need to become the administra
 sudo -i
 ----
 
-=== Enable 'screen' Terminal Session
+=== Enable 'tmux' Terminal Session
 
 Again, if you haven't already we strongly encourage the use of the `screen` utility.
     
