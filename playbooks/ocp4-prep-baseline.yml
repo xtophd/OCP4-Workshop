@@ -1,0 +1,4 @@
+
+
+
+reposync -l --newest-only --download_path=/var/www/html/repos/rhel7/latest --repoid=rhel-7-server-rpms
