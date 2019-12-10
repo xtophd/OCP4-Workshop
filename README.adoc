@@ -27,7 +27,3 @@ Foundational exercises to introduce core concepts of Red Hat Openshift Container
 Master document for this branch can be found here:
 
 * link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
-
-If you are looking for a means to get started right away with a tiny openshift environment, I would suggest having a look at Minishift.
-
-  * https://www.okd.io/minishift/
