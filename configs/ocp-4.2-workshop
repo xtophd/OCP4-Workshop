@@ -55,6 +55,9 @@ g_studentName = "student"
 ## If we are using local repos, configure where on Bastion they are stored
 g_repoDestDir = "/var/www/html/repos"
 
+## If we are using local repos, which ones are we cloning
+g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
+
 ##
 ## ----------------------------------------
 ##

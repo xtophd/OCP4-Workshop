@@ -7,39 +7,58 @@
 ##
 ## Playbook Assumptions:
 ##     #1 you are executing this on the bastion-host
-##     #2 your client is registered to RH CDN
+##     #2 your client is registered to RH CDN with subscription-manager
 ##     #3 the following packages have been installed: git, ansible
 ##
 
 ---
 - hosts: myBastion
   tasks:
+
+
   
-  - name: "PREP-BASELINE: install additional packages"
+  - name: "Install additional packages"
     yum: name=ansible,git,tree,wget,yum-utils state=installed
 
-  - name: "USER create and/or reset users"
+
+
+  - name: "User create and/or reset"
     user: name="{{ item.name }}" password="{{ item.password }}"
     with_items:
       - {name: 'root', password: '$6$9Jk5EGiB2aBl95kj$RIdiSqNdKt95zqddStFUY/zVKIUujWfGWJkLM5KQ.7zY88Kxxa0qm78qLMFRAqDO2qOrp.qZBaQAKcUFm1Is70'}
       - {name: '{{ g_studentName }}', password: '$6$9Jk5EGiB2aBl95kj$RIdiSqNdKt95zqddStFUY/zVKIUujWfGWJkLM5KQ.7zY88Kxxa0qm78qLMFRAqDO2qOrp.qZBaQAKcUFm1Is70'}
 
-  - name: "Sudoers Workshop Config"
+
+
+  - name: "Sudoers Configuration"
     template:
-      src: "{{ item.src }}"
-      dest: "{{ item.dest }}"
+      src: "sudoers.j2"
+      dest: "/etc/sudoers.d/ocp4-workshop"
       owner: root
       group: root
       mode: 0600
-    with_items:
-      - {src: 'sudoers.j2', dest: '/etc/sudoers.d/ocp4-workshop'}
 
-  - name: "PREP-BASELINE: clone repos"
-    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item.repoName }}
-    with_items:
-      - { repoName: "rhel-8-for-x86_64-baseos-rpms" }
-      - { repoName: "rhel-8-for-x86_64-appstream-rpms" }
-      - { repoName: "ansible-2.9-for-rhel-8-x86_64-rpms" }
-      
+
+
+  - name: "Subscription Manager enable specified repos only"
+    rhsm_repository: 
+      name: "{{ g_repoList }}" 
+      purge: True
+
+
+
+  - name: "Clone repos"
+    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
+    loop: "{{ g_repoList }}"
+
+ 
     
+  - name: "Create sample repo configs"
+    template:
+      src: "repo-config.j2"
+      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
+      owner: root
+      group: root
+      mode: 0600
+    loop: "{{ g_repoList }}"
     
