@@ -1,0 +1,94 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook intends to do the heavy lifting of configuring the bastion-host based on the paremeters defined in the
+##   ansible inventory (config).
+##
+##   It will install missing packages, pull (wget) openshift installer, rhcos, etc...
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the bastion-host
+##     #2 you have configured and copied ssh-keys to itself.  Meaning, ssh root@localhost works without a password
+##     #3 you have completed adjustments to ../configs/ocp4poc-default
+##
+
+---
+- hosts: myBastion
+  tasks:
+  
+  - name: "BASTION-SETUP: install additional packages"
+    yum: name=ansible,git,tree,wget state=installed
+      
+  - name: "BASTION-SETUP: dnsmasq installation"
+    yum: name=dnsmasq state=installed
+    when:
+      - g_useDNS == "True"
+
+
+
+  - name: "BASTION-SETUP: dnsmasq deploy PUBLIC HOST configs"
+    vars: 
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
+      - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
+      - p_netmask:  "{{ g_publicNetmask }}"
+      - p_gateway:  "{{ g_publicGateway'] }}"
+      - p_domain:   "{{ g_publicDomain }}"
+    when:
+      - g_publicNet == "True" 
+      - g_useDNS == "True"
+    template:
+      src: "dnsmasq-host-entry.j2"
+      dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['all'] }}"
+
+
+
+  - name: "BASTION-SETUP: dnsmasq deploy PRIVATE HOST configs"
+    vars: 
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_priIP'] }}"
+      - p_mac:      "{{ hostvars[item]['h_priMAC'] }}"
+      - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
+      - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
+      - p_netmask:  "{{ g_privateNetmask }}"
+      - p_gateway:  "{{ g_privateGateway'] }}"
+      - p_domain:   "{{ g_privateDomain }}"
+    when:
+      - g_privateNet == "True" 
+      - g_useDNS == "True"
+    template:
+      src: "dnsmasq-host-entry.j2"
+      dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['all'] }}"
+
+
+
+  - name: "BASTION-SETUP: dnsmasq deploy PUBLIC wildcard"
+    vars: 
+      - p_addr:    "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:  "{{ g_publicDomain }}"
+    when:
+      - g_useDNS == "True" 
+      - g_useDNSwildcard == "True"
+    template:
+      src: "dnsmasq-wildcard-entry.j2"
+      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_cloudName }}.conf"
+      owner: root
+
+
+
+  - name: "BASTION-SETUP: restart dnsmasq"
+    when: g_useDNS == "True"
+    service: name=dnsmasq state=restarted enabled=yes
