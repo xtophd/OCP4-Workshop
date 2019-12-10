@@ -13,9 +13,14 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: ./_include/_images/
 
-= OCP3-Workshop
 
-NOTE: *THIS PROJECT IS NOW IN MAINTENANCE MODE.  EFFORTS HAVE SWITCHED TO OCP4*
+= DO NOT USE THIS PROJECT YET
+
+NOTE: *THIS PROJECT IS IN ALPHA.  DOCUMENTATION WILL BE UPDATED AFTER BLUEPRINT IS WORKING*
+
+= DO NOT USE THIS PROJECT YET
+
+= OCP4-Workshop
 
 Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
 
