@@ -51,9 +51,9 @@ sudo -i
 
 Again, if you haven't already we strongly encourage the use of the `screen` utility.
     
-.[student@workstation ~]$ 
+.[root@workstation ~]$ 
 ----
-screen -m
+tmux
 ----
 
 For more tips on using screen have a look in the link:./Preface.adoc[Workshop Preface]
@@ -64,25 +64,25 @@ For more tips on using screen have a look in the link:./Preface.adoc[Workshop Pr
 ----
 cd ~
     
-git clone https://github.com/xtophd/OCP-Workshop
+git clone https://github.com/xtophd/OCP4-Workshop
 ----
 
 Now you are ready to proceed with executing the docker and openshift installations.
 
-== Docker Installation
+== Podman Installation
 
 WARNING: It is important to be in the correct working directory for these installation procedures to function properly.  
 
 .[root@workstation ~]#
 ----
-cd ~/OCP-Workshop
+cd ~/OCP4-Workshop
 ----
 
 Now you are ready to proceed with executing the openshift installation.  This typically runs for about 2-3 minutes.  
 
 .[root@workstation ~]#
 ----
-bash install-docker.sh
+bash install-podman.sh
 ----
 
 == Openshift Installation
@@ -93,7 +93,7 @@ WARNING: It is important to be in the correct working directory for these instal
 
 .[root@workstation ~]#
 ----
-cd ~/OCP-Workshop
+cd ~/OCP4-Workshop
 ----
 
 Now you are ready to proceed with executing the openshift installation.  This typically runs for about 30-40 minutes.  
@@ -169,12 +169,6 @@ The installation of Red Hat Openshift Container Platform is now complete and you
 
 [discrete]
 == End of Unit
-
-*Next:* link:Docker-Fundamentals.adoc[Docker: Fundamentals]
-
-OR
-
-*Next:* link:CLI-First-Time-Login.adoc[OCP CLI: First Time Login]
 
 link:../OCP-Workshop.adoc#toc[Return to TOC]
 
