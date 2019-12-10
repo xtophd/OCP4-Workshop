@@ -112,7 +112,7 @@ NOTE: you will need true console (GUI) on "WORKSTATION" for the *WebUI* units.
 [#toc]
   . link:{includedir}/Getting-Started.adoc[*Workshop Preparation* - DO THIS FIRST! ] _(workstation)_
   
-  . link:{includedir}/CLI-Podman-Fundamentals.adoc[Docker Fundamentals]
+  . link:{includedir}/CLI-Podman-Fundamentals.adoc[Container Fundamentals with Podman] 
   . link:{includedir}/CLI-First-Time-Login.adoc[CLI - First Time Login]
   . link:{includedir}/CLI-Hello-World.adoc[CLI - Hello World]
   . link:{includedir}/WebUI-First-Time-Login.adoc[WebUI - First Time Login]
