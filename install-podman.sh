@@ -4,7 +4,7 @@
 ##     on the control host (ie: workstation)
 ##     CWD =  ~root/OCP-Workshop
 
-myInventory="./configs/docker-workshop"
+myInventory="./configs/podman-workshop"
 
 if [ ! -e "${myInventory}" ] ; then
    echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
@@ -12,7 +12,8 @@ if [ ! -e "${myInventory}" ] ; then
 fi
 
 echo ""
-echo "## Calling ansible playbook: ./playbooks/docker-install.yml"
+echo "## Calling ansible playbook: ./playbooks/podman-install.yml"
 echo ""
-time ansible-playbook -i ${myInventory} ./playbooks/docker-install.yml
+
+time ansible-playbook -i ${myInventory} ./playbooks/podman-install.yml
 
