@@ -43,6 +43,7 @@
     with_items:
       - {repoName: "rhel-8-for-x86_64-baseos-rpms"}
       - {repoName: "rhel-8-for-x86_64-appstreams-rpms"}
+      - {repoName: "ansible-2.9-for-rhel-8-x86_64-rpms"}
       
     
     
