@@ -49,6 +49,12 @@ g_usePxeInterface = "ens9"
 ## Configure the optional DNS wildcard entry on bastion host
 g_useDNSwildcard = "True"
 
+## Configure the student name as this
+g_studentName = "student"
+
+## If we are using local repos, configure where on Bastion they are stored
+g_repoDestDir = "/var/www/html/repos"
+
 ##
 ## ----------------------------------------
 ##
