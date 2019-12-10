@@ -13,13 +13,13 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: ./_include/_images/
 
-= OCP-Workshop
+= OCP3-Workshop
 
 Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
 
 Master document for this branch can be found here:
 
-* link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
+* link:{docsdir}/OCP3-Workshop.adoc[OCP-Workshop Hands-on Lab]
 
 If you are looking for a means to get started right away with a tiny openshift environment, I would suggest having a look at Minishift.
 
