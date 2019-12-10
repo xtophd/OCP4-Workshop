@@ -1,4 +1,27 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook attempts to configure the minimum requirements.  Ideally, to prepare a blueprint you would run
+##   this and then snap the blueprint for the workshops.  This playbook is NOT meant for student execution
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the bastion-host
+##     #2 your client is registered to RH CDN
+##
 
+---
+- hosts: myBastion
+  tasks:
+  
+  - name: "PREP-BASELINE: install additional packages"
+    yum: name=ansible,git,tree,wget,yum-utils state=installed
 
-
-reposync -l --newest-only --download_path=/var/www/html/repos/rhel7/latest --repoid=rhel-7-server-rpms
+  - name: "PREP-BASELINE: clone repos
+    shell: "reposync -l --newest-only --download_path={{ repoDownloadPath }} --repoid={{ item.repoName }}"
+    with_items:
+      - {repoName: "rhel-8-for-x86_64-baseos-rpms"}
+      - {repoName: "rhel-8-for-x86_64-appstreams-rpms"}
+      
+    
+    
