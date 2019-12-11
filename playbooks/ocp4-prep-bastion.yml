@@ -110,9 +110,63 @@
 
 
   - name: "BASTION-SETUP: add firewall rule"
+    when: g_useDNS == "True" 
     firewalld:
       service: dns
       immediate: yes
       permanent: yes
       state: enabled
+
+
+
+  - name: "BASTION-SETUP: dnsmasq PUBLIC dns tests"
+    vars: 
+      - p_server:  "localhost"
+      - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:    "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:  "{{ g_publicDomain }}"
+    when:
+      - g_useDNS == "True" 
+      - g_publicNet == "True" 
+    shell: 
+      cmd: |
+        dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
+        dig -x @{{ p_server }} {{ p_addr }} +short
+    loop: "{{ groups['all'] }}"
+    changed_when: false
+
+
+
+  - name: "BASTION-SETUP: dig PRIVATE dns tests"
+    vars: 
+      - p_server:  "localhost"
+      - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:    "{{ hostvars[item]['h_priIP'] }}"
+      - p_domain:  "{{ g_privateDomain }}"
+    when:
+      - g_useDNS == "True" 
+      - g_publicNet == "True" 
+    shell: 
+      cmd: |
+        dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
+        dig -x @{{ p_server }} {{ p_addr }} +short
+    loop: "{{ groups['all'] }}"
+    changed_when: false
+
+
+
+  - name: "BASTION-SETUP: dig WILDCARD dns test"
+    vars: 
+      - p_server:  "localhost"
+      - p_name:    "{{ g_cloudName }}"
+      - p_domain:  "{{ g_publicDomain }}"
+    when:
+      - g_useDNS == "True" 
+      - g_publicNet == "True" 
+    shell: 
+      cmd: |
+        dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
+    changed_when: false
+
+
 
