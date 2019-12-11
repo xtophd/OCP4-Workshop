@@ -17,8 +17,25 @@
 
 
   
-  - name: "Install additional packages"
-    yum: name=ansible,git,tree,wget,yum-utils state=installed
+  - name: "Yum install additional packages"
+    yum: name=ansible,git,tree,wget,yum-utils,httpd,firewalld state=installed
+
+
+
+  - name: "Systemd services enabled"
+    service: name={{ item }} state=restarted enabled=yes masked=no
+    with_items:
+      - "httpd" 
+      - "firewalld"
+
+
+
+  - name: "Firewalld services added"
+    firewalld:
+      service: http
+      immediate: yes
+      permanent: yes
+      state: enabled
 
 
 
@@ -51,14 +68,22 @@
     shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
     loop: "{{ g_repoList }}"
 
+
  
-    
   - name: "Create sample repo configs"
     template:
       src: "repo-config.j2"
       dest: "{{ g_repoDestDir }}/{{ item }}.repo"
       owner: root
       group: root
-      mode: 0600
+      mode: 0444
     loop: "{{ g_repoList }}"
+
+
+
+  - name: "SELinux restore contexts"
+    shell: restorecon -R {{ g_repoDestDir }}
+
+
+    
     

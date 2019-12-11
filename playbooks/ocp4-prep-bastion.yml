@@ -18,8 +18,10 @@
   tasks:
   
   - name: "BASTION-SETUP: install additional packages"
-    yum: name=ansible,git,tree,wget state=installed
+    yum: name=ansible,git,tree,wget,bind-utils state=installed
       
+
+
   - name: "BASTION-SETUP: dnsmasq installation"
     yum: name=dnsmasq state=installed
     when:
@@ -89,6 +91,28 @@
 
 
 
+  - name: "BASTION-SETUP: dnsmasq deploy standard options"
+    vars: 
+      - p_nameServer:  "{{ g_publicNameServer }}"
+    when:
+      - g_useDNS == "True" 
+    template:
+      src: "dnsmasq-standard-opts.j2"
+      dest: "/etc/dnsmasq.d/40-standard-opts.conf"
+      owner: root
+
+
+
   - name: "BASTION-SETUP: restart dnsmasq"
     when: g_useDNS == "True"
     service: name=dnsmasq state=restarted enabled=yes
+
+
+
+  - name: "BASTION-SETUP: add firewall rule"
+    firewalld:
+      service: dns
+      immediate: yes
+      permanent: yes
+      state: enabled
+
