@@ -156,13 +156,13 @@
 
 
 
-  - name: "BASTION-SETUP: restart dnsmasq"
+  - name: "BASTION-SETUP: dnsmasq restart service"
     when: g_useDNS == "True"
     service: name=dnsmasq state=restarted enabled=yes
 
 
 
-  - name: "BASTION-SETUP: add firewall rule"
+  - name: "BASTION-SETUP: dnsmasq add firewall rule"
     when: g_useDNS == "True" 
     firewalld:
       service: dns
@@ -172,7 +172,55 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq PUBLIC dns tests"
+  - name: "BASTION-SETUP: tftp installation"
+    yum: name=tftp-server,ipxe-bootimgs state=installed
+    when: g_usePXE == "True"
+
+
+
+  - name: "BASTION-SETUP: tftp create directory"
+    when: g_usePXE == "True"
+    file:
+      path: /var/lib/tftpboot
+      mode: "0755"
+      state: directory
+
+
+
+  - name: "BASTION-SETUP: tftp copy file"
+    copy: 
+      src: /usr/share/ipxe/undionly.kpxe
+      dest: /var/lib/tftpboot
+      mode: "0644"
+      owner: root
+      group: root
+      remote_src: yes
+
+
+
+  - name: "BASTION-SETUP: tftp restart service"
+    when: g_usePXE == "True"
+    service: name=tftp state=restarted enabled=yes
+
+
+
+  - name: "BASTION-SETUP: tftp add firewall rule"
+    when: g_usePXE == "True" 
+    firewalld:
+      service: tftp
+      immediate: yes
+      permanent: yes
+      state: enabled
+
+
+
+##
+## VALIDATION TESTS ##
+##
+
+
+
+  - name: "BASTION-SETUP: TEST PUBLIC dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -190,7 +238,7 @@
 
 
 
-  - name: "BASTION-SETUP: dig PRIVATE dns tests"
+  - name: "BASTION-SETUP: TEST PRIVATE dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -208,7 +256,7 @@
 
 
 
-  - name: "BASTION-SETUP: dig WILDCARD dns test"
+  - name: "BASTION-SETUP: TEST WILDCARD dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ g_cloudName }}"
