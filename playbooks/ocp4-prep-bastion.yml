@@ -29,6 +29,18 @@
 
 
 
+  - name: "BASTION-SETUP: dnsmasq deploy standard options"
+    vars: 
+      - p_nameServer:  "{{ g_publicNameServer }}"
+    when:
+      - g_useDNS == "True" 
+    template:
+      src: "dnsmasq-standard-opts.j2"
+      dest: "/etc/dnsmasq.d/30-standard-opts.conf"
+      owner: root
+
+
+
   - name: "BASTION-SETUP: dnsmasq deploy PUBLIC HOST configs"
     vars: 
       - p_item:     "{{ item }}"
@@ -77,10 +89,32 @@
 
 
 
+  - name: "BASTION-SETUP: dnsmasq deploy ETCD configs"
+    vars: 
+      - p_item:      "{{ item }}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_etcdName:  "{{ hostvars[item]['h_etcdName'] | default('') }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cloudName: "{{ g_cloudName }}"
+    when:
+      - g_useDNS == "True"
+      - p_etcdName != ""
+    template:
+      src: "dnsmasq-etcd-entry.j2"
+      dest: "/etc/dnsmasq.d/45-etcd-{{ p_etcdName }}.conf"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['all'] }}"
+
+
+
   - name: "BASTION-SETUP: dnsmasq deploy PUBLIC wildcard"
     vars: 
-      - p_addr:    "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:  "{{ g_publicDomain }}"
+      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cloudName: "{{ g_cloudName }}"
     when:
       - g_useDNS == "True" 
       - g_useDNSwildcard == "True"
@@ -91,14 +125,33 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy standard options"
+  - name: "BASTION-SETUP: dnsmasq deploy PXE config"
     vars: 
-      - p_nameServer:  "{{ g_publicNameServer }}"
+      - p_name:      "{{ hostvars['bastion']['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cloudName: "{{ g_cloudName }}"
+    when:
+      - g_useDNS == "True" 
+      - g_usePXE == "True"
+    template:
+      src: "dnsmasq-pxe-entry.j2"
+      dest: "/etc/dnsmasq.d/40-pxe-opts.conf"
+      owner: root
+
+
+
+  - name: "BASTION-SETUP: dnsmasq deploy API config"
+    vars: 
+      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cloudName: "{{ g_cloudName }}"
+      - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
     when:
       - g_useDNS == "True" 
     template:
-      src: "dnsmasq-standard-opts.j2"
-      dest: "/etc/dnsmasq.d/40-standard-opts.conf"
+      src: "dnsmasq-api-entry.j2"
+      dest: "/etc/dnsmasq.d/45-api-{{ g_cloudName }}.conf"
       owner: root
 
 

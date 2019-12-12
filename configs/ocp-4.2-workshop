@@ -91,3 +91,6 @@ master-3 h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.13" h_priMAC="2c:c2:60:4d:
 
 [myWorkers]
 worker-1 h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.14" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.14"
+
+[myBootstrap]
+bootstrap h_pubMAC="2c:c2:60:43:96:45" h_pubIP="10.0.0.15" h_priMAC="2c:c2:60:5a:b8:28" h_priIP="192.168.10.15"
