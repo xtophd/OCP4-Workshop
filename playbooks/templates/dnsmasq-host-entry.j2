@@ -6,8 +6,3 @@ ptr-record={{ p_revAddr }}.in-addr.arpa,{{ p_name }}.{{ p_domain }}
 ## DHCP entry
 dhcp-host={{ p_mac }},{{ p_addr }},{{ p_name }}.{{ p_domain }}
 {% endif %}
-
-{% if p_etcdName != '' %}
-## ETCD entry
-address=/{{ p_etcdName }}.{{ p_domain }}/{{ p_addr }}
-{% endif %}

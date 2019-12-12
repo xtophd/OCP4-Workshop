@@ -1,0 +1,5 @@
+## ETCD entry
+address=/{{ p_etcdName }}.{{ p_domain }}/{{ p_addr }}
+
+## SRV-HOST
+srv-host=_etcd-server-ssl._tcp.{{ p_cloudName }}.{{ p_domain }},{{ p_etcdName }}.{{ p_cloudName }}.{{ p_domain }},2380
