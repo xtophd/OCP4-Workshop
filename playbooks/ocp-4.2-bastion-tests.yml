@@ -10,7 +10,7 @@
 - hosts: myBastion
   tasks:
   
-  - name: "BASTION-SETUP: TEST PUBLIC dns"
+  - name: "BASTION-TESTS: TEST PUBLIC dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -28,7 +28,7 @@
 
 
 
-  - name: "BASTION-SETUP: TEST PRIVATE dns"
+  - name: "BASTION-TESTS: TEST PRIVATE dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -46,7 +46,7 @@
 
 
 
-  - name: "BASTION-SETUP: TEST WILDCARD dns"
+  - name: "BASTION-TESTS: TEST WILDCARD dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ g_cloudName }}"

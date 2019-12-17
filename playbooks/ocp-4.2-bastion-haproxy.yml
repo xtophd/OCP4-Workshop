@@ -19,13 +19,13 @@
   
 
 
-  - name: "BASTION-SETUP: haproxy installation"
+  - name: "BASTION-HAPROXY: package installation"
     yum: name=haproxy state=installed
     when: g_useHAPROXY == "True"
 
 
 
-  - name: "BASTION-SETUP: haproxy config"
+  - name: "BASTION-HAPROXY: deploy configuration"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
       - p_domain:    "{{ g_publicDomain }}"
@@ -40,13 +40,13 @@
 
 
 
-  - name: "BASTION-SETUP: haproxy restart service"
+  - name: "BASTION-HAPROXY: restart service"
     when: g_useHAPROXY == "True"
     service: name=haproxy state=restarted enabled=yes
 
 
 
-  - name: "BASTION-SETUP: haproxy firewall service rules"
+  - name: "BASTION-HAPROXY: add firewalld service rules"
     when: g_useHAPROXY == "True" 
     firewalld:
       service: "{{ item }}"
@@ -59,7 +59,7 @@
 
 
 
-  - name: "BASTION-SETUP: haproxy firewall port rules"
+  - name: "BASTION-HAPROXY: add firewalld port rules"
     when: g_useHAPROXY == "True" 
     firewalld:
       port: "{{ item }}"

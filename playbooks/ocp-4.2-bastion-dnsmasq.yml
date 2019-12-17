@@ -19,14 +19,14 @@
   
 
 
-  - name: "BASTION-SETUP: dnsmasq installation"
+  - name: "BASTION-DNSMASQ: package installation"
     yum: name=dnsmasq state=installed
     when:
       - g_useDNS == "True"
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy standard options"
+  - name: "BASTION-DNSMASQ: deploy standard options"
     vars: 
       - p_nameServer:  "{{ g_publicNameServer }}"
     when:
@@ -38,7 +38,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy PUBLIC HOST configs"
+  - name: "BASTION-DNSMASQ: deploy PUBLIC HOST configs"
     vars: 
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -62,7 +62,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy PRIVATE HOST configs"
+  - name: "BASTION-DNSMASQ: deploy PRIVATE HOST configs"
     vars: 
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -86,7 +86,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy ETCD configs"
+  - name: "BASTION-DNSMASQ: deploy ETCD configs"
     vars: 
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -107,7 +107,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy PUBLIC wildcard"
+  - name: "BASTION-DNSMASQ: deploy PUBLIC wildcard"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
       - p_domain:    "{{ g_publicDomain }}"
@@ -122,7 +122,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy PXE config"
+  - name: "BASTION-DNSMASQ: deploy PXE config"
     vars: 
       - p_name:      "{{ hostvars['bastion']['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
@@ -138,7 +138,7 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq deploy API config"
+  - name: "BASTION-DNSMASQ: deploy API config"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
       - p_domain:    "{{ g_publicDomain }}"
@@ -153,13 +153,13 @@
 
 
 
-  - name: "BASTION-SETUP: dnsmasq restart service"
+  - name: "BASTION-DNSMASQ: restart service"
     when: g_useDNS == "True"
     service: name=dnsmasq state=restarted enabled=yes
 
 
 
-  - name: "BASTION-SETUP: dnsmasq add firewall rule"
+  - name: "BASTION-DNSMASQ: add firewalld service rules"
     when: g_useDNS == "True" 
     firewalld:
       service: dns

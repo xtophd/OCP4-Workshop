@@ -19,13 +19,13 @@
   
 
 
-  - name: "BASTION-SETUP: tftp installation"
+  - name: "BASTION-TFTP: package installation"
     yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
     when: g_usePXE == "True"
 
 
 
-  - name: "BASTION-SETUP: tftp create directory"
+  - name: "BASTION-TFTP: create directory"
     when: g_usePXE == "True"
     file:
       path: /var/lib/tftpboot
@@ -34,7 +34,7 @@
 
 
 
-  - name: "BASTION-SETUP: tftp copy file"
+  - name: "BASTION-TFTP: copy file"
     copy: 
       src: /usr/share/ipxe/undionly.kpxe
       dest: /var/lib/tftpboot
@@ -45,13 +45,13 @@
 
 
 
-  - name: "BASTION-SETUP: tftp restart service"
+  - name: "BASTION-TFTP: restart service"
     when: g_usePXE == "True"
     service: name=tftp state=restarted enabled=yes
 
 
 
-  - name: "BASTION-SETUP: tftp firewall service rule"
+  - name: "BASTION-TFTP: add firewalld service rules"
     when: g_usePXE == "True" 
     firewalld:
       service: tftp
