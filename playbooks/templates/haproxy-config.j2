@@ -1,0 +1,138 @@
+global
+log 127.0.0.1 local2
+
+chroot /var/lib/haproxy
+
+pidfile /var/run/haproxy.pid
+
+maxconn 4000
+
+user haproxy
+
+group haproxy
+
+daemon
+
+stats socket /var/lib/haproxy/stats
+
+ssl-default-bind-ciphers PROFILE=SYSTEM
+
+ssl-default-server-ciphers PROFILE=SYSTEM
+
+defaults
+
+mode http
+
+log global
+
+option httplog
+
+option dontlognull
+
+option http-server-close
+
+option forwardfor except 127.0.0.0/8
+
+option redispatch
+
+retries 3
+
+timeout http-request 10s
+
+timeout queue 1m
+
+timeout connect 10s
+
+timeout client 1m
+
+timeout server 1m
+
+timeout http-keep-alive 10s
+
+timeout check 10s
+
+maxconn 3000
+
+frontend ocp4-kubernetes-api-server
+
+mode tcp
+
+option tcplog
+
+bind api.ocp67.example.com:6443
+
+default_backend ocp4-kubernetes-api-server
+
+frontend ocp4-machine-config-server
+
+mode tcp
+
+option tcplog
+
+bind api.ocp67.example.com:22623
+
+default_backend ocp4-machine-config-server
+
+frontend ocp4-router-http
+
+mode tcp
+
+option tcplog
+
+bind apps.ocp67.example.com:80
+
+default_backend ocp4-router-http
+
+frontend ocp4-router-https
+
+mode tcp
+
+option tcplog
+
+bind apps.ocp67.example.com:443
+
+default_backend ocp4-router-https
+
+backend ocp4-kubernetes-api-server
+
+mode tcp
+
+balance source
+
+server boostrap-0 bootstrap-0.ocp67.example.com:6443 check
+
+server master-0 master-0.ocp67.example.com:6443 check
+
+server master-1 master-1.ocp67.example.com:6443 check
+
+server master-2 master-2.ocp67.example.com:6443 check
+
+backend ocp4-machine-config-server
+
+mode tcp
+
+balance source
+
+server bootstrap-0 bootstrap-0.ocp67.example.com:22623 check
+
+server master-0 master-0.ocp67.example.com:22623 check
+
+server master-1 master-1.ocp67.example.com:22623 check
+
+server master-2 master-2.ocp67.example.com:22623 check
+
+backend ocp4-router-http
+
+mode tcp
+
+server infnod-0 infnod-0.ocp67.example.com:80 check
+
+server infnod-1 infnod-1.ocp67.example.com:80 check
+
+backend ocp4-router-https
+
+mode tcp
+
+server infnod-0 infnod-0.ocp67.example.com:443 check
+
+server infnod-1 infnod-1.ocp67.example.com:443 check

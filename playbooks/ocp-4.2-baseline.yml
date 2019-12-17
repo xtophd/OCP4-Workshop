@@ -18,15 +18,27 @@
 
   
   - name: "Yum install additional packages"
-    yum: name=ansible,git,tree,wget,yum-utils,httpd,firewalld state=installed
+    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools state=installed
+
+
+
+  - name: "Httpd Default Configuration"
+    vars:
+      - p_port: "{{ g_repoPort }}"
+    template:
+      src: "httpd-conf.j2"
+      dest: "/etc/httpd/conf/httpd.conf"
+      owner: root
+      group: root
+      mode: 0644
 
 
 
   - name: "Systemd services enabled"
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
-      - "httpd" 
       - "firewalld"
+      - "httpd"
 
 
 

@@ -1,0 +1,72 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook intends to do the heavy lifting of configuring the bastion-host based on the paremeters defined in the
+##   ansible inventory (config).
+##
+##   It will install missing packages, pull (wget) openshift installer, rhcos, etc...
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the bastion-host
+##     #2 you have configured and copied ssh-keys to itself.  Meaning, ssh root@localhost works without a password
+##     #3 you have completed adjustments to ../configs/ocp4poc-default
+##
+
+---
+- hosts: myBastion
+  tasks:
+  
+
+
+  - name: "BASTION-SETUP: haproxy installation"
+    yum: name=haproxy state=installed
+    when: g_useHAPROXY == "True"
+
+
+
+  - name: "BASTION-SETUP: haproxy config"
+    vars: 
+      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cloudName: "{{ g_cloudName }}"
+      - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
+    when:
+      - g_useHAPROXY == "True" 
+    template:
+      src: "haproxy-config.j2"
+      dest: "/etc/haproxy.cfg"
+      owner: root
+
+
+
+  - name: "BASTION-SETUP: haproxy restart service"
+    when: g_useHAPROXY == "True"
+    service: name=haproxy state=restarted enabled=yes
+
+
+
+  - name: "BASTION-SETUP: haproxy firewall service rules"
+    when: g_useHAPROXY == "True" 
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "http"
+      - "https"
+
+
+
+  - name: "BASTION-SETUP: haproxy firewall port rules"
+    when: g_useHAPROXY == "True" 
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "6443/tcp"
+      - "22623/tcp"
+
