@@ -1,0 +1,103 @@
+##
+## Assumptions (at this time):
+##   + PublicNet is required with unrestricted internet access
+##
+
+##
+## First character of variable defines scope
+## and should help tracking where it is defined.
+##
+##  g_Name - global: declared 
+##
+##  h_Name - host: declared in inventory host OR
+##                 in a [hostname:vars] block
+##
+##  p_Name - play: declared as part of a play
+##
+
+[all:vars]
+
+## (Optional) Who is the POC owner
+g_owner = "Foo Bar"
+
+## (Optional) What is the POC location
+g_location = "Sunnyvale"
+
+## What are the DNS domains
+g_publicDomain  = "ops.peg.corp.yahoo.com"
+g_privateDomain = "private.example.com"
+
+## What are the gateways (empty is ok)
+g_publicGateway  = "10.72.242.1"
+g_privateGateway = ""
+
+## What are the netmasks
+g_publicNetmask = "255.255.255.0"
+g_privateNetmask = "255.255.255.0"
+
+## Forwarding Name Servers 
+g_publicNameServer = "216.245.50.3"
+# g_privateNameServer = ""                     ## THIS PARAMETER NOT IN USE YET ##
+
+## Your Cloud Name 
+g_cloudName = "rhocp"
+
+## Use public and private networks
+g_publicNet  = "True"
+g_privateNet = "True"
+
+## Optional Local Services
+## DNS, DHCP & PXE services on bastion host
+g_useDNS  = "True"
+g_useDHCP = "True"
+g_usePXE  = "True"
+# g_usePxeInterface = "ens9"                   ## THIS PARAMETER NOT IN USE YET ##
+
+## Configure DNS wildcard on bastion host
+## Wildcard = '*.{{ g_cloudName }}.{{ g_publicDomain }}'
+g_useDNSwildcard = "True"
+
+## Configure HAPROXY 
+g_useHAPROXY = "True"
+
+## Configure the student name as this
+g_studentName = "student"
+
+## If we are using local repos, 
+## where on bastion are they stored
+g_repoDestDir = "/var/www/html/repos"
+
+## If we are using local repos,
+## which ones are we cloning
+g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
+
+## If we are using local repos,
+## what port is httpd running on
+g_repoPort = '8080'
+
+##
+## ----------------------------------------
+##
+
+[myBastion:vars]
+
+## We are running the playbooks on the bastion node
+ansible_connection = "local"
+
+##
+## ----------------------------------------
+##
+
+[myBastion]
+bastion  h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="52:54:00:fd:80:f7" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21"
+
+[myMasters]
+master-0 h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-1" 
+master-1 h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-2" 
+master-2 h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.12" h_etcdName="etcd-3" 
+
+[myWorkers]
+worker-1 h_pubMAC="50:6B:4B:DB:80:99" h_pubIP="10.72.242.154" h_priMAC="50:6b:4b:db:80:98" h_priIP="192.168.1.16"
+
+[myBootstrap]
+bootstrap h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10"
