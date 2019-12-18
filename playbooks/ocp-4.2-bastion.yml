@@ -22,6 +22,6 @@
 
 
 - import_playbook: ocp-4.2-bastion-dnsmasq.yml
-- import_playbook: ocp-4.2-bastion-tftp.yml
+- import_playbook: ocp-4.2-bastion-pxe.yml
 - import_playbook: ocp-4.2-bastion-haproxy.yml
 - import_playbook: ocp-4.2-bastion-tests.yml

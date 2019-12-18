@@ -1,0 +1,86 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook attempts to configure the minimum requirements.  Ideally, to prepare a blueprint you would run
+##   this and then snap the blueprint for the workshops.  This playbook is NOT meant for student execution
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the bastion-host
+##     #2 your client is registered to RH CDN with subscription-manager
+##     #3 the following packages have been installed: git, ansible
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+
+  
+  - name: "BASTION-PXE: package installation"
+    yum: name=httpd,tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
+    when: g_usePXE == "True"
+
+
+
+  - name: "BASTION-PXE: deploy configuraiton"
+    vars:
+      - p_port: "{{ g_repoPort }}"
+    template:
+      src: "httpd-conf.j2"
+      dest: "/etc/httpd/conf/httpd.conf"
+      owner: root
+      group: root
+      mode: 0644
+
+
+
+  - name: "BASTION-PXE: create directory"
+    when: g_usePXE == "True"
+    file:
+      path: /var/lib/tftpboot
+      mode: "0755"
+      state: directory
+
+
+
+  - name: "BASTION-PXE: copy file"
+    when: g_usePXE == "True"
+    copy: 
+      src: /usr/share/ipxe/undionly.kpxe
+      dest: /var/lib/tftpboot
+      mode: "0644"
+      owner: root
+      group: root
+      remote_src: yes
+
+
+
+
+  - name: "BASTION-PXE: restart services"
+    service: name={{ item }} state=restarted enabled=yes masked=no
+    when: g_usePXE == "True"
+    with_items:
+      - "httpd"
+      - "tftp"
+
+
+
+  - name: "BASTION-PXE: add firewalld ports and services"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "http"
+      - "https"
+      - "tftp"
+
+
+
+  - name: "BASTION-PXE: restore SELinux contexts"
+    shell: restorecon -R /var/www/html
+    
+
+
