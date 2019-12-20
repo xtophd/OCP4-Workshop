@@ -25,7 +25,8 @@
 
   - name: "BASTION-PXE: deploy configuraiton"
     vars:
-      - p_port: "{{ g_repoPort }}"
+      - p_port: "{{ g_httpPort }}"
+    when: g_usePXE == "True"
     template:
       src: "httpd-conf.j2"
       dest: "/etc/httpd/conf/httpd.conf"
@@ -72,6 +73,7 @@
       immediate: yes
       permanent: yes
       state: enabled
+    when: g_usePXE == "True"
     with_items:
       - "http"
       - "https"
@@ -80,6 +82,7 @@
 
 
   - name: "BASTION-PXE: restore SELinux contexts"
+    when: g_usePXE == "True"
     shell: restorecon -R /var/www/html
     
 

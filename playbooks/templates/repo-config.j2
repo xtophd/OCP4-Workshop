@@ -1,6 +1,6 @@
 [{{ item }}]
 name={{ item }}
-baseurl=http://{{ ansible_hostname }}{{ g_publicDomain }}:{{ g_repoPort  }}/repos/{{ item }}
+baseurl=http://{{ ansible_hostname }}{{ g_publicDomain }}:{{ g_httpPort  }}/repos/{{ item }}
 enabled=1
 gpgcheck=0
 

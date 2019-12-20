@@ -23,6 +23,9 @@ g_owner = "Foo Bar"
 ## (Optional) What is the POC location
 g_location = "Dallas"
 
+## Configure the student name as this
+g_studentName = "student"
+
 ## What are the DNS domains
 g_publicDomain  = "public.example.com"
 g_privateDomain = "private.example.com"
@@ -32,7 +35,7 @@ g_publicGateway  = "10.0.0.1"
 g_privateGateway = ""
 
 ## What are the netmasks
-g_publicNetmask = "255.255.255.0"
+g_publicNetmask  = "255.255.255.0"
 g_privateNetmask = "255.255.255.0"
 
 ## Forwarding Name Servers 
@@ -46,8 +49,16 @@ g_cloudName = "mycloud"
 g_publicNet  = "True"
 g_privateNet = "True"
 
+##
+## ----------------------------------------
+##
 ## Optional Local Services
 ## DNS, DHCP & PXE services on bastion host
+##
+##   NOTE: for iPXE support, g_httpPort
+##         and g_httpsPort are required
+##
+
 g_useDNS  = "True"
 g_useDHCP = "True"
 g_usePXE  = "True"
@@ -57,23 +68,32 @@ g_usePXE  = "True"
 ## Wildcard = '*.{{ g_cloudName }}.{{ g_publicDomain }}'
 g_useDNSwildcard = "True"
 
-## Configure HAPROXY 
+## Configure HAPROXY as a load balancer 
 g_useHAPROXY = "True"
 
-## Configure the student name as this
-g_studentName = "student"
+##
+## ----------------------------------------
+##
+## REPO SYNC PARAMETERS
+##
+##   Enabling these will create local repos on Bastion for
+##   use in the cluster.  If you're using all RHCOS, then 
+##   this is probably not necessary.  Also note that ports
+##   80 and 443 will likely be used by HAProxy.
+##
 
-## If we are using local repos, 
-## where on bastion are they stored
+## Are we going to clone/sync repos on Bastion
+g_repoSync = "True"
+
+## Where will the repos be stored
 g_repoDestDir = "/var/www/html/repos"
 
-## If we are using local repos,
-## which ones are we cloning
+## List of content/channel labels to sync
 g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
 
-## If we are using local repos,
-## what port is httpd running on
-g_repoPort = '8080'
+## Ports you do want httpd running on
+g_httpPort  = '8080'
+g_httpsPort = '8443'
 
 ##
 ## ----------------------------------------
@@ -89,15 +109,15 @@ ansible_connection = "local"
 ##
 
 [myBastion]
-bastion  h_pubMAC="2c:c2:60:30:69:c2" h_pubIP="10.0.0.10" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.10"
+bastion   h_pubMAC="2c:c2:60:30:69:c2" h_pubIP="10.0.0.10" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.10"
 
 [myMasters]
-master-1 h_pubMAC="2c:c2:60:02:d1:d5" h_pubIP="10.0.0.11" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.11" h_etcdName="etcd-1" 
-master-2 h_pubMAC="2c:c2:60:60:d0:0b" h_pubIP="10.0.0.12" h_priMAC="2c:c2:60:72:4e:69" h_priIP="192.168.10.12" h_etcdName="etcd-2" 
-master-3 h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.13" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.13" h_etcdName="etcd-3" 
+master-1  h_pubMAC="2c:c2:60:02:d1:d5" h_pubIP="10.0.0.11" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.11" h_etcdName="etcd-1" 
+master-2  h_pubMAC="2c:c2:60:60:d0:0b" h_pubIP="10.0.0.12" h_priMAC="2c:c2:60:72:4e:69" h_priIP="192.168.10.12" h_etcdName="etcd-2" 
+master-3  h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.13" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.13" h_etcdName="etcd-3" 
 
 [myWorkers]
-worker-1 h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.14" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.14"
+worker-1  h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.14" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.14"
 
 [myBootstrap]
 bootstrap h_pubMAC="2c:c2:60:43:96:45" h_pubIP="10.0.0.15" h_priMAC="2c:c2:60:5a:b8:28" h_priIP="192.168.10.15"

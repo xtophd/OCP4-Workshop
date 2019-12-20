@@ -2,8 +2,9 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure the minimum requirements.  Ideally, to prepare a blueprint you would run
-##   this and then snap the blueprint for the workshops.  This playbook is NOT meant for student execution
+##   This playbook attempts to configure the minimum requirements (ideally) to prepare a blueprint.
+##   This playbook is NOT meant for student execution
+##     IE: You would run this and then snap the blueprint for the workshops.
 ##
 ## Playbook Assumptions:
 ##     #1 you are executing this on the bastion-host
@@ -24,7 +25,8 @@
 
   - name: "Httpd Default Configuration"
     vars:
-      - p_port: "{{ g_repoPort }}"
+      - p_port: "{{ g_httpPort }}"
+    when: g_repoSync == "True"
     template:
       src: "httpd-conf.j2"
       dest: "/etc/httpd/conf/httpd.conf"
@@ -77,12 +79,14 @@
 
 
   - name: "Clone repos"
+    when: g_repoSync == "True"
     shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
     loop: "{{ g_repoList }}"
 
 
  
   - name: "Create sample repo configs"
+    when: g_repoSync == "True"
     template:
       src: "repo-config.j2"
       dest: "{{ g_repoDestDir }}/{{ item }}.repo"
@@ -94,6 +98,7 @@
 
 
   - name: "SELinux restore contexts"
+    when: g_repoSync == "True"
     shell: restorecon -R {{ g_repoDestDir }}
 
 
