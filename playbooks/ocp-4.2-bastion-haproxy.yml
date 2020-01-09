@@ -40,6 +40,11 @@
 
 
 
+## ADD SELINUX
+## setsebool -P haproxy_connect_any on
+
+
+
   - name: "BASTION-HAPROXY: restart service"
     when: g_useHAPROXY == "True"
     service: name=haproxy state=restarted enabled=yes
