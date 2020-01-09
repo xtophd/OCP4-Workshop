@@ -73,7 +73,8 @@ g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms
 
 ## If we are using local repos,
 ## what port is httpd running on
-g_repoPort = '8080'
+g_httpPort = '8080'
+g_httpsPort = '8443'
 
 ##
 ## ----------------------------------------
