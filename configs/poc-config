@@ -98,7 +98,8 @@ master-1 h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00
 master-2 h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-3" 
 
 [myWorkers]
-worker-1 h_pubMAC="50:6B:4B:DB:80:99" h_pubIP="10.72.242.154" h_priMAC="50:6b:4b:db:80:98" h_priIP="192.168.1.16"
+worker-0 h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="50:6b:4b:db:80:98" h_priIP="192.168.1.15"
+worker-1 h_pubMAC="52:54:00:c5:64:b5" h_pubIP="10.72.242.215" h_priMAC="50:6b:4b:db:80:99" h_priIP="192.168.1.16"
 
 [myBootstrap]
 bootstrap h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10"
