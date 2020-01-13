@@ -38,10 +38,10 @@ option tcplog
 backend machine-config-server
 balance source
 mode tcp
-server bootstrap 10.72.242.248:6443 check
-server master-0  10.72.242.244:6443 check
-server master-1  10.72.242.245:6443 check
-server master-2  10.72.242.246:6443 check
+server bootstrap 10.72.242.248:22623 check
+server master-0  10.72.242.244:22623 check
+server master-1  10.72.242.245:22623 check
+server master-2  10.72.242.246:22623 check
 
 frontend ingress-http
 bind *:80
