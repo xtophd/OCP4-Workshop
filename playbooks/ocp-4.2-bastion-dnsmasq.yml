@@ -48,7 +48,7 @@
       - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
       - p_netmask:  "{{ g_publicNetmask }}"
       - p_gateway:  "{{ g_publicGateway'] }}"
-      - p_domain:   "{{ g_publicDomain }}"
+      - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_publicNet == "True" 
       - g_useDNS == "True"
@@ -72,7 +72,7 @@
       - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
       - p_netmask:  "{{ g_privateNetmask }}"
       - p_gateway:  "{{ g_privateGateway'] }}"
-      - p_domain:   "{{ g_privateDomain }}"
+      - p_domain:   "{{ g_clusterName }}.{{ g_privateDomain }}"
     when:
       - g_privateNet == "True" 
       - g_useDNS == "True"
@@ -92,8 +92,8 @@
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_etcdName:  "{{ hostvars[item]['h_etcdName'] | default('') }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cloudName: "{{ g_cloudName }}"
+      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_clusterName: "{{ g_cloudName }}"
     when:
       - g_useDNS == "True"
       - p_etcdName != ""
@@ -110,14 +110,13 @@
   - name: "BASTION-DNSMASQ: deploy PUBLIC wildcard"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cloudName: "{{ g_cloudName }}"
+      - p_domain:    "{{ wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNS == "True" 
       - g_useDNSwildcard == "True"
     template:
       src: "dnsmasq-wildcard-entry.j2"
-      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_cloudName }}.conf"
+      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"
       owner: root
 
 
@@ -126,8 +125,7 @@
     vars: 
       - p_name:      "{{ hostvars['bastion']['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cloudName: "{{ g_cloudName }}"
+      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNS == "True" 
       - g_usePXE == "True"
@@ -141,14 +139,13 @@
   - name: "BASTION-DNSMASQ: deploy API config"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cloudName: "{{ g_cloudName }}"
+      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
       - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
     when:
       - g_useDNS == "True" 
     template:
       src: "dnsmasq-api-entry.j2"
-      dest: "/etc/dnsmasq.d/45-api-{{ g_cloudName }}.conf"
+      dest: "/etc/dnsmasq.d/45-api-{{ g_clusterName }}.conf"
       owner: root
 
 
