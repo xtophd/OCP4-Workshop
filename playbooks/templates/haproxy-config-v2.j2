@@ -24,10 +24,10 @@ option tcplog
 backend openshift-api-server
 balance source
 mode tcp
-server bootstrap 192.168.1.10:6443 check
-server master-0 192.168.1.11:6443 check
-server master-1 192.168.1.12:6443 check
-server master-2 192.168.1.13:6443 check
+server bootstrap 10.72.242.248:6443 check
+server master-0  10.72.242.244:6443 check
+server master-1  10.72.242.245:6443 check
+server master-2  10.72.242.246:6443 check
    
 frontend machine-config-server
 bind *:22623
@@ -38,10 +38,10 @@ option tcplog
 backend machine-config-server
 balance source
 mode tcp
-server bootstrap 192.168.1.10:22623 check
-server master-0 192.168.1.11:22623 check
-server master-1 192.168.1.12:22623 check
-server master-2 192.168.1.13:22623 check
+server bootstrap 10.72.242.248:6443 check
+server master-0  10.72.242.244:6443 check
+server master-1  10.72.242.245:6443 check
+server master-2  10.72.242.246:6443 check
 
 frontend ingress-http
 bind *:80
@@ -52,8 +52,8 @@ option tcplog
 backend ingress-http
 balance source
 mode tcp
-server worker-0 192.168.1.15:80 check
-  server worker-1 192.168.1.16:80 check
+server worker-0 10.72.242.214:80 check
+server worker-1 10.72.242.215:80 check
    
 frontend ingress-https
 bind *:443
@@ -64,5 +64,5 @@ option tcplog
 backend ingress-https
 balance source
 mode tcp
-server worker-0 192.168.1.15:443 check
-server worker-1 192.168.1.16:443 check
+server worker-0 10.72.242.214:443 check
+server worker-1 10.72.242.215:443 check
