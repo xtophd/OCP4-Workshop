@@ -11,13 +11,13 @@ dhcp-boot=tag:bios,undionly.kpxe,{{ p_name }}.{{ p_cloudName }}.{{ p_domain }},{
 
 ##UEFI
 dhcp-match=set:efi32,option:client-arch,6
-dhcp-boot=tag:efi32,ipxe.efi,{{ p_name }}.{{ p_cloudName }}.{{ p_domain }},{{ p_addr }}
+dhcp-boot=tag:efi32,ipxe.efi,{{ p_name }}.{{ p_domain }},{{ p_addr }}
 dhcp-match=set:efibc,option:client-arch,7
-dhcp-boot=tag:efibc,ipxe.efi,{{ p_name }}.{{ p_cloudName }}.{{ p_domain }},{{ p_addr }}
+dhcp-boot=tag:efibc,ipxe.efi,{{ p_name }}.{{ p_domain }},{{ p_addr }}
 dhcp-match=set:efi64,option:client-arch,9
-dhcp-boot=tag:efi64,ipxe.efi,{{ p_name }}.{{ p_cloudName }}.{{ p_domain }},{{ p_addr }}
+dhcp-boot=tag:efi64,ipxe.efi,{{ p_name }}.{{ p_domain }},{{ p_addr }}
 
 ##iPXE - chainload to ipxe boot script
 dhcp-userclass=set:ipxe,iPXE
-dhcp-boot=tag:ipxe,http://{{ p_name }}.{{ p_cloudName }}.{{ p_domain }}:8080/boot.ipxe
+dhcp-boot=tag:ipxe,http://{{ p_name }}.{{ p_domain }}:8080/boot.ipxe
 
