@@ -15,7 +15,7 @@
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:    "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:  "{{ g_publicDomain }}"
+      - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNS == "True" 
       - g_publicNet == "True" 
@@ -33,7 +33,7 @@
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:    "{{ hostvars[item]['h_priIP'] }}"
-      - p_domain:  "{{ g_privateDomain }}"
+      - p_domain:  "{{ g_clusterName }}.{{ g_privateDomain }}"
     when:
       - g_useDNS == "True" 
       - g_publicNet == "True" 
@@ -49,8 +49,8 @@
   - name: "BASTION-TESTS: TEST WILDCARD dns"
     vars: 
       - p_server:  "localhost"
-      - p_name:    "{{ g_cloudName }}"
-      - p_domain:  "{{ g_publicDomain }}"
+      - p_name:    "{{ g_wildcardName }}"
+      - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNS == "True" 
       - g_publicNet == "True" 
