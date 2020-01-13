@@ -24,7 +24,7 @@ g_owner = "Foo Bar"
 g_location = "Sunnyvale"
 
 ## What are the DNS domains
-g_publicDomain  = "peg.corp.yahoo.com"
+g_publicDomain  = "corp.yahoo.com"
 g_privateDomain = "private.example.com"
 
 ## What are the gateways (empty is ok)
