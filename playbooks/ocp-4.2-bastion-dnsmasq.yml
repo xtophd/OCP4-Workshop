@@ -110,7 +110,7 @@
   - name: "BASTION-DNSMASQ: deploy PUBLIC wildcard"
     vars: 
       - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNS == "True" 
       - g_useDNSwildcard == "True"
