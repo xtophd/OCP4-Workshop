@@ -96,9 +96,9 @@ ansible_connection = "local"
 bastion  h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21"
 
 [myMasters]
-master-0 h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-1" 
-master-1 h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-2" 
-master-2 h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-3" 
+master-0 h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-0" 
+master-1 h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-1" 
+master-2 h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-2" 
 
 [myWorkers]
 worker-0 h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="52:54:00:50:d2:d5" h_priIP="192.168.1.15"
