@@ -24,7 +24,7 @@ g_owner = "Foo Bar"
 g_location = "Sunnyvale"
 
 ## What are the DNS domains
-g_publicDomain  = "ops.peg.corp.yahoo.com"
+g_publicDomain  = "peg.corp.yahoo.com"
 g_privateDomain = "private.example.com"
 
 ## What are the gateways (empty is ok)
@@ -40,21 +40,24 @@ g_publicNameServer = "216.145.50.3"
 # g_privateNameServer = ""                     ## THIS PARAMETER NOT IN USE YET ##
 
 ## Your Cloud Name 
-g_cloudName = "rhocp"
+g_clusterName = "peg"
+
+## Wildcard Name 
+g_wildcardName = "apps"
 
 ## Use public and private networks
 g_publicNet  = "True"
-g_privateNet = "True"
+g_privateNet = "False"
 
 ## Optional Local Services
 ## DNS, DHCP & PXE services on bastion host
 g_useDNS  = "True"
-g_useDHCP = "True"
-g_usePXE  = "True"
+g_useDHCP = "False"
+g_usePXE  = "False"
 # g_usePxeInterface = "ens9"                   ## THIS PARAMETER NOT IN USE YET ##
 
 ## Configure DNS wildcard on bastion host
-## Wildcard = '*.{{ g_cloudName }}.{{ g_publicDomain }}'
+## Wildcard = '*.{{wildcardName}}.{{ g_clusterName }}.{{ g_publicDomain }}'
 g_useDNSwildcard = "True"
 
 ## Configure HAPROXY 
