@@ -2,8 +2,11 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt to host an openshift 4.2 deployment
+##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt
+##   to host an openshift 4.2 deployment
+##
 ##   This playbook is NOT meant for student execution  
+##
 ##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
 ##
 ## Playbook Assumptions:
@@ -13,17 +16,14 @@
 ##     #4 system has plenty of storage and memory
 ##
 
-[all:vars]
-ansible_connection = "local"
-
 ---
-- hosts: myVirtHost
+- hosts: myVirthost
   tasks:
-   
-  - name: "Yum install additional packages"
+
+  - name: "YUM: install additional packages"
     yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
 
-  - name: "Httpd Default Configuration"
+  - name: "TEMPLATE: deploy httpd configuration"
     vars:
       - p_port: "{{ g_httpPort }}"
     when: g_repoSync == "True"
@@ -34,41 +34,101 @@ ansible_connection = "local"
       group: root
       mode: 0644
 
-  - name: "Systemd services enabled"
-    service: name={{ item }} state=restarted enabled=yes masked=no
+  - name: "SERVICE: enable multiple services"
+    service: name="{{ item }}" state=restarted enabled=yes masked=no
     with_items:
       - "firewalld"
       - "httpd"
       - "cockpit"
+      - "libvirtd"
 
-  - name: "Firewalld services added"
+  - name: "FIREWALLD: add services"
     firewalld:
-      service: http
+      service: "{{ item }}"
       immediate: yes
       permanent: yes
       state: enabled
+    with_items:
+      - "http"
+      - "https"
+      - "cockpit"
 
-  - name: "Subscription Manager enable specified repos only"
-    rhsm_repository: 
-      name: "{{ g_repoList }}" 
-      purge: True
+  - name: "SHELL: use rhsm to disable all repos"
+    shell: subscription-manager repos --disable=* 
 
-  - name: "Clone repos"
-    when: g_repoSync == "True"
-    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
-    loop: "{{ g_repoList }}"
- 
-  - name: "Create sample repo configs"
-    when: g_repoSync == "True"
-    template:
-      src: "repo-config.j2"
-      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
-      owner: root
-      group: root
-      mode: 0444
-    loop: "{{ g_repoList }}"
+  - name: "SHELL: use rhsm to enable repos"
+    shell: subscription-manager repos --enable="{{ item }}" 
+    with_items: 
+      - "rhel-7-server-rpms"
+      - "rhel-7-server-optional-rpms"
+      - "rhel-7-server-extras-rpms"
 
-  - name: "SELinux restore contexts"
-    when: g_repoSync == "True"
-    shell: restorecon -R {{ g_repoDestDir }}
+  - name: "SHELL: disable libvirt 'default' network"
+    shell:
+      cmd: |
+        if `virsh net-list | grep -q default` ; then 
+          virsh net-destroy default
+          virsh net-autostart --network default --disable
+        fi
+
+  - name: "SERVICE: restart service libvirtd"
+    service: name=libvirtd state=restarted enabled=yes masked=no
+
+
+## For RHEL 8 (ansible 2.5)
+#  - name: "Subscription Manager enable specified repos only"
+#    rhsm_repository: 
+#      name: "{{ item }}"
+#      purge: True
+#      state: enabled
+
+#  - name: "Subscription Manager enable specified repos only"
+#    rhsm_repository: 
+#      name: "{{ item }}"
+#      purge: True
+#    loop: "{{ g_repoList }}"
+
+#  - name: "Clone repos"
+#    when: g_repoSync == "True"
+#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
+#    loop: "{{ g_repoList }}"
+# 
+#  - name: "Create sample repo configs"
+#    when: g_repoSync == "True"
+#    template:
+#      src: "repo-config.j2"
+#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
+#      owner: root
+#      group: root
+#      mode: 0444
+#    loop: "{{ g_repoList }}"
+#
+#  - name: "SELinux restore contexts"
+#    when: g_repoSync == "True"
+#    shell: restorecon -R {{ g_repoDestDir }}
+
+
+#  - name: "Subscription Manager enable specified repos only"
+#    rhsm_repository: 
+#      name: "{{ g_repoList }}" 
+#      purge: True
+#
+#  - name: "Clone repos"
+#    when: g_repoSync == "True"
+#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
+#    loop: "{{ g_repoList }}"
+# 
+#  - name: "Create sample repo configs"
+#    when: g_repoSync == "True"
+#    template:
+#      src: "repo-config.j2"
+#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
+#      owner: root
+#      group: root
+#      mode: 0444
+#    loop: "{{ g_repoList }}"
+#
+#  - name: "SELinux restore contexts"
+#    when: g_repoSync == "True"
+#    shell: restorecon -R {{ g_repoDestDir }}
 

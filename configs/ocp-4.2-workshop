@@ -99,6 +99,11 @@ g_httpsPort = '8443'
 ## ----------------------------------------
 ##
 
+[myVirthost:vars]
+
+## We are running the playbooks on the bastion node
+ansible_connection = "local"
+
 [myBastion:vars]
 
 ## We are running the playbooks on the bastion node
@@ -107,6 +112,9 @@ ansible_connection = "local"
 ##
 ## ----------------------------------------
 ##
+
+[myVirthost]
+rhv2
 
 [myBastion]
 bastion   h_pubMAC="2c:c2:60:30:69:c2" h_pubIP="10.0.0.10" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.10"
