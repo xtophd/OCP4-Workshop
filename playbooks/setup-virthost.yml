@@ -2,14 +2,15 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure a rhel 7.7 (or later) system with libvirt to host an openshift deployment
-##   This playbook is NOT meant for student execution   
+##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt to host an openshift 4.2 deployment
+##   This playbook is NOT meant for student execution  
 ##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
 ##
 ## Playbook Assumptions:
 ##     #1 you are executing this on the OS already installed on bare-metal
 ##     #2 your host is registered to RH CDN with subscription-manager
 ##     #3 the following packages have been installed: git, ansible
+##     #4 system has plenty of storage and memory
 ##
 
 [all:vars]
@@ -18,11 +19,9 @@ ansible_connection = "local"
 ---
 - hosts: myVirtHost
   tasks:
-  
+   
   - name: "Yum install additional packages"
-    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools state=installed
-
-
+    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
 
   - name: "Httpd Default Configuration"
     vars:
@@ -35,15 +34,12 @@ ansible_connection = "local"
       group: root
       mode: 0644
 
-
-
   - name: "Systemd services enabled"
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
       - "firewalld"
       - "httpd"
-
-
+      - "cockpit"
 
   - name: "Firewalld services added"
     firewalld:
@@ -52,39 +48,15 @@ ansible_connection = "local"
       permanent: yes
       state: enabled
 
-
-
-  - name: "User create and/or reset"
-    user: name="{{ item.name }}" password="{{ item.password }}"
-    with_items:
-      - {name: 'root', password: '$6$9Jk5EGiB2aBl95kj$RIdiSqNdKt95zqddStFUY/zVKIUujWfGWJkLM5KQ.7zY88Kxxa0qm78qLMFRAqDO2qOrp.qZBaQAKcUFm1Is70'}
-      - {name: '{{ g_studentName }}', password: '$6$9Jk5EGiB2aBl95kj$RIdiSqNdKt95zqddStFUY/zVKIUujWfGWJkLM5KQ.7zY88Kxxa0qm78qLMFRAqDO2qOrp.qZBaQAKcUFm1Is70'}
-
-
-
-  - name: "Sudoers Configuration"
-    template:
-      src: "sudoers.j2"
-      dest: "/etc/sudoers.d/ocp4-workshop"
-      owner: root
-      group: root
-      mode: 0600
-
-
-
   - name: "Subscription Manager enable specified repos only"
     rhsm_repository: 
       name: "{{ g_repoList }}" 
       purge: True
 
-
-
   - name: "Clone repos"
     when: g_repoSync == "True"
     shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
     loop: "{{ g_repoList }}"
-
-
  
   - name: "Create sample repo configs"
     when: g_repoSync == "True"
@@ -96,12 +68,7 @@ ansible_connection = "local"
       mode: 0444
     loop: "{{ g_repoList }}"
 
-
-
   - name: "SELinux restore contexts"
     when: g_repoSync == "True"
     shell: restorecon -R {{ g_repoDestDir }}
 
-
-    
-    
