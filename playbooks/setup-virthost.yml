@@ -2,21 +2,22 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure the minimum requirements (ideally) to prepare a blueprint.
-##   This playbook is NOT meant for student execution
-##     IE: You would run this and then snap the blueprint for the workshops.
+##   This playbook attempts to configure a rhel 7.7 (or later) system with libvirt to host an openshift deployment
+##   This playbook is NOT meant for student execution   
+##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
 ##
 ## Playbook Assumptions:
-##     #1 you are executing this on the bastion-host
-##     #2 your client is registered to RH CDN with subscription-manager
+##     #1 you are executing this on the OS already installed on bare-metal
+##     #2 your host is registered to RH CDN with subscription-manager
 ##     #3 the following packages have been installed: git, ansible
 ##
 
+[all:vars]
+ansible_connection = "local"
+
 ---
-- hosts: myBastion
+- hosts: myVirtHost
   tasks:
-
-
   
   - name: "Yum install additional packages"
     yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools state=installed
