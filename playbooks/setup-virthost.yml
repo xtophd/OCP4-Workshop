@@ -25,7 +25,7 @@
 
   - name: "TEMPLATE: deploy httpd configuration"
     vars:
-      - p_port: "{{ g_httpPort }}"
+      - p_port: "80"
     when: g_repoSync == "True"
     template:
       src: "httpd-conf.j2"
@@ -74,6 +74,10 @@
   - name: "SERVICE: restart service libvirtd"
     service: name=libvirtd state=restarted enabled=yes masked=no
 
+
+##
+## nmcli con add type bridge con-name virbr-pub ifname enp0s31f6 autoconnect yes bridge.stp no ipv6.method ignore connection.autoconnect-slaves yes
+##
 
 ## For RHEL 8 (ansible 2.5)
 #  - name: "Subscription Manager enable specified repos only"
