@@ -1,0 +1,25 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+##
+
+---
+- hosts: myVirthost
+  tasks:
+
+  - name: "SHELL: virt-install bastion"
+    shell:
+      cmd: |
+        virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
+                     --ram=16000 \
+                     --location=/var/lib/libvirt/images/iso/rhel-8.1-x86_64-dvd.iso \
+                     --extra-args="ks=http://rhv2.lab.linuxsoup.com/ks.cfg" \
+                     --disk /var/lib/libvirt/images/ocp-bastion.qcow2,bus=virtio,sparse=no,size=25 \
+                     --network "mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --graphics vnc \
+                     --noautoconsole
+    loop: "{{ groups['myBastion'] }}"
+
