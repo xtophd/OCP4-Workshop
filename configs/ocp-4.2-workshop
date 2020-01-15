@@ -27,11 +27,11 @@ g_location = "Dallas"
 g_studentName = "student"
 
 ## What are the DNS domains
-g_publicDomain  = "public.example.com"
-g_privateDomain = "private.example.com"
+g_publicDomain  = "example.com"
+g_privateDomain = "private.net"
 
 ## What are the gateways (empty is ok)
-g_publicGateway  = "10.0.0.1"
+g_publicGateway  = "192.168.1.1"
 g_privateGateway = ""
 
 ## What are the netmasks
@@ -39,15 +39,16 @@ g_publicNetmask  = "255.255.255.0"
 g_privateNetmask = "255.255.255.0"
 
 ## Forwarding Name Servers 
-g_publicNameServer = "10.0.0.1"
+g_publicNameServer = "192.168.1.30"
 # g_privateNameServer = ""                     ## THIS PARAMETER NOT IN USE YET ##
 
-## Your Cloud Name 
-g_cloudName = "mycloud"
+## Your Cluster and Wildcard Names
+g_clusterName = "mycloud"
+g_wildcardName = "apps"
 
 ## Use public and private networks
 g_publicNet  = "True"
-g_privateNet = "True"
+g_privateNet = "Flase"
 
 ##
 ## ----------------------------------------
@@ -65,10 +66,11 @@ g_usePXE  = "True"
 # g_usePxeInterface = "ens9"                   ## THIS PARAMETER NOT IN USE YET ##
 
 ## Configure DNS wildcard on bastion host
-## Wildcard = '*.{{ g_cloudName }}.{{ g_publicDomain }}'
+## Wildcard = '*.{{ g_wildcardName}}.{{ g_clusterName }}.{{ g_publicDomain }}'
 g_useDNSwildcard = "True"
 
 ## Configure HAPROXY as a load balancer 
+
 g_useHAPROXY = "True"
 
 ##
