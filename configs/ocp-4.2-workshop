@@ -56,15 +56,17 @@ g_wildcardName = "apps"
 ##   DNS          - provided by dnsmasq
 ##   DHCP & PXE   - provided by dhcp-server
 ##   LOADBALANCER - provided by haproxy
+##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
 ##
 ##   NOTE: for iPXE support, g_httpPort
 ##         and g_httpsPort are required
 ##
 
-g_useDNS     = "True"
-g_useDHCP    = "True"
-g_usePXE     = "True"
-g_useHAPROXY = "True"
+g_useDNS      = "True"
+g_useDHCP     = "False"
+g_usePXE      = "False"
+g_useHAPROXY  = "False"
+g_useMATCHBOX = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
