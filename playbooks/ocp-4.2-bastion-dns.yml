@@ -16,27 +16,17 @@
 ---
 - hosts: myBastion
   tasks:
-  
-
 
   - name: "BASTION-DNSMASQ: package installation"
     yum: name=dnsmasq state=installed
-    when:
-      - g_useDNS == "True"
-
-
 
   - name: "BASTION-DNSMASQ: deploy standard options"
     vars: 
-      - p_nameServer:  "{{ g_publicNameServer }}"
-    when:
-      - g_useDNS == "True" 
+      - p_nameServer:  "{{ g_pubDNS }}"
     template:
       src: "dnsmasq-standard-opts.j2"
       dest: "/etc/dnsmasq.d/30-standard-opts.conf"
       owner: root
-
-
 
   - name: "BASTION-DNSMASQ: deploy PUBLIC HOST configs"
     vars: 
@@ -46,12 +36,10 @@
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
       - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
-      - p_netmask:  "{{ g_publicNetmask }}"
-      - p_gateway:  "{{ g_publicGateway'] }}"
+      - p_netmask:  "{{ g_pubNM }}"
+      - p_gateway:  "{{ g_pubGW'] }}"
       - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
-    when:
-      - g_publicNet == "True" 
-      - g_useDNS == "True"
+    when: g_publicNet == "True" 
     template:
       src: "dnsmasq-host-entry.j2"
       dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
@@ -59,8 +47,6 @@
       group: root
       mode: 644
     loop: "{{ groups['all'] }}"
-
-
 
   - name: "BASTION-DNSMASQ: deploy PRIVATE HOST configs"
     vars: 
@@ -70,12 +56,10 @@
       - p_mac:      "{{ hostvars[item]['h_priMAC'] }}"
       - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
       - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
-      - p_netmask:  "{{ g_privateNetmask }}"
-      - p_gateway:  "{{ g_privateGateway'] }}"
+      - p_netmask:  "{{ g_priNM }}"
+      - p_gateway:  "{{ g_priGW }}"
       - p_domain:   "{{ g_clusterName }}.{{ g_privateDomain }}"
-    when:
-      - g_privateNet == "True" 
-      - g_useDNS == "True"
+    when: g_privateNet == "True" 
     template:
       src: "dnsmasq-host-entry.j2"
       dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
@@ -84,8 +68,6 @@
       mode: 644
     loop: "{{ groups['all'] }}"
 
-
-
   - name: "BASTION-DNSMASQ: deploy ETCD configs"
     vars: 
       - p_item:      "{{ item }}"
@@ -93,9 +75,8 @@
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_etcdName:  "{{ hostvars[item]['h_etcdName'] | default('') }}"
       - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
-      - p_clusterName: "{{ g_cloudName }}"
+      - p_clusterName: "{{ g_clusterName }}"
     when:
-      - g_useDNS == "True"
       - p_etcdName != ""
     template:
       src: "dnsmasq-etcd-entry.j2"
@@ -104,37 +85,6 @@
       group: root
       mode: 644
     loop: "{{ groups['all'] }}"
-
-
-
-  - name: "BASTION-DNSMASQ: deploy PUBLIC wildcard"
-    vars: 
-      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
-    when:
-      - g_useDNS == "True" 
-      - g_useDNSwildcard == "True"
-    template:
-      src: "dnsmasq-wildcard-entry.j2"
-      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"
-      owner: root
-
-
-
-  - name: "BASTION-DNSMASQ: deploy PXE config"
-    vars: 
-      - p_name:      "{{ hostvars['bastion']['inventory_hostname_short']}}"
-      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
-      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
-    when:
-      - g_useDNS == "True" 
-      - g_usePXE == "True"
-    template:
-      src: "dnsmasq-pxe-entry.j2"
-      dest: "/etc/dnsmasq.d/40-pxe-opts.conf"
-      owner: root
-
-
 
   - name: "BASTION-DNSMASQ: deploy API config"
     vars: 
@@ -148,16 +98,21 @@
       dest: "/etc/dnsmasq.d/45-api-{{ g_clusterName }}.conf"
       owner: root
 
-
+  - name: "BASTION-DNSMASQ: deploy PUBLIC wildcard"
+    vars: 
+      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+    when:
+      - g_useDNSwildcard == "True"
+    template:
+      src: "dnsmasq-wildcard-entry.j2"
+      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"
+      owner: root
 
   - name: "BASTION-DNSMASQ: restart service"
-    when: g_useDNS == "True"
     service: name=dnsmasq state=restarted enabled=yes
 
-
-
   - name: "BASTION-DNSMASQ: add firewalld service rules"
-    when: g_useDNS == "True" 
     firewalld:
       service: dns
       immediate: yes
