@@ -82,25 +82,26 @@ g_useDNSwildcard = "True"
 ##
 ## REPO SYNC PARAMETERS
 ##
-##   Enabling these will create local repos on Bastion for
+##   Enabling these will create local repos on virhost for
 ##   use in the cluster.  If you're using all RHCOS, then 
-##   this is probably not necessary.  Also note that ports
-##   80 and 443 will likely be used by HAProxy.
+##   this is probably not necessary, but still helpfull for builiding
+##   the bastion or possibly OCP worker/compute nodes.
 ##
 
-## Are we going to clone/sync repos on Bastion
+## Are we going to clone/sync repos on virthost
 g_repoSync = "False"
 
 ## Where will the repos be stored
 g_repoDestDir = "/var/www/html/repos"
 
 ## List of content/channel labels to sync
-g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
+g_repoList_r7 = '["rhel-7-for-x86_64-server-rpms","rhel-7-for-x86_64-optional-rpms","ansible-2.9-for-rhel-7-server-rpms"]'
+g_repoList_r8 = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
 
 ## Ports you do want httpd running on
 
-g_httpPort  = '8080'
-g_httpsPort = '8443'
+g_repoPort_http  = '8080'
+g_repoPort_https = '8443'
 
 ##
 ## ----------------------------------------
