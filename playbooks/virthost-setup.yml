@@ -63,17 +63,16 @@
       - "rhel-7-server-optional-rpms"
       - "rhel-7-server-extras-rpms"
 
-  - name: "SHELL: disable libvirt 'default' network"
-    shell:
-      cmd: |
-        if `virsh net-list | grep -q default` ; then 
-          virsh net-destroy default
-          virsh net-autostart --network default --disable
-        fi
-
-  - name: "SERVICE: restart service libvirtd"
-    service: name=libvirtd state=restarted enabled=yes masked=no
-
+#  - name: "SHELL: disable libvirt 'default' network"
+#    shell:
+#      cmd: |
+#        if `virsh net-list | grep -q default` ; then 
+#          virsh net-destroy default
+#          virsh net-autostart --network default --disable
+#        fi
+#
+#  - name: "SERVICE: restart service libvirtd"
+#    service: name=libvirtd state=restarted enabled=yes masked=no
 
 ##
 ## nmcli con add type bridge con-name virbr-pub ifname enp0s31f6 autoconnect yes bridge.stp no ipv6.method ignore connection.autoconnect-slaves yes

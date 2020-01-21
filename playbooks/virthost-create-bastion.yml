@@ -15,16 +15,15 @@
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-
   - name: "SHELL: virt-install bastion"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
                      --ram=16000 \
-                     --location=/var/lib/libvirt/images/iso/rhel-8.1-x86_64-dvd.iso \
-                     --extra-args="ks=http://rhv2.lab.linuxsoup.com/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --disk /var/lib/libvirt/images/ocp-bastion.qcow2,bus=virtio,sparse=no,size=25 \
-                     --network "mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --location={{ g_vhost_isodir }}/rhel-8.1-x86_64-dvd.iso \
+                     --extra-args="ks=http://{{ g_vhost_addr }}/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size=25 \
+                     --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
                      --noautoconsole
     loop: "{{ groups['myBastion'] }}"
