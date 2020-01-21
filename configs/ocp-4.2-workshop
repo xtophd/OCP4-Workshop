@@ -4,6 +4,11 @@
 ##   + use RHEL 7.7 or later
 ##   + use Ansible 2.9 or later
 ##
+##
+##
+##
+##
+##
 
 ##
 ## First character of variable defines scope
@@ -111,6 +116,19 @@ g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/
 g_rhcos_initramfs = "rhcos-4.2.0-x86_64-installer-initramfs.img"
 g_rhcos_kernel    = "rhcos-4.2.0-x86_64-installer-kernel"
 g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
+
+##
+## ----------------------------------------
+##
+## Red Hat VirtHost (libvirt parameters)
+##   parameters reflect the provisioning-network
+##   and where to find and store images
+##
+
+g_vhost_network = "default"
+g_vhost_addr    = "192.168.1.22"
+g_vhost_imgdir  = "/var/lib/libvirt/images"
+g_vhost_isodir  = "/var/www/html/iso"
 
 ##
 ## ----------------------------------------
