@@ -125,7 +125,7 @@ g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
 ##
 
 g_vhost_network = "pubBridge"
-g_vhost_addr    = "192.168.122.1"
+g_vhost_addr    = "10.72.242.148"
 g_vhost_imgdir  = "/home/virt-images"
 g_vhost_isodir  = "/var/www/html/iso"
 
@@ -156,20 +156,20 @@ ansible_connection = "local"
 ##
 
 [myVirthost]
-laptop    h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.122.1"
+labhost102   h_pubMAC="-- unused --" h_pubIP="10.72.242.148"
 
 [myBastion]
-bastion  h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21"
+bastion      h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21"
 
 [myBootstrap]
-bootstrap h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10"
+bootstrap    h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10"
 [myMasters]
 
-master-0 h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-0" 
-master-1 h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-1" 
-master-2 h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-2" 
+master-0     h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-0" 
+master-1     h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-1" 
+master-2     h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-2" 
 
 [myWorkers]
-worker-0 h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="52:54:00:50:d2:d5" h_priIP="192.168.1.15"
-worker-1 h_pubMAC="52:54:00:c5:64:b5" h_pubIP="10.72.242.215" h_priMAC="52:54:00:50:d2:d6" h_priIP="192.168.1.16"
+worker-0     h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="52:54:00:50:d2:d5" h_priIP="192.168.1.15"
+worker-1     h_pubMAC="52:54:00:c5:64:b5" h_pubIP="10.72.242.215" h_priMAC="52:54:00:50:d2:d6" h_priIP="192.168.1.16"
 
