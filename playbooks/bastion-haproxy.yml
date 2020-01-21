@@ -1,0 +1,167 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   Installs haproxy
+##   Constructs configuration file fragments in /etc/haproxy/config-fragments/*
+##   Assembles fragments to /etc/haproxy/haproxy.cfg
+##   Enables system services
+##   Enables firewall services and ports
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-HAPROXY: package installation"
+    yum: name=haproxy state=installed
+
+  - name: "BASTION-HAPROXY: add persistant SELINUX boolean"
+    shell: setsebool -P haproxy_connect_any on
+
+  - name: "BASTION-HAPROXY create cfg fragment directory"
+    file:
+      path: /etc/haproxy/cfg-fragments
+      mode: "0755"
+      state: directory
+
+  - name: "BASTION-HAPROXY: deploy default config"
+    template:
+      src: "haproxy-defaults.j2"
+      dest: "/etc/haproxy/cfg-fragments/10-defaults.cfg"
+      owner: root
+
+  - name: "BASTION-HAPROXY: deploy api base"
+    vars:
+      - p_type:     "api"
+      - p_port:     "6443"
+      - p_order:    "20"
+    template:
+      src: "haproxy-frontend-backend.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
+      owner: root
+
+  - name: "BASTION-HAPROXY: deploy api servers"
+    vars:
+      - p_type:     "api"
+      - p_port:     "6443"
+      - p_order:    "25"
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+    template:
+      src: "haproxy-host-entry.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}-{{ p_name }}.cfg"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
+
+  - name: "BASTION-HAPROXY: deploy config base"
+    vars:
+      - p_type:     "config"
+      - p_port:     "22623"
+      - p_order:    "30"
+    template:
+      src: "haproxy-frontend-backend.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
+      owner: root
+
+  - name: "BASTION-HAPROXY: deploy config servers"
+    vars:
+      - p_type:     "config"
+      - p_port:     "22623"
+      - p_order:    "35"
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+    template:
+      src: "haproxy-host-entry.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}-{{ p_name }}.cfg"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
+
+  - name: "BASTION-HAPROXY: deploy http base"
+    vars:
+      - p_type:     "http"
+      - p_port:     "80"
+      - p_order:    "40"
+    template:
+      src: "haproxy-frontend-backend.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
+      owner: root
+
+  - name: "BASTION-HAPROXY: deploy http servers"
+    vars:
+      - p_type:     "http"
+      - p_port:     "80"
+      - p_order:    "45"
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+    template:
+      src: "haproxy-host-entry.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}-{{ p_name }}.cfg"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['myWorkers'] }}"
+
+  - name: "BASTION-HAPROXY: deploy https base"
+    vars:
+      - p_type:     "https"
+      - p_port:     "443"
+      - p_order:    "50"
+    template:
+      src: "haproxy-frontend-backend.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
+      owner: root
+
+  - name: "BASTION-HAPROXY: deploy https servers"
+    vars:
+      - p_type:     "https"
+      - p_port:     "443"
+      - p_order:    "55"
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+    template:
+      src: "haproxy-host-entry.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}-{{ p_name }}.cfg"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['myWorkers'] }}"
+
+  - name: "BASTION-HAPROXY: assemble config fragments"
+    assemble:
+      src: "/etc/haproxy/cfg-fragments"
+      dest: "/etc/haproxy/haproxy.cfg"
+      owner: root
+      group: root
+      mode: 644
+
+  - name: "BASTION-HAPROXY: restart service"
+    service: name=haproxy state=restarted enabled=yes
+
+  - name: "BASTION-HAPROXY: add firewalld service rules"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "http"
+      - "https"
+
+  - name: "BASTION-HAPROXY: add firewalld port rules"
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "6443/tcp"
+      - "22623/tcp"

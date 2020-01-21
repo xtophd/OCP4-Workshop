@@ -36,7 +36,7 @@
       - p_domain:  "{{ g_clusterName }}.{{ g_privateDomain }}"
     when:
       - g_useDNS == "True" 
-      - g_publicNet == "True" 
+      - g_privateNet == "True" 
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short

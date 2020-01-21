@@ -1,0 +1,21 @@
+{
+ "id": "{{ p_profile }}",
+ "name": "{{ p_profile}} server",
+ "ignition_id": "{{ p_profile }}.ign",
+ "boot": {
+  "kernel": "/assets/{{ g_rhcos_kernel }}",
+  "initrd": [
+   "/assets/{{ g_rhcos_initramfs }}"
+   ],
+   "args": [
+    "ip=dhcp",
+    "rd.neednet=1",
+    "console=tty0",
+    "console=ttyS0",
+    "coreos.inst=yes",
+    "coreos.inst.install_dev=vda",
+    "coreos.inst.image_url=http://{{ p_addr }}:8080/assets/{{ g_rhcos_bios }}",
+    "coreos.inst.ignition_url=http://{{ p_addr}}:8080/ignition?mac=${mac:hexhyp}"
+   ]
+ }
+}

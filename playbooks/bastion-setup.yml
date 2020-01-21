@@ -20,16 +20,19 @@
   - name: "BASTION-SETUP: install additional packages"
     yum: name=ansible,git,tree,wget,bind-utils state=installed
 
-- import_playbook: ocp-4.2-bastion-dnsmasq.yml
+- import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
 
-- import_playbook: ocp-4.2-bastion-dhcp.yml
+- import_playbook: bastion-dhcp.yml
   when: g_useDHCP == "True"
 
-- import_playbook: ocp-4.2-bastion-pxe.yml
+- import_playbook: bastion-pxe.yml
   when: g_usePXE == "True"
 
-- import_playbook: ocp-4.2-bastion-haproxy.yml
+- import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
 
-- import_playbook: ocp-4.2-bastion-tests.yml
+- import_playbook: bastion-matchbox.yml
+  when: g_useMATCHBOX == "True"
+
+- import_playbook: bastion-tests.yml

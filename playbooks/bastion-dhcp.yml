@@ -1,0 +1,89 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook attempts to configure the minimum requirements.  Ideally, to prepare a blueprint you would run
+##   this and then snap the blueprint for the workshops.  This playbook is NOT meant for student execution
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the bastion-host
+##     #2 your client is registered to RH CDN with subscription-manager
+##     #3 the following packages have been installed: git, ansible
+##
+
+---
+- hosts: myBastion
+  tasks:
+  
+  - name: "BASTION-DHCP: package installation"
+    yum: name=dhcp-server state=installed
+
+  - name: "BASTION-DHCP create directory"
+    file:
+      path: /etc/dhcp/config-fragments
+      mode: "0755"
+      state: directory
+
+  - name: "BASTION-DHCP: deploy standard options"
+    template:
+      src: "dhcp-standard-opts.j2"
+      dest: "/etc/dhcp/config-fragments/10-standard-opts.conf"
+      owner: root
+
+  - name: "BASTION-DHCP: deploy PUBLIC HOST config framents"
+    vars:
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_netmask:  "{{ g_pubNM }}"
+      - p_gateway:  "{{ g_pubGW }}"
+      - p_dns:      "{{ g_pubDNS }}"
+      - p_domain:   "{{ g_publicDomain }}"
+    template:
+      src: "dhcp-host-entry.j2"
+      dest: "/etc/dhcp/config-fragments/50-host-{{ p_domain }}-{{ p_name }}.conf"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['all'] }}"
+
+  - name: "BASTION-DHCP: deploy PUBLIC SUBNET config frament"
+    vars:
+      - p_item:     "{{ item }}"
+      - p_nextsvr:  "{{ hostvars[item]['h_pubIP'] }}"
+      - p_network:  "{{ g_pubNET }}"
+      - p_netmask:  "{{ g_pubNM }}"
+      - p_gateway:  "{{ g_pubGW }}"
+      - p_dns:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:   "{{ g_publicDomain }}"
+    template:
+      src: "dhcp-subnet-entry.j2"
+      dest: "/etc/dhcp/config-fragments/10-subnet-{{ g_publicDomain }}.conf"
+      owner: root
+      group: root
+      mode: 644
+    loop: "{{ groups['myBastion'] }}"
+
+  - name: "BASTION-DHCP: assemble config fragments"
+    assemble:
+      src: "/etc/dhcp/config-fragments"
+      dest: "/etc/dhcp/dhcpd.conf"
+      owner: root
+      group: root
+      mode: 644
+
+  - name: "BASTION-DHCP: restart services"
+    service: name={{ item }} state=restarted enabled=yes masked=no
+    when: g_usePXE == "True"
+    with_items:
+      - "dhcpd"
+
+  - name: "BASTION-DHCP: add firewalld ports and services"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "dhcp"

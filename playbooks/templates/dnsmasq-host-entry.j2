@@ -2,7 +2,3 @@
 address=/{{ p_name }}.{{ p_domain }}/{{ p_addr }}
 ptr-record={{ p_revAddr }}.in-addr.arpa,{{ p_name }}.{{ p_domain }}
 
-{% if g_useDHCP == 'True' %}
-## DHCP entry
-dhcp-host={{ p_mac }},{{ p_addr }},{{ p_name }}.{{ p_domain }}
-{% endif %}

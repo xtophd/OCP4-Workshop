@@ -1,0 +1,15 @@
+
+subnet {{ p_network }} netmask {{ p_netmask }} {
+  option domain-name-servers {{ p_dns }};
+  option routers {{ p_gateway }};
+  next-server {{ p_nextsvr }};
+
+{% if g_usePXE == 'True' %}
+  if exists user-class and option user-class = "iPXE" {
+    filename "http://{{ p_nextsvr }}:8080/boot.ipxe";
+  } else {
+    filename "undionly.kpxe";
+  }
+{% endif %}
+}
+

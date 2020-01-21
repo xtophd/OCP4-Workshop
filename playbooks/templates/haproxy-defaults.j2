@@ -1,0 +1,21 @@
+##
+## These configuration fragments built and assembled by ansible
+##
+
+defaults
+mode                    http
+log                     global
+option                  httplog
+option                  dontlognull
+option forwardfor       except 127.0.0.0/8
+option                  redispatch
+retries                 3
+timeout http-request    10s
+timeout queue           1m
+timeout connect         10s
+timeout client          300s
+timeout server          300s
+timeout http-keep-alive 10s
+timeout check           10s
+maxconn                 20000
+

@@ -1,0 +1,156 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   Installs matchbox
+##   Constructs configuration file fragments in /etc/matchbox/cfg-fragments/*
+##   Assembles fragments to /etc/matchbox/*
+##   Enables system services
+##   Enables firewall services and ports
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-MATCHBOX: software download"
+    get_url:
+      url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
+      dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
+      mode: "0644"
+
+  - name: "BASTION-MATCHBOX: unpack software"
+    shell:
+      cmd: |
+        cd /usr/local/src
+        tar zxvf matchbox-v0.8.3-linux-amd64.tar.gz
+
+  - name: "BASTION-MATCHBOX: create matchbox group"
+    user:
+      name: "matchbox"
+      state: present
+      password: "*"
+    
+  - name: "BASTION-MATCHBOX: create matchbox user"
+    user:
+      name: "matchbox"
+      state: present
+      system: yes
+      password: "*"
+      group: "matchbox"
+
+  - name: "BASTION-MATCHBOX: install matchbox binary"
+    copy:
+      src: /usr/local/src/matchbox-v0.8.3-linux-amd64/matchbox
+      dest: /usr/local/bin
+      mode: "0555"
+      owner: matchbox
+      group: matchbox
+      remote_src: yes
+
+  - name: "BASTION-DHCP create directories"
+    file:
+      path: "{{ item }}"
+      state: directory
+      owner: matchbox
+      group: matchbox
+      mode: "0755"
+    with_items:
+      - "/etc/matchbox"
+      - "/var/lib/matchbox/assets"
+      - "/var/lib/matchbox/groups"
+      - "/var/lib/matchbox/profiles"
+      - "/var/lib/matchbox/ignition"
+
+  - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
+    get_url:
+      url: "{{ g_rhcos_src }}/{{ item }}"
+      dest: "/var/lib/matchbox/assets"
+      owner: matchbox
+      group: matchbox
+      mode: "0644"
+    with_items:
+      - "{{ g_rhcos_initramfs }}"
+      - "{{ g_rhcos_kernel }}"
+      - "{{ g_rhcos_bios }}"
+
+  - name: "BASTION-MATCHBOX: : deploy bootstrap group configs"
+    vars:
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_profile:  "bootstrap"
+    template:
+      src:   "matchbox-group.j2"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    loop: "{{ groups['myBootstrap'] }}"
+
+  - name: "BASTION-MATCHBOX: : deploy master configs"
+    vars:
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_profile:  "master"
+    template:
+      src:   "matchbox-group.j2"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    loop: "{{ groups['myMasters'] }}"
+
+  - name: "BASTION-MATCHBOX: : deploy worker configs"
+    vars:
+      - p_item:     "{{ item }}"
+      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_profile:  "worker"
+    template:
+      src:   "matchbox-group.j2"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    loop: "{{ groups['myWorkers'] }}"
+
+  - name: "BASTION-MATCHBOX: deploy profiles"
+    vars:
+      - p_profile:  "{{ item }}"
+      - p_addr:     "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_port:     "{{ g_matchbox_port }}"
+    template:
+      src:   "matchbox-profile.j2"
+      dest:  "/var/lib/matchbox/profiles/{{ p_profile }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    with_items:
+      - "bootstrap"
+      - "master"
+      - "worker"
+
+  - name: "BASTION-MATCHBOX: deploy systemd config"
+    vars:
+      - p_port: "{{ g_matchbox_port }}"
+    template:
+      src:   "matchbox-systemd.j2"
+      dest:  "/etc/systemd/system/matchbox.service"
+      mode:  "644"
+      owner: root
+      group: root
+
+  - name: "BASTION-MATCHBOX: restart services"
+    service: name=matchbox state=restarted enabled=yes masked=no daemon_reload=yes
+
+  - name: "BASTION-MATCHBOX: add firewalld ports and services"
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "{{ g_matchbox_port }}/tcp"
+

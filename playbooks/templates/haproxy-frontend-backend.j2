@@ -1,0 +1,14 @@
+
+## ---------------------------------------- 
+## {{ p_type }} servers
+
+frontend openshift-{{ p_type }}-server
+bind *:{{ p_port }}
+default_backend openshift-{{ p_type }}-server
+mode tcp
+option tcplog
+
+backend openshift-{{ p_type }}-server
+balance source
+mode tcp
+   

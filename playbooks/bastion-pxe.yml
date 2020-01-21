@@ -14,76 +14,71 @@
 ---
 - hosts: myBastion
   tasks:
-
-
   
   - name: "BASTION-PXE: package installation"
-    yum: name=httpd,tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
-    when: g_usePXE == "True"
-
-
+    yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
 
   - name: "BASTION-PXE: deploy configuraiton"
     vars:
       - p_port: "{{ g_httpPort }}"
-    when: g_usePXE == "True"
     template:
-      src: "httpd-conf.j2"
-      dest: "/etc/httpd/conf/httpd.conf"
+      src:   "httpd-conf.j2"
+      dest:  "/etc/httpd/conf/httpd.conf"
       owner: root
       group: root
-      mode: 0644
-
-
+      mode:  0644
 
   - name: "BASTION-PXE: create directory"
-    when: g_usePXE == "True"
     file:
-      path: /var/lib/tftpboot
+      path: "/var/lib/tftpboot"
       mode: "0755"
       state: directory
 
-
-
-  - name: "BASTION-PXE: copy file"
-    when: g_usePXE == "True"
+  - name: "BASTION-PXE: copy file to tftp directory"
     copy: 
-      src: /usr/share/ipxe/undionly.kpxe
-      dest: /var/lib/tftpboot
-      mode: "0644"
+      src:   "/usr/share/ipxe/undionly.kpxe"
+      dest:  "/var/lib/tftpboot"
+      mode:  "0644"
       owner: root
       group: root
       remote_src: yes
 
-
-
+#  - name: "BASTION-PXE: copy file to http directory"
+#    copy: 
+#      src:   "/usr/share/ipxe/undionly.kpxe"
+#      dest:  "/var/www/html/boot.ipxe"
+#      mode:  "0644"
+#      owner: root
+#      group: root
+#      remote_src: yes
 
   - name: "BASTION-PXE: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
-    when: g_usePXE == "True"
     with_items:
-      - "httpd"
+#      - "httpd"
       - "tftp"
 
-
-
-  - name: "BASTION-PXE: add firewalld ports and services"
+  - name: "BASTION-PXE: add firewalld services"
     firewalld:
       service: "{{ item }}"
       immediate: yes
       permanent: yes
       state: enabled
-    when: g_usePXE == "True"
     with_items:
       - "http"
       - "https"
       - "tftp"
 
+  - name: "BASTION-PXE: add firewalld ports"
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "8080/tcp"
+      - "8443/tcp"
 
-
-  - name: "BASTION-PXE: restore SELinux contexts"
-    when: g_usePXE == "True"
-    shell: restorecon -R /var/www/html
-    
-
+#  - name: "BASTION-PXE: restore SELinux contexts"
+#    shell: restorecon -R /var/www/html
 
