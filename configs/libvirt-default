@@ -35,7 +35,7 @@ g_studentName = "student"
 
 ## Configure the public (primary) network
 g_publicNet     = "True"
-g_publicDomain  = ".example.com"
+g_publicDomain  = "example.com"
 g_pubNET        = "192.168.122.0"
 g_pubNM         = "255.255.255.0"
 g_pubGW         = "192.168.122.1"

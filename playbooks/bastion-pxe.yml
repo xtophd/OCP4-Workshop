@@ -18,15 +18,15 @@
   - name: "BASTION-PXE: package installation"
     yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
 
-  - name: "BASTION-PXE: deploy configuraiton"
-    vars:
-      - p_port: "{{ g_httpPort }}"
-    template:
-      src:   "httpd-conf.j2"
-      dest:  "/etc/httpd/conf/httpd.conf"
-      owner: root
-      group: root
-      mode:  0644
+#  - name: "BASTION-PXE: deploy configuraiton"
+#    vars:
+#      - p_port: "{{ g_httpPort }}"
+#    template:
+#      src:   "httpd-conf.j2"
+#      dest:  "/etc/httpd/conf/httpd.conf"
+#      owner: root
+#      group: root
+#      mode:  0644
 
   - name: "BASTION-PXE: create directory"
     file:
