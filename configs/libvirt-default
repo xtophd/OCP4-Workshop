@@ -3,10 +3,9 @@
 ##   + PublicNet is required with unrestricted internet access
 ##   + use RHEL 7.7 or later
 ##   + use Ansible 2.9 or later
-##   + dnsmasq has been disabled in libvirt's default bridged (nat) network
+##   + dhcp/dnsmasq has been disabled in libvirt's default bridged (nat) network
 ##       - virsh net-edit default
-##       - add line <dns enable='no' />
-##       - remove <dhcp .... .... /dhcp> block
+##       - remove <dhcp .... .... /dhcp> block 
 ##       - restart the network  `virsh net-{destroy,start} default`
 ##
 
