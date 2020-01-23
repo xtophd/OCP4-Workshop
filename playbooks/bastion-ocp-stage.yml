@@ -1,0 +1,35 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   Downloads and unpacks software /root for OCP installation
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-OCP: client software download"
+    get_url:
+      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-client-linux-4.2.16.tar.gz
+      dest: /usr/local/src/
+      mode: "0644"
+
+  - name: "BASTION-OCP: unpack client software"
+    shell:
+      cmd: |
+        cd /root
+        tar zxvf openshift-client-linux-4.2.16.tar.gz
+
+  - name: "BASTION-OCP: installer software download"
+    get_url:
+      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-install-linux-4.2.16.tar.gz 
+      dest: /usr/local/src/
+      mode: "0644"
+
+  - name: "BASTION-OCP: unpack installer software"
+    shell:
+      cmd: |
+        cd /root
+        tar zxvf openshift-client-linux-4.2.16.tar.gz
+
