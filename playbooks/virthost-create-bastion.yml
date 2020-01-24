@@ -19,7 +19,7 @@
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram=16000 \
+                     --ram=4000 \
                      --location={{ g_vhost_isodir }}/rhel-8.1-x86_64-dvd.iso \
                      --extra-args="ks=http://{{ g_vhost_addr }}/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
                      --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size=25 \

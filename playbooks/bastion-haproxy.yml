@@ -164,4 +164,6 @@
       state: enabled
     with_items:
       - "6443/tcp"
+      - "6443/udp"
       - "22623/tcp"
+      - "22623/udp"

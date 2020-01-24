@@ -17,11 +17,18 @@
     fail: msg="COPY YOU PULL SECRET HERE /root/ocp4_pull_secret"
     when: pull_secret.stat.exists == false
 
-  - name: "BASTION-OCP: create install working directory"
+  - name: "BASTION-OCP: Clean-up ocp working directory"
+    shell:
+      cmd: |
+        if [[ -d "/root/ocp" ]] ; then rm -rf /root/ocp ; fi
+
+  - name: "BASTION-OCP: Create openshift working directory"
     file:
       path: /root/ocp
       mode: "0755"
       state: directory
+
+
 
   - name: "BASTION-OCP: test ssh key"
     stat: path=/root/.ssh/id_rsa
@@ -33,15 +40,18 @@
 #        ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa
 #    when: ssh_key.stat.exists == false
 
+
+
   - name: "BASTION-OCP: stat ocp client software"
     stat: path=/usr/local/src/openshift-client-linux-4.2.16.tar.gz
-    register: opc_client_sw
+    register: ocp_client_sw
 
   - name: "BASTION-OCP: download client software"
     get_url:
       url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-client-linux-4.2.16.tar.gz
       dest: /usr/local/src/
       mode: "0644"
+    when: ocp_client_sw.stat.exists == false
 
   - name: "BASTION-OCP: unpack client software"
     shell:
@@ -49,11 +59,18 @@
         cd /usr/local/bin
         tar zxvf /usr/local/src/openshift-client-linux-4.2.16.tar.gz
 
+
+
+  - name: "BASTION-OCP: stat ocp install software"
+    stat: path=/usr/local/src/openshift-install-linux-4.2.16.tar.gz
+    register: ocp_install_sw
+
   - name: "BASTION-OCP: download installer software"
     get_url:
       url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-install-linux-4.2.16.tar.gz 
       dest: /usr/local/src/
       mode: "0644"
+    when: ocp_install_sw.stat.exists == false
 
   - name: "BASTION-OCP: unpack installer software"
     shell:
