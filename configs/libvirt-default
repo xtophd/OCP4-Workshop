@@ -129,6 +129,7 @@ g_vhost_network = "default"
 g_vhost_addr    = "192.168.122.1"
 g_vhost_imgdir  = "/home/virt-images"
 g_vhost_isodir  = "/var/www/html/iso"
+g_vhost_memsize = 4000
 
 ##
 ## ----------------------------------------
