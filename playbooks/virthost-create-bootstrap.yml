@@ -1,0 +1,30 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+##
+
+---
+- hosts: myVirthost
+  tasks:
+
+
+  - debug:
+      msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
+    loop: "{{ groups['myBootstrap'] }}"
+
+
+  - name: "SHELL: virt-install bastion"
+    shell:
+      cmd: |
+        virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
+                     --ram={{ g_vhost_memsize }} \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size=10 \
+                     --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --pxe \
+                     --graphics vnc \
+                     --noautoconsole
+    loop: "{{ groups['myBootstrap'] }}"
+
