@@ -34,8 +34,6 @@
       mode: "0700"
       state: directory
 
-
-
   - name: "BASTION-OCP: test ssh key"
     stat: path="/root/.ssh/id_rsa.pub"
     register: test_ssh_key
@@ -44,45 +42,23 @@
     command: "ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa"
     when: test_ssh_key.stat.exists == false
 
-
-
-  - name: "BASTION-OCP: stat ocp client software"
-    stat: path=/usr/local/src/openshift-client-linux-4.2.16.tar.gz
-    register: ocp_client_sw
-
-  - name: "BASTION-OCP: download client software"
+  - name: "BASTION-OCP: download ocp software"
     get_url:
-      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-client-linux-4.2.16.tar.gz
-      dest: /usr/local/src/
+      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/{{ item }}
+      dest: /usr/local/src/{{ item }}
       mode: "0644"
-    when: ocp_client_sw.stat.exists == false
+    with_items:
+      - "openshift-client-linux-4.2.16.tar.gz"
+      - "openshift-install-linux-4.2.16.tar.gz"
 
-  - name: "BASTION-OCP: unpack client software"
+  - name: "BASTION-OCP: unpack ocp software"
     shell:
       cmd: |
         cd /usr/local/bin
-        tar zxvf /usr/local/src/openshift-client-linux-4.2.16.tar.gz
-
-
-
-  - name: "BASTION-OCP: stat ocp install software"
-    stat: path=/usr/local/src/openshift-install-linux-4.2.16.tar.gz
-    register: ocp_install_sw
-
-  - name: "BASTION-OCP: download installer software"
-    get_url:
-      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/openshift-install-linux-4.2.16.tar.gz 
-      dest: /usr/local/src/
-      mode: "0644"
-    when: ocp_install_sw.stat.exists == false
-
-  - name: "BASTION-OCP: unpack installer software"
-    shell:
-      cmd: |
-        cd /usr/local/bin
-        tar zxvf /usr/local/src/openshift-install-linux-4.2.16.tar.gz
-
-
+        tar zxvf /usr/local/src/{{ item }}
+    with_items:
+      - "openshift-client-linux-4.2.16.tar.gz"
+      - "openshift-install-linux-4.2.16.tar.gz"
 
   - name: "BASTION-OCP: deploy install-config.yml"
     vars:
@@ -96,8 +72,6 @@
       owner: root
       group: root
       mode: 644
-
-
 
   - name: "BASTION-OCP: Clean-up ignition directory"
     shell:
@@ -122,4 +96,4 @@
         chown matchbox.matchbox /var/lib/matchbox/ignition/*
 
   - name: "BASTION-OCP: DEBUG"
-    debug: msg="YOU CAN NOW DEPLOY YOUR BOOTSTRAP"
+    debug: msg="YOU CAN NOW DEPLOY THE BOOTSTRAP"

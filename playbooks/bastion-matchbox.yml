@@ -13,11 +13,16 @@
 - hosts: myBastion
   tasks:
 
+  - name: "BASTION-MATCHBOX: stat software"
+    stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
+    register: test_matchbox_src
+
   - name: "BASTION-MATCHBOX: software download"
     get_url:
       url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
       dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
       mode: "0644"
+    when: test_matchbox_src.stat.exists == false
 
   - name: "BASTION-MATCHBOX: unpack software"
     shell:
@@ -65,7 +70,7 @@
   - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
     get_url:
       url: "{{ g_rhcos_src }}/{{ item }}"
-      dest: "/var/lib/matchbox/assets"
+      dest: "/var/lib/matchbox/assets/{{ item }}"
       owner: matchbox
       group: matchbox
       mode: "0644"

@@ -18,16 +18,6 @@
   - name: "BASTION-PXE: package installation"
     yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
 
-#  - name: "BASTION-PXE: deploy configuraiton"
-#    vars:
-#      - p_port: "{{ g_httpPort }}"
-#    template:
-#      src:   "httpd-conf.j2"
-#      dest:  "/etc/httpd/conf/httpd.conf"
-#      owner: root
-#      group: root
-#      mode:  0644
-
   - name: "BASTION-PXE: create directory"
     file:
       path: "/var/lib/tftpboot"
@@ -43,19 +33,9 @@
       group: root
       remote_src: yes
 
-#  - name: "BASTION-PXE: copy file to http directory"
-#    copy: 
-#      src:   "/usr/share/ipxe/undionly.kpxe"
-#      dest:  "/var/www/html/boot.ipxe"
-#      mode:  "0644"
-#      owner: root
-#      group: root
-#      remote_src: yes
-
   - name: "BASTION-PXE: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
-#      - "httpd"
       - "tftp"
 
   - name: "BASTION-PXE: add firewalld services"
@@ -68,17 +48,3 @@
       - "http"
       - "https"
       - "tftp"
-
-  - name: "BASTION-PXE: add firewalld ports"
-    firewalld:
-      port: "{{ item }}"
-      immediate: yes
-      permanent: yes
-      state: enabled
-    with_items:
-      - "8080/tcp"
-      - "8443/tcp"
-
-#  - name: "BASTION-PXE: restore SELinux contexts"
-#    shell: restorecon -R /var/www/html
-
