@@ -1,0 +1,40 @@
+##
+## Kickstart 
+##   RHEL 8.1 
+##   VM using virtio (vda)
+##
+
+lang en_US
+keyboard us
+timezone America/New_York --isUtc
+rootpw $1$XJbwDNTe$Wqttcf7vWP5n.nPo2J9mk. --iscrypted
+reboot
+text
+cdrom
+bootloader --location=mbr --append="nofb quiet splash=quiet"
+
+zerombr
+clearpart --drives=vda --all --initlabel
+part /boot --fstype=ext2 --size=512 --ondisk=vda --asprimary
+part pv.01 --size=16000 --grow --ondisk=vda --asprimary
+volgroup vg_rhel pv.01
+logvol /     --fstype=ext4  --vgname=vg_rhel --name=root   --size=6000 --grow
+logvol /var  --fstype=ext4  --vgname=vg_rhel --name=var    --size=4000
+logvol /home --fstype=ext4  --vgname=vg_rhel --name=home   --size=2000
+logvol /tmp  --fstype=ext4  --vgname=vg_rhel --name=tmp    --size=2000
+logvol swap  --fstype=swap  --vgname=vg_rhel --name=swap01 --size=2000
+
+auth --passalgo=sha512 --useshadow
+selinux --enforcing
+firewall --enabled
+skipx
+firstboot --disable
+
+%packages
+@Core
+redhat-lsb-core
+dhclient
+bind-utils
+wget
+git
+%end
