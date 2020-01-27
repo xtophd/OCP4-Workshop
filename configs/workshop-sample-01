@@ -35,11 +35,11 @@ g_studentName = "student"
 
 ## Configure the public (primary) network
 g_publicNet     = "True"
-g_publicDomain  = "lab.linuxsoup.com"
-g_pubNET        = "192.168.1.0"
+g_publicDomain  = "example"
+g_pubNET        = "10.0.0.0"
 g_pubNM         = "255.255.255.0"
-g_pubGW         = "192.168.1.1"
-g_pubDNS        = "192.168.1.30"
+g_pubGW         = "10.0.0.1"
+g_pubDNS        = "10.0.0.1"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
