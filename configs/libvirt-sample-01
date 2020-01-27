@@ -1,6 +1,9 @@
 ##
+## SUMMARY: 
+##   + using libvirt on 'default' network
+##   + vm images in standard place
+##
 ## Assumptions (at this time):
-##   + PublicNet is required with unrestricted internet access
 ##   + use RHEL 7.7 or later
 ##   + use Ansible 2.9 or later
 ##   + dhcp/dnsmasq has been disabled in libvirt's default bridged (nat) network
@@ -126,11 +129,11 @@ g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
 ##   and where to find and store images
 ##
 
-g_vhost_network = "default"
-g_vhost_addr    = "192.168.122.1"
-g_vhost_imgdir  = "/home/virt-images"
-g_vhost_isodir  = "/var/www/html/iso"
-g_vhost_memsize = 4000
+g_vhost_network    = "default"
+g_vhost_addr       = "192.168.122.1"
+g_vhost_imgdir     = "/var/lib/libvirt/images"
+g_vhost_isodir     = "/var/www/html/iso"
+g_vhost_vm_memsize = 8000
 
 ##
 ## ----------------------------------------
@@ -159,7 +162,7 @@ ansible_connection = "local"
 ##
 
 [myVirthost]
-laptop    h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.122.1"
+virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.122.1"
 
 [myBastion]
 bastion   h_pubMAC="2c:c2:60:30:69:c2" h_pubIP="192.168.122.160" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.10"
