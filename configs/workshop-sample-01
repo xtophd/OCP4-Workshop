@@ -1,0 +1,175 @@
+##
+## Assumptions (at this time):
+##   + PublicNet is required with unrestricted internet access
+##   + use RHEL 7.7 or later
+##   + use Ansible 2.9 or later
+##
+##
+##
+##
+##
+##
+
+##
+## First character of variable defines scope
+## and should help tracking where it is defined.
+##
+##  g_Name - global: declared in this file
+##
+##  h_Name - host: declared in host inventory OR
+##                 in a [hostname:vars] block
+##
+##  p_Name - play: declared as part of a play
+##
+
+[all:vars]
+
+## (Optional) Who is the POC owner
+g_owner = "Foo Bar"
+
+## (Optional) What is the POC location
+g_location = "Dallas"
+
+## Configure the student name as this
+g_studentName = "student"
+
+## Configure the public (primary) network
+g_publicNet     = "True"
+g_publicDomain  = "lab.linuxsoup.com"
+g_pubNET        = "192.168.1.0"
+g_pubNM         = "255.255.255.0"
+g_pubGW         = "192.168.1.1"
+g_pubDNS        = "192.168.1.30"
+
+## Configure the private (secondary) network
+g_privateNet    = "False"
+g_privateDomain = "private.example.com"
+g_priNET        = "10.0.0.0"
+g_priNM         = "255.255.255.0"
+g_priGW         = ""
+g_priDNS        = ""
+
+## Your OCP Cluster Name
+g_clusterName = "ocp"
+
+## Your OCP Cluster Wildcard Name
+g_wildcardName = "apps"
+
+##
+## ----------------------------------------
+##
+## Optional Local Services that can be enabled on bastion
+##
+##   DNS          - provided by dnsmasq
+##   DHCP & PXE   - provided by dhcp-server
+##   LOADBALANCER - provided by haproxy
+##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
+##
+##   NOTE: for iPXE support, g_httpPort
+##         and g_httpsPort are required
+##
+
+g_useDNS      = "True"
+g_useDHCP     = "True"
+g_usePXE      = "True"
+g_useHAPROXY  = "True"
+g_useMATCHBOX = "True"
+
+## Configure DNS wildcard on bastion host
+g_useDNSwildcard = "True"
+
+##
+## ----------------------------------------
+##
+## REPO SYNC PARAMETERS
+##
+##   Enabling these will create local repos on Bastion for
+##   use in the cluster.  If you're using all RHCOS, then 
+##   this is probably not necessary.  Also note that ports
+##   80 and 443 will likely be used by HAProxy.
+##
+
+## Are we going to clone/sync repos on Bastion
+g_repoSync = "False"
+
+## Where will the repos be stored
+g_repoDestDir = "/var/www/html/repos"
+
+## List of content/channel labels to sync
+g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
+
+## Ports you do want httpd running on
+
+g_httpPort  = '8080'
+g_httpsPort = '8443'
+
+##
+## ----------------------------------------
+##
+## Red Hat CoreOS Parameters
+##
+##   Declare sources & versions of RHCOS
+##   
+
+g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/latest"
+
+g_rhcos_initramfs = "rhcos-4.2.0-x86_64-installer-initramfs.img"
+g_rhcos_kernel    = "rhcos-4.2.0-x86_64-installer-kernel"
+g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
+
+##
+## ----------------------------------------
+##
+## Red Hat VirtHost (libvirt parameters)
+##   parameters reflect the provisioning-network
+##   and where to find and store images
+##
+
+g_vhost_network = "default"
+g_vhost_addr    = "192.168.1.22"
+g_vhost_imgdir  = "/var/lib/libvirt/images"
+g_vhost_isodir  = "/var/www/html/iso"
+
+##
+## ----------------------------------------
+##
+## Matchbox Parameters
+##   
+
+g_matchbox_port = "8080"
+
+##
+## ----------------------------------------
+##
+
+[myVirthost:vars]
+
+## We are running the playbooks on the baremetal virthost
+ansible_connection = "local"
+
+[myBastion:vars]
+
+## We are running the playbooks on the bastion node
+ansible_connection = "local"
+
+##
+## ----------------------------------------
+##
+
+[myVirthost]
+virthost  h_pubMAC="00:00:00:00:00:00" h_pubIP="10.0.0.10"
+
+[myBastion]
+bastion   h_pubMAC="2c:c2:60:18:6c:1d" h_pubIP="10.0.0.10" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+
+[myBootstrap]
+bootstrap h_pubMAC="2c:c2:60:43:96:45" h_pubIP="10.0.0.15" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+
+[myMasters]
+master-0  h_pubMAC="2c:c2:60:02:d1:d5" h_pubIP="10.0.0.11" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-0" 
+master-1  h_pubMAC="2c:c2:60:60:d0:0b" h_pubIP="10.0.0.12" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-1" 
+master-2  h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="10.0.0.13" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-2" 
+
+[myWorkers]
+worker-0  h_pubMAC="2c:c2:60:2c:fc:f8" h_pubIP="10.0.0.14" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+
