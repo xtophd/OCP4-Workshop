@@ -34,6 +34,14 @@
       group: root
       mode: 0644
 
+  - name: "TEMPLATE: deploy httpd configuration"
+    template:
+      src: "bastion-kickstart.j2"
+      dest: "/var/www/html/ks.cfg"
+      owner: root
+      group: apache
+      mode: 0644
+
   - name: "SERVICE: enable multiple services"
     service: name="{{ item }}" state=restarted enabled=yes masked=no
     with_items:
