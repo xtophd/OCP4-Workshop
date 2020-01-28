@@ -44,12 +44,12 @@
 
   - name: "BASTION-OCP: download ocp software"
     get_url:
-      url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.16/{{ item }}
-      dest: /usr/local/src/{{ item }}
+      url: "{{ g_ocp_src }}/{{ item }}"
+      dest: "/usr/local/src/{{ item }}"
       mode: "0644"
     with_items:
-      - "openshift-client-linux-4.2.16.tar.gz"
-      - "openshift-install-linux-4.2.16.tar.gz"
+      - "{{ g_ocp_install }}"
+      - "{{ g_ocp_client }}"
 
   - name: "BASTION-OCP: unpack ocp software"
     shell:
@@ -57,8 +57,8 @@
         cd /usr/local/bin
         tar zxvf /usr/local/src/{{ item }}
     with_items:
-      - "openshift-client-linux-4.2.16.tar.gz"
-      - "openshift-install-linux-4.2.16.tar.gz"
+      - "{{ g_ocp_install }}"
+      - "{{ g_ocp_client }}"
 
   - name: "BASTION-OCP: deploy install-config.yml"
     vars:
