@@ -1,7 +1,0 @@
-## Not related to OCP cluster, but used for Docker Fundamentals exercises
-
-[bastion]
-workstation.example.com
-
-[podman]
-workstation.example.com
