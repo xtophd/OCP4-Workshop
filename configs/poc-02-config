@@ -35,7 +35,7 @@ g_studentName = "student"
 ## Configure the public (primary) network
 g_publicNet     = "True"
 g_publicDomain  = "vzbi.com"
-g_pubNET        = "166.34.187.0"
+g_pubNET        = "166.34.184.0"
 g_pubNM         = "255.255.252.0"
 g_pubGW         = "166.34.187.254"
 g_pubDNS        = "166.37.162.103"
