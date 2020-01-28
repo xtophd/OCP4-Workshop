@@ -20,6 +20,11 @@
   - name: "BASTION-DNS: package installation"
     yum: name=dnsmasq state=installed
 
+  - name: "BASTION-DNS: clean cfg directory"
+    shell:
+      cmd: |
+        if [[ -d "/etc/dnsmasq.d" ]] ; then rm -rf /etc/dnsmasq.d/* ; fi
+
   - name: "BASTION-DNS: deploy standard options"
     vars: 
       - p_nameServer:  "{{ g_pubDNS }}"

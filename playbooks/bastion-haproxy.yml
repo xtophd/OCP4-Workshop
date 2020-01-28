@@ -19,7 +19,12 @@
   - name: "BASTION-HAPROXY: add persistant SELINUX boolean"
     shell: setsebool -P haproxy_connect_any on
 
-  - name: "BASTION-HAPROXY create cfg fragment directory"
+  - name: "BASTION-HAPROXY: clean cfg fragment directory"
+    shell:
+      cmd: |
+        if [[ -d "/etc/haproxy/cfg-fragments" ]] ; then rm -rf /etc/haproxy/cfg-fragments ; fi
+
+  - name: "BASTION-HAPROXY create fresh cfg fragment directory"
     file:
       path: /etc/haproxy/cfg-fragments
       mode: "0755"

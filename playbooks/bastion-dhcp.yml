@@ -18,16 +18,21 @@
   - name: "BASTION-DHCP: package installation"
     yum: name=dhcp-server state=installed
 
-  - name: "BASTION-DHCP create directory"
+  - name: "BASTION-DHCP: clean cfg fragments directory"
+    shell:
+      cmd: |
+        if [[ -d "/etc/dhcp/cfg-fragments" ]] ; then rm -rf /etc/dhcp/cfg-fragments ; fi
+
+  - name: "BASTION-DHCP create cfg fragments directory"
     file:
-      path: /etc/dhcp/config-fragments
+      path: /etc/dhcp/cfg-fragments
       mode: "0755"
       state: directory
 
   - name: "BASTION-DHCP: deploy standard options"
     template:
       src: "dhcp-standard-opts.j2"
-      dest: "/etc/dhcp/config-fragments/10-standard-opts.conf"
+      dest: "/etc/dhcp/cfg-fragments/10-standard-opts.conf"
       owner: root
 
   - name: "BASTION-DHCP: deploy PUBLIC HOST config framents"
@@ -42,7 +47,7 @@
       - p_domain:   "{{ g_publicDomain }}"
     template:
       src: "dhcp-host-entry.j2"
-      dest: "/etc/dhcp/config-fragments/50-host-{{ p_domain }}-{{ p_name }}.conf"
+      dest: "/etc/dhcp/cfg-fragments/50-host-{{ p_domain }}-{{ p_name }}.conf"
       owner: root
       group: root
       mode: 644
@@ -59,7 +64,7 @@
       - p_domain:   "{{ g_publicDomain }}"
     template:
       src: "dhcp-subnet-entry.j2"
-      dest: "/etc/dhcp/config-fragments/10-subnet-{{ g_publicDomain }}.conf"
+      dest: "/etc/dhcp/cfg-fragments/10-subnet-{{ g_publicDomain }}.conf"
       owner: root
       group: root
       mode: 644
@@ -67,7 +72,7 @@
 
   - name: "BASTION-DHCP: assemble config fragments"
     assemble:
-      src: "/etc/dhcp/config-fragments"
+      src: "/etc/dhcp/cfg-fragments"
       dest: "/etc/dhcp/dhcpd.conf"
       owner: root
       group: root
