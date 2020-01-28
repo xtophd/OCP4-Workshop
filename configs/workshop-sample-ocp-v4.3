@@ -74,6 +74,7 @@ g_useDHCP     = "True"
 g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
+g_useNFS      = "True"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
@@ -96,6 +97,7 @@ g_repoSync = "False"
 g_repoDestDir = "/var/www/html/repos"
 
 ## List of content/channel labels to sync
+g_repoList_r7 = '["rhel-7-for-x86_64-server-rpms","rhel-7-for-x86_64-optional-rpms","ansible-2.9-for-rhel-7-server-rpms"]'
 g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
 
 ## Ports you do want httpd running on
@@ -111,11 +113,19 @@ g_httpsPort = '8443'
 ##   Declare sources & versions of RHCOS
 ##   
 
-g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/latest"
+g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
 
-g_rhcos_initramfs = "rhcos-4.2.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel    = "rhcos-4.2.0-x86_64-installer-kernel"
-g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
+g_rhcos_initramfs = "rhcos-4.3.0-x86_64-installer-initramfs.img"
+g_rhcos_kernel    = "rhcos-4.3.0-x86_64-installer-kernel"
+g_rhcos_bios      = "rhcos-4.3.0-x86_64-metal.raw.gz"
+
+##
+##
+
+g_ocp_src         = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
+
+g_ocp_install     = "openshift-install-linux-4.3.0.tar.gz"
+g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
 
 ##
 ## ----------------------------------------
@@ -129,6 +139,7 @@ g_vhost_network = "default"
 g_vhost_addr    = "192.168.1.22"
 g_vhost_imgdir  = "/var/lib/libvirt/images"
 g_vhost_isodir  = "/var/www/html/iso"
+g_vhost_memsize = 8000
 
 ##
 ## ----------------------------------------
