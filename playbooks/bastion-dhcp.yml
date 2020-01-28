@@ -45,6 +45,8 @@
       - p_gateway:  "{{ g_pubGW }}"
       - p_dns:      "{{ g_pubDNS }}"
       - p_domain:   "{{ g_publicDomain }}"
+      - p_cluster:  "{{ g_clusterName }}"
+
     template:
       src: "dhcp-host-entry.j2"
       dest: "/etc/dhcp/cfg-fragments/50-host-{{ p_domain }}-{{ p_name }}.conf"

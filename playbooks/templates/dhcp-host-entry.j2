@@ -2,5 +2,5 @@
 host {{ p_name }} {
   hardware ethernet {{ p_mac }};
   fixed-address {{ p_addr }};
-  option host-name "{{ p_name }}.{{ p_domain }}";
+  option host-name "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}";
 }
