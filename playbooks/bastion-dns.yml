@@ -88,7 +88,7 @@
 
   - name: "BASTION-DNS: deploy API config"
     vars: 
-      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
       - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
     when:
@@ -97,10 +97,11 @@
       src: "dnsmasq-api-entry.j2"
       dest: "/etc/dnsmasq.d/45-api-{{ g_clusterName }}.conf"
       owner: root
+    loop: "{{ groups['myBastion'] }}"
 
   - name: "BASTION-DNS: deploy PUBLIC wildcard"
     vars: 
-      - p_addr:      "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
       - g_useDNSwildcard == "True"
@@ -108,6 +109,8 @@
       src: "dnsmasq-wildcard-entry.j2"
       dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"
       owner: root
+    loop: "{{ groups['myBastion'] }}"
+
 
   - name: "BASTION-DNS: restart service"
     service: name=dnsmasq state=restarted enabled=yes
