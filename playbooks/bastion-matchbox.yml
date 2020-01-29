@@ -67,6 +67,13 @@
       - "/var/lib/matchbox/profiles"
       - "/var/lib/matchbox/ignition"
 
+  - name: "BASTION-MATCHBOX: debug - file download urls"
+    debug: msg="{{ g_rhcos_src }}/{{ item }}"
+    with_items:
+      - "{{ g_rhcos_initramfs }}"
+      - "{{ g_rhcos_kernel }}"
+      - "{{ g_rhcos_bios }}"
+
   - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
     get_url:
       url: "{{ g_rhcos_src }}/{{ item }}"

@@ -44,10 +44,8 @@
       - p_netmask:  "{{ g_pubNM }}"
       - p_gateway:  "{{ g_pubGW }}"
       - p_dns:      "{{ g_pubDNS }}"
-      - p_ntp:      "{{ g_pubNTP }}"
       - p_domain:   "{{ g_publicDomain }}"
       - p_cluster:  "{{ g_clusterName }}"
-
     template:
       src: "dhcp-host-entry.j2"
       dest: "/etc/dhcp/cfg-fragments/50-host-{{ p_domain }}-{{ p_name }}.conf"
@@ -64,6 +62,7 @@
       - p_netmask:  "{{ g_pubNM }}"
       - p_gateway:  "{{ g_pubGW }}"
       - p_dns:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_ntp:      "{{ g_pubNTP }}"
       - p_domain:   "{{ g_publicDomain }}"
     template:
       src: "dhcp-subnet-entry.j2"
