@@ -1,0 +1,49 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook installs and configues an nfs share
+##
+
+---
+- hosts: myBastion
+  tasks:
+  
+  - name: "BASTION-NFS: package installation"
+    yum: name=nfs-server,rpcbind state=installed
+
+  - name: "BASTION-NFS create directory"
+    file:
+      path: "{{ g_nfsExport }}"
+      mode: "0755"
+      user: "root"
+      group: "root"
+      state: directory
+
+  - name: "BASTION-NFS: deploy /etc/exports"
+    vars:
+      - p_export:   "{{ g_nfsExport }}"
+    template:
+      src: "nfs-exports.j2"
+      dest: "/etc/exports"
+      owner: root
+      group: root
+      mode: 644
+
+  - name: "BASTION-NFS: restart services"
+    service: name={{ item }} state=restarted enabled=yes masked=no
+    when: g_usePXE == "True"
+    with_items:
+      - "nfs"
+
+  - name: "BASTION-NFS: add firewalld ports and services"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "nfs"
+      - "mountd"
+      - "rpc-binds"
+
