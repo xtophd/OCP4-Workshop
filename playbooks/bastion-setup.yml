@@ -33,6 +33,9 @@
   when: g_useHAPROXY == "True"
 
 - import_playbook: bastion-matchbox.yml
+  when: g_useNFS == "True"
+
+- import_playbook: bastion-matchbox.yml
   when: g_useMATCHBOX == "True"
 
 - import_playbook: bastion-tests.yml

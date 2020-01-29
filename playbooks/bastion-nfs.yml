@@ -16,8 +16,6 @@
     file:
       path: "{{ g_nfsExport }}"
       mode: "0755"
-      user: "root"
-      group: "root"
       state: directory
 
   - name: "BASTION-NFS: deploy /etc/exports"
@@ -32,9 +30,9 @@
 
   - name: "BASTION-NFS: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
-    when: g_usePXE == "True"
     with_items:
-      - "nfs"
+      - "nfs-server"
+      - "rpcbind"
 
   - name: "BASTION-NFS: add firewalld ports and services"
     firewalld:
@@ -45,5 +43,5 @@
     with_items:
       - "nfs"
       - "mountd"
-      - "rpc-binds"
+      - "rpc-bind"
 
