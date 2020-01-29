@@ -44,6 +44,7 @@
       - p_netmask:  "{{ g_pubNM }}"
       - p_gateway:  "{{ g_pubGW }}"
       - p_dns:      "{{ g_pubDNS }}"
+      - p_ntp:      "{{ g_pubNTP }}"
       - p_domain:   "{{ g_publicDomain }}"
       - p_cluster:  "{{ g_clusterName }}"
 

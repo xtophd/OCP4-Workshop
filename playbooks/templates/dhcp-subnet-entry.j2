@@ -2,6 +2,7 @@
 subnet {{ p_network }} netmask {{ p_netmask }} {
   option domain-name-servers {{ p_dns }};
   option routers {{ p_gateway }};
+  option ntp-servers {{ p_ntp }};
   next-server {{ p_nextsvr }};
 
 {% if g_usePXE == 'True' %}

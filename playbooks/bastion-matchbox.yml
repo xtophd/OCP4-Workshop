@@ -121,10 +121,16 @@
       group: matchbox
     loop: "{{ groups['myWorkers'] }}"
 
+  - name: "BASTION-MATCHBOX: determine bastion pub IP"
+    set_fact: 
+      f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
+      f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
   - name: "BASTION-MATCHBOX: deploy profiles"
     vars:
       - p_profile:  "{{ item }}"
-      - p_addr:     "{{ hostvars['bastion']['h_pubIP'] }}"
+      - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
     template:
       src:   "matchbox-profile.j2"
