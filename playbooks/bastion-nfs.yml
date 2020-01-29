@@ -10,7 +10,7 @@
   tasks:
   
   - name: "BASTION-NFS: package installation"
-    yum: name=nfs-server,rpcbind state=installed
+    yum: name=nfs-utils,rpcbind state=installed
 
   - name: "BASTION-NFS create directory"
     file:
