@@ -9,11 +9,11 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-OPENSHIFT: stat pull secret"
+  - name: "BASTION-OPENSHIFT: stat pull-secret"
     stat: path=/root/ocp4_pull_secret
     register: test_pull_secret
 
-  - name: "BASTION-OPENSHIFT: "
+  - name: "BASTION-OPENSHIFT: fail is pull-secret absent"
     fail: msg="COPY YOUR OCP4 PULL-SECRET HERE /root/ocp4_pull_secret"
     when: test_pull_secret.stat.exists == false
 

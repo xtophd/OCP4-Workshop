@@ -18,7 +18,9 @@
   tasks:
 
   - name: "BASTION-SETUP: install additional packages"
-    yum: name=ansible,git,tree,wget,bind-utils,tar,net-tools state=installed
+    yum: name=ansible,git,tree,wget,bind-utils,tar,net-tools,httpd state=installed
+
+
 
 - import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
@@ -32,11 +34,14 @@
 - import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
 
-- import_playbook: bastion-matchbox.yml
+- import_playbook: bastion-nfs.yml
   when: g_useNFS == "True"
 
 - import_playbook: bastion-matchbox.yml
   when: g_useMATCHBOX == "True"
+
+- import_playbook: bastion-httpd.yml
+  when: g_useMATCHBOX != "True"
 
 - import_playbook: bastion-tests.yml
 

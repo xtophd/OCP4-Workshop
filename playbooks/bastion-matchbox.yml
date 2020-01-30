@@ -150,6 +150,9 @@
       - "master"
       - "worker"
 
+  - name: "BASTION-MATCHBOX: SELinux restore contexts on doc-root"
+    shell: restorecon -R /var/lib/matchbox 
+
   - name: "BASTION-MATCHBOX: deploy systemd config"
     vars:
       - p_port: "{{ g_matchbox_port }}"
@@ -160,8 +163,29 @@
       owner: root
       group: root
 
-  - name: "BASTION-MATCHBOX: restart services"
-    service: name=matchbox state=restarted enabled=yes masked=no daemon_reload=yes
+  # Use service_facts module to collect systemd info
+  # We can then sanely test existence of units
+  # Here are some sample debugs as well
+  #   
+  #  - debug:
+  #      var: ansible_facts.services
+  #      var: ansible_facts.services["httpd.service"]
+
+  - name: "BASTION-MATCHBOX: populate system service facts"
+    service_facts:
+  
+  - name: "BASTION-MATCHBOX: stop, disable and mask possible conflicting service (httpd)"
+    service: name="httpd" state=stopped enabled=no masked=yes daemon_reload=yes
+    when: ansible_facts.services["httpd.service"] is defined
+
+  - name: "BASTION-MATCHBOX: stop, disable and mask possible conflicting service (nginx)"
+    service: name="nginx" state=stopped enabled=no masked=yes daemon_reload=yes
+    when: ansible_facts.services["nginx.service"] is defined
+
+  - name: "BASTION-MATCHBOX: enable and restart services"
+    service: name="{{ item }}" state=restarted enabled=yes masked=no daemon_reload=yes
+    with_items:
+      - "matchbox"
 
   - name: "BASTION-MATCHBOX: add firewalld ports and services"
     firewalld:
