@@ -20,10 +20,20 @@
 - hosts: myVirthost
   tasks:
 
-  - name: "YUM: install additional packages"
+  - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
+    shell: subscription-manager repos --disable=* 
+
+  - name: "LIBVIRT-SETUP: use rhsm to enable repos"
+    shell: subscription-manager repos --enable="{{ item }}" 
+    with_items: 
+      - "rhel-7-server-rpms"
+      - "rhel-7-server-optional-rpms"
+      - "rhel-7-server-extras-rpms"
+
+  - name: "LIBVIRT-SETUP: install additional packages"
     yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
 
-  - name: "TEMPLATE: deploy httpd configuration"
+  - name: "LIBVIRT-SETUP: deploy httpd configuration"
     vars:
       - p_port: "80"
     when: g_repoSync == "True"
@@ -34,7 +44,7 @@
       group: root
       mode: 0644
 
-  - name: "TEMPLATE: deploy httpd configuration"
+  - name: "LIBVIRT-SETUP: deploy kickstart configuration"
     template:
       src: "bastion-kickstart.j2"
       dest: "/var/www/html/ks.cfg"
@@ -42,7 +52,7 @@
       group: apache
       mode: 0644
 
-  - name: "SERVICE: enable multiple services"
+  - name: "LIBVIRT-SETUP: enable system services"
     service: name="{{ item }}" state=restarted enabled=yes masked=no
     with_items:
       - "firewalld"
@@ -50,7 +60,7 @@
       - "cockpit"
       - "libvirtd"
 
-  - name: "FIREWALLD: add services"
+  - name: "LIBVIRT-SETUP: add firewalld services"
     firewalld:
       service: "{{ item }}"
       immediate: yes
@@ -61,15 +71,41 @@
       - "https"
       - "cockpit"
 
-  - name: "SHELL: use rhsm to disable all repos"
-    shell: subscription-manager repos --disable=* 
+  - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ g_vhost_network }})"
+    shell: 
+      cmd: |
+        virsh net-info "{{ g_vhost_network }}"
+    ignore_errors: yes
+    register: test_libvirt_network
 
-  - name: "SHELL: use rhsm to enable repos"
-    shell: subscription-manager repos --enable="{{ item }}" 
-    with_items: 
-      - "rhel-7-server-rpms"
-      - "rhel-7-server-optional-rpms"
-      - "rhel-7-server-extras-rpms"
+  - debug: msg="Network Test Result Code = {{ test_libvirt_network.rc }}"
+
+  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ g_vhost_network }})"
+    when: test_libvirt_network.rc != 0
+    vars:
+      - p_name: "{{ g_vhost_network }}"
+    template:
+      src: "libvirt-network-xml.j2"
+      dest: "/var/tmp/libvirt-network.xml"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: "LIBVIRT-SETUP: create libvirt network ({{ g_vhost_network }})"
+    when: test_libvirt_network.rc != 0
+    shell:
+      cmd: |
+        virsh net-define /var/tmp/libvirt-network.xml
+
+  - name: "LIBVIRT-SETUP: start libvirt network ({{ g_vhost_network }})"
+    shell: 
+      cmd: |
+        virsh net-start {{ g_vhost_network }}
+
+  - name: "LIBVIRT-SETUP: auto-start libvirt network ({{ g_vhost_network }})"
+    shell:
+      cmd: |
+        virsh net-autostart {{ g_vhost_network }}
 
 #  - name: "SHELL: disable libvirt 'default' network"
 #    shell:
@@ -81,10 +117,6 @@
 #
 #  - name: "SERVICE: restart service libvirtd"
 #    service: name=libvirtd state=restarted enabled=yes masked=no
-
-##
-## nmcli con add type bridge con-name virbr-pub ifname enp0s31f6 autoconnect yes bridge.stp no ipv6.method ignore connection.autoconnect-slaves yes
-##
 
 ## For RHEL 8 (ansible 2.5)
 #  - name: "Subscription Manager enable specified repos only"
