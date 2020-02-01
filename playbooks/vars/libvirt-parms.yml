@@ -18,7 +18,7 @@ kvm_cfg:
 
   network_name: "ocp-workshop"
   qcow_dir:     "/virt-images"
-  ks_cfg:       "ks.cfg"
+  ks_url:       "http://192.168.123.1/ks.cfg"
   iso:
     dir: "/var/www/html/iso"
     name: "rhel-8.1-x86_64-dvd.iso"
@@ -29,7 +29,7 @@ kvm_profiles:
     vcpus:    4
     memsize:  8000
     disk:
-      size:   120
+      size:   30
       sparse: true
       bus:    virtio
   bootstrap:

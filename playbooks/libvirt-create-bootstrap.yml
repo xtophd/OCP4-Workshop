@@ -8,31 +8,32 @@
 
 ---
 - hosts: myVirthost
+
+  vars_files:
+  - vars/libvirt-parms.yml
+
   tasks:
 
   - debug:
-      var: g_vmParms_bootstrap
+      var: kvm_cfg.network_name
+
+  - debug:
+      var: kvm_profiles.bootstrap
 
   - debug:
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myBootstrap'] }}"
 
-  ##
-  ## NOTE-TO-SELF: 
-  ##   I used --pxe at first, but the vm powered off after first-boot.
-  ##   By specifying --boot hd,network and assuring disk is clean (fresh), 
-  ##   host reboots and continues installation without poweroff.  This is better
-  ##
-
   - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram={{ g_vmParms_bootstrap.memsize }} \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ g_vmParms_bootstrap.diskbus }},sparse={{ g_vmParms_bootstrap.sparsedisk }},size={{ g_vmParms_bootstrap.disksize }} \
-                     --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --ram={{ kvm_profiles.bootstrap.memsize }} \
+                     --disk {{ kvm_cfg.qcow_dir }}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.bootstrap.disk.bus }},sparse={{ kvm_profiles.bootstrap.disk.sparse }},size={{ kvm_profiles.bootstrap.disk.size }} \
+                     --check disk_size=off \
+                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
-                     --vcpus {{  g_vmParms_bootstrap.vcpu }} \
+                     --vcpus {{  kvm_profiles.bootstrap.vcpus }} \
                      --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myBootstrap'] }}"

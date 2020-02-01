@@ -18,7 +18,19 @@
 
 ---
 - hosts: myVirthost
+
+  vars_files:
+  - vars/libvirt-parms.yml
+
   tasks:
+
+  - name: "LIBVIRT-SETUP: stat RHEL ISO"
+    stat: path="{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
+    register: test_rhel_iso
+
+  - name: "LIBVIRT-SETUP: fail if RHEL ISO absent"
+    fail: msg="COPY YOUR RHEL ISO HERE {{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
+    when: test_rhel_iso.stat.exists == false
 
   - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
     shell: subscription-manager repos --disable=* 
@@ -71,19 +83,19 @@
       - "https"
       - "cockpit"
 
-  - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ g_vhost_network }})"
+  - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ kvm_cfg.network_name }})"
     shell: 
       cmd: |
-        virsh net-info "{{ g_vhost_network }}"
+        virsh net-info "{{ kvm_cfg.network_name }}"
     ignore_errors: yes
     register: test_libvirt_network
 
   - debug: msg="Network Test Result Code = {{ test_libvirt_network.rc }}"
 
-  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ g_vhost_network }})"
+  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ kvm_cfg.network_name }})"
     when: test_libvirt_network.rc != 0
     vars:
-      - p_name: "{{ g_vhost_network }}"
+      - p_name: "{{ kvm_cfg.network_name }}"
     template:
       src: "libvirt-network-xml.j2"
       dest: "/var/tmp/libvirt-network.xml"
@@ -91,87 +103,21 @@
       group: root
       mode: 0644
 
-  - name: "LIBVIRT-SETUP: create libvirt network ({{ g_vhost_network }})"
+  - name: "LIBVIRT-SETUP: create libvirt network ({{ kvm_cfg.network_name }})"
     when: test_libvirt_network.rc != 0
     shell:
       cmd: |
         virsh net-define /var/tmp/libvirt-network.xml
 
-  - name: "LIBVIRT-SETUP: start libvirt network ({{ g_vhost_network }})"
+  - name: "LIBVIRT-SETUP: start libvirt network ({{ kvm_cfg.network_name }})"
+    when: test_libvirt_network.rc != 0
     shell: 
       cmd: |
-        virsh net-start {{ g_vhost_network }}
+        virsh net-start {{ kvm_cfg.network_name }}
 
-  - name: "LIBVIRT-SETUP: auto-start libvirt network ({{ g_vhost_network }})"
+  - name: "LIBVIRT-SETUP: auto-start libvirt network ({{ kvm_cfg.network_name }})"
+    when: test_libvirt_network.rc != 0
     shell:
       cmd: |
-        virsh net-autostart {{ g_vhost_network }}
-
-#  - name: "SHELL: disable libvirt 'default' network"
-#    shell:
-#      cmd: |
-#        if `virsh net-list | grep -q default` ; then 
-#          virsh net-destroy default
-#          virsh net-autostart --network default --disable
-#        fi
-#
-#  - name: "SERVICE: restart service libvirtd"
-#    service: name=libvirtd state=restarted enabled=yes masked=no
-
-## For RHEL 8 (ansible 2.5)
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ item }}"
-#      purge: True
-#      state: enabled
-
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ item }}"
-#      purge: True
-#    loop: "{{ g_repoList }}"
-
-#  - name: "Clone repos"
-#    when: g_repoSync == "True"
-#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
-#    loop: "{{ g_repoList }}"
-# 
-#  - name: "Create sample repo configs"
-#    when: g_repoSync == "True"
-#    template:
-#      src: "repo-config.j2"
-#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
-#      owner: root
-#      group: root
-#      mode: 0444
-#    loop: "{{ g_repoList }}"
-#
-#  - name: "SELinux restore contexts"
-#    when: g_repoSync == "True"
-#    shell: restorecon -R {{ g_repoDestDir }}
-
-
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ g_repoList }}" 
-#      purge: True
-#
-#  - name: "Clone repos"
-#    when: g_repoSync == "True"
-#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
-#    loop: "{{ g_repoList }}"
-# 
-#  - name: "Create sample repo configs"
-#    when: g_repoSync == "True"
-#    template:
-#      src: "repo-config.j2"
-#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
-#      owner: root
-#      group: root
-#      mode: 0444
-#    loop: "{{ g_repoList }}"
-#
-#  - name: "SELinux restore contexts"
-#    when: g_repoSync == "True"
-#    shell: restorecon -R {{ g_repoDestDir }}
+        virsh net-autostart {{ kvm_cfg.network_name }}
 

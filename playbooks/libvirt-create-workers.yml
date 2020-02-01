@@ -8,31 +8,32 @@
 
 ---
 - hosts: myVirthost
+
+  vars_files:
+  - vars/libvirt-parms.yml
+
   tasks:
 
   - debug:
-      var: g_vmParms_worker
+      var: kvm_cfg
+
+  - debug:
+      var: kvm_profiles.worker
 
   - debug:
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myWorkers'] }}"
 
-  ##
-  ## NOTE-TO-SELF:
-  ##   I used --pxe at first, but the vm powered off after first-boot.
-  ##   By specifying --boot hd,network and assuring disk is clean (fresh),
-  ##   host reboots and continues installation without poweroff.  This is better
-  ##
-
-  - name: "LIBVIRT-CREATE-MASTER: virt-install master"
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install worker"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram="{{ g_vmParms_worker.memsize }}" \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ g_vmParms_worker.diskbus }},sparse={{ g_vmParms_worker.sparsedisk }},size={{ g_vmParms_worker.disksize }} \
-                     --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --ram={{ kvm_profiles.worker.memsize }} \
+                     --disk {{ kvm_cfg.qcow_dir }}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.worker.disk.bus }},sparse={{ kvm_profiles.worker.disk.sparse }},size={{ kvm_profiles.worker.disk.size }} \
+                     --check disk_size=off \
+                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
-                     --vcpus {{ g_vmParms_worker.vcpus }} \
+                     --vcpus {{  kvm_profiles.worker.vcpus }} \
                      --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myWorkers'] }}"

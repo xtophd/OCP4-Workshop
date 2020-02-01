@@ -8,33 +8,34 @@
 
 ---
 - hosts: myVirthost
+
+  vars_files:
+  - vars/libvirt-parms.yml
+
   tasks:
 
   - debug:
-      var: g_vmParms_bastion
+      var: kvm_cfg
+
+  - debug:
+      var: kvm_profiles.bastion
 
   - debug:
       msg="{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-  ##
-  ## NOTE-TO-SELF:
-  ##   I used --pxe at first, but the vm powered off after first-boot.
-  ##   By specifying --boot hd,network and assuring disk is clean (fresh),
-  ##   host reboots and continues installation without poweroff.  This is better
-  ##
-
   - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram={{ g_vmParms_bastion.memsize }} \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ g_vmParms_bastion.diskbus }},sparse={{ g_vmParms_bastion.sparsedisk }},size={{ g_vmParms_bastion.disksize }} \
-                     --location={{ g_vhost_isodir }}/rhel-8.1-x86_64-dvd.iso \
-                     --extra-args="ks=http://{{ g_vhost_addr }}/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --ram={{ kvm_profiles.bastion.memsize }} \
+                     --disk {{ kvm_cfg.qcow_dir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.bastion.disk.bus }},sparse={{ kvm_profiles.bastion.disk.sparse }},size={{ kvm_profiles.bastion.disk.size }} \
+                     --check disk_size=off \
+                     --location={{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }} \
+                     --extra-args="ks={{ kvm_cfg.ks_url }} ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
+                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
-                     --vcpus {{  g_vmParms_bastion.vcpus }} \
+                     --vcpus {{  kvm_profiles.bastion.vcpus }} \
                      --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myBastion'] }}"
