@@ -1,0 +1,71 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt
+##   to host an openshift 4.2 deployment
+##
+##   This playbook is NOT meant for student execution  
+##
+##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the OS already installed on bare-metal
+##     #2 your host is registered to RH CDN with subscription-manager
+##     #3 the following packages have been installed: git, ansible
+##     #4 system has plenty of storage and memory
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-HTTPD: install additional packages"
+    yum: name=httpd state=installed
+
+  - name: "BASTION-HTTPD: deploy httpd configuration"
+    vars:
+      - p_port: "8080"
+    template:
+      src: "httpd-conf.j2"
+      dest: "/etc/httpd/conf/httpd.conf"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: "BASTION-HTTPD: SELinux restore contexts on doc-root"
+    shell: restorecon -R /var/www/html 
+
+  # Use service_facts module to collect systemd info
+  # We can then sanely test existence of units
+  # Here are some sample debugs as well
+  #
+  #  - debug:
+  #      var: ansible_facts.services
+  #      var: ansible_facts.services["httpd.service"]
+
+  - name: "BASTION-HTTPD: populate system service facts"
+    service_facts:
+
+  - name: "BASTION-HTTPD: stop, disable and mask possible conflicting service (matchbox)"
+    service: name="matchbox" state=stopped enabled=no masked=yes daemon_reload=yes
+    when: ansible_facts.services["matchbox.service"] is defined
+
+  - name: "BASTION-HTTPD: stop, disable and mask possible conflicting service (nginx)"
+    service: name="nginx" state=stopped enabled=no masked=yes daemon_reload=yes
+    when: ansible_facts.services["nginx.service"] is defined
+
+  - name: "BASTION-HTTPD: enable and restart services"
+    service: name="{{ item }}" state=restarted enabled=yes masked=no daemon_reload=yes
+    with_items:
+      - "httpd"
+
+  - name: "BASTION-HTTPD: add firewalld ports"
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "8080/tcp"
+
