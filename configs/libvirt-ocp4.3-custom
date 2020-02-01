@@ -35,10 +35,10 @@ g_studentName = "student"
 ## Configure the public (primary) network
 g_publicNet     = "True"
 g_publicDomain  = "example.com"
-g_pubNET        = "192.168.122.0"
+g_pubNET        = "192.168.123.0"
 g_pubNM         = "255.255.255.0"
-g_pubGW         = "192.168.122.1"
-g_pubDNS        = "192.168.122.1"
+g_pubGW         = "192.168.123.1"
+g_pubDNS        = "192.168.123.1"
 g_pubNTP        = ""
 
 ## Configure the private (secondary) network
@@ -48,6 +48,7 @@ g_priNET        = "10.0.0.0"
 g_priNM         = "255.255.255.0"
 g_priGW         = ""
 g_priDNS        = ""
+g_priNTP        = ""
 
 ## Your OCP Cluster Name
 g_clusterName = "ocp"
