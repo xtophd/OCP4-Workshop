@@ -140,12 +140,19 @@ g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
 ##   and where to find and store images
 ##
 
-g_vhost_network  = "ocp-workshop"
-g_vhost_addr     = "192.168.123.1"
-g_vhost_imgdir   = "/virt-images"
-g_vhost_isodir   = "/var/www/html/iso"
-g_vhost_memsize  = 16000
-g_vhost_disksize = 20 
+g_vhost_network   = "ocp-workshop"
+g_vhost_addr      = "192.168.123.1"
+g_vhost_imgdir    = "/virt-images"
+g_vhost_isodir    = "/var/www/html/iso"
+#g_vhost_memsize  = 16000
+#g_vhost_disksize = 20 
+
+## These are the documented minimums
+
+g_vmParms_bastion   = { 'vcpu' : 4, 'disksize' :  60, 'memsize' :  8 }
+g_vmParms_bootstrap = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
+g_vmParms_master    = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
+g_vmParms_worker    = { 'vcpu' : 2, 'disksize' : 120, 'memsize' :  8 }
 
 ##
 ## ----------------------------------------

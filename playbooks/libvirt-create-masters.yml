@@ -10,21 +10,23 @@
 - hosts: myVirthost
   tasks:
 
+  - debug:
+      var: g_vmParms_master
 
   - debug:
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myMasters'] }}"
 
-
-  - name: "SHELL: virt-install bastion"
+  - name: "LIBVIRT-CREATE-MASTER: virt-install master"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram="{{ g_vhost_memsize }}" \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size=10 \
+                     --ram="{{ g_vmParms_master.memsize }}" \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size={{ g_vmParms_master.disksize }} \
                      --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --pxe \
                      --graphics vnc \
+                     --vcpus {{ g_vmParms_master.vcpus }} \
                      --noautoconsole
     loop: "{{ groups['myMasters'] }}"
 

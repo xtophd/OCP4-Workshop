@@ -10,21 +10,23 @@
 - hosts: myVirthost
   tasks:
 
+  - debug:
+      var: g_vmParms_bastion
 
   - debug:
-      msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
+      msg="{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "SHELL: virt-install bastion"
+  - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram=4000 \
+                     --ram={{ g_vmParms_bastion.memsize }} \
                      --location={{ g_vhost_isodir }}/rhel-8.1-x86_64-dvd.iso \
                      --extra-args="ks=http://{{ g_vhost_addr }}/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size=25 \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size={{ g_vmParms_bastion.disksize }} \
                      --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
+                     --vcpus {{  g_vmParms_bastion.vcpus }} \
                      --noautoconsole
     loop: "{{ groups['myBastion'] }}"
-
