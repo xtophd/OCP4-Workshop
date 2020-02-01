@@ -17,16 +17,24 @@
       msg="{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myBastion'] }}"
 
+  ##
+  ## NOTE-TO-SELF:
+  ##   I used --pxe at first, but the vm powered off after first-boot.
+  ##   By specifying --boot hd,network and assuring disk is clean (fresh),
+  ##   host reboots and continues installation without poweroff.  This is better
+  ##
+
   - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
                      --ram={{ g_vmParms_bastion.memsize }} \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ g_vmParms_bastion.diskbus }},sparse={{ g_vmParms_bastion.sparsedisk }},size={{ g_vmParms_bastion.disksize }} \
                      --location={{ g_vhost_isodir }}/rhel-8.1-x86_64-dvd.iso \
                      --extra-args="ks=http://{{ g_vhost_addr }}/ks.cfg ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size={{ g_vmParms_bastion.disksize }} \
                      --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
                      --graphics vnc \
                      --vcpus {{  g_vmParms_bastion.vcpus }} \
+                     --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myBastion'] }}"

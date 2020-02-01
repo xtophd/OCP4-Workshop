@@ -76,6 +76,7 @@ g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
 g_useNFS      = "True"
+g_useNTP      = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
@@ -85,9 +86,9 @@ g_useDNSwildcard = "True"
 ##
 ## REPO SYNC PARAMETERS
 ##
-##   Enabling these will create local repos on virhost for
+##   Enabling these will create local repos on virthost for
 ##   use in the cluster.  If you're using all RHCOS, then 
-##   this is probably not necessary, but still helpfull for builiding
+##   this is probably not necessary, but still helpful for builiding
 ##   the bastion or possibly OCP worker/compute nodes.
 ##
 
@@ -106,6 +107,8 @@ g_repoList_r8 = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-r
 g_repoPort_http  = '8080'
 g_repoPort_https = '8443'
 
+##
+## ----------------------------------------
 ## NFS server variables
 
 g_nfsExport = "/home/nfs-{{ g_clusterName }}"
@@ -125,7 +128,12 @@ g_rhcos_kernel    = "rhcos-4.3.0-x86_64-installer-kernel"
 g_rhcos_bios      = "rhcos-4.3.0-x86_64-metal.raw.gz"
 
 ##
+## ----------------------------------------
 ##
+## Red Hat Openshift Parameters
+##
+##   Declare sources & versions of Openshift
+##   
 
 g_ocp_src         = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
 
@@ -135,7 +143,7 @@ g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
 ##
 ## ----------------------------------------
 ##
-## Red Hat VirtHost (libvirt parameters)
+## Red Hat VirtHost (libvirt) Parameters
 ##   parameters reflect the provisioning-network
 ##   and where to find and store images
 ##
@@ -145,12 +153,15 @@ g_vhost_addr      = "192.168.123.1"
 g_vhost_imgdir    = "/virt-images"
 g_vhost_isodir    = "/var/www/html/iso"
 
-## These are the documented minimums
+## Virtual Machine Parameters
+##   these are the documented minimums for Openshift 4.3
+##   diskbus: virtio        - will produce vms using /dev/vda
+##   diskbus: virtio-scsi   - will produce vms using /dev/sda
 
-g_vmParms_bastion   = { 'vcpu' : 4, 'disksize' :  60, 'memsize' :  8 }
-g_vmParms_bootstrap = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_master    = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_worker    = { 'vcpu' : 2, 'disksize' : 120, 'memsize' :  8 }
+g_vmParms_bastion   = { 'vcpu' : 4, 'memsize' :  8000, 'diskbus' : 'virtio', 'disksize' : 120, 'sparsedisk': 'true' }
+g_vmParms_bootstrap = { 'vcpu' : 4, 'memsize' : 16000, 'diskbus' : 'virtio', 'disksize' : 120, 'sparsedisk': 'true' }
+g_vmParms_master    = { 'vcpu' : 4, 'memsize' : 16000, 'diskbus' : 'virtio', 'disksize' : 120, 'sparsedisk': 'true' }
+g_vmParms_worker    = { 'vcpu' : 2, 'memsize' :  8000, 'diskbus' : 'virtio', 'disksize' : 120, 'sparsedisk': 'true' }
 
 ##
 ## ----------------------------------------

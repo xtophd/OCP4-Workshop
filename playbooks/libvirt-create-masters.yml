@@ -17,16 +17,23 @@
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myMasters'] }}"
 
+  ##
+  ## NOTE-TO-SELF:
+  ##   I used --pxe at first, but the vm powered off after first-boot.
+  ##   By specifying --boot hd,network and assuring disk is clean (fresh),
+  ##   host reboots and continues installation without poweroff.  This is better
+  ##
+
   - name: "LIBVIRT-CREATE-MASTER: virt-install master"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
                      --ram="{{ g_vmParms_master.memsize }}" \
-                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus=virtio,sparse=no,size={{ g_vmParms_master.disksize }} \
+                     --disk {{ g_vhost_imgdir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ g_vmParms_master.diskbus }},sparse={{ g_vmParms_master.sparsedisk }},size={{ g_vmParms_master.disksize }} \
                      --network "network={{ g_vhost_network }},mac={{ hostvars[item]['h_pubMAC'] }}" \
-                     --pxe \
                      --graphics vnc \
                      --vcpus {{ g_vmParms_master.vcpus }} \
+                     --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myMasters'] }}"
 
