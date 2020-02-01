@@ -127,11 +127,15 @@
       permanent: yes
       state: enabled
 
-# NEED TO COMPLETE RESOLV.CONF
-# FIND A CLEVER WAY TO DETERMINE WHAT INTERFACE TO USE
-#
-#  - name: "BASTION-DNS: fix resolv.conf to go local"
-#    shell:
-#      cmd: |
-#        nmcli con modify ens3 ipv4.dns 127.0.0.1
+  ##
+  ## This will loop through all ethernet interfaces and set DNS to localhost
+  ##
+
+  - name: "BASTION-DNS: fix resolv.conf to go localhost"
+    shell:
+      cmd: |
+        nmcli con modify {{ item }} ipv4.dns 127.0.0.1
+    when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
+    with_items:
+      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
 
