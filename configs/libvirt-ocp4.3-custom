@@ -144,8 +144,6 @@ g_vhost_network   = "ocp-workshop"
 g_vhost_addr      = "192.168.123.1"
 g_vhost_imgdir    = "/virt-images"
 g_vhost_isodir    = "/var/www/html/iso"
-#g_vhost_memsize  = 16000
-#g_vhost_disksize = 20 
 
 ## These are the documented minimums
 
