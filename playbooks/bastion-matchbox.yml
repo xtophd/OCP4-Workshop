@@ -13,6 +13,9 @@
 - hosts: myBastion
   tasks:
 
+  - include_vars: "{{ item }}"
+    with_first_found:  "{{ vars_rhcos }}"
+
   - name: "BASTION-MATCHBOX: stat software"
     stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
     register: test_matchbox_src
