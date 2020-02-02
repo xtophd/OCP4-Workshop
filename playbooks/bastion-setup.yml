@@ -43,6 +43,9 @@
 - import_playbook: bastion-httpd.yml
   when: g_useMATCHBOX != "True"
 
+- import_playbook: bastion-ntp.yml
+  when: g_useNTP != "True"
+
 - import_playbook: bastion-tests.yml
 
 - import_playbook: bastion-openshift.yml
