@@ -39,7 +39,7 @@ g_pubNET        = "192.168.123.0"
 g_pubNM         = "255.255.255.0"
 g_pubGW         = "192.168.123.1"
 g_pubDNS        = "192.168.123.1"
-g_pubNTP        = ""
+g_pubNTP        = "192.168.123.160"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
