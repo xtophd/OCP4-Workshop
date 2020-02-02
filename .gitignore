@@ -1,0 +1,2 @@
+# Ignore any local customizations
+playbooks/vars-custom/*

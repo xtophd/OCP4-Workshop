@@ -1,0 +1,55 @@
+
+##
+## Virtual Machine Parameters (libvirt)
+##
+##   these are the documented minimums for Openshift 4.3
+##   diskbus: virtio        - will produce vms using /dev/vda
+##   diskbus: virtio-scsi   - will produce vms using /dev/sda
+##
+## WARNING:
+##
+##   Since this typically for Proof-of-Concept or simply education, we
+##   also use 'sparse' disks.  If this has a chance of running longer than
+##   a few days, change "sparse: false".  You'll get better performance
+##   and things won't blow up when space runs out.
+##
+
+kvm_cfg: 
+
+  network_name: "ocp-workshop"
+  qcow_dir:     "/virt-images"
+  ks_url:       "http://192.168.123.1/ks.cfg"
+  iso:
+    dir: "/var/www/html/iso"
+    name: "rhel-8.1-x86_64-dvd.iso"
+
+kvm_profiles: 
+
+  bastion:
+    vcpus:    4
+    memsize:  8000
+    disk:
+      size:   30
+      sparse: true
+      bus:    virtio
+  bootstrap:
+    vcpus:    4
+    memsize:  16000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
+  master:
+    vcpus:    4
+    memsize:  16000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
+  worker:
+    vcpus:    2
+    memsize:  8000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
