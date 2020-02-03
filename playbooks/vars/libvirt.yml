@@ -14,14 +14,25 @@
 ##   and things won't blow up when space runs out.
 ##
 
+## ------------------------------
+## KVM/Libvirt Config Options
+
 kvm_cfg: 
 
   network_name: "ocp-workshop"
   qcow_dir:     "/virt-images"
-  ks_url:       "http://192.168.123.1/ks.cfg"
+  ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
+
+  network:
+    name:       "ocp-workshop"
+    fwd_type:   "nat"
+
   iso:
-    dir: "/var/www/html/iso"
-    name: "rhel-8.1-x86_64-dvd.iso"
+    dir:        "/var/www/html/iso"
+    name:       "rhel-8.1-x86_64-dvd.iso"
+
+## ------------------------------
+## Virtual Machine Options
 
 kvm_profiles: 
 

@@ -86,16 +86,17 @@
   - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ kvm_cfg.network_name }})"
     shell: 
       cmd: |
-        virsh net-info "{{ kvm_cfg.network_name }}"
+        virsh net-info "{{ kvm_cfg.network.name }}"
     ignore_errors: yes
     register: test_libvirt_network
 
   - debug: msg="Network Test Result Code = {{ test_libvirt_network.rc }}"
 
-  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ kvm_cfg.network_name }})"
+  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
     vars:
-      - p_name: "{{ kvm_cfg.network_name }}"
+      - p_name: "{{ kvm_cfg.network.name }}"
+      - p_type: "{{ kvm_cfg.network.fwd_type }}"
     template:
       src: "libvirt-network-xml.j2"
       dest: "/var/tmp/libvirt-network.xml"
@@ -103,21 +104,21 @@
       group: root
       mode: 0644
 
-  - name: "LIBVIRT-SETUP: create libvirt network ({{ kvm_cfg.network_name }})"
+  - name: "LIBVIRT-SETUP: create libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
     shell:
       cmd: |
         virsh net-define /var/tmp/libvirt-network.xml
 
-  - name: "LIBVIRT-SETUP: start libvirt network ({{ kvm_cfg.network_name }})"
+  - name: "LIBVIRT-SETUP: start libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
     shell: 
       cmd: |
-        virsh net-start {{ kvm_cfg.network_name }}
+        virsh net-start {{ kvm_cfg.network.name }}
 
-  - name: "LIBVIRT-SETUP: auto-start libvirt network ({{ kvm_cfg.network_name }})"
+  - name: "LIBVIRT-SETUP: auto-start libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
     shell:
       cmd: |
-        virsh net-autostart {{ kvm_cfg.network_name }}
+        virsh net-autostart {{ kvm_cfg.network.name }}
 

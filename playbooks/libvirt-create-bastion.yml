@@ -36,7 +36,7 @@
                      --check disk_size=off \
                      --location={{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }} \
                      --extra-args="ks={{ kvm_cfg.ks_url }} ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.bastion.network.model }}" \
+                     --network "network={{ kvm_cfg.network.name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.bastion.network.model }}" \
                      --graphics vnc \
                      --vcpus {{  kvm_profiles.bastion.vcpus }} \
                      --boot hd,network,menu=yes \

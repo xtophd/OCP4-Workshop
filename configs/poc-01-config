@@ -21,16 +21,53 @@
 ##  p_Name - play: declared as part of a play
 ##
 
+##
+##
+##
+
 [all:vars]
 
+##
+## ----------------------------------------
+## Paths to vars files
+##
+
+## Red Hat Libvirt Host Parameters
+vars_libvirt = [ "./vars-custom/libvirt.yml", "./vars/libvirt.yml" ]
+
+## Red Hat CoreOS Sources
+vars_rhcos = [ "./vars-custom/rhcos.yml", "./vars/rhcos.yml" ]
+
+## Red Hat Openshift Sources
+vars_openshift = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
+
+## (Currently Disabled) Repo Sync Parameters
+vars_reposync = [ "./vars-custom/reposync.yml", "./vars/reposync.yml" ]
+
+##
+## ----------------------------------------
+## General Parameters
+##
+
 ## (Optional) Who is the POC owner
-g_owner = "Foo Bar"
+g_owner = "Christoph"
 
 ## (Optional) What is the POC location
 g_location = "Sunnyvale"
 
 ## Configure the student name as this
 g_studentName = "student"
+
+## Your OCP Cluster Name
+g_clusterName = "ocp-ml"
+
+## Your OCP Cluster Wildcard Name
+g_wildcardName = "apps"
+
+##
+## ----------------------------------------
+## Networking Parameters
+##
 
 ## Configure the public (primary) network
 g_publicNet     = "True"
@@ -39,6 +76,7 @@ g_pubNET        = "10.72.242.0"
 g_pubNM         = "255.255.255.0"
 g_pubGW         = "10.72.242.1"
 g_pubDNS        = "216.145.50.3"
+g_pubNTP        = "216.145.50.126"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
@@ -47,12 +85,7 @@ g_priNET        = "10.0.0.0"
 g_priNM         = "255.255.255.0"
 g_priGW         = ""
 g_priDNS        = ""
-
-## Your Cloud Name 
-g_clusterName = "ocp-ml"
-
-## Wildcard Name 
-g_wildcardName = "apps"
+g_priNTP        = ""
 
 ##
 ## ----------------------------------------
@@ -63,9 +96,10 @@ g_wildcardName = "apps"
 ##   DHCP & PXE   - provided by dhcp-server
 ##   LOADBALANCER - provided by haproxy
 ##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
+##   NFS          - configure NFS server for persistent storage
+##   NTP          - configure cluster to use bastion as NTP server
+##   REPOSYNC     - have bastion sync content and create a repo
 ##
-##   NOTE: for iPXE support, g_httpPort
-##         and g_httpsPort are required
 ##
 
 g_useDNS      = "True"
@@ -73,68 +107,18 @@ g_useDHCP     = "True"
 g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
+g_useNFS      = "True"
+g_useNTP      = "True"
+g_useREPOSYNC = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
 
 ##
 ## ----------------------------------------
-##
-## REPO SYNC PARAMETERS
-##
-##   Enabling these will create local repos on Bastion for
-##   use in the cluster.  If you're using all RHCOS, then
-##   this is probably not necessary.  Also note that ports
-##   80 and 443 will likely be used by HAProxy.
-##
+## NFS server variables
 
-## Are we going to clone/sync repos on Bastion
-g_repoSync = "False"
-
-## Where will the repos be stored
-g_repoDestDir = "/var/www/html/repos"
-
-## List of content/channel labels to sync
-g_repoList = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
-
-## Ports you do want httpd running on
-
-g_httpPort = '8080'
-g_httpsPort = '8443'
-
-##
-## ----------------------------------------
-##
-## Red Hat CoreOS Parameters
-##
-##   Declare sources & versions of RHCOS
-##
-
-g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/latest"
-
-g_rhcos_initramfs = "rhcos-4.2.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel    = "rhcos-4.2.0-x86_64-installer-kernel"
-g_rhcos_bios      = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
-
-##
-## ----------------------------------------
-##
-## Red Hat VirtHost (libvirt parameters)
-##   parameters reflect the provisioning-network
-##   and where to find and store images
-##
-
-g_vhost_network = "pubBridge"
-g_vhost_addr    = "10.72.242.148"
-g_vhost_imgdir  = "/home/virt-images"
-g_vhost_isodir  = "/var/www/html/iso"
-
-## These are the documented minimums
-
-g_vmParms_bastion   = { 'vcpu' : 4, 'disksize' :  60, 'memsize' :  8 }
-g_vmParms_bootstrap = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_master    = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_worker    = { 'vcpu' : 2, 'disksize' : 120, 'memsize' :  8 }
+g_nfsExport = "/home/nfs-{{ g_clusterName }}"
 
 ##
 ## ----------------------------------------
@@ -163,7 +147,7 @@ ansible_connection = "local"
 ##
 
 [myVirthost]
-labhost102   h_pubMAC="-- unused --" h_pubIP="10.72.242.148"
+labhost102   h_pubMAC="-- unused --"      h_pubIP="10.72.242.148"
 
 [myBastion]
 bastion      h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21"
