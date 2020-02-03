@@ -26,7 +26,7 @@ fi
 ##
 
 case "$1" in
-    "init")
+    "all")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-setup.yml 
         ;;
          
@@ -59,7 +59,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ init | dns | dhcp | ntp | haproxy | matchbox | httpd | openshift ]"
+        echo "USAGE: bastion-setup.sh [ all | dns | dhcp | ntp | haproxy | matchbox | httpd | openshift ]"
         ;;
 
 esac         
