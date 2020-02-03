@@ -11,9 +11,6 @@
 
   tasks:
 
-  - debug:
-      var: vars_libvirt
-
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_libvirt }}"
 

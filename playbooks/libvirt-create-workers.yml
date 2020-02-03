@@ -12,7 +12,7 @@
   tasks:
 
   - include_vars: "{{ item }}"
-    with_first_found:  "{{ vars_libvirt }}"
+    with_first_found: "{{ vars_libvirt }}"
 
   - debug:
       var: kvm_cfg

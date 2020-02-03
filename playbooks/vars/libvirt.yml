@@ -19,7 +19,6 @@
 
 kvm_cfg: 
 
-  network_name: "ocp-workshop"
   qcow_dir:     "/virt-images"
   ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
 
