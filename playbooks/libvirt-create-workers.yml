@@ -12,7 +12,7 @@
   tasks:
 
   - include_vars: "{{ item }}"
-    with_first_found: "{{ vars_libvirt }}"
+    with_first_found:  "{{ vars_libvirt }}"
 
   - debug:
       var: kvm_cfg
@@ -24,14 +24,14 @@
       msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
     loop: "{{ groups['myWorkers'] }}"
 
-  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install worker"
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install master"
     shell:
       cmd: |
         virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
                      --ram={{ kvm_profiles.worker.memsize }} \
                      --disk {{ kvm_cfg.qcow_dir }}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.worker.disk.bus }},sparse={{ kvm_profiles.worker.disk.sparse }},size={{ kvm_profiles.worker.disk.size }} \
                      --check disk_size=off \
-                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'],model={{ kvm_profiles.worker.network.model }}" \
+                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.worker.network.model }}" \
                      --graphics vnc \
                      --vcpus {{  kvm_profiles.worker.vcpus }} \
                      --boot hd,network,menu=yes \
