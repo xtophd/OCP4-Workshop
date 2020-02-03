@@ -39,7 +39,7 @@ vars_libvirt = [ "./vars-custom/libvirt.yml", "./vars/libvirt.yml" ]
 vars_rhcos = [ "./vars-custom/rhcos.yml", "./vars/rhcos.yml" ]
 
 ## Red Hat Openshift Sources
-vars_rhcos = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
+vars_openshift = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
 
 ## (Currently Disabled) Repo Sync Parameters
 vars_reposync = [ "./vars-custom/reposync.yml", "./vars/reposync.yml" ]

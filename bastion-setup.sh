@@ -54,8 +54,12 @@ case "$1" in
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-httpd.yml 
         ;;
 
+    "openshift")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-openshift.yml 
+        ;;
+
     *)
-        echo "USAGE: bastion-setup.sh [ init | dns | dhcp | ntp | haproxy | matchbox | httpd ]"
+        echo "USAGE: bastion-setup.sh [ init | dns | dhcp | ntp | haproxy | matchbox | httpd | openshift ]"
         ;;
 
 esac         
