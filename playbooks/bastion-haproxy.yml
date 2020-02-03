@@ -36,6 +36,16 @@
       dest: "/etc/haproxy/cfg-fragments/10-defaults.cfg"
       owner: root
 
+  - name: "BASTION-HAPROXY: deploy stats config"
+    vars:
+      - p_port:     "8404"
+      - p_order:    "15"
+      - p_name:     "{{ g_clusterName }}"
+    template:
+      src: "haproxy-stats.j2"
+      dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-stats.cfg"
+      owner: root
+
   - name: "BASTION-HAPROXY: deploy api base"
     vars:
       - p_type:     "api"
@@ -168,6 +178,8 @@
       permanent: yes
       state: enabled
     with_items:
+      - "8404/tcp"
+      - "8404/udp"
       - "6443/tcp"
       - "6443/udp"
       - "22623/tcp"
