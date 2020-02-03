@@ -24,6 +24,14 @@
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_libvirt }}"
 
+  - name: "LIBVIRT-SETUP: create html directory"
+    file:
+      path: /var/www/html/iso
+      mode: "0775"
+      owner: "root"
+      group: "root"
+      state: directory
+
   - name: "LIBVIRT-SETUP: stat RHEL ISO"
     stat: path="{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
     register: test_rhel_iso
@@ -33,10 +41,10 @@
     when: test_rhel_iso.stat.exists == false
 
   - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
-    shell: subscription-manager repos --disable=* 
+    shell: cmd="subscription-manager repos --disable=*"
 
   - name: "LIBVIRT-SETUP: use rhsm to enable repos"
-    shell: subscription-manager repos --enable="{{ item }}" 
+    shell: cmd="subscription-manager repos --enable='{{ item }}'" 
     with_items: 
       - "rhel-7-server-rpms"
       - "rhel-7-server-optional-rpms"
@@ -62,6 +70,9 @@
       owner: root
       group: apache
       mode: 0644
+
+  - name: "LIBVIRT-SETUP: selinux restorecon on /var/www/html"
+    shell: restorecon -R /var/www/html
 
   - name: "LIBVIRT-SETUP: enable system services"
     service: name="{{ item }}" state=restarted enabled=yes masked=no
