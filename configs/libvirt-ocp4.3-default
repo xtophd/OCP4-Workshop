@@ -21,7 +21,32 @@
 ##  p_Name - play: declared as part of a play
 ##
 
+##
+##
+##
+
 [all:vars]
+
+##
+## ----------------------------------------
+## Paths to vars files
+##
+
+## Red Hat Libvirt Host Parameters
+vars_libvirt = [ "./vars-custom/libvirt.yml", "./vars/libvirt.yml" ]
+
+## Red Hat CoreOS Sources
+vars_rhcos = [ "./vars-custom/rhcos.yml", "./vars/rhcos.yml" ]
+
+## Red Hat Openshift Sources
+vars_openshift = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
+
+## (Currently Disabled) Repo Sync Parameters
+vars_reposync = [ "./vars-custom/reposync.yml", "./vars/reposync.yml" ]
+
+##
+## ----------------------------------------
+## General Parameters
 
 ## (Optional) Who is the POC owner
 g_owner = "Foo Bar"
@@ -32,6 +57,17 @@ g_location = "Dallas"
 ## Configure the student name as this
 g_studentName = "student"
 
+## Your OCP Cluster Name
+g_clusterName = "ocp"
+
+## Your OCP Cluster Wildcard Name
+g_wildcardName = "apps"
+
+##
+## ----------------------------------------
+## Networking Parameters
+##
+
 ## Configure the public (primary) network
 g_publicNet     = "True"
 g_publicDomain  = "example.com"
@@ -39,7 +75,7 @@ g_pubNET        = "192.168.122.0"
 g_pubNM         = "255.255.255.0"
 g_pubGW         = "192.168.122.1"
 g_pubDNS        = "192.168.122.1"
-g_pubNTP        = ""
+g_pubNTP        = "192.168.122.160"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
@@ -48,12 +84,7 @@ g_priNET        = "10.0.0.0"
 g_priNM         = "255.255.255.0"
 g_priGW         = ""
 g_priDNS        = ""
-
-## Your OCP Cluster Name
-g_clusterName = "ocp"
-
-## Your OCP Cluster Wildcard Name
-g_wildcardName = "apps"
+g_pubNTP        = ""
 
 ##
 ## ----------------------------------------
@@ -64,9 +95,10 @@ g_wildcardName = "apps"
 ##   DHCP & PXE   - provided by dhcp-server
 ##   LOADBALANCER - provided by haproxy
 ##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
+##   NFS          - configure NFS server for persistent storage
+##   NTP          - configure cluster to use bastion as NTP server
+##   REPOSYNC     - have bastion sync content and create a repo
 ##
-##   NOTE: for iPXE support, g_httpPort
-##         and g_httpsPort are required
 ##
 
 g_useDNS      = "True"
@@ -75,81 +107,17 @@ g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
 g_useNFS      = "True"
+g_useNTP      = "True"
+g_useREPOSYNC = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
 
 ##
 ## ----------------------------------------
-##
-## REPO SYNC PARAMETERS
-##
-##   Enabling these will create local repos on virhost for
-##   use in the cluster.  If you're using all RHCOS, then 
-##   this is probably not necessary, but still helpfull for builiding
-##   the bastion or possibly OCP worker/compute nodes.
-##
-
-## Are we going to clone/sync repos on virthost
-g_repoSync = "False"
-
-## Where will the repos be stored
-g_repoDestDir = "/var/www/html/repos"
-
-## List of content/channel labels to sync
-g_repoList_r7 = '["rhel-7-for-x86_64-server-rpms","rhel-7-for-x86_64-optional-rpms","ansible-2.9-for-rhel-7-server-rpms"]'
-g_repoList_r8 = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
-
-## Ports you do want httpd running on
-
-g_repoPort_http  = '8080'
-g_repoPort_https = '8443'
-
 ## NFS server variables
 
 g_nfsExport = "/home/nfs-{{ g_clusterName }}"
-
-##
-## ----------------------------------------
-##
-## Red Hat CoreOS Parameters
-##
-##   Declare sources & versions of RHCOS
-##   
-
-g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
-
-g_rhcos_initramfs = "rhcos-4.3.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel    = "rhcos-4.3.0-x86_64-installer-kernel"
-g_rhcos_bios      = "rhcos-4.3.0-x86_64-metal.raw.gz"
-
-##
-##
-
-g_ocp_src         = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
-
-g_ocp_install     = "openshift-install-linux-4.3.0.tar.gz"
-g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
-
-##
-## ----------------------------------------
-##
-## Red Hat VirtHost (libvirt parameters)
-##   parameters reflect the provisioning-network
-##   and where to find and store images
-##
-
-g_vhost_network = "default"
-g_vhost_addr    = "192.168.122.1"
-g_vhost_imgdir  = "/virt-images"
-g_vhost_isodir  = "/var/www/html/iso"
-
-## These are the documented minimums
-
-g_vmParms_bastion   = { 'vcpu' : 4, 'disksize' :  60, 'memsize' :  8 }
-g_vmParms_bootstrap = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_master    = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_worker    = { 'vcpu' : 2, 'disksize' : 120, 'memsize' :  8 }
 
 ##
 ## ----------------------------------------
@@ -181,17 +149,17 @@ ansible_connection = "local"
 virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.122.1"
 
 [myBastion]
-bastion   h_pubMAC="2c:c2:60:30:69:c2" h_pubIP="192.168.122.160" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.10"
+bastion   h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.122.160" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
 
 [myBootstrap]
-bootstrap h_pubMAC="2c:c2:60:43:96:45" h_pubIP="192.168.122.161" h_priMAC="2c:c2:60:5a:b8:28" h_priIP="192.168.10.15"
+bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.122.161" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
 
 [myMasters]
-master-0  h_pubMAC="2c:c2:60:02:d1:d5" h_pubIP="192.168.122.162" h_priMAC="2c:c2:60:30:69:c2" h_priIP="192.168.10.11" h_etcdName="etcd-0" 
-master-1  h_pubMAC="2c:c2:60:60:d0:0b" h_pubIP="192.168.122.163" h_priMAC="2c:c2:60:72:4e:69" h_priIP="192.168.10.12" h_etcdName="etcd-1" 
-master-2  h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="192.168.122.164" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.13" h_etcdName="etcd-2" 
+master-0  h_pubMAC="2c:c2:60:02:c3:c3" h_pubIP="192.168.122.162" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-0" 
+master-1  h_pubMAC="2c:c2:60:60:c4:c4" h_pubIP="192.168.122.163" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-1" 
+master-2  h_pubMAC="2c:c2:60:4d:c5:c5" h_pubIP="192.168.122.164" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-2" 
 
 [myWorkers]
-worker-0  h_pubMAC="2c:c2:60:4d:c5:a6" h_pubIP="192.168.122.165" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.14"
-worker-1  h_pubMAC="2c:c2:60:4d:c5:a7" h_pubIP="192.168.122.166" h_priMAC="2c:c2:60:4d:c5:a7" h_priIP="192.168.10.14"
+worker-0  h_pubMAC="2c:c2:60:4d:c6:c6" h_pubIP="192.168.122.165" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+worker-1  h_pubMAC="2c:c2:60:4d:c7:c7" h_pubIP="192.168.122.166" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
 
