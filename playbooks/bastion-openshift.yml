@@ -9,6 +9,9 @@
 - hosts: myBastion
   tasks:
 
+  - include_vars: "{{ item }}"
+    with_first_found:  "{{ vars_openshift }}"
+
   - name: "BASTION-OPENSHIFT: stat pull-secret"
     stat: path=/root/ocp4_pull_secret
     register: test_pull_secret

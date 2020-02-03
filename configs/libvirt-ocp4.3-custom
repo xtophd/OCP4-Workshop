@@ -21,7 +21,33 @@
 ##  p_Name - play: declared as part of a play
 ##
 
+##
+##
+##
+
 [all:vars]
+
+##
+## ----------------------------------------
+## Paths to vars files
+##
+
+## Red Hat Libvirt Host Parameters
+vars_libvirt = [ "./vars-custom/libvirt.yml", "./vars/libvirt.yml" ]
+
+## Red Hat CoreOS Sources
+vars_rhcos = [ "./vars-custom/rhcos.yml", "./vars/rhcos.yml" ]
+
+## Red Hat Openshift Sources
+vars_rhcos = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
+
+## (Currently Disabled) Repo Sync Parameters
+vars_reposync = [ "./vars-custom/reposync.yml", "./vars/reposync.yml" ]
+
+##
+## ----------------------------------------
+## General Parameters
+##
 
 ## (Optional) Who is the POC owner
 g_owner = "Foo Bar"
@@ -31,6 +57,17 @@ g_location = "Dallas"
 
 ## Configure the student name as this
 g_studentName = "student"
+
+## Your OCP Cluster Name
+g_clusterName = "ocp"
+
+## Your OCP Cluster Wildcard Name
+g_wildcardName = "apps"
+
+##
+## ----------------------------------------
+## Networking Parameters
+##
 
 ## Configure the public (primary) network
 g_publicNet     = "True"
@@ -50,12 +87,6 @@ g_priGW         = ""
 g_priDNS        = ""
 g_priNTP        = ""
 
-## Your OCP Cluster Name
-g_clusterName = "ocp"
-
-## Your OCP Cluster Wildcard Name
-g_wildcardName = "apps"
-
 ##
 ## ----------------------------------------
 ##
@@ -65,9 +96,10 @@ g_wildcardName = "apps"
 ##   DHCP & PXE   - provided by dhcp-server
 ##   LOADBALANCER - provided by haproxy
 ##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
+##   NFS          - configure NFS server for persistent storage
+##   NTP          - configure cluster to use bastion as NTP server
+##   REPOSYNC     - have bastion sync content and create a repo
 ##
-##   NOTE: for iPXE support, g_httpPort
-##         and g_httpsPort are required
 ##
 
 g_useDNS      = "True"
@@ -76,76 +108,17 @@ g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
 g_useNFS      = "True"
-g_useNTP      = "False"
+g_useNTP      = "True"
+g_useREPOSYNC = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
 
 ##
 ## ----------------------------------------
-##
-## REPO SYNC PARAMETERS
-##
-##   Enabling these will create local repos on virthost for
-##   use in the cluster.  If you're using all RHCOS, then 
-##   this is probably not necessary, but still helpful for builiding
-##   the bastion or possibly OCP worker/compute nodes.
-##
-
-## Are we going to clone/sync repos on virthost
-g_repoSync = "False"
-
-## Where will the repos be stored
-g_repoDestDir = "/var/www/html/repos"
-
-## List of content/channel labels to sync
-g_repoList_r7 = '["rhel-7-for-x86_64-server-rpms","rhel-7-for-x86_64-optional-rpms","ansible-2.9-for-rhel-7-server-rpms"]'
-g_repoList_r8 = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
-
-## Ports you do want httpd running on
-
-g_repoPort_http  = '8080'
-g_repoPort_https = '8443'
-
-##
-## ----------------------------------------
 ## NFS server variables
 
 g_nfsExport = "/home/nfs-{{ g_clusterName }}"
-
-##
-## ----------------------------------------
-##
-## Red Hat CoreOS Parameters
-##
-##   Declare sources & versions of RHCOS
-##   
-
-g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
-
-g_rhcos_initramfs = "rhcos-4.3.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel    = "rhcos-4.3.0-x86_64-installer-kernel"
-g_rhcos_bios      = "rhcos-4.3.0-x86_64-metal.raw.gz"
-
-##
-## ----------------------------------------
-##
-## Red Hat Openshift Parameters
-##
-##   Declare sources & versions of Openshift
-##   
-
-g_ocp_src         = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
-
-g_ocp_install     = "openshift-install-linux-4.3.0.tar.gz"
-g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
-
-##
-## ----------------------------------------
-##
-## Red Hat VirtHost (libvirt) Parameters
-##  - refer to playbooks/vars/libvirt-parms.yml
-##
 
 ##
 ## ----------------------------------------

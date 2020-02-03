@@ -9,10 +9,13 @@
 ---
 - hosts: myVirthost
 
-  vars_files:
-  - vars/libvirt-parms.yml
-
   tasks:
+
+  - debug:
+      var: vars_libvirt
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_libvirt }}"
 
   - debug:
       var: kvm_cfg
