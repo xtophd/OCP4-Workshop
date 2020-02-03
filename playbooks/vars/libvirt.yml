@@ -32,6 +32,9 @@ kvm_profiles:
       size:   30
       sparse: true
       bus:    virtio
+    network:
+      model:  virtio
+
   bootstrap:
     vcpus:    4
     memsize:  16000
@@ -39,6 +42,9 @@ kvm_profiles:
       size:   120
       sparse: true
       bus:    virtio
+    network:
+      model:  virtio
+
   master:
     vcpus:    4
     memsize:  16000
@@ -46,6 +52,9 @@ kvm_profiles:
       size:   120
       sparse: true
       bus:    virtio
+    network:
+      model:  virtio
+
   worker:
     vcpus:    2
     memsize:  8000
@@ -53,3 +62,5 @@ kvm_profiles:
       size:   120
       sparse: true
       bus:    virtio
+    network:
+      model:  virtio
