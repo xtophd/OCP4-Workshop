@@ -3,12 +3,11 @@
 ## {{ p_type }} servers
 
 frontend openshift-{{ p_type }}-server
-bind *:{{ p_port }}
-default_backend openshift-{{ p_type }}-server
-mode tcp
-option tcplog
+    bind *:{{ p_port }}
+    mode tcp
+    option tcplog
+    default_backend openshift-{{ p_type }}-server
 
 backend openshift-{{ p_type }}-server
-balance source
-mode tcp
+    balance source
    

@@ -3,9 +3,9 @@
 ## stats uri on
 
 frontend stats
-bind *:{{ p_port }}
-stats enable
-stats uri /stats/{{ p_name }}
-stats refresh 10s
-stats admin if LOCALHOST
+    bind *:{{ p_port }}
+    stats enable
+    stats uri /stats/{{ p_name }}
+    stats refresh 10s
+    stats admin if LOCALHOST
 
