@@ -31,7 +31,7 @@
                      --ram={{ kvm_profiles.bootstrap.memsize }} \
                      --disk {{ kvm_cfg.qcow_dir }}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.bootstrap.disk.bus }},sparse={{ kvm_profiles.bootstrap.disk.sparse }},size={{ kvm_profiles.bootstrap.disk.size }} \
                      --check disk_size=off \
-                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }}" \
+                     --network "network={{ kvm_cfg.network_name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.bootstrap.network.model }}" \
                      --graphics vnc \
                      --vcpus {{  kvm_profiles.bootstrap.vcpus }} \
                      --boot hd,network,menu=yes \
