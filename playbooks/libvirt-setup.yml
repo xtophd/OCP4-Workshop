@@ -94,8 +94,11 @@
   - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
     vars:
-      - p_name: "{{ kvm_cfg.network.name }}"
-      - p_type: "{{ kvm_cfg.network.fwd_type }}"
+      - p_name:    "{{ kvm_cfg.network.name }}"
+      - p_type:    "{{ kvm_cfg.network.fwd_type }}"
+      - p_gateway: "{{ pubGW }}"
+      - p_netmask: "{{ pubNM }}"
+
     template:
       src: "libvirt-network-xml.j2"
       dest: "/var/tmp/libvirt-network.xml"

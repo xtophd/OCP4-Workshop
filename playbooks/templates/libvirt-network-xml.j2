@@ -1,9 +1,9 @@
 <network>
   <name>ocp-workshop</name>
-  <forward mode='nat'>
+  <forward mode='{{ p_type }}'>
   </forward>
   <bridge name='ocp-workshop' stp='on' delay='0'/>
-  <ip address='192.168.123.1' netmask='255.255.255.0'>
+  <ip address='{{ p_gateway }}' netmask='{{ p_netmask }}'>
   </ip>
 </network>
 
