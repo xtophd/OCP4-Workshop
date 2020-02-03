@@ -48,7 +48,6 @@
   - name: "LIBVIRT-SETUP: deploy httpd configuration"
     vars:
       - p_port: "80"
-    when: g_repoSync == "True"
     template:
       src: "httpd-conf.j2"
       dest: "/etc/httpd/conf/httpd.conf"
