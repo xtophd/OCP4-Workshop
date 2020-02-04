@@ -1,0 +1,81 @@
+
+##
+## Virtual Machine Parameters (libvirt)
+##
+##   these are the documented minimums for Openshift 4.3
+##   diskbus: virtio        - will produce vms using /dev/vda
+##   diskbus: virtio-scsi   - will produce vms using /dev/sda
+##
+## WARNING:
+##
+##   Since this typically for Proof-of-Concept or simply education, we
+##   also use 'sparse' disks.  If this has a chance of running longer than
+##   a few days, change "sparse: false".  You'll get better performance
+##   and things won't blow up when space runs out.
+##
+
+## ------------------------------
+## KVM/Libvirt Config Options
+
+kvm_cfg: 
+
+  qcow_dir:     "/home/virt-images"
+  ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
+
+  network:
+    name:       "virbr-{{ g_clusterName }}"
+    bridge:     "virbr-{{ g_clusterName }}"
+    fwd_type:   "bridge"
+    dev:        "eno1"
+    ipv4:
+      addr:     "192.168.1.22/24"
+      gw:       "192.168.1.1"
+
+  iso:
+    dir:        "/var/www/html/iso"
+    name:       "rhel-8.1-x86_64-dvd.iso"
+
+## ------------------------------
+## Virtual Machine Options
+
+kvm_profiles: 
+
+  bastion:
+    vcpus:    4
+    memsize:  8000
+    disk:
+      size:   30
+      sparse: true
+      bus:    virtio
+    network:
+      model:  virtio
+
+  bootstrap:
+    vcpus:    4
+    memsize:  16000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
+    network:
+      model:  virtio
+
+  master:
+    vcpus:    4
+    memsize:  16000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
+    network:
+      model:  virtio
+
+  worker:
+    vcpus:    2
+    memsize:  8000
+    disk:
+      size:   120
+      sparse: true
+      bus:    virtio
+    network:
+      model:  virtio

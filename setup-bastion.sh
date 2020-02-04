@@ -7,7 +7,7 @@
 ##   copy it to ./playbooks/vars-custom/master-config.yml
 ##
 
-myInventory="./playbooks/vars-custom/master-config.yml"
+myInventory="./config/master-config.yml"
 
 ## This script is intended to be run:
 ##     on the libvirt hypervisor node

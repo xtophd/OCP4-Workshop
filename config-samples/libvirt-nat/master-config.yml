@@ -32,17 +32,22 @@
 ## Paths to vars files
 ##
 
+##
+## ----------------------------------------
+## Paths to vars files
+##
+
 ## Red Hat Libvirt Host Parameters
-vars_libvirt = [ "./vars-custom/libvirt.yml", "./vars/libvirt.yml" ]
+vars_libvirt = [ "../config/libvirt.yml", "./vars/libvirt.yml" ]
 
 ## Red Hat CoreOS Sources
-vars_rhcos = [ "./vars-custom/rhcos.yml", "./vars/rhcos.yml" ]
+vars_rhcos = [ "../config/rhcos.yml", "./vars/rhcos.yml" ]
 
 ## Red Hat Openshift Sources
-vars_openshift = [ "./vars-custom/openshift.yml", "./vars/openshift.yml" ]
+vars_openshift = [ "../config/openshift.yml", "./vars/openshift.yml" ]
 
 ## (Currently Disabled) Repo Sync Parameters
-vars_reposync = [ "./vars-custom/reposync.yml", "./vars/reposync.yml" ]
+vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
 
 ##
 ## ----------------------------------------
