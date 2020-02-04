@@ -19,14 +19,14 @@
 
 kvm_cfg: 
 
-  qcow_dir:     "/home/virt-images"
+  qcow_dir:     "/var/lib/libvirt/images"
   ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
 
   network:
-    name:       "virbr-{{ g_clusterName }}"
-    bridge:     "virbr-{{ g_clusterName }}"
+    name:       "host-bridge"
+    bridge:     "virbr1"
     fwd_type:   "bridge"
-    dev:        "eno1"
+    dev:        "ens9"
     ipv4:
       addr:     "10.72.242.148/24"
       nm:       "255.255.255.0"
