@@ -157,6 +157,7 @@
               ifname   {{ kvm_cfg.network.bridge }} \
               ip4      {{ kvm_cfg.network.ipv4.addr }} \
               gw4      {{ kvm_cfg.network.ipv4.gw }} \
+              ipv4.dns {{ g_pubDNS }} \
               autoconnect yes bridge.stp no ipv6.method ignore
 
   - name: "LIBVIRT-SETUP: add device to bridge ({{ kvm_cfg.network.name }})"
