@@ -23,8 +23,14 @@ kvm_cfg:
   ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
 
   network:
-    name:       "ocp-workshop"
+    name:       "{{ g_clusterName }}"
+    bridge:     "{{ g_clusterName }}"
     fwd_type:   "nat"
+    dev:        "eno1"
+    ipv4:
+      addr:     "192.168.123.1"
+      nm:       "255.255.255.0"
+      gw:       "192.168.123.1"
 
   iso:
     dir:        "/var/www/html/iso"

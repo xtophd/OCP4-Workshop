@@ -26,7 +26,7 @@
 
   - name: "LIBVIRT-SETUP: create html directory"
     file:
-      path: /var/www/html/iso
+      path: "{{ kvm_cfg.iso.dir }}"
       mode: "0775"
       owner: "root"
       group: "root"
@@ -93,7 +93,7 @@
       - "https"
       - "cockpit"
 
-  - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ kvm_cfg.network_name }})"
+  - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ kvm_cfg.network.name }})"
     shell: 
       cmd: |
         virsh net-info "{{ kvm_cfg.network.name }}"
@@ -102,20 +102,83 @@
 
   - debug: msg="Network Test Result Code = {{ test_libvirt_network.rc }}"
 
-  - name: "LIBVIRT-SETUP: deploy xml template for libvirt network ({{ kvm_cfg.network.name }})"
-    when: test_libvirt_network.rc != 0
+  - name: "LIBVIRT-SETUP: test for valid network.fwd_type ({{ kvm_cfg.network.fwd_type }})"
+    fail: msg="currently only support network.fwd_type = [ nat | bridge ]"
+    when: kvm_cfg.network.fwd_type != "nat" and kvm_cfg.network.fwd_type != "bridge"
+
+  - name: "LIBVIRT-SETUP: deploy xml template for nat network ({{ kvm_cfg.network.name }})"
+    when: kvm_cfg.network.fwd_type == "nat"
     vars:
       - p_name:    "{{ kvm_cfg.network.name }}"
       - p_type:    "{{ kvm_cfg.network.fwd_type }}"
-      - p_gateway: "{{ g_pubGW }}"
+      - p_address: "{{ g_pubGW }}"
       - p_netmask: "{{ g_pubNM }}"
-
     template:
-      src: "libvirt-network-xml.j2"
+      src: "libvirt-net-nat.j2"
       dest: "/var/tmp/libvirt-network.xml"
       owner: root
       group: root
       mode: 0644
+
+  - name: "LIBVIRT-SETUP: deploy xml template for bridge network ({{ kvm_cfg.network.name }})"
+    when: kvm_cfg.network.fwd_type == "bridge"
+    vars:
+      - p_name:    "{{ kvm_cfg.network.name }}"
+      - p_type:    "{{ kvm_cfg.network.fwd_type }}"
+      - p_address: "{{ hostvars[item]['h_pubIP'] }}"
+      - p_netmask: "{{ g_pubNM }}"
+    template:
+      src: "libvirt-net-bridge.j2"
+      dest: "/var/tmp/libvirt-network.xml"
+      owner: root
+      group: root
+      mode: 0644
+    loop: "{{ groups['myVirthost'] }}"
+
+  - name: "LIBVIRT-SETUP: test existence of bridge network ({{ kvm_cfg.network.bridge }})"
+    when: 
+      - test_libvirt_network.rc != 0
+      - kvm_cfg.network.fwd_type == "bridge"
+    shell: 
+      cmd: |
+        nmcli dev show "{{ kvm_cfg.network.bridge }}"
+    ignore_errors: yes
+    register: test_bridge_network
+
+  - name: "LIBVIRT-SETUP: create bridge device ({{ kvm_cfg.network.name }})"
+    when: 
+      - test_libvirt_network.rc != 0 
+      - test_bridge_network.rc != 0
+      - kvm_cfg.network.fwd_type == "bridge"
+    shell:
+      cmd: |
+        nmcli con add type bridge \
+              con-name {{ kvm_cfg.network.bridge }} \
+              ifname   {{ kvm_cfg.network.bridge }} \
+              ip4      {{ kvm_cfg.network.ipv4.addr }} \
+              gw4      {{ kvm_cfg.network.ipv4.gw }} \
+              autoconnect yes bridge.stp no ipv6.method ignore
+
+  - name: "LIBVIRT-SETUP: add device to bridge ({{ kvm_cfg.network.name }})"
+    when: 
+      - test_libvirt_network.rc != 0 
+      - test_bridge_network.rc != 0
+      - kvm_cfg.network.fwd_type == "bridge"
+    shell:
+      cmd: |
+        nmcli con add type ethernet con-name {{ kvm_cfg.network.dev }} ifname {{ kvm_cfg.network.dev }} master {{ kvm_cfg.network.bridge }}
+        nmcli con modify {{ kvm_cfg.network.bridge }} connection.autoconnect-slaves yes
+
+  - name: "LIBVIRT-SETUP: bring up bridge ({{ kvm_cfg.network.name }})"
+    when: 
+      - test_libvirt_network.rc != 0 
+      - test_bridge_network.rc != 0
+      - kvm_cfg.network.fwd_type == "bridge"
+    shell: 
+      cmd: |
+        ifdown {{ kvm_cfg.network.dev }}
+        ifdown {{ kvm_cfg.network.bridge }}
+        ifup   {{ kvm_cfg.network.bridge }}
 
   - name: "LIBVIRT-SETUP: create libvirt network ({{ kvm_cfg.network.name }})"
     when: test_libvirt_network.rc != 0
