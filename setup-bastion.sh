@@ -3,8 +3,11 @@
 ##
 ## NOTE: you must point to the correct inventory
 ##
+##   Take a sample config from ./configs and
+##   copy it to ./playbooks/vars-custom/master-config.yml
+##
 
-myInventory="./configs/libvirt-ocp4.3-custom"
+myInventory="./playbooks/vars-custom/master-config.yml"
 
 ## This script is intended to be run:
 ##     on the libvirt hypervisor node
