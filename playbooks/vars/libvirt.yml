@@ -19,7 +19,7 @@
 
 kvm_cfg: 
 
-  qcow_dir:     "/virt-images"
+  qcow_dir:     "/home/virt-images"
   ks_url:       "http://{{ ansible_default_ipv4.address }}/ks.cfg"
 
   network:

@@ -107,8 +107,8 @@
     vars:
       - p_name:    "{{ kvm_cfg.network.name }}"
       - p_type:    "{{ kvm_cfg.network.fwd_type }}"
-      - p_gateway: "{{ pubGW }}"
-      - p_netmask: "{{ pubNM }}"
+      - p_gateway: "{{ g_pubGW }}"
+      - p_netmask: "{{ g_pubNM }}"
 
     template:
       src: "libvirt-network-xml.j2"
