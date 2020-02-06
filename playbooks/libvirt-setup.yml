@@ -18,70 +18,21 @@
 
 ---
 - hosts: myVirthost
-
   tasks:
 
-  - include_vars: "{{ item }}"
-    with_first_found: "{{ vars_libvirt }}"
+- import_playbook: libvirt-basics.yml
 
-  - name: "LIBVIRT-SETUP: create html directory"
-    file:
-      path: "{{ kvm_cfg.iso.dir }}"
-      mode: "0775"
-      owner: "root"
-      group: "root"
-      state: directory
+- import_playbook: bastion-network.yml
 
-  - name: "LIBVIRT-SETUP: stat RHEL ISO"
-    stat: path="{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
-    register: test_rhel_iso
+- import_playbook: bastion-repo.yml
 
-  - name: "LIBVIRT-SETUP: fail if RHEL ISO absent"
-    fail: msg="COPY YOUR RHEL ISO HERE {{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
-    when: test_rhel_iso.stat.exists == false
+- import_playbook: libvirt-create-bastion.yml
 
-  - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
-    shell: cmd="subscription-manager repos --disable=*"
+- import_playbook: bastion-deploy-secret.yml
 
-  - name: "LIBVIRT-SETUP: use rhsm to enable repos"
-    shell: cmd="subscription-manager repos --enable='{{ item }}'" 
-    with_items: 
-      - "rhel-7-server-rpms"
-      - "rhel-7-server-optional-rpms"
-      - "rhel-7-server-extras-rpms"
+- import_playbook: libvirt-create-bootstrap.yml
 
-  - name: "LIBVIRT-SETUP: install additional packages"
-    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
+- import_playbook: libvirt-create-masters.yml
 
-  - name: "LIBVIRT-SETUP: deploy httpd configuration"
-    vars:
-      - p_port: "80"
-    template:
-      src: "httpd-conf.j2"
-      dest: "/etc/httpd/conf/httpd.conf"
-      owner: root
-      group: root
-      mode: 0644
-
-  - name: "LIBVIRT-SETUP: selinux restorecon on /var/www/html"
-    shell: restorecon -R /var/www/html
-
-  - name: "LIBVIRT-SETUP: enable system services"
-    service: name="{{ item }}" state=restarted enabled=yes masked=no
-    with_items:
-      - "firewalld"
-      - "httpd"
-      - "cockpit"
-      - "libvirtd"
-
-  - name: "LIBVIRT-SETUP: add firewalld services"
-    firewalld:
-      service: "{{ item }}"
-      immediate: yes
-      permanent: yes
-      state: enabled
-    with_items:
-      - "http"
-      - "https"
-      - "cockpit"
+- import_playbook: libvirt-create-workers.yml
 

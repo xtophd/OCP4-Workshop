@@ -1,0 +1,87 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt
+##   to host an openshift 4.2 deployment
+##
+##   This playbook is NOT meant for student execution  
+##
+##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
+##
+## Playbook Assumptions:
+##     #1 you are executing this on the OS already installed on bare-metal
+##     #2 your host is registered to RH CDN with subscription-manager
+##     #3 the following packages have been installed: git, ansible
+##     #4 system has plenty of storage and memory
+##
+
+---
+- hosts: myVirthost
+
+  tasks:
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_libvirt }}"
+
+  - name: "LIBVIRT-SETUP: create html directory"
+    file:
+      path: "{{ kvm_cfg.iso.dir }}"
+      mode: "0775"
+      owner: "root"
+      group: "root"
+      state: directory
+
+  - name: "LIBVIRT-SETUP: stat RHEL ISO"
+    stat: path="{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
+    register: test_rhel_iso
+
+  - name: "LIBVIRT-SETUP: fail if RHEL ISO absent"
+    fail: msg="COPY YOUR RHEL ISO HERE {{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
+    when: test_rhel_iso.stat.exists == false
+
+  - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
+    shell: cmd="subscription-manager repos --disable=*"
+
+  - name: "LIBVIRT-SETUP: use rhsm to enable repos"
+    shell: cmd="subscription-manager repos --enable='{{ item }}'" 
+    with_items: 
+      - "rhel-7-server-rpms"
+      - "rhel-7-server-optional-rpms"
+      - "rhel-7-server-extras-rpms"
+
+  - name: "LIBVIRT-SETUP: install additional packages"
+    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
+
+  - name: "LIBVIRT-SETUP: deploy httpd configuration"
+    vars:
+      - p_port: "80"
+    template:
+      src: "httpd-conf.j2"
+      dest: "/etc/httpd/conf/httpd.conf"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: "LIBVIRT-SETUP: selinux restorecon on /var/www/html"
+    shell: restorecon -R /var/www/html
+
+  - name: "LIBVIRT-SETUP: enable system services"
+    service: name="{{ item }}" state=restarted enabled=yes masked=no
+    with_items:
+      - "firewalld"
+      - "httpd"
+      - "cockpit"
+      - "libvirtd"
+
+  - name: "LIBVIRT-SETUP: add firewalld services"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "http"
+      - "https"
+      - "cockpit"
+

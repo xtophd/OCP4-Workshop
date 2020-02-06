@@ -29,14 +29,26 @@ fi
 ##
 
 case "$1" in
-    "init")
+    "all")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-setup.yml 
+        ;;
+         
+    "basics")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-basics.yml 
         ;;
          
     "network")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-network.yml 
         ;;
          
+    "secret")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-secret.yml 
+        ;;
+         
+    "repo")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-repo.yml 
+        ;;
+
     "bastion")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-bastion.yml 
         ;;
@@ -53,12 +65,8 @@ case "$1" in
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-workers.yml 
         ;;
 
-    "secret")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-deploy-secret.yml 
-        ;;
-
     *)
-        echo "USAGE: libvirt-setup.sh [ init | network | bastion | bootstrap | masters | workers | secret ]"
+        echo "USAGE: libvirt-setup.sh [ all | basics | network | secret | repo | bastion | bootstrap | masters | workers ]"
         ;;
 
 esac         

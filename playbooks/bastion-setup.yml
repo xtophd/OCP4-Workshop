@@ -17,10 +17,7 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-SETUP: install additional packages"
-    yum: name=tree,wget,bind-utils,tar,net-tools,httpd state=installed
-
-
+- import_playbook: bastion-basics.yml
 
 - import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
