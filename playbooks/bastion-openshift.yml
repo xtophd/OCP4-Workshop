@@ -66,10 +66,20 @@
       - "{{ g_ocp_install }}"
       - "{{ g_ocp_client }}"
 
+  - name: "BASTION-OPENSHIFT: load pull secret"
+    shell: cat /root/ocp4_pull_secret
+    register: pull_secret
+
+  - name: "BASTION-OPENSHIFT: load ssh key"
+    shell: cat /root/.ssh/id_rsa.pub
+    register: ssh_key
+
   - name: "BASTION-OPENSHIFT: deploy install-config.yml"
     vars:
-      - p_pullSecret:   "{{ lookup('file','/root/ocp4_pull_secret') |quote }}"
-      - p_sshKey:       "{{ lookup('file','/root/.ssh/id_rsa.pub')  |quote }}"
+      - p_pullSecret:   "{{ pull_secret.stdout |quote }}"
+      - p_sshKey:       "{{ ssh_key.stdout |quote }}"
+#      - p_pullSecret:   "{{ lookup('file','/root/ocp4_pull_secret') |quote }}"
+#      - p_sshKey:       "{{ lookup('file','/root/.ssh/id_rsa.pub')  |quote }}"
       - p_clusterName:  "{{ g_clusterName }}"
       - p_domain:       "{{ g_publicDomain }}"
     template:

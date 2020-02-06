@@ -13,10 +13,25 @@ text
 cdrom
 bootloader --location=mbr --append="nofb quiet splash=quiet"
 
+## *** WARNING ***
+## *** WARNING ***
+## *** WARNING ***
+##
+##     A RHEL7 host can NOT  mount a RHEL8 XFS filesystem. This
+##     affects our ability to use libguestfs on RHEL 7 to mount 
+##     and customize a VM.
+##
+##     So we choose ext4 as the most compatible filesystems for
+##     our specific use case.
+## 
+## *** WARNING ***
+## *** WARNING ***
+## *** WARNING ***
+
 zerombr
-clearpart --drives=vda --all --initlabel
+clearpart --drives={{ p_diskDevice }} --all --initlabel
 part /boot --fstype=ext2 --size=512 --ondisk=vda --asprimary
-part pv.01 --size=16000 --grow --ondisk=vda --asprimary
+part pv.01 --size=16000 --grow --ondisk={{ p_diskDevice }} --asprimary
 volgroup vg_rhel pv.01
 logvol /     --fstype=ext4  --vgname=vg_rhel --name=root   --size=6000 --grow
 logvol /var  --fstype=ext4  --vgname=vg_rhel --name=var    --size=4000

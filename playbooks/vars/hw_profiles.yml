@@ -1,0 +1,19 @@
+
+hw_profile:
+
+  kvm_vda:
+    description: "KVM based virtual machine using disk.bus = virtio"
+    disk_dev: vda
+
+  kvm_sda:
+    description: "KVM based virtual machine using disk.bus = virtio-scsi"
+    disk_dev: sda
+
+  vmware_sda:
+    description: "VMWare based virtual machine using disk.bus = TBD"
+    disk_dev: sda
+
+  dell_r720:
+    description: "DELL r710 example"
+    disk_dev: sda
+

@@ -41,6 +41,10 @@ case "$1" in
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-dhcp.yml 
         ;;
 
+    "nfs")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-nfs.yml 
+        ;;
+
     "ntp")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/bastion-ntp.yml 
         ;;

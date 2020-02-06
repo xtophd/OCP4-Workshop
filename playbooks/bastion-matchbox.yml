@@ -16,6 +16,9 @@
   - include_vars: "{{ item }}"
     with_first_found:  "{{ vars_rhcos }}"
 
+  - include_vars: "{{ item }}"
+    with_first_found:  "{{ vars_hw_profiles }}"
+
   - name: "BASTION-MATCHBOX: stat software"
     stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
     register: test_matchbox_src
@@ -89,43 +92,60 @@
       - "{{ g_rhcos_kernel }}"
       - "{{ g_rhcos_bios }}"
 
-  - name: "BASTION-MATCHBOX: : deploy bootstrap group configs"
+
+#      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+#     # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+#      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+
+
+
+
+  - name: "BASTION-MATCHBOX: : deploy bootstrap group-configs"
     vars:
+      - p_profile:  "bootstrap"
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_profile:  "bootstrap"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
     template:
       src:   "matchbox-group.j2"
-      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
       mode:  "644"
       owner: matchbox
       group: matchbox
     loop: "{{ groups['myBootstrap'] }}"
 
-  - name: "BASTION-MATCHBOX: : deploy master configs"
+  - name: "BASTION-MATCHBOX: : deploy master group-configs"
     vars:
+      - p_profile:  "master"
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_profile:  "master"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
     template:
       src:   "matchbox-group.j2"
-      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
       mode:  "644"
       owner: matchbox
       group: matchbox
     loop: "{{ groups['myMasters'] }}"
 
-  - name: "BASTION-MATCHBOX: : deploy worker configs"
+  - name: "BASTION-MATCHBOX: : deploy worker group-configs"
     vars:
+      - p_profile:  "worker"
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_profile:  "worker"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
     template:
       src:   "matchbox-group.j2"
-      dest:  "/var/lib/matchbox/groups/{{ p_name }}.json"
+      dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
       mode:  "644"
       owner: matchbox
       group: matchbox
@@ -137,21 +157,53 @@
       f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "BASTION-MATCHBOX: deploy profiles"
+  - name: "BASTION-MATCHBOX: deploy bootstrap profiles"
     vars:
-      - p_profile:  "{{ item }}"
+      - p_profile:  "bootstrap"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
     template:
       src:   "matchbox-profile.j2"
-      dest:  "/var/lib/matchbox/profiles/{{ p_profile }}.json"
+      dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
       mode:  "644"
       owner: matchbox
       group: matchbox
-    with_items:
-      - "bootstrap"
-      - "master"
-      - "worker"
+    loop: "{{ groups['myBootstrap'] }}"
+
+  - name: "BASTION-MATCHBOX: deploy master profiles"
+    vars:
+      - p_profile:  "master"
+      - p_addr:     "{{ f_bastionIP }}"
+      - p_port:     "{{ g_matchbox_port }}"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+    template:
+      src:   "matchbox-profile.j2"
+      dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    loop: "{{ groups['myMasters'] }}"
+
+  - name: "BASTION-MATCHBOX: deploy worker profiles"
+    vars:
+      - p_profile:  "worker"
+      - p_addr:     "{{ f_bastionIP }}"
+      - p_port:     "{{ g_matchbox_port }}"
+      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
+        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
+      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+    template:
+      src:   "matchbox-profile.j2"
+      dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+    loop: "{{ groups['myWorkers'] }}"
 
   - name: "BASTION-MATCHBOX: SELinux restore contexts on doc-root"
     shell: restorecon -R /var/lib/matchbox 
