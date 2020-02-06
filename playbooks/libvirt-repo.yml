@@ -5,6 +5,42 @@
 ##
 ##   TBD 
 
+
+## ---
+## hosts: myVirthost
+##
+## looback mount the cd
+
+
+---
+- hosts: myBastion
+  tasks:
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_libvirt }}"
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_rs_profiles }}"
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_hw_profiles }}"
+
+  - debug:
+      var: kvm_cfg.repo[item]
+    with_items: "{{ kvm_cfg.repo }}"
+
+  - debug:
+      var: kvm_cfg.repo[item].name
+    with_items: "{{ kvm_cfg.repo }}"
+
+  - name: Add repository
+    yum_repository:
+      name:        "{{ kvm_cfg.repo[item].name }}"
+      description: "{{ kvm_cfg.repo[item].name }}"
+      baseurl: "    {{ kvm_cfg.repo[item].url }}"
+    with_items: "{{ kvm_cfg.repo }}"
+
+
 #---
 #- hosts: myVirthost
 #

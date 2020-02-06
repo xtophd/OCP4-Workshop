@@ -15,24 +15,25 @@
     with_first_found: "{{ vars_libvirt }}"
 
   - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_rs_profiles }}"
+
+  - include_vars: "{{ item }}"
     with_first_found: "{{ vars_hw_profiles }}"
 
   - debug:
       var: kvm_cfg
 
   - debug:
-      var: kvm_profiles.bastion
-
-  - debug:
-      msg="{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
+      var: rs_profile[hostvars[item]['h_rsPROF']]
     loop: "{{ groups['myBastion'] }}"
 
+  - debug:
+      var: hw_profile[hostvars[item]['h_hwPROF']]
+    loop: "{{ groups['myBastion'] }}"
 
   - name: "LIBVIRT-CREATE-BASTION: deploy kickstart configuration"
     vars:
-      - p_hw:         "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_diskDevice: "{{ hw_profile[p_hw].disk_dev }}"
+      - p_diskDevice: "{{ hw_profile[hostvars[item]['h_hardware']].disk_dev }}"
     template:
       src: "bastion-kickstart.j2"
       dest: "/var/www/html/ks.cfg"
@@ -41,21 +42,33 @@
       mode: 0644
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
+    vars:
+      p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
+      p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+      p_ip:       "{{ hostvars[item]['h_pubIP'] }}"
+      p_nm:       "{{ hostvars[item]['g_pubNM'] }}"
+      p_gw:       "{{ hostvars[item]['g_pubGW'] }}"
+      p_bus:      "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.bus }}"
+      p_dns:      "{{ hostvars[item]['g_pubDNS'] }}"
+      p_sparse:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.sparse }}"
+      p_netdev:   "{{ hw_profile[hostvars[item]['h_hwPROF']].network.model }}"
+      p_disksize: "{{ rs_profile[hostvars[item]['h_rsPROF']].disksize }}"
+      p_memsize:  "{{ rs_profile[hostvars[item]['h_rsPROF']].memsize }}"
+      p_cpu:      "{{ rs_profile[hostvars[item]['h_rsPROF']].vcpus }}"
     shell:
       cmd: |
-        virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram={{ kvm_profiles.bastion.memsize }} \
-                     --disk {{ kvm_cfg.qcow_dir}}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.bastion.disk.bus }},sparse={{ kvm_profiles.bastion.disk.sparse }},size={{ kvm_profiles.bastion.disk.size }} \
+        virt-install --name="{{ p_name }}" \
+                     --ram="{{ p_memsize }}" \
+                     --disk "{{ kvm_cfg.qcow_dir }}/{{ p_name }}.qcow2,bus={{ p_bus }},sparse={{ p_sparse }},size={{ p_disksize }}" \
                      --check disk_size=off \
                      --location={{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }} \
-                     --extra-args="ks={{ kvm_cfg.ks_url }} ip={{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }}" \
-                     --network "network={{ kvm_cfg.network.name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.bastion.network.model }}" \
+                     --extra-args="ks={{ kvm_cfg.ks_url }} ip={{ p_ip }} netmask={{ p_nm }} dns={{ p_dns }} gateway={{ p_gw }}" \
+                     --network "network={{ kvm_cfg.network.name }},mac={{ p_mac }},model={{ p_netdev }}" \
                      --graphics vnc \
-                     --vcpus {{  kvm_profiles.bastion.vcpus }} \
+                     --vcpus {{ p_cpu }} \
                      --boot hd,network,menu=yes \
                      --noreboot
-#                     --noautoconsole
     loop: "{{ groups['myBastion'] }}"
 
   - name: "LIBVIRT-CREATE-BASTION: Create ssh directory"
@@ -110,3 +123,16 @@
     shell:
       cmd: |
         ssh-keyscan bastion.ocp.example.com >> /root/.ssh/known_hosts
+
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: Add repository
+    yum_repository:
+      name: "{{ kvm_cfg.repo[item].name }}"
+      description: "{{ kvm_cfg.repo[item].name }}"
+      baseurl: "{{ kvm_cfg.repo[item].name.url }}"
+    loop: {{ kvm_cfg.repo }}
+

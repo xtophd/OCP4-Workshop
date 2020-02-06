@@ -156,7 +156,7 @@ ansible_connection = "local"
 virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.1.1"
 
 [myBastion]
-bastion.ocp.example.com   h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.1.160" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="bastion"
+bastion.ocp.example.com h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.1.160" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="bastion"
 
 [myBootstrap]
 bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.1.161" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="med"
@@ -169,5 +169,3 @@ master-2  h_pubMAC="2c:c2:60:4d:c5:c5" h_pubIP="192.168.1.164" h_priMAC="00:00:0
 [myWorkers]
 worker-0  h_pubMAC="2c:c2:60:4d:c6:c6" h_pubIP="192.168.1.165" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="sml"
 worker-1  h_pubMAC="2c:c2:60:4d:c7:c7" h_pubIP="192.168.1.166" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="sml"
-worker-2  h_pubMAC="2c:c2:60:4d:c8:c8" h_pubIP="192.168.1.167" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_sda" h_rsPROF="sml"
-

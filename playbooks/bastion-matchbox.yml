@@ -92,23 +92,14 @@
       - "{{ g_rhcos_kernel }}"
       - "{{ g_rhcos_bios }}"
 
-
-#      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-#     # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-#      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
-
-
-
-
   - name: "BASTION-MATCHBOX: : deploy bootstrap group-configs"
     vars:
       - p_profile:  "bootstrap"
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -123,9 +114,8 @@
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -140,9 +130,8 @@
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -162,9 +151,8 @@
       - p_profile:  "bootstrap"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
@@ -178,9 +166,8 @@
       - p_profile:  "master"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
@@ -194,9 +181,8 @@
       - p_profile:  "worker"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_hw:       "{{ hostvars[item]['h_hardware'] }}"
-        # ** WARNING ** The following syntax makes NO SENSE to me, but it works
-      - p_device:   "{{ hw_profile[p_hw].disk_dev }}"
+      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"

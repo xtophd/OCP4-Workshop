@@ -14,26 +14,43 @@
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_libvirt }}"
 
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_rs_profiles }}"
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_hw_profiles }}"
+
   - debug:
       var: kvm_cfg
 
   - debug:
-      var: kvm_profiles.master
-
-  - debug:
-      msg: "{{ item }} {{ hostvars[item]['inventory_hostname_short'] }} {{ hostvars[item]['h_pubIP'] }} netmask={{ g_pubNM }} dns={{ g_pubDNS }} gateway={{ g_pubGW }} mac={{ hostvars[item]['h_pubMAC'] }}"
+      var: rs_profile[hostvars[item]['h_rsPROF']]
     loop: "{{ groups['myMasters'] }}"
 
-  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install master"
+  - debug:
+      var: hw_profile[hostvars[item]['h_hwPROF']]
+    loop: "{{ groups['myMasters'] }}"
+
+
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
+    vars:
+      p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
+      p_bus:      "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.bus }}"
+      p_sparse:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.sparse }}"
+      p_netdev:   "{{ hw_profile[hostvars[item]['h_hwPROF']].network.model }}"
+      p_disksize: "{{ rs_profile[hostvars[item]['h_rsPROF']].disksize }}"
+      p_memsize:  "{{ rs_profile[hostvars[item]['h_rsPROF']].memsize }}"
+      p_cpu:      "{{ rs_profile[hostvars[item]['h_rsPROF']].vcpus }}"
+
     shell:
       cmd: |
-        virt-install --name="{{ hostvars[item]['inventory_hostname_short'] }}" \
-                     --ram={{ kvm_profiles.master.memsize }} \
-                     --disk {{ kvm_cfg.qcow_dir }}/{{ hostvars[item]['inventory_hostname_short'] }}.qcow2,bus={{ kvm_profiles.master.disk.bus }},sparse={{ kvm_profiles.master.disk.sparse }},size={{ kvm_profiles.master.disk.size }} \
+        virt-install --name="{{ p_name }}" \
+                     --ram="{{ p_memsize }}" \
+                     --disk "{{ kvm_cfg.qcow_dir }}/{{ p_name }}.qcow2,bus={{ p_bus }},sparse={{ p_sparse }},size={{ p_disksize }}" \
                      --check disk_size=off \
-                     --network "network={{ kvm_cfg.network.name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ kvm_profiles.master.network.model }}" \
+                     --network "network={{ kvm_cfg.network.name }},mac={{ hostvars[item]['h_pubMAC'] }},model={{ p_netdev }}" \
                      --graphics vnc \
-                     --vcpus {{  kvm_profiles.master.vcpus }} \
+                     --vcpus {{ p_cpu }} \
                      --boot hd,network,menu=yes \
                      --noautoconsole
     loop: "{{ groups['myMasters'] }}"

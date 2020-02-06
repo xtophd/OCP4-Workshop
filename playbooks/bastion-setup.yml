@@ -18,7 +18,7 @@
   tasks:
 
   - name: "BASTION-SETUP: install additional packages"
-    yum: name=ansible,git,tree,wget,bind-utils,tar,net-tools,httpd state=installed
+    yum: name=tree,wget,bind-utils,tar,net-tools,httpd state=installed
 
 
 
