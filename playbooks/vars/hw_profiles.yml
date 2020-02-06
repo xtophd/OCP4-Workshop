@@ -1,19 +1,40 @@
 
 hw_profile:
 
+  default:
+    description: "Default system hardware profile"
+    disk:
+      dev:    "sda"
+
   kvm_vda:
     description: "KVM based virtual machine using disk.bus = virtio"
-    disk_dev: vda
+    disk:
+      bus:    "virtio"
+      sparse: "true"
+      dev:    "vda"
+    network:
+      model:  "virtio"
 
   kvm_sda:
     description: "KVM based virtual machine using disk.bus = virtio-scsi"
-    disk_dev: sda
+    disk:
+      bus:    "virtio-scsi"
+      sparse: "true"
+      dev:    "sda"
+    network:
+      model:  "virtio"
 
   vmware_sda:
     description: "VMWare based virtual machine using disk.bus = TBD"
-    disk_dev: sda
+    disk:
+      dev:    "sda"
 
   dell_r720:
     description: "DELL r710 example"
-    disk_dev: sda
+    disk:
+      dev:    "sda"
 
+  hp_dl380:
+    description: "HP DL380"
+    disk:
+      dev:    "c0t0d0"

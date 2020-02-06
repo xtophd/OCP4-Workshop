@@ -1,0 +1,29 @@
+##
+## RESOURCE PROFILES
+##
+
+rs_profile:
+
+  sml:
+    description: "Sufficient for minimal sized workers"
+    vcpus: 2
+    memsize: 8000
+    disksize: 120 
+
+  med:
+    description: "Sufficient for minimal sized bootstrap and masters"
+    vcpus:    4
+    memsize:  16000
+    disksize: 120
+
+  lrg:
+    description: "Beefy worker"
+    vcpus:    8
+    memsize:  24000
+    disksize: 200
+
+  bastion:
+    description: "Resources for the bastion utility host"
+    vcpus:    4
+    memsize:  8000
+    disksize: 30
