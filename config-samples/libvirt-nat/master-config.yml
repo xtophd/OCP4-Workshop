@@ -52,7 +52,7 @@ vars_openshift = [ "../config/openshift.yml", "./vars/openshift.yml" ]
 vars_matchbox = [ "../config/matchbox.yml", "./vars/matchbox.yml" ]
 
 ## (Currently Disabled) Repo Sync Parameters
-## vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
+vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
 
 ##
 ## ----------------------------------------
