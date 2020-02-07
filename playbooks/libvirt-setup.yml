@@ -22,13 +22,13 @@
 
 - import_playbook: libvirt-basics.yml
 
-- import_playbook: bastion-network.yml
+- import_playbook: libvirt-network.yml
 
-- import_playbook: bastion-repo.yml
+- import_playbook: libvirt-repo.yml
 
 - import_playbook: libvirt-create-bastion.yml
 
-- import_playbook: bastion-deploy-secret.yml
+- import_playbook: libvirt-deploy-secret.yml
 
 - import_playbook: libvirt-create-bootstrap.yml
 
