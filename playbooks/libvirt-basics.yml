@@ -24,6 +24,9 @@
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_libvirt }}"
 
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_reposync }}"
+
   - name: "LIBVIRT-SETUP: create html directory"
     file:
       path: "{{ kvm_cfg.iso.dir }}"
@@ -51,11 +54,11 @@
       - "rhel-7-server-extras-rpms"
 
   - name: "LIBVIRT-SETUP: install additional packages"
-    yum: name=ansible,git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines state=installed
+    yum: name=git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines,policycoreutils-python state=installed
 
   - name: "LIBVIRT-SETUP: deploy httpd configuration"
     vars:
-      - p_port: "80"
+      - p_port: "{{ g_http_port }}"
     template:
       src: "httpd-conf.j2"
       dest: "/etc/httpd/conf/httpd.conf"
@@ -85,3 +88,18 @@
       - "https"
       - "cockpit"
 
+  - name: "LIBVIRT-SETUP: add firewalld ports"
+    firewalld:
+      port: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+    with_items:
+      - "{{ g_http_port }}/tcp"
+
+# A reminder that if we use a port not natively included by selinux, we need to add it
+#   
+#  - name: "LIBVIRT-SETUP: add http port to selinux http_port_t"
+#  - shell:
+#      cmd: |
+#        semanage port -a -t http_port_t -p tcp {{ g_http_port }}

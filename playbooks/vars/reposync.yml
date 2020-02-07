@@ -1,15 +1,13 @@
 ##
 ## ----------------------------------------
 ##
-## REPO SYNC PARAMETERS
+## REPO PARAMETERS
 ##
 ##   Enabling these will create local repos on virthost for
 ##   use in the cluster.  If you're using all RHCOS, then
 ##   this is probably not necessary, but still helpful for builiding
 ##   the bastion or possibly OCP worker/compute nodes.
 ##
-
-## Dictionary of settings for reposync playbook
 
 g_repoSync:
   product:
@@ -25,6 +23,6 @@ g_repoSync:
         - "ansible-2.9-for-rhel-8-x86_64-rpms"
   settings:
     dir: "/var/www/html/repos"
-    port_http: '8080'
-    port_https: '8443'
+    port_http: '9080'
+    port_https: '9443'
 

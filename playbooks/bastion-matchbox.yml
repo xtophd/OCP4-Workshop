@@ -19,6 +19,9 @@
   - include_vars: "{{ item }}"
     with_first_found:  "{{ vars_hw_profiles }}"
 
+  - include_vars: "{{ item }}"
+    with_first_found:  "{{ vars_matchbox }}"
+
   - name: "BASTION-MATCHBOX: stat software"
     stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
     register: test_matchbox_src

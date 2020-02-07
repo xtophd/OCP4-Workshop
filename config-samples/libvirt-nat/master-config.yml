@@ -48,6 +48,9 @@ vars_rhcos = [ "../config/rhcos.yml", "./vars/rhcos.yml" ]
 ## Red Hat Openshift Sources
 vars_openshift = [ "../config/openshift.yml", "./vars/openshift.yml" ]
 
+## Matchbox Parameters
+vars_reposync = [ "../config/matchbox.yml", "./vars/matchbox.yml" ]
+
 ## (Currently Disabled) Repo Sync Parameters
 vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
 
@@ -130,10 +133,13 @@ g_nfsExport = "/home/nfs-{{ g_clusterName }}"
 ##
 ## ----------------------------------------
 ##
-## Matchbox Parameters
+## HTTPD Parameters 
+##
+##     http server on virthost to
+##     support kickstart and repo
 ##   
 
-g_matchbox_port = "8080"
+g_http_port = "8008"
 
 ##
 ## ----------------------------------------

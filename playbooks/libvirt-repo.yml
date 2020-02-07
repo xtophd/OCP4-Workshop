@@ -5,13 +5,6 @@
 ##
 ##   TBD 
 
-
-## ---
-## hosts: myVirthost
-##
-## looback mount the cd
-
-
 ---
 - hosts: myBastion
   tasks:
@@ -37,86 +30,31 @@
     yum_repository:
       name:        "{{ kvm_cfg.repo[item].name }}"
       description: "{{ kvm_cfg.repo[item].name }}"
-      baseurl: "    {{ kvm_cfg.repo[item].url }}"
+      baseurl:     "{{ kvm_cfg.repo[item].url }}"
+      enabled:     "yes"
+      gpgcheck:    "no"
     with_items: "{{ kvm_cfg.repo }}"
 
 
-#---
-#- hosts: myVirthost
-#
-#  vars_files:
-#  - vars/libvirt-parms.yml
-#
-#  tasks:
-#
-#  - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
-#    shell: subscription-manager repos --disable=* 
-#
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ item }}"
-#      purge: True
-#    loop: "{{ g_repoList }}"
-
-#  - name: "SHELL: disable libvirt 'default' network"
-#    shell:
-#      cmd: |
-#        if `virsh net-list | grep -q default` ; then 
-#          virsh net-destroy default
-#          virsh net-autostart --network default --disable
-#        fi
-#
-#  - name: "SERVICE: restart service libvirtd"
-#    service: name=libvirtd state=restarted enabled=yes masked=no
-
-## For RHEL 8 (ansible 2.5)
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ item }}"
-#      purge: True
-#      state: enabled
-
-#  - name: "Clone repos"
-#    when: g_repoSync == "True"
-#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
-#    loop: "{{ g_repoList }}"
-# 
-#  - name: "Create sample repo configs"
-#    when: g_repoSync == "True"
-#    template:
-#      src: "repo-config.j2"
-#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
-#      owner: root
-#      group: root
-#      mode: 0444
-#    loop: "{{ g_repoList }}"
-#
-#  - name: "SELinux restore contexts"
-#    when: g_repoSync == "True"
-#    shell: restorecon -R {{ g_repoDestDir }}
 
 
-#  - name: "Subscription Manager enable specified repos only"
-#    rhsm_repository: 
-#      name: "{{ g_repoList }}" 
-#      purge: True
-#
-#  - name: "Clone repos"
-#    when: g_repoSync == "True"
-#    shell: reposync --newest-only --destdir={{ g_repoDestDir }} --repoid={{ item }}
-#    loop: "{{ g_repoList }}"
-# 
-#  - name: "Create sample repo configs"
-#    when: g_repoSync == "True"
-#    template:
-#      src: "repo-config.j2"
-#      dest: "{{ g_repoDestDir }}/{{ item }}.repo"
-#      owner: root
-#      group: root
-#      mode: 0444
-#    loop: "{{ g_repoList }}"
-#
-#  - name: "SELinux restore contexts"
-#    when: g_repoSync == "True"
-#    shell: restorecon -R {{ g_repoDestDir }}
 
+- hosts: myVirthost
+  tasks:
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_libvirt }}"
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_rs_profiles }}"
+
+  - include_vars: "{{ item }}"
+    with_first_found: "{{ vars_hw_profiles }}"
+
+  - name: "LIBVIRT-REPOSYNC: loopback mount ISO"
+    mount:
+      src:    "{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
+      path:   "{{ kvm_cfg.iso.mount }}"
+      opts:   "loop,ro"
+      state:  "mounted"
+      fstype: "iso9660"

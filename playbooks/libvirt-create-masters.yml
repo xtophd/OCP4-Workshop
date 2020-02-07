@@ -31,8 +31,18 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myMasters'] }}"
 
+  - name: "LIBVIRT-CREATE-MASTERS: verify bootstrap config server is available"
+    uri:
+      url: "https://{{ hostvars[item]['h_pubIP'] }}:22623/"
+      status_code: 200
+      validate_certs: no
+    register: result
+    until: result.status == 200
+    retries: 120
+    delay: 10
+    loop: "{{ groups['myBootstrap'] }}"
 
-  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
+  - name: "LIBVIRT-CREATE-MASTERS: virt-install bootstrap"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
       p_bus:      "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.bus }}"

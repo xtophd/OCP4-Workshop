@@ -31,6 +31,47 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myBootstrap'] }}"
 
+  ##
+  ## A generic set of tests to verify bastion services are up
+  ##
+
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: test DNS port on bastion"
+    set_fact:
+      f_bastion_ip: "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: test DNS port on bastion"
+    when: g_useDNS == "True"
+    wait_for:
+      host: "{{ f_bastion_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: 42
+      sleep: 1
+      state: started
+      timeout: 30
+
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: test DHCP port on bastion"
+    when: g_useDNS == "True"
+    wait_for:
+      host: "{{ f_bastion_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: 67
+      sleep: 1
+      state: started
+      timeout: 30
+
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: test MATCHBOX port on bastion"
+    when: g_useMATCHBOX == "True"
+    wait_for:
+      host: "{{ f_bastion_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: "{{ g_matchbox_port }}"
+      sleep: 1
+      state: started
+      timeout: 30
 
   - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
     vars:
