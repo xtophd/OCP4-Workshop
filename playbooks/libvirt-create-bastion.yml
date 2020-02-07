@@ -8,7 +8,6 @@
 
 ---
 - hosts: myVirthost
-
   tasks:
 
   - include_vars: "{{ item }}"
@@ -33,7 +32,7 @@
 
   - name: "LIBVIRT-CREATE-BASTION: deploy kickstart configuration"
     vars:
-      - p_diskDevice: "{{ hw_profile[hostvars[item]['h_hardware']].disk_dev }}"
+      - p_diskDevice: "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
     template:
       src: "bastion-kickstart.j2"
       dest: "/var/www/html/ks.cfg"
@@ -125,14 +124,13 @@
         ssh-keyscan bastion.ocp.example.com >> /root/.ssh/known_hosts
 
 
----
-- hosts: myBastion
-  tasks:
-
-  - name: Add repository
-    yum_repository:
-      name: "{{ kvm_cfg.repo[item].name }}"
-      description: "{{ kvm_cfg.repo[item].name }}"
-      baseurl: "{{ kvm_cfg.repo[item].name.url }}"
-    loop: {{ kvm_cfg.repo }}
+#- hosts: myBastion
+#  tasks:
+#
+#  - name: Add repository
+#    yum_repository:
+#      name: "{{ kvm_cfg.repo[item].name }}"
+#      description: "{{ kvm_cfg.repo[item].name }}"
+#      baseurl: "{{ kvm_cfg.repo[item].name.url }}"
+#    loop: "{{ kvm_cfg.repo }}"
 
