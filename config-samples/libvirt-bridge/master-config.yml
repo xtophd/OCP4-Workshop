@@ -8,7 +8,8 @@
 ##       - virsh net-edit default
 ##       - remove <dhcp .... .... /dhcp> block 
 ##       - restart the network  `virsh net-{destroy,start} default`
-##
+##       - IT's POSSIBLE THAT YOU CAN LEAVE 'default' ALONE, BUT UNTESTED
+##   
 
 ##
 ## First character of variable defines scope
@@ -23,33 +24,11 @@
 ##
 
 ##
-##
+## NOTE: paths to additional customizable variable files are
+##       declared in playbooks/group_vars/all/var_config.yml
 ##
 
 [all:vars]
-
-##
-## ----------------------------------------
-## Paths to vars files
-##
-
-## Red Hat Hardware Profiles
-vars_hw_profiles = [ "../config/hw_profiles.yml", "./vars/hw_profiles.yml" ]
-
-## Red Hat Resoure Profiles
-vars_rs_profiles = [ "../config/rs_profiles.yml", "./vars/rs_profiles.yml" ]
-
-## Red Hat Libvirt Host Parameters
-vars_libvirt = [ "../config/libvirt.yml", "./vars/libvirt.yml" ]
-
-## Red Hat CoreOS Sources
-vars_rhcos = [ "../config/rhcos.yml", "./vars/rhcos.yml" ]
-
-## Red Hat Openshift Sources
-vars_openshift = [ "../config/openshift.yml", "./vars/openshift.yml" ]
-
-## (Currently Disabled) Repo Sync Parameters
-vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
 
 ##
 ## ----------------------------------------
@@ -83,6 +62,7 @@ g_pubNM         = "255.255.255.0"
 g_pubGW         = "192.168.1.1"
 g_pubDNS        = "192.168.1.30"
 g_pubNTP        = "192.168.1.160"
+g_pubFQDN       = "{{ g_clusterName }}.{{ g_publicDomain }}"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
@@ -137,6 +117,15 @@ g_matchbox_port = "8080"
 ##
 ## ----------------------------------------
 ##
+## This has the effect of changing the default domainname so
+## we won't have to specify FQDN in host vars section below
+##
+
+ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+
+##
+## ----------------------------------------
+##
 
 [myVirthost:vars]
 
@@ -156,7 +145,7 @@ ansible_connection = "local"
 virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.1.1"
 
 [myBastion]
-bastion.ocp.example.com h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.1.160" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="bastion"
+bastio    h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.1.160" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="bastion"
 
 [myBootstrap]
 bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.1.161" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="kvm_vda" h_rsPROF="med"
