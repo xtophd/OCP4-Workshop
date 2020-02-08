@@ -41,7 +41,7 @@
       mode: 0644
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
+  - name: "LIBVIRT-CREATE-BASTION: virt-install bootstrap"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
       p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
@@ -122,15 +122,4 @@
     shell:
       cmd: |
         ssh-keyscan bastion.ocp.example.com >> /root/.ssh/known_hosts
-
-
-#- hosts: myBastion
-#  tasks:
-#
-#  - name: Add repository
-#    yum_repository:
-#      name: "{{ kvm_cfg.repo[item].name }}"
-#      description: "{{ kvm_cfg.repo[item].name }}"
-#      baseurl: "{{ kvm_cfg.repo[item].name.url }}"
-#    loop: "{{ kvm_cfg.repo }}"
 

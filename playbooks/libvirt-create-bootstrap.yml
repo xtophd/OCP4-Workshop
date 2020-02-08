@@ -46,7 +46,7 @@
       host: "{{ f_bastion_ip }}"
       connect_timeout: 5
       delay: 3
-      port: 42
+      port: 53 
       sleep: 1
       state: started
       timeout: 30
