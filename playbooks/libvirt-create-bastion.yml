@@ -41,7 +41,7 @@
       mode: 0644
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "LIBVIRT-CREATE-BASTION: virt-install bootstrap"
+  - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
       p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
