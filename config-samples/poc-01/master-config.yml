@@ -29,28 +29,6 @@
 
 ##
 ## ----------------------------------------
-## Paths to vars files
-##
-
-##
-## ----------------------------------------
-## Paths to vars files
-##
-
-## Red Hat Libvirt Host Parameters
-vars_libvirt = [ "../config/libvirt.yml", "./vars/libvirt.yml" ]
-
-## Red Hat CoreOS Sources
-vars_rhcos = [ "../config/rhcos.yml", "./vars/rhcos.yml" ]
-
-## Red Hat Openshift Sources
-vars_openshift = [ "../config/openshift.yml", "./vars/openshift.yml" ]
-
-## (Currently Disabled) Repo Sync Parameters
-vars_reposync = [ "../config/reposync.yml", "./vars/reposync.yml" ]
-
-##
-## ----------------------------------------
 ## General Parameters
 ##
 
@@ -82,6 +60,7 @@ g_pubNM         = "255.255.255.0"
 g_pubGW         = "10.72.242.1"
 g_pubDNS        = "216.145.50.3"
 g_pubNTP        = "216.145.50.126"
+g_pubFQDN       = "{{ g_clusterName }}.{{ g_publicDomain }}"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
@@ -136,16 +115,25 @@ g_matchbox_port = "8080"
 ##
 ## ----------------------------------------
 ##
+## This has the effect of changing the default domainname so
+## we won't have to specify FQDN in host vars section below
+##
+
+ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+
+##
+## ----------------------------------------
+##
 
 [myVirthost:vars]
 
 ## We are running the playbooks on the baremetal virthost
 ansible_connection = "local"
 
-[myBastion:vars]
-
-## We are running the playbooks on the bastion node
-ansible_connection = "local"
+#[myBastion:vars]
+#
+### We are running the playbooks on the bastion node
+#ansible_connection = "local"
 
 ##
 ## ----------------------------------------
@@ -155,17 +143,17 @@ ansible_connection = "local"
 labhost102   h_pubMAC="98:03:9b:76:b9:f2" h_pubIP="10.72.242.148"
 
 [myBastion]
-bastion      h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28" h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21" h_diskdev="vda"
+bastion      h_pubMAC="52:54:00:a9:dd:1c" h_pubIP="10.72.242.28"  h_priMAC="52:54:00:fd:80:f7" h_priIP="192.168.1.21" h_hwPROF="kvm_vda" h_rsPROF="bastion"
 
 [myBootstrap]
-bootstrap    h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10" h_diskdev="vda"
+bootstrap    h_pubMAC="52:54:00:5f:a4:49" h_pubIP="10.72.242.248" h_priMAC="52:54:00:44:60:ad" h_priIP="192.168.1.10" h_hwPROF="kvm_vda" h_rsPROF="med"
 [myMasters]
 
-master-0     h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_etcdName="etcd-0" h_diskdev="vda" 
-master-1     h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_etcdName="etcd-1" h_diskdev="vda"
-master-2     h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_etcdName="etcd-2" h_diskdev="vda"
+master-0     h_pubMAC="52:54:00:2f:42:af" h_pubIP="10.72.242.244" h_priMAC="52:54:00:ad:18:8c" h_priIP="192.168.1.11" h_hwPROF="kvm_vda" h_rsPROF="med" h_etcdName="etcd-0" 
+master-1     h_pubMAC="52:54:00:3a:7d:81" h_pubIP="10.72.242.245" h_priMAC="52:54:00:e7:1d:58" h_priIP="192.168.1.12" h_hwPROF="kvm_vda" h_rsPROF="med" h_etcdName="etcd-1" 
+master-2     h_pubMAC="52:54:00:c2:dc:af" h_pubIP="10.72.242.246" h_priMAC="52:54:00:2c:ee:4f" h_priIP="192.168.1.13" h_hwPROF="kvm_vda" h_rsPROF="med" h_etcdName="etcd-2" 
 
 [myWorkers]
-worker-0     h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="52:54:00:50:d2:d5" h_priIP="192.168.1.15" h_diskdev="vda"
-worker-1     h_pubMAC="52:54:00:c5:64:b5" h_pubIP="10.72.242.215" h_priMAC="52:54:00:50:d2:d6" h_priIP="192.168.1.16" h_diskdev="vda"
+worker-0     h_pubMAC="52:54:00:c5:64:b4" h_pubIP="10.72.242.214" h_priMAC="52:54:00:50:d2:d5" h_priIP="192.168.1.15" h_hwPROF="kvm_vda" h_rsPROF="sml"
+worker-1     h_pubMAC="52:54:00:c5:64:b5" h_pubIP="10.72.242.215" h_priMAC="52:54:00:50:d2:d6" h_priIP="192.168.1.16" h_hwPROF="kvm_vda" h_rsPROF="sml"
 

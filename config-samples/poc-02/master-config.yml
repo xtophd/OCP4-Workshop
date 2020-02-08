@@ -40,6 +40,7 @@ g_pubNM         = "255.255.252.0"
 g_pubGW         = "166.34.187.254"
 g_pubDNS        = "166.37.162.103"
 g_pubNTP        = "166.37.162.103,166.37.218.90,166.37.130.87"
+g_pubFQDN       = "{{ g_clusterName }}.{{ g_publicDomain }}"
 
 ## Configure the private (secondary) network
 g_privateNet    = "False"
@@ -75,81 +76,17 @@ g_usePXE      = "True"
 g_useHAPROXY  = "True"
 g_useMATCHBOX = "True"
 g_useNFS      = "True"
+g_useNTP      = "True"
+g_useREPOSYNC = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
 
 ##
 ## ----------------------------------------
-##
-## REPO SYNC PARAMETERS
-##
-##   Enabling these will create local repos on virhost for
-##   use in the cluster.  If you're using all RHCOS, then 
-##   this is probably not necessary, but still helpfull for builiding
-##   the bastion or possibly OCP worker/compute nodes.
-##
-
-## Are we going to clone/sync repos on virthost
-g_repoSync = "False"
-
-## Where will the repos be stored
-g_repoDestDir = "/var/www/html/repos"
-
-## List of content/channel labels to sync
-g_repoList_r7 = '["rhel-7-for-x86_64-server-rpms","rhel-7-for-x86_64-optional-rpms","ansible-2.9-for-rhel-7-server-rpms"]'
-g_repoList_r8 = '["rhel-8-for-x86_64-baseos-rpms","rhel-8-for-x86_64-appstream-rpms","ansible-2.9-for-rhel-8-x86_64-rpms"]'
-
-## Ports you do want httpd running on
-
-g_repoPort_http  = '8080'
-g_repoPort_https = '8443'
-
 ## NFS server variables
 
 g_nfsExport = "/home/nfs"
-
-##
-## ----------------------------------------
-##
-## Red Hat CoreOS Parameters
-##
-##   Declare sources & versions of RHCOS
-##   
-
-g_rhcos_src       = "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
-
-g_rhcos_initramfs = "rhcos-4.3.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel    = "rhcos-4.3.0-x86_64-installer-kernel"
-g_rhcos_bios      = "rhcos-4.3.0-x86_64-metal.raw.gz"
-
-##
-##
-
-g_ocp_src         = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
-
-g_ocp_install     = "openshift-install-linux-4.3.0.tar.gz"
-g_ocp_client      = "openshift-client-linux-4.3.0.tar.gz"
-
-##
-## ----------------------------------------
-##
-## Red Hat VirtHost (libvirt parameters)
-##   parameters reflect the provisioning-network
-##   and where to find and store images
-##
-
-g_vhost_network = "default"
-g_vhost_addr    = "192.168.122.1"
-g_vhost_imgdir  = "/virt-images"
-g_vhost_isodir  = "/var/www/html/iso"
-
-## These are the documented minimums
-
-g_vmParms_bastion   = { 'vcpu' : 4, 'disksize' :  60, 'memsize' :  8 }
-g_vmParms_bootstrap = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_master    = { 'vcpu' : 4, 'disksize' : 120, 'memsize' : 16 }
-g_vmParms_worker    = { 'vcpu' : 2, 'disksize' : 120, 'memsize' :  8 }
 
 ##
 ## ----------------------------------------
@@ -162,11 +99,20 @@ g_matchbox_port = "8080"
 ##
 ## ----------------------------------------
 ##
+## This has the effect of changing the default domainname so
+## we won't have to specify FQDN in host vars section below
+##
+
+ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+
+##
+## ----------------------------------------
+##
 
 [myVirthost:vars]
 
 ## We are running the playbooks on the baremetal virthost
-ansible_connection = "local"
+#ansible_connection = "local"
 
 [myBastion:vars]
 
@@ -181,17 +127,17 @@ ansible_connection = "local"
 virthost  h_pubMAC="00:00:00:00:00:00" h_pubIP="0.0.0.0"
 
 [myBastion]
-cosdrh802v  h_pubMAC="00:50:56:8b:cc:d2" h_pubIP="166.34.187.198"  h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+cosdrh802v  h_pubMAC="00:50:56:8b:cc:d2" h_pubIP="166.34.187.198"  h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="bastion"
 
 [myBootstrap]
-bootstrap   h_pubMAC="00:50:56:8b:ee:e7" h_pubIP="166.34.187.58"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+bootstrap   h_pubMAC="00:50:56:8b:ee:e7" h_pubIP="166.34.187.58"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="med"
 
 [myMasters]
-master0     h_pubMAC="00:50:56:8b:22:7a" h_pubIP="166.34.187.92"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-0" 
-master1     h_pubMAC="00:50:56:8b:7f:89" h_pubIP="166.34.187.90"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-1" 
-master2     h_pubMAC="00:50:56:8b:f8:7c" h_pubIP="166.34.187.67"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_etcdName="etcd-2" 
+master0     h_pubMAC="00:50:56:8b:22:7a" h_pubIP="166.34.187.92"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="med" h_etcdName="etcd-0" 
+master1     h_pubMAC="00:50:56:8b:7f:89" h_pubIP="166.34.187.90"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="med" h_etcdName="etcd-1" 
+master2     h_pubMAC="00:50:56:8b:f8:7c" h_pubIP="166.34.187.67"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="med" h_etcdName="etcd-2" 
 
 [myWorkers]
-worker0     h_pubMAC="00:50:56:8b:7a:cd" h_pubIP="166.34.187.60"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
-#worker1     h_pubMAC="00:00:00:00:00:00" h_pubIP="166.34.187.000" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0"
+worker0     h_pubMAC="00:50:56:8b:7a:cd" h_pubIP="166.34.187.60"   h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="sml"
+#worker1     h_pubMAC="00:00:00:00:00:00" h_pubIP="166.34.187.000" h_priMAC="00:00:00:00:00:00" h_priIP="0.0.0.0" h_hwPROF="vmware_sda" h_rsPROF="sml"
 
