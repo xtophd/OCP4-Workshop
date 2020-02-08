@@ -31,16 +31,20 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myMasters'] }}"
 
-  - name: "LIBVIRT-CREATE-MASTERS: verify bootstrap config server is available"
-    uri:
-      url: "https://{{ hostvars[item]['h_pubIP'] }}:22623/"
-      status_code: 200
-      validate_certs: no
-    register: result
-    until: result.status == 200
-    retries: 120
-    delay: 10
+  - name: "LIBVIRT-CREATE-MASTERS: determine bootstrap IP address"
+    set_fact:
+      f_bootstrap_ip: "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBootstrap'] }}"
+
+  - name: "LIBVIRT-CREATE-MASTERS: test CONFIG SERVER port on bootstrap ({{ f_bootstrap_ip }})"
+    wait_for:
+      host: "{{ f_bootstrap_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: "22623"
+      sleep: 1
+      state: started
+      timeout: 1800 
 
   - name: "LIBVIRT-CREATE-MASTERS: virt-install bootstrap"
     vars:

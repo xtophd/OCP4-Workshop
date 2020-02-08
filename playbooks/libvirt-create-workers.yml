@@ -31,17 +31,18 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myWorkers'] }}"
 
-  - name: "LIBVIRT-CREATE-WORKERS: verify bootstrap config server is available"
-    uri:
-      url: "http://{{  hostvars[item]['h_pubIP'] }}:22623/"
-      status_code: 200
-    register: result
-    until: result.status == 200
-    retries: 120
-    delay: 10
-    loop: "{{ groups['myBootstrap'] }}"
+  - name: "LIBVIRT-CREATE-BASTION: wait for availability of config-server on masters"
+    wait_for:
+      host: "{{ hostvars[item]['h_pubIP'] }}"
+      connect_timeout: 5
+      delay: 3
+      port: 22623
+      sleep: 5
+      state: started
+      timeout: 1200
+    loop: "{{ groups['myMasters'] }}"
 
-  - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
+  - name: "LIBVIRT-CREATE-WORKERS: virt-install workers"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
       p_bus:      "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.bus }}"
