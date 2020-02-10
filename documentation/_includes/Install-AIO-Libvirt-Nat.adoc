@@ -1,0 +1,46 @@
+:gitrepo: https://github.com/xtophd/OCP-Workshop
+:includedir: _includes
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= All In One : Libvirt/KVM : NAT
+
+[discrete]
+== Overview
+
+== Preperations
+
+=== Install RHEL @Base
+
+=== Register system
+
+=== Copy sample configurations to './config' directory
+
+=== Make Customizations
+
+== Installation
+
+----
+bash setup-libvirt.sh all
+----
+
+== Post Installation
+
+[discrete]
+= The End
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+
+////
+Always end files with a blank line to avoid include problems.
+////
