@@ -11,7 +11,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= All In One : Libvirt/KVM : NAT
+= All In One: AIO Libvirt NAT
 
 [discrete]
 == Overview
