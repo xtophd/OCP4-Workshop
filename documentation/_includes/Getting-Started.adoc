@@ -18,153 +18,42 @@ NOTE: You are not required to reference outside documentation for these exercise
 Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
 
-    * link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/[Openshift 3.9 Documentation]
-
-    * link:https://access.redhat.com/documentation/en-us/openshift_container_platform/3.9/html/installation_and_configuration/[Openshift 3.9 Installation and Configuration]
+    * https://docs.openshift.com/container-platform/4.3/welcome/index.html link:[Openshift 4.3 Documentation]
 
     * link:https://kubernetes.io/docs/home/[Kubernetes]
 
     * link:https://kubernetes.io/docs/concepts/[Kubernetes Concepts]
 
-Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find "Minishift", a tool that helps you run OKD locally by launching a single-node OKD cluster inside a virtual machine. With Minishift you can try out OKD or develop with it, day-to-day, on your local machine.
+Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find all kinds of additional materials.
 
-    * link://https://www.okd.io/minishift/[Minishift]
+    * link://https://www.okd.io/[OKD]
 
-With that said, the steps of preparing and installing OCP in this workshop environment have been condensed into 3 scripts which execute a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
+With that said, the steps of preparing and installing OCP in this workshop environment have (currently) been condensed into 2 scripts which execute a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
 == Preparing for Installation
 
-=== Sign-On on to your *workstation* session
+Please select from one of the following deployment architectures and use the link to complete your installation.
 
-Using the connection information and credentials provided by the instructor, get yourselves signed into your workstation session.
+NOTE: you will need sufficient cpu, memory and disk resources for these installations.  Minimum is 16 cores, 64GB memory and 500GB of disk.  
 
-=== Become the root user
+NOTE: all of these deployments are a variant of the User Provided Infrastructure (UPI) installation method.
 
-In order to execute the pre-installation steps, we need to become the administrative user 'root'
+=== AOI using Libvirt/KVM (nat)
 
-.[student@workstation ~]$ 
-----
-sudo -i
-----
 
-=== Enable 'tmux' Terminal Session
+=== AIO using Libvirt/KVM (bridge)
 
-Again, if you haven't already we strongly encourage the use of the `screen` utility.
-    
-.[root@workstation ~]$ 
-----
-tmux
-----
 
-For more tips on using screen have a look in the link:./Preface.adoc[Workshop Preface]
+=== Red Hat Virtualization (bridge)
 
-=== Download the Workshop project from GitHub
+TBD
 
-.[root@workstation ~]#
-----
-cd ~
-    
-git clone https://github.com/xtophd/OCP4-Workshop
-----
+=== VMWare (bridge)
 
-Now you are ready to proceed with executing the docker and openshift installations.
+TBD
 
-== Podman Installation
+===
 
-WARNING: It is important to be in the correct working directory for these installation procedures to function properly.  
-
-.[root@workstation ~]#
-----
-cd ~/OCP4-Workshop
-----
-
-Now you are ready to proceed with executing the openshift installation.  This typically runs for about 2-3 minutes.  
-
-.[root@workstation ~]#
-----
-bash install-podman.sh
-----
-
-== Openshift Installation
-
-=== Run the install-openshift script
-
-WARNING: It is important to be in the correct working directory for these installation procedures to function properly.  
-
-.[root@workstation ~]#
-----
-cd ~/OCP4-Workshop
-----
-
-Now you are ready to proceed with executing the openshift installation.  This typically runs for about 30-40 minutes.  
-
-.[root@workstation ~]#
-----
-bash install-openshift.sh
-----
-
-If you examine the install script, it breaks the installation into 3 parts: pre-install, install & post-install.  Let us briefly review what each phase contributes to the installation process.
-
-==== Openshift Pre-Installation
-
-The pre-installation performs 2 primary activities:
-
-* Workstation Actions
-** minimum package installation
-
-* OCP Cluster Node Actions
-** reconfigure docker storage to use a block device
-** enable and start firewalld
-** minimum package installation
-
-==== Openshift Installation
-
-This portion excutes the official Openshift Installer playbook.  
-
-==== Openshift Post-Installation
-
-The post-install has very little to do with openshift itself.  The post-install deploys various configuration files and scripts which are used during the workshop exercises.  Additionally, the post-install configures NFS storage host for use as a persistent volume.  More on that topic later.
-
-Again, there are 2 primary activities:
-
-* Workstation Actions
-** deploys sample files used by exercises
-** configures, enables and starts NFS services
-** cleans up yum content
-
-* OCP Cluster Node Actions
-** deploys sample files used by exercises
-** deletes and deploys OCP router with replicas=2
-** cleans up yum content (frees disk space)
-
-=== A Few Words While the Installer Runs
-
-So you might be asking yourself, *why* another workshop?  What's different about this one?
-
-I have 2 simple goals:
-
-. Explain what the Red Hat Openshift Container Platform is via a hands-on approach
-. Deliver an "Ah-Ha" moment for each participant regarding containerized workloads:
-** What's in it for operators
-** What's in it for developers
-
-So while the OCP installer runs for the next 30 minutes, your presenter (perhaps there is a sponsor?) may opt to provide a brief discussion on a related topic.  Valuable themes include _(in the future I hope to provide links to brief documents on the topics below)_:
-
-* "An Introduction to Openshift"
-* "Modern Application Development"
-* "Architectural Overview of this Workshop"
-* or merely host a simple Q&A session
-
-In any case, use this time to set some foundational knowledge.
-
-== Conclusion
-
-The installation of Red Hat Openshift Container Platform is now complete and you should be ready to begin with the exercises.  A couple of remaining words of advice:
-
-1.  Some exercises are dependant on the successful completion of other exericses.  Those dependencies will be noted at the top of each unit.
-2.  Pay attention to which linux login to use
-3.  Pay attention to which ocp user to use
-4.  Also be sure to pay close attention to which host you are executing tasks from
 
 
 [discrete]
