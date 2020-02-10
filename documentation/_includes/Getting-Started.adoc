@@ -18,7 +18,7 @@ NOTE: You are not required to reference outside documentation for these exercise
 Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
 
-    * https://docs.openshift.com/container-platform/4.3/welcome/index.html link:[Openshift 4.3 Documentation]
+    * link:https://docs.openshift.com/container-platform/4.3/welcome/index.html[Openshift 4.3 Documentation]
 
     * link:https://kubernetes.io/docs/home/[Kubernetes]
 
