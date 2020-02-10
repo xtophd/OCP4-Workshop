@@ -38,24 +38,14 @@ NOTE: you will need sufficient cpu, memory and disk resources for these installa
 
 NOTE: all of these deployments are a variant of the User Provided Infrastructure (UPI) installation method.
 
-=== AOI using Libvirt/KVM (nat)
+[discrete]
+== Deployment Architectures
 
-
-=== AIO using Libvirt/KVM (bridge)
-
-
-=== Red Hat Virtualization (bridge)
-
-TBD
-
-=== VMWare (bridge)
-
-TBD
-
-===
-
-
-
+  . link:{includedir}/Install-AIO-Libvirt-Nat.adoc[AOI using Libvirt/KVM Nat]
+  . *TBD* link:{includedir}/Install-AIO-Libvirt-Bridge.adoc[AOI using Libvirt/KVM Bridge]
+  . *TBD* link:{includedir}/Install-RHV-Bridge.adoc[AOI using Red Hat Virtualization Bridge]
+  . *TBD* link:{includedir}/Install-VMWare-Bridge.adoc[AOI using VMWare Bridge]
+      
 [discrete]
 == End of Unit
 
