@@ -28,9 +28,9 @@ kvm_cfg:
     fwd_type:   "bridge"
     dev:        "ens9"
     ipv4:
-      addr:     "10.72.242.148/24"
+      addr:     "10.72.242.155/24"
       nm:       "255.255.255.0"
 
   iso:
-    dir:        "/var/www/html/iso"
+    dir:        "/home/iso"
     name:       "rhel-8.1-x86_64-dvd.iso"
