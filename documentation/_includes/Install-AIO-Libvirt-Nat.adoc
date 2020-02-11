@@ -26,9 +26,9 @@ endif::[]
 
 However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7.
 
-    - "rhel-7-for-x86_64-server-rpms"
-    - "rhel-7-for-x86_64-optional-rpms"
-    - "ansible-2.9-for-rhel-7-server-rpms"
+    - "rhel-7-server-rpms"
+    - "rhel-7-server-optional-rpms"
+    - "rhel-7-server-ansible-2.9-rpms"
 
 RHEL 8.1 would probably also work, but not confirmed yet.
 
