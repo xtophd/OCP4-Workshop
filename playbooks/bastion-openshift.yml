@@ -13,14 +13,14 @@
     with_first_found:  "{{ vars_openshift }}"
 
   - name: "BASTION-OPENSHIFT: stat pull-secret"
-    stat: path=/root/ocp4_pull_secret
+    stat: path=/root/pull-secret.txt
     register: test_pull_secret
 
   - debug: msg="Pull-Secret URL https://cloud.redhat.com/openshift/install/metal/user-provisioned"
     when: test_pull_secret.stat.exists == false
 
   - name: "BASTION-OPENSHIFT: fail is pull-secret absent"
-    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE /root/ocp4_pull_secret"
+    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE /root/pull-secret.txt"
     when: test_pull_secret.stat.exists == false
 
   - name: "BASTION-OPENSHIFT: Clean-up ocp working directory"
@@ -67,7 +67,7 @@
       - "{{ g_ocp_client }}"
 
   - name: "BASTION-OPENSHIFT: load pull secret"
-    shell: cat /root/ocp4_pull_secret
+    shell: cat /root/pull-secret.txt
     register: pull_secret
 
   - name: "BASTION-OPENSHIFT: load ssh key"
