@@ -20,19 +20,51 @@ endif::[]
 
 === Install RHEL @Base
 
+
+
+=== Register system
+
+However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7.
+
+    - "rhel-7-for-x86_64-server-rpms"
+    - "rhel-7-for-x86_64-optional-rpms"
+    - "ansible-2.9-for-rhel-7-server-rpms"
+
+RHEL 8.1 would probably also work, but not confirmed yet.
+
+    - "rhel-8-for-x86_64-baseos-rpms"
+    - "rhel-8-for-x86_64-appstream-rpms"
+    - "ansible-2.9-for-rhel-8-x86_64-rpms"
+ 
+=== Install additional packages
+
 NOTE: this process requires and is tested with ansible 2.9
 
-Besides an @Base installation and you will need httpd, git and ansible 2.9
+Besides an @Base installation and you will need httpd, git and ansible 2.9.  Once installed, the playbooks will take care of the rest.
 
 ----
 yum -y install httpd,git,ansible
 ----
 
-=== Register system
+=== Clone the project
+
+----
+cd ~
+
+git clone http://github.com/xtophd/OCP4-Workshop
+----
 
 === Copy sample configurations to './config' directory
 
+----
+cd ~/OCP4-Workshop/config
+
+copy ../config-samples/libvirt-nat .
+----
+
 === Make Customizations
+
+Any changes you make to the files in './config/' will be left untouched in the event you update the repo.
 
 == Installation
 
@@ -41,6 +73,10 @@ bash setup-libvirt.sh all
 ----
 
 == Post Installation
+
+----
+Coming soon...
+----
 
 [discrete]
 = The End
