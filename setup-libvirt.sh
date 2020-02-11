@@ -41,6 +41,10 @@ case "$1" in
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-network.yml 
         ;;
          
+    "dns")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-dns.yml 
+        ;;
+         
     "bastion")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-bastion.yml 
         ;;
@@ -66,7 +70,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: libvirt-setup.sh [ all | basics | network | bastion | secret | repo | bootstrap | masters | workers ]"
+        echo "USAGE: libvirt-setup.sh [ all | basics | network | dns | bastion | secret | repo | bootstrap | masters | workers ]"
         ;;
 
 esac         

@@ -1,0 +1,23 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   Populate /etc/hosts with entries from our cluster
+##
+## Playbook Assumptions:
+##
+
+---
+- hosts: myVirthost
+  tasks:
+
+  - name: "LIBVIRT-DNS: update /etc/hosts"
+    lineinfile: 
+      dest:   "/etc/hosts"
+      regexp: ".*{{ item }}$" 
+      line:   "{{ hostvars[item]['h_pubIP'] }} {{item}}.{{g_pubFQDN}} {{item}}"
+      state:  present
+    when: hostvars[item]['h_pubIP'] is defined
+    loop: "{{ [ groups['myWorkers'], groups['myMasters'], groups['myBastion'] ] | flatten(1) }}"
+
+

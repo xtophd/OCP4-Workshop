@@ -24,6 +24,8 @@
 
 - import_playbook: libvirt-network.yml
 
+- import_playbook: libvirt-dns.yml
+
 - import_playbook: libvirt-create-bastion.yml
 
 - import_playbook: libvirt-repo.yml
