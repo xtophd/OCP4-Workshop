@@ -89,9 +89,18 @@ Either way, /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthos
 
 === /etc/hosts entry
 
-NOTE: this should be automated soon
+NOTE: This is required for numerous tasks including the monitoring of deployment progress.  This should be automated soon
 
-Add a single entry for the bastion node in /etc/hosts using the fqdn and ip provided in the master-config.yml
+Add a entries for the all nodes in cluster to /etc/hosts using the fqdn and ip provided in the master-config.yml
+
+=== Final Check List
+
+    - Is there enough memory?
+    - Is there enough cpu?
+    - Is there enough disk space and is it in the right location?
+    - Is the RHEL ISO downloaded and stored in the right place
+    - Is the Openshift UPI Pull Secret downloaded and stored in the right place
+    - Did you install (upgrade) Ansible 2.9
 
 == Installation
 
