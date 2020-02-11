@@ -31,6 +31,12 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myMasters'] }}"
 
+  - name: "LIBVIRT-CREATE-MASTERS: Create ssh directory"
+    file:
+      path: "{{ kvm_cfg.qcow_dir }}"
+      mode: "0775"
+      state: directory
+
   - name: "LIBVIRT-CREATE-MASTERS: determine bootstrap IP address"
     set_fact:
       f_bootstrap_ip: "{{ hostvars[item]['h_pubIP'] }}"

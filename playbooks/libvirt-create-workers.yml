@@ -31,7 +31,13 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myWorkers'] }}"
 
-  - name: "LIBVIRT-CREATE-BASTION: wait for availability of config-server on masters"
+  - name: "LIBVIRT-CREATE-WORKERS: Create ssh directory"
+    file:
+      path: "{{ kvm_cfg.qcow_dir }}"
+      mode: "0775"
+      state: directory
+
+  - name: "LIBVIRT-CREATE-WORKERS: wait for availability of config-server on masters"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5

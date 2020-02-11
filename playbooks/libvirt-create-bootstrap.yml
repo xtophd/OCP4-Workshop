@@ -34,6 +34,12 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myBootstrap'] }}"
 
+  - name: "LIBVIRT-CREATE-BOOTSTRAP: Create ssh directory"
+    file:
+      path: "{{ kvm_cfg.qcow_dir }}"
+      mode: "0775"
+      state: directory
+
   ##
   ## A generic set of tests to verify bastion services are up
   ##

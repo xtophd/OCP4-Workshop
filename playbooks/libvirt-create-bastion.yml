@@ -30,6 +30,12 @@
       var: hw_profile[hostvars[item]['h_hwPROF']]
     loop: "{{ groups['myBastion'] }}"
 
+  - name: "LIBVIRT-CREATE-BASTION: Create ssh directory"
+    file:
+      path: "{{ kvm_cfg.qcow_dir }}"
+      mode: "0775"
+      state: directory
+
   - name: "LIBVIRT-CREATE-BASTION: deploy kickstart configuration"
     vars:
       - p_diskDevice: "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
