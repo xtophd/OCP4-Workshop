@@ -20,6 +20,13 @@ endif::[]
 
 === Install RHEL @Base
 
+NOTE: this process requires and is tested with ansible 2.9
+
+Besides an @Base isntall, you will need httpd, git and ansible 2.9
+
+----
+yum -y install httpd,git,ansible
+----
 === Register system
 
 === Copy sample configurations to './config' directory
