@@ -26,9 +26,9 @@ endif::[]
 
 However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7.
 
-    - "rhel-7-for-x86_64-server-rpms"
-    - "rhel-7-for-x86_64-optional-rpms"
-    - "ansible-2.9-for-rhel-7-server-rpms"
+    - "rhel-7-server-rpms"
+    - "rhel-7-server-optional-rpms"
+    - "rhel-7-server-ansible-2.9-rpms"
 
 RHEL 8.1 would probably also work, but not confirmed yet.
 
@@ -65,6 +65,27 @@ copy ../config-samples/libvirt-nat .
 === Make Customizations
 
 Any changes you make to the files in './config/' will be left untouched in the event you update the repo.
+
+=== Retrieve RHEL 8.1 DVD
+
+----
+mkdir -p /var/www/html/iso/
+
+wget -O /var/www/html/iso/rhel-8.1-x86_64-dvd.iso "<URL>" 
+----
+
+=== Retrieve Openshift Pull Secret
+
+Using a browser, go to redhat.com and copy link to the pull-secret
+
+    - https://cloud.redhat.com/openshift/install/metal/user-provisioned
+
+You can either:
+
+    - download the pull-secret.txt and copy it to the virthost system, or
+    - "copy" the pull secret and paste it into the file
+    
+Either way, /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
 
 == Installation
 
