@@ -66,6 +66,22 @@ copy ../config-samples/libvirt-nat .
 
 Any changes you make to the files in './config/' will be left untouched in the event you update the repo.
 
+=== Retrieve RHEL 8.1 DVD
+
+----
+mkdir -p /var/www/html/iso/
+
+wget -O /var/www/html/iso/rhel-8.1-x86_64-dvd.iso "<URL>" 
+----
+
+=== Retrieve Openshift Pull Secret
+
+Using a browser, go to redhat.com and copy link to the pull-secret
+
+    - https://cloud.redhat.com/openshift/install/metal/user-provisioned
+
+You can either download pull-secret.txt and copy it to the virthost system and place it in /root/OCP4-Workshop/config/pull-secret.txt
+
 == Installation
 
 ----
