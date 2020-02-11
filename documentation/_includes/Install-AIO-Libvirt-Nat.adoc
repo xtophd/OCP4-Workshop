@@ -80,7 +80,12 @@ Using a browser, go to redhat.com and copy link to the pull-secret
 
     - https://cloud.redhat.com/openshift/install/metal/user-provisioned
 
-You can either download pull-secret.txt and copy it to the virthost system and place it in /root/OCP4-Workshop/config/pull-secret.txt
+You can either:
+
+    - download the pull-secret.txt and copy it to the virthost system, or
+    - "copy" the pull secret and paste it into the file
+    
+Either way, /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
 
 == Installation
 
