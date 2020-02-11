@@ -105,6 +105,7 @@
     loop: "{{ groups['myBastion'] }}"
 
   - name: "LIBVIRT-CREATE-BASTION: clean out local ssh keys for bastion"
+    ignore_errors: yes
     shell:
       cmd: |
         ssh-keygen -R "{{ hostvars[item]['inventory_hostname'] }}"

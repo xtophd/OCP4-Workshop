@@ -54,7 +54,7 @@
       - "rhel-7-server-extras-rpms"
 
   - name: "LIBVIRT-SETUP: install additional packages"
-    yum: name=git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines,policycoreutils-python state=installed
+    yum: name=git,tree,wget,yum-utils,firewalld,httpd,net-tools,cockpit,cockpit-machines,policycoreutils-python,libguestfs-tools state=installed
 
   - name: "LIBVIRT-SETUP: deploy httpd configuration"
     vars:
