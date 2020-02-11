@@ -87,6 +87,12 @@ You can either:
     
 Either way, /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
 
+=== /etc/hosts entry
+
+NOTE: this should be automated soon
+
+Add a single entry for the bastion node in /etc/hosts using the fqdn and ip provided in the master-config.yml
+
 == Installation
 
 ----
