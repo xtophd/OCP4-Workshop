@@ -24,6 +24,7 @@
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_libvirt }}"
 
+  - debug: msg="Libvirt Network Test Result Code = {{ kvm_cfg.network.name }}"
 
   - name: "LIBVIRT-SETUP: test existence of libvirt network ({{ kvm_cfg.network.name }})"
     shell: 
@@ -97,11 +98,11 @@
     shell:
       cmd: |
         nmcli con add type bridge \
-              con-name {{ kvm_cfg.network.bridge }} \
-              ifname   {{ kvm_cfg.network.bridge }} \
-              ip4      {{ kvm_cfg.network.ipv4.addr }} \
-              gw4      {{ kvm_cfg.network.ipv4.gw }} \
-              ipv4.dns {{ g_pubDNS }} \
+              con-name "{{ kvm_cfg.network.bridge }}" \
+              ifname   "{{ kvm_cfg.network.bridge }}" \
+              ip4      "{{ kvm_cfg.network.ipv4.addr }}" \
+              gw4      "{{ kvm_cfg.network.ipv4.gw }}" \
+              ipv4.dns "{{ g_pubDNS }}" \
               autoconnect yes bridge.stp no ipv6.method ignore
 
   - name: "LIBVIRT-SETUP: add device to bridge ({{ kvm_cfg.network.name }})"

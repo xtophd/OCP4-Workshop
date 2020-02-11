@@ -140,7 +140,7 @@ ansible_connection = "local"
 ##
 
 [myVirthost]
-labhost09   h_pubMAC="98:03:9B:76:B5:5A" h_pubIP="10.72.242.155"
+labhost109   h_pubMAC="98:03:9B:76:B5:5A" h_pubIP="10.72.242.155"
 
 [myBastion]
 bastion      h_pubMAC="52:54:00:a9:ed:2c" h_pubIP="10.72.242.44" h_priMAC="00:00:00:00:00:00" h_priIP="192.168.1.21" h_hwPROF="kvm_vda" h_rsPROF="bastion"

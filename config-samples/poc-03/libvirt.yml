@@ -30,6 +30,7 @@ kvm_cfg:
     ipv4:
       addr:     "10.72.242.155/24"
       nm:       "255.255.255.0"
+      gw:       "{{ g_pubGW }}"
 
   iso:
     dir:        "/home/iso"
