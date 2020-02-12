@@ -22,6 +22,8 @@
 
 - import_playbook: libvirt-basics.yml
 
+- import_playbook: libvirt-cockpit.yml
+
 - import_playbook: libvirt-network.yml
 
 - import_playbook: libvirt-dns.yml

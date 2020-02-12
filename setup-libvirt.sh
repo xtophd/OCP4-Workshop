@@ -37,6 +37,10 @@ case "$1" in
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-basics.yml 
         ;;
          
+    "cockpit")
+        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-cockpit.yml 
+        ;;
+
     "network")
         time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-network.yml 
         ;;

@@ -9,10 +9,15 @@
 ## Profile: NAT bridge
 ##
 
+g_http_port:    "8008"
+g_cockpit_port: "9090"
+
 kvm_cfg: 
+
+  http_port:    "{{ g_http_port }}"
+  cockpit_port: "{{ g_cockpit_port }}"
  
   qcow_dir:     "/home/virt-images"
-
   ks_url:       "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/ks.cfg"
 
   network:
@@ -21,8 +26,8 @@ kvm_cfg:
     fwd_type:   "nat"
     dev:        "eno1"
     ipv4:
-      addr:     "192.168.123.1/24"
-      nm:       "255.255.255.0"
+      addr:     "192.168.123.1/{{ g_pubPREFIX }}"
+      nm:       "{{ g_pubNM }}"
 
   iso:
     dir:        "/var/www/html/iso"
@@ -32,7 +37,7 @@ kvm_cfg:
   repo:
     repo1 : 
       name: "rhel-8-baseos-rpms"
-      url:  "http://192.168.123.1:{{ g_http_port }}/repo/BaseOS"
+      url:  "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/repo/BaseOS"
     repo2 : 
       name: "rhel-8-appstream-rpms"
-      url:  "http://192.168.123.1:{{ g_http_port }}/repo/AppStream"
+      url:  "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/repo/AppStream"
