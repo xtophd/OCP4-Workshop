@@ -39,8 +39,8 @@
     stat: path="{{ kvm_cfg.iso.mount }}"
     register: test_repo_mount
 
-  - name: "LIBVIRT-BASICS: create repo mount directory"
-    when: test_repo_mount.exists == false
+  - name: "LIBVIRT-BASICS: create repo mount point"
+    when: test_repo_mount.stat.exists == false
     file:
       path: "{{ kvm_cfg.iso.mount }}"
       mode: "0755"
