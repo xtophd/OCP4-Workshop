@@ -62,7 +62,7 @@
       permanent: yes
       state: enabled
     with_items:
-      - "{{ kvm_cfg.cockpit_port }}"
+      - "{{ kvm_cfg.cockpit_port }}/tcp"
 
 # A reminder that if we use a port not natively included by selinux, we need to add it
 #   
