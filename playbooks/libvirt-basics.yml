@@ -27,7 +27,7 @@
   - include_vars: "{{ item }}"
     with_first_found: "{{ vars_reposync }}"
 
-  - name: "LIBVIRT-SETUP: create html directory"
+  - name: "LIBVIRT-BASICS: create html directory"
     file:
       path: "{{ kvm_cfg.iso.dir }}"
       mode: "0755"
@@ -35,7 +35,12 @@
       group: "root"
       state: directory
 
-  - name: "LIBVIRT-SETUP: create repo mount directory"
+  - name: "LIBVIRT-BASICS: stat repo mount point"
+    stat: path="{{ kvm_cfg.iso.mount }}"
+    register: test_repo_mount
+
+  - name: "LIBVIRT-BASICS: create repo mount directory"
+    when: test_repo_mount.exists == false
     file:
       path: "{{ kvm_cfg.iso.mount }}"
       mode: "0755"
@@ -43,31 +48,31 @@
       group: "root"
       state: directory
 
-  - name: "LIBVIRT-SETUP: stat RHEL ISO"
+  - name: "LIBVIRT-BASICS: stat RHEL ISO"
     stat: path="{{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
     register: test_rhel_iso
 
-  - name: "LIBVIRT-SETUP: fail if RHEL ISO absent"
+  - name: "LIBVIRT-BASICS: fail if RHEL ISO absent"
     fail: msg="COPY YOUR RHEL ISO HERE {{ kvm_cfg.iso.dir }}/{{ kvm_cfg.iso.name }}"
     when: test_rhel_iso.stat.exists == false
 
-  - name: "LIBVIRT-SETUP: use rhsm to disable all repos"
+  - name: "LIBVIRT-BASICS: use rhsm to disable all repos"
     shell: cmd="subscription-manager repos --disable=*"
 
-  - name: "LIBVIRT-SETUP: use rhsm to enable repos"
+  - name: "LIBVIRT-BASICS: use rhsm to enable repos"
     shell: cmd="subscription-manager repos --enable='{{ item }}'" 
     with_items: 
       - "rhel-7-server-rpms"
       - "rhel-7-server-optional-rpms"
       - "rhel-7-server-extras-rpms"
 
-  - name: "LIBVIRT-SETUP: install general packages"
+  - name: "LIBVIRT-BASICS: install general packages"
     yum: name=git,tree,wget,yum-utils,firewalld,httpd,net-tools,policycoreutils-python state=installed
 
-  - name: "LIBVIRT-SETUP: install virtualization packages"
+  - name: "LIBVIRT-BASICS: install virtualization packages"
     yum: name=qemu-kvm,libvirt,virt-install,libvirt-client,libguestfs-tools state=installed
 
-  - name: "LIBVIRT-SETUP: deploy httpd configuration"
+  - name: "LIBVIRT-BASICS: deploy httpd configuration"
     vars:
       - p_port: "{{ kvm_cfg.http_port }}"
     template:
@@ -77,10 +82,10 @@
       group: root
       mode: 0644
 
-  - name: "LIBVIRT-SETUP: selinux restorecon on /var/www/html"
+  - name: "LIBVIRT-BASICS: selinux restorecon on /var/www/html"
     shell: restorecon -R /var/www/html
 
-  - name: "LIBVIRT-SETUP: enable system services"
+  - name: "LIBVIRT-BASICS: enable system services"
     service: name="{{ item }}" state=restarted enabled=yes masked=no
     with_items:
       - "NetworkManager"
@@ -88,7 +93,7 @@
       - "httpd"
       - "libvirtd"
 
-  - name: "LIBVIRT-SETUP: add firewalld services"
+  - name: "LIBVIRT-BASICS: add firewalld services"
     firewalld:
       service: "{{ item }}"
       immediate: yes
@@ -98,7 +103,7 @@
       - "http"
       - "https"
 
-  - name: "LIBVIRT-SETUP: add firewalld ports"
+  - name: "LIBVIRT-BASICS: add firewalld ports"
     firewalld:
       port: "{{ item }}"
       immediate: yes
@@ -109,7 +114,7 @@
 
 # A reminder that if we use a port not natively included by selinux, we need to add it
 #   
-#  - name: "LIBVIRT-SETUP: add http port to selinux http_port_t"
+#  - name: "LIBVIRT-BASICS: add http port to selinux http_port_t"
 #  - shell:
 #      cmd: |
 #        semanage port -a -t http_port_t -p tcp {{ kvm_cfg.http_port }}
