@@ -17,6 +17,7 @@
 ## ------------------------------
 ## KVM/Libvirt Config Options
 
+g_kvmhost_ip:   "192.168.1.22"
 g_http_port:    "8008"
 g_cockpit_port: "9090"
 
@@ -28,7 +29,7 @@ kvm_cfg:
 
   qcow_dir:     "/home/virt-images"
 
-  ks_url:       "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/ks.cfg"
+  ks_url:       "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/ks.cfg"
 
   network:
     name:       "virbr-{{ g_clusterName }}"
@@ -47,8 +48,8 @@ kvm_cfg:
   repo:
     repo1 :
       name: "rhel-8-baseos-rpms"
-      url:  "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/repo/BaseOS"
+      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/BaseOS"
     repo2 :
       name: "rhel-8-appstream-rpms"
-      url:  "http://{{ ansible_default_ipv4.address }}:{{ g_http_port }}/repo/AppStream"
+      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/AppStream"
 
