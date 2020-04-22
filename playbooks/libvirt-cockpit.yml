@@ -36,7 +36,7 @@
       - p_port: "{{ kvm_cfg.cockpit_port }}"
     template:
       src:  "cockpit-listen-conf.j2"
-      dest: "/etc/systemd/system/websocket.cockpit.d/"
+      dest: "/etc/systemd/system/websocket.cockpit.d/listen.conf"
       owner: root
       group: root
       mode: 0644
