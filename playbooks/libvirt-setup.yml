@@ -21,24 +21,53 @@
   tasks:
 
 - import_playbook: libvirt-basics.yml
+  tags:
+  - basics
 
 - import_playbook: libvirt-cockpit.yml
+  tags:
+  - cockpit
 
 - import_playbook: libvirt-network.yml
+  tags:
+  - network
 
 - import_playbook: libvirt-dns.yml
+  tags:
+  - dns
 
 - import_playbook: libvirt-create-bastion.yml
+  tags:
+  - bastion
+  - deploy
 
 - import_playbook: libvirt-repo.yml
+  tags:
+  - repo
+  - deploy
 
 - import_playbook: libvirt-deploy-secret.yml
+  tags:
+  - secret
+  - deploy
 
 - import_playbook: bastion-setup.yml
+  tags:
+  - bastion-setup
+  - deploy
 
 - import_playbook: libvirt-create-bootstrap.yml
+  tags:
+  - bootstrap
+  - deploy
 
 - import_playbook: libvirt-create-masters.yml
+  tags:
+  - masters
+  - deploy
 
 - import_playbook: libvirt-create-workers.yml
+  tags:
+  - workers
+  - deploy
 

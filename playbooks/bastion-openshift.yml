@@ -19,7 +19,7 @@
   - debug: msg="Pull-Secret URL https://cloud.redhat.com/openshift/install/metal/user-provisioned"
     when: test_pull_secret.stat.exists == false
 
-  - name: "BASTION-OPENSHIFT: fail is pull-secret absent"
+  - name: "BASTION-OPENSHIFT: fail if pull-secret absent"
     fail: msg="COPY YOUR OCP4 PULL-SECRET HERE /root/pull-secret.txt"
     when: test_pull_secret.stat.exists == false
 

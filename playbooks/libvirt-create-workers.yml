@@ -45,7 +45,7 @@
       port: 22623
       sleep: 5
       state: started
-      timeout: 1200
+      timeout: 1800
     loop: "{{ groups['myMasters'] }}"
 
   - name: "LIBVIRT-CREATE-WORKERS: virt-install workers"

@@ -24,58 +24,34 @@ if [ ! -e "./playbooks" ] ; then
     exit
 fi
 
-##
-##
-##
-
 case "$1" in
     "all")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-setup.yml 
-        ;;
-         
-    "basics")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-basics.yml 
-        ;;
-         
-    "cockpit")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-cockpit.yml 
+
+        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/libvirt-setup.yml"
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/libvirt-setup.yml
         ;;
 
-    "network")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-network.yml 
-        ;;
-         
-    "dns")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-dns.yml 
-        ;;
-         
-    "bastion")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-bastion.yml 
-        ;;
+    "basics"        | \
+    "cockpit"       | \
+    "network"       | \
+    "dns"           | \
+    "bastion"       | \
+    "secret"        | \
+    "repo"          | \
+    "bastion-setup" | \
+    "bootstrap"     | \
+    "masters"       | \
+    "workers"       | \
+    "deploy")
 
-    "secret")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-deploy-secret.yml 
-        ;;
 
-    "repo")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-repo.yml 
-        ;;
-
-    "bootstrap")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-bootstrap.yml 
-        ;;
-
-    "masters")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-masters.yml 
-        ;;
-
-    "workers")
-        time ansible-playbook -i ${myInventory} -f 10 ./playbooks/libvirt-create-workers.yml 
+        echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/libvirt-setup.yml"
+        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/libvirt-setup.yml
         ;;
 
     *)
-        echo "USAGE: libvirt-setup.sh [ all | basics | cockpit | network | dns | bastion | secret | repo | bootstrap | masters | workers ]"
+        echo "USAGE: libvirt-setup.sh [ all | basics | cockpit | network | dns | bastion | secret | repo | bastion-setup | bootstrap | masters | worksers | deploy]"
         ;;
 
-esac         
+esac
 
