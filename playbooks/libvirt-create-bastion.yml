@@ -50,6 +50,7 @@
   - name: "LIBVIRT-CREATE-BASTION: virt-install bastion"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
+      p_vmname:   "{{ g_clusterName }}-{{ hostvars[item]['inventory_hostname_short'] }}"
       p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       p_ip:       "{{ hostvars[item]['h_pubIP'] }}"
       p_nm:       "{{ hostvars[item]['g_pubNM'] }}"
@@ -63,7 +64,7 @@
       p_cpu:      "{{ rs_profile[hostvars[item]['h_rsPROF']].vcpus }}"
     shell:
       cmd: |
-        virt-install --name="{{ p_name }}" \
+        virt-install --name="{{ p_vmname }}" \
                      --ram="{{ p_memsize }}" \
                      --disk "{{ kvm_cfg.qcow_dir }}/{{ p_name }}.qcow2,bus={{ p_bus }},sparse={{ p_sparse }},size={{ p_disksize }}" \
                      --check disk_size=off \
@@ -91,17 +92,21 @@
     when: test_ssh_key.stat.exists == false
 
   - name: "LIBVIRT-CREATE-BASTION: inject ssh key to bastion vm"
+    vars:
+      p_vmname:   "{{ g_clusterName }}-{{ hostvars[item]['inventory_hostname_short'] }}"
     shell:
       cmd: |
-        virt-customize -d "{{ hostvars[item]['inventory_hostname_short'] }}" \
+        virt-customize -d "{{ p_vmname }}" \
                        --ssh-inject root:file:/root/.ssh/id_rsa.pub \
                        --selinux-relabel
     loop: "{{ groups['myBastion'] }}"
 
   - name: "LIBVIRT-CREATE-BASTION: start bastion vm"
+    vars:
+      p_vmname:   "{{ g_clusterName }}-{{ hostvars[item]['inventory_hostname_short'] }}"
     shell:
       cmd: |
-        virsh start "{{ hostvars[item]['inventory_hostname_short'] }}"
+        virsh start "{{ p_vmname }}"
     loop: "{{ groups['myBastion'] }}"
 
   - name: "LIBVIRT-CREATE-BASTION: clean out local ssh keys for bastion"
@@ -128,5 +133,5 @@
   - name: "LIBVIRT-CREATE-BASTION: add ssh keys for bastion"
     shell:
       cmd: |
-        ssh-keyscan bastion.ocp.example.com >> /root/.ssh/known_hosts
-
+        ssh-keyscan {{ hostvars[item]['inventory_hostname_short'] }}.{{ g_clusterName }}.{{ g_publicDomain }} >> /root/.ssh/known_hosts
+    loop: "{{ groups['myBastion'] }}"

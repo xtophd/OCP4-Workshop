@@ -88,6 +88,7 @@
   - name: "LIBVIRT-CREATE-BOOTSTRAP: virt-install bootstrap"
     vars:
       p_name:     "{{ hostvars[item]['inventory_hostname_short'] }}"
+      p_vmname:   "{{ g_clusterName }}-{{ hostvars[item]['inventory_hostname_short'] }}"
       p_bus:      "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.bus }}"
       p_sparse:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.sparse }}"
       p_netdev:   "{{ hw_profile[hostvars[item]['h_hwPROF']].network.model }}"
@@ -96,7 +97,7 @@
       p_cpu:      "{{ rs_profile[hostvars[item]['h_rsPROF']].vcpus }}"
     shell:
       cmd: |
-        virt-install --name="{{ p_name }}" \
+        virt-install --name="{{ p_vmname }}" \
                      --ram="{{ p_memsize }}" \
                      --disk "{{ kvm_cfg.qcow_dir }}/{{ p_name }}.qcow2,bus={{ p_bus }},sparse={{ p_sparse }},size={{ p_disksize }}" \
                      --check disk_size=off \

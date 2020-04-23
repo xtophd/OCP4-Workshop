@@ -100,7 +100,7 @@
       - g_useDNS == "True" 
     template:
       src: "dnsmasq-api-entry.j2"
-      dest: "/etc/dnsmasq.d/45-api-{{ g_clusterName }}.conf"
+      dest: "/etc/dnsmasq.d/55-api-{{ g_clusterName }}.conf"
       owner: root
     loop: "{{ groups['myBastion'] }}"
 

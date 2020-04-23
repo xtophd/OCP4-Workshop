@@ -15,7 +15,8 @@
     lineinfile: 
       dest:   "/etc/hosts"
       regexp: ".*{{ item }}$" 
-      line:   "{{ hostvars[item]['h_pubIP'] }} {{item}}.{{g_pubFQDN}} {{item}}"
+#      line:   "{{ hostvars[item]['h_pubIP'] }} {{item}}.{{g_pubFQDN}} {{item}}"
+      line:   "{{ hostvars[item]['h_pubIP'] }} {{item}}.{{g_pubFQDN}}"
       state:  present
     when: hostvars[item]['h_pubIP'] is defined
     loop: "{{ [ groups['myWorkers'], groups['myMasters'], groups['myBastion'] ] | flatten(1) }}"

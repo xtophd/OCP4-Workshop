@@ -31,7 +31,11 @@
       url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
       dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
       mode: "0644"
+      timeout: 60
     when: test_matchbox_src.stat.exists == false
+    register: matchbox_download
+    until: matchbox_download is not failed
+    retries: 5
 
   - name: "BASTION-MATCHBOX: unpack software"
     shell:
@@ -90,10 +94,14 @@
       owner: matchbox
       group: matchbox
       mode: "0644"
+      timeout: 60
     with_items:
       - "{{ g_rhcos_initramfs }}"
       - "{{ g_rhcos_kernel }}"
       - "{{ g_rhcos_bios }}"
+    register: coreos_download
+    until: coreos_download is not failed
+    retries: 5
 
   - name: "BASTION-MATCHBOX: : deploy bootstrap group-configs"
     vars:
