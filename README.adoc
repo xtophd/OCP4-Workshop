@@ -41,7 +41,7 @@ ln -s ./OCP4-Workshop/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
 Fetch the openshift pull secret from Red Hat
 
 ----
-cp pullsecret.txt ./OCP4-Workshop/config
+cp pull_secret.txt ./OCP4-Workshop/config
 ----
 
 == Install
