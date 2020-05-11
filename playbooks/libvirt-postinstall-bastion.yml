@@ -1,0 +1,47 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+##
+
+---
+- hosts: myVirthost
+
+  tasks:
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: stat pull-secret"
+    stat: path="../config/pull-secret.txt"
+    register: test_pull_secret
+
+  - debug: msg="Pull-Secret URL https://cloud.redhat.com/openshift/install/metal/user-provisioned"
+    when: test_pull_secret.stat.exists == false
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: fail if pull-secret absent"
+    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE ./config/pull-secret.txt"
+    when: test_pull_secret.stat.exists == false
+
+##############################
+
+- hosts: myBastion
+
+  tasks:
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: Create ssh directory"
+    file:
+      path: "{{ g_credsDir }}"
+      mode: "0700"
+      state: directory
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret"
+    template:
+      src: "../config/pull-secret.txt"
+      dest: "{{ g_credsDir }}"
+      owner: root
+      group: root
+      mode: 0644
+
+##############################
+
+- import_playbook: bastion-setup.yml

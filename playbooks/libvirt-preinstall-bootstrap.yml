@@ -1,0 +1,50 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+##
+
+---
+- hosts: myVirthost
+
+  tasks:
+
+  - name: "LIBVIRT-PREINSTALL-BOOTSTRAP: Create qcow directory"
+    file:
+      path: "{{ kvm_cfg.qcow_dir }}"
+      mode: "0775"
+      state: directory
+
+  ##
+  ## A generic set of tests to verify bastion services are up
+  ##
+
+  - name: "LIBVIRT-PREINSTALL-BOOTSTRAP: determine bastion IP address"
+    set_fact:
+      f_bastion_ip: "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
+  - name: "LIBVIRT-PREINSTALL-BOOTSTRAP: test DNS port on bastion {{ f_bastion_ip }}"
+    when: g_useDNS == "True"
+    wait_for:
+      host: "{{ f_bastion_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: 53 
+      sleep: 1
+      state: started
+      timeout: 30
+
+  - name: "LIBVIRT-PREINSTALL-BOOTSTRAP: test MATCHBOX port on bastion ({{ f_bastion_ip }})"
+    when: g_useMATCHBOX == "True"
+    wait_for:
+      host: "{{ f_bastion_ip }}"
+      connect_timeout: 5
+      delay: 3
+      port: "{{ g_matchbox_port }}"
+      sleep: 1
+      state: started
+      timeout: 30
+

@@ -1,0 +1,41 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##   Downloads and unpacks software /root for OCP installation
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-OPENSHIFT-FINISH: Approve CSR requests until all nodes 'Ready'"
+    shell:
+      cmd: |
+        export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+        if [[ `oc get nodes | grep -i 'worker-0' | awk '{print $2}'` == "Ready" ]] ; then
+          exit 0
+        else
+          for i in `oc get csr | grep -i pending | awk '{print $1}'`; do 
+            oc adm certificate approve $i
+            sleep 1
+          done
+          exit 1
+        fi 
+    register: result
+    until:  result.rc == 0
+    retries: 600
+    delay: 5
+    loop: "{{ groups['myWorkers'] }}"
+
+  - name: "BASTION-OPENSHIFT-FINISH: Watch until all cluster operator availability is 'True'"
+    shell:
+      cmd: |
+        export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+        oc get clusteroperators --no-headers | awk '{print $3}' | grep -i false 
+        if [[ $? == 0 ]]; then exit 1; else exit 0; fi
+    register: result
+    until:  result.rc == 0
+    retries: 600
+    delay: 5
+
