@@ -18,31 +18,62 @@
   tasks:
 
 - import_playbook: bastion-basics.yml
+  tags:
+    - basics
 
 - import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
+  tags:
+    - dns
 
 - import_playbook: bastion-dhcp.yml
   when: g_useDHCP == "True"
+  tags:
+    - dhcp
 
 - import_playbook: bastion-pxe.yml
   when: g_usePXE == "True"
+  tags:
+    - pxe
 
 - import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
+  tags:
+    - haproxy
 
 - import_playbook: bastion-nfs.yml
   when: g_useNFS == "True"
+  tags:
+    - nfs
 
 - import_playbook: bastion-matchbox.yml
   when: g_useMATCHBOX == "True"
+  tags:
+    - matchbox
 
 - import_playbook: bastion-httpd.yml
   when: g_useMATCHBOX != "True"
+  tags:
+    - httpd
 
 - import_playbook: bastion-ntp.yml
   when: g_useNTP != "True"
+  tags:
+    - ntp
 
 - import_playbook: bastion-tests.yml
+  tags:
+    - tests
 
 - import_playbook: bastion-openshift.yml
+  tags:
+    - openshift
+
+##
+## The special 'never' tag enforces that this is never run unless 'finish' is specified
+##
+
+- import_playbook: bastion-openshift-finish.yml
+  tags:
+    - never
+    - finish

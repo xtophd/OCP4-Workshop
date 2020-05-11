@@ -9,30 +9,37 @@
 - hosts: myBastion
   tasks:
 
-  - include_vars: "{{ item }}"
-    with_first_found:  "{{ vars_openshift }}"
+#  - include_vars: "{{ item }}"
+#    with_first_found:  "{{ vars_openshift }}"
+
+  - name: "BASTION-OPENSHIFT: Create openshift working directory"
+    file:
+      path: "{{ g_credsDir }}"
+      mode: "0755"
+      state: directory
+
+## If deploying via the ws-deployer-kvm, pull_secret may already ben installed
+## Otherwise this is a manual step, following instructions as noted below
 
   - name: "BASTION-OPENSHIFT: stat pull-secret"
-    stat: path=/root/pull-secret.txt
+    stat: path="{{ g_credsDir }}/pull-secret.txt"
     register: test_pull_secret
 
   - debug: msg="Pull-Secret URL https://cloud.redhat.com/openshift/install/metal/user-provisioned"
     when: test_pull_secret.stat.exists == false
 
   - name: "BASTION-OPENSHIFT: fail if pull-secret absent"
-    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE /root/pull-secret.txt"
+    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE ./{{ g_credsDir }}/pull-secret.txt"
     when: test_pull_secret.stat.exists == false
 
-  - name: "BASTION-OPENSHIFT: Clean-up ocp working directory"
-    shell:
-      cmd: |
-        if [[ -d "/root/ocp" ]] ; then rm -rf /root/ocp ; fi
-
-  - name: "BASTION-OPENSHIFT: Create openshift working directory"
-    file:
-      path: /root/ocp
-      mode: "0755"
-      state: directory
+##
+## libvirt just finished putting the pull secret here.  maybe don't cleanup
+##
+#
+#  - name: "BASTION-OPENSHIFT: Clean-up ocp working directory"
+#    shell:
+#      cmd: |
+#        if [[ -d {{ g_credsDir }} ]] ; then rm -rf {{ g_credsDir }} ; fi
 
   - name: "BASTION-OPENSHIFT: Create ssh directory"
     file:
@@ -67,7 +74,7 @@
       - "{{ g_ocp_client }}"
 
   - name: "BASTION-OPENSHIFT: load pull secret"
-    shell: cat /root/pull-secret.txt
+    shell: cat {{ g_credsDir }}/pull-secret.txt
     register: pull_secret
 
   - name: "BASTION-OPENSHIFT: load ssh key"
@@ -78,13 +85,11 @@
     vars:
       - p_pullSecret:   "{{ pull_secret.stdout |quote }}"
       - p_sshKey:       "{{ ssh_key.stdout |quote }}"
-#      - p_pullSecret:   "{{ lookup('file','/root/ocp4_pull_secret') |quote }}"
-#      - p_sshKey:       "{{ lookup('file','/root/.ssh/id_rsa.pub')  |quote }}"
       - p_clusterName:  "{{ g_clusterName }}"
       - p_domain:       "{{ g_publicDomain }}"
     template:
       src: "ocp-install-config.j2"
-      dest: "/root/ocp/install-config.yaml"
+      dest: "{{ g_credsDir }}/install-config.yaml"
       owner: root
       group: root
       mode: 644
@@ -97,14 +102,13 @@
   - name: "BASTION-OPENSHIFT: create ignition files"
     shell:
       cmd: |
-        cd /root/ocp
-        /usr/local/bin/openshift-install --dir=/root/ocp create ignition-configs
+        cd {{ g_credsDir }}
+        /usr/local/bin/openshift-install --dir={{ g_credsDir }} create ignition-configs
 
   - name: "BASTION-OPENSHIFT: copy ignition files"
     shell:
       cmd: |
-        cd /root/ocp
-        cp *.ign /var/lib/matchbox/ignition/
+        cp {{ g_credsDir }}/*.ign /var/lib/matchbox/ignition/
 
   - name: "BASTION-OPENSHIFT: fix ignition file permissions"
     shell:

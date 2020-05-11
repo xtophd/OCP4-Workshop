@@ -13,15 +13,6 @@
 - hosts: myBastion
   tasks:
 
-  - include_vars: "{{ item }}"
-    with_first_found:  "{{ vars_rhcos }}"
-
-  - include_vars: "{{ item }}"
-    with_first_found:  "{{ vars_hw_profiles }}"
-
-  - include_vars: "{{ item }}"
-    with_first_found:  "{{ vars_matchbox }}"
-
   - name: "BASTION-MATCHBOX: stat software"
     stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
     register: test_matchbox_src
@@ -110,7 +101,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -126,7 +117,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -142,7 +133,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -162,7 +153,7 @@
       - p_profile:  "bootstrap"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
@@ -177,7 +168,7 @@
       - p_profile:  "master"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
@@ -192,7 +183,7 @@
       - p_profile:  "worker"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hw_profile[hostvars[item]['h_hwPROF']].disk.dev }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
     template:
       src:   "matchbox-profile.j2"
