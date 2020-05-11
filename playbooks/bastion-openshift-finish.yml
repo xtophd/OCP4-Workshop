@@ -13,7 +13,7 @@
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
-        if [[ `oc get nodes | grep -i 'worker-0' | awk '{print $2}'` == "Ready" ]] ; then
+        if [[ `oc get nodes | grep -i '{{ item }}' | awk '{print $2}'` == "Ready" ]] ; then
           exit 0
         else
           for i in `oc get csr | grep -i pending | awk '{print $1}'`; do 
