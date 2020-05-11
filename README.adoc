@@ -20,6 +20,40 @@ NOTE: *THIS PROJECT IS IN ALPHA.  DOCUMENTATION WILL BE UPDATED AFTER BLUEPRINT 
 
 = DO NOT USE THIS PROJECT YET
 
+= INSTALLATION
+
+== Download 
+
+Currently working on the 'wsdeployer' branch.  At this time I am not going to differentiate
+a workshop installation without the KVM install/config.  It's all or nothing
+
+----
+git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
+----
+
+== Config
+
+Create your configs.  Here I'm using the 'nat' network configs
+----
+ln -s ./OCP4-Workshop/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
+----
+
+Fetch the openshift pull secret from Red Hat
+
+----
+cp pullsecret.txt ./OCP4-Workshop/config
+----
+
+== Install
+
+Run the installation
+
+----
+cd ./OCP4-Workshop
+
+bash prepare-kvm-host.sh all
+----
+
 = OCP4-Workshop
 
 Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
