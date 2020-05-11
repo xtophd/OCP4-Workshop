@@ -47,16 +47,25 @@ kvm_cfg:
 
 kvm_deploy_plan:
 
+  ## PRE/POST INSTALL SCRIPTS BEFORE AND AFTER DEPLOY
+  ##
+  ##   pre_install:       STR complete executable shell (PWD: is project directory) 
+  ##   post_install:      STR complete executable shell (PWD: is project directory) 
+
   pre_install:  ""
   post_install: "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10 --tags finish ./playbooks/bastion-setup.yml"
 
   ## 
   ## each pass must define the following:
-  ##   hostgroup: ansible hostgroup to deploy
-  ##   iso_name: name of ISO image to boot with, if blank pxe boot is attempted
-  ##   ks_name: name of a kickstart file
-  ##   pre_install playbook : set up kickstarts, mount isos, etc...
-  ##   post_install playbook : run plays on hosts before next deploy pass
+  ##
+  ##   hostgroup:         STR ansible hostgroup to act on 
+  ##   inject_sshkey:     T/F create a ssh key to enable ansible on client 
+  ##   wait_for_shutdown: T/F wait for shutdown before install-02 (postconfig)
+  ##   post_config:       T/F run actions in install-02 (postconfig)
+  ##
+  ##   # PRE/POST INSTALL SCRIPTS BEFORE AND AFTER EACH HOSTGROUP
+  ##   pre_install:       STR complete executable shell (PWD: is project directory) 
+  ##   post_install:      STR complete executable shell (PWD: is project directory) 
   ## 
 
   passes: 
