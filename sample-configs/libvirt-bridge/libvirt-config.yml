@@ -24,6 +24,8 @@ g_cockpit_port: "9090"
 
 kvm_cfg: 
 
+  enable_nested_virt: False
+
   http_port:    "{{ g_http_port }}"
   cockpit_port: "{{ g_cockpit_port }}"
 
