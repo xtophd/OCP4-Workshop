@@ -33,16 +33,16 @@ git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeplo
 
 == Config
 
-Create your configs.  Here I'm using the 'nat' network configs
-----
-ln -s ./OCP4-Workshop/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
-----
-
 Fetch the openshift pull secret from Red Hat
+Create your configs.  Here I'm using the 'nat' network configs
 
 ----
-cp pull_secret.txt ./OCP4-Workshop/config
+cd ./OCP4-Workshop/config
+cp <PULL_SECRET> ./pull_secret.txt
+ln -s ..p/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
 ----
+
+
 
 == Install
 
