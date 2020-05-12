@@ -21,7 +21,8 @@ kvm_cfg:
   cockpit_port: "{{ g_cockpit_port }}"
  
   qcow_dir:     "/home/virt-images"
-  ks_url:       "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/ks"
+
+#  ks_url:       "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/ks"
 
   network:
     name:       "virbr-{{ g_clusterName }}"
@@ -32,18 +33,27 @@ kvm_cfg:
       addr:     "{{ g_kvmhost_ip }}/{{ g_pubPREFIX }}"
       nm:       "{{ g_pubNM }}"
 
+  kickstart:
+    dir: "/var/www/html/ks"
+    url: "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/ks"
+
   iso:
     dir:        "/var/www/html/iso"
-    name:       "rhel-8.1-x86_64-dvd.iso"
-    mount:      "/var/www/html/repo"
+#    name:       "rhel-8.1-x86_64-dvd.iso"
+#    mount:      "/var/www/html/repo"
 
   repo:
-    repo1 : 
-      name: "rhel-8-baseos-rpms"
-      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/BaseOS"
-    repo2 : 
-      name: "rhel-8-appstream-rpms"
-      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/AppStream"
+    dir: "/var/www/html/repos"
+    url: "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repos"
+
+
+#  repo:
+#    repo1 : 
+#      name: "rhel-8-baseos-rpms"
+#      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/BaseOS"
+#    repo2 : 
+#      name: "rhel-8-appstream-rpms"
+#      url:  "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repo/AppStream"
 
 kvm_deploy_plan:
 
