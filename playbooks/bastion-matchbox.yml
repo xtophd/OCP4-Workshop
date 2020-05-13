@@ -19,8 +19,8 @@
 
   - name: "BASTION-MATCHBOX: software download"
     environment:
-      http_proxy="{{ g_http_proxy }}"
-      https_proxy="{{ g_https_proxy }}"
+      http_proxy: "{{ g_http_proxy }}"
+      https_proxy: "{{ g_https_proxy }}"
     get_url:
       url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
       dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
@@ -83,8 +83,8 @@
 
   - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
     environment:
-      http_proxy="{{ g_http_proxy }}"
-      https_proxy="{{ g_https_proxy }}"
+      http_proxy: "{{ g_http_proxy }}"
+      https_proxy: "{{ g_https_proxy }}"
     get_url:
       url: "{{ g_rhcos_src }}/{{ item }}"
       dest: "/var/lib/matchbox/assets/{{ item }}"
