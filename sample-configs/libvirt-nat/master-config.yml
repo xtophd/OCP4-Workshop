@@ -61,9 +61,9 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 ##    g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port> 
 ##    g_no_proxy = noProxy: example.com 
 
-g_http_proxy = "something 0"
-g_https_proxy = "something 1"
-g_no_proxy = "something 2"
+g_http_proxy  = ""
+g_https_proxy = ""
+g_no_proxy    = ""
 
 ##
 ## ----------------------------------------
