@@ -54,6 +54,12 @@ network is NAT by default with 192.168.123.xxx and ocp.example.com as internal d
 
 Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
+
+== Prequisits
+
+  * RHEL 7.7+ or 8.0+
+  * installed packages: git, ansible 2.9
+
 == Preperation
 
 On your virt host:
