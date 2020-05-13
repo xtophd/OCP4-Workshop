@@ -57,6 +57,9 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 ## Networking Parameters
 ##
 
+g_http_proxy = ""
+g_https_proxy = ""
+
 ## Configure the public (primary) network
 g_publicNet     = "True"
 g_publicDomain  = "example.com"
