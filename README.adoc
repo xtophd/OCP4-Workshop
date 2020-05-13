@@ -22,6 +22,66 @@ NOTE: *THIS PROJECT IS IN ALPHA.  DOCUMENTATION WILL BE UPDATED AFTER BLUEPRINT 
 
 = INSTALLATION
 
+== Overview
+
+So, as a reminder...
+
+Default architecture is 7 VMs:
+bastion - utility vm
+bootstrap - ocp installation provisioner
+masters-{0,1,2}
+workers-{0,1}
+
+Systems are deployed in a NAT'd internal network.  You can easily change this to a bridged network.
+
+NAT is easy because:
+dhcp, pxe don't conflict with public network
+it's a real cloud, ie: you get ingress through the haproxy loadbalancer
+
+The bastion host is built from DVD and post-configured with ansible plays to enable:
+dns
+dhcp
+pxe
+matchbox
+nfs for persistent storage (not supported in PROD, but works for POC)
+openshift install/ignition generation
+
+Lastly, these are default configurations on the virt host but can be changed:
+
+vm images will go into /home/virt-images
+iso images will got into /home/iso
+network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
+
+Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
+
+== Preperation
+
+On your virt host:
+
+  + subscription manager register and attach host
+  + cd /home
+  + mkdir iso virt-images
+  + cd iso
+  + <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
+
+Still on virt host:
+
+  + cd /usr/local/src
+  + git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
+  + cd /usr/local/src/OCP4-Workshop
+  + cd config
+  + ln -s ../sample-configs/libvirt-nat/* .
+  + <PLACE PULL_SCRET HERE>: pull-secret.txt
+
+Once again, on virt host:
+
++ cd /usr/local/src/OCP4-Workshop
+  + export HTTPPROXY if needed
+  + bash prepare-kvm-host.sh all
+
+If all goes well, should just work and about 30 minutes later you have an operational openshift cluster
+
+
 == Download 
 
 Currently working on the 'wsdeployer' branch.  At this time I am not going to differentiate
@@ -42,21 +102,7 @@ cp <PULL_SECRET> ./pull_secret.txt
 ln -s ..p/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
 ----
 
-
-
-== Install
-
-Run the installation
-
-----
-cd ./OCP4-Workshop
-
-bash prepare-kvm-host.sh all
-----
-
-= OCP4-Workshop
-
-Foundational exercises to introduce core concepts of Red Hat Openshift Container Platform
+= MORE COMING SOON...
 
 Master document for this branch can be found here:
 
