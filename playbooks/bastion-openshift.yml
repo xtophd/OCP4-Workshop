@@ -56,6 +56,9 @@
     when: test_ssh_key.stat.exists == false
 
   - name: "BASTION-OPENSHIFT: download ocp software"
+    environment:
+      http_proxy: "{{ g_http_proxy }}"
+      https_proxy: "{{ g_https_proxy }}"
     get_url:
       url: "{{ g_ocp_src }}/{{ item }}"
       dest: "/usr/local/src/{{ item }}"
@@ -87,6 +90,9 @@
       - p_sshKey:       "{{ ssh_key.stdout |quote }}"
       - p_clusterName:  "{{ g_clusterName }}"
       - p_domain:       "{{ g_publicDomain }}"
+      - p_http_proxy:   "{{ g_http_proxy | default ('') }}"
+      - p_https_proxy:  "{{ g_https_proxy | default ('') }}"
+      - p_no_proxy:     "{{ g_no_proxy | default ('') }}"
     template:
       src: "ocp-install-config.j2"
       dest: "{{ g_credsDir }}/install-config.yaml"

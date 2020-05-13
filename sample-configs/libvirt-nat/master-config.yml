@@ -54,11 +54,21 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 
 ##
 ## ----------------------------------------
+## Proxy settings (affects playbooks and openshift config)
+##
+## Examples:
+##    g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port> 
+##    g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port> 
+##    g_no_proxy = noProxy: example.com 
+
+g_http_proxy = "something 0"
+g_https_proxy = "something 1"
+g_no_proxy = "something 2"
+
+##
+## ----------------------------------------
 ## Networking Parameters
 ##
-
-g_http_proxy = ""
-g_https_proxy = ""
 
 ## Configure the public (primary) network
 g_publicNet     = "True"

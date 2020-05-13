@@ -10,6 +10,12 @@ controlPlane:
   replicas: 3 
 metadata:
   name: {{ p_clusterName }}
+{% if p_http_proxy != '' %}
+proxy:
+  httpProxy: {{ p_http_proxy }}
+  httpsProxy: {{ p_https_proxy }}
+  noProxy: {{ p_no_proxy }}
+{% endif %}
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14 
