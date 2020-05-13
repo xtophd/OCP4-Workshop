@@ -58,26 +58,26 @@ Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
 On your virt host:
 
-  + subscription manager register and attach host
-  + cd /home
-  + mkdir iso virt-images
-  + cd iso
-  + <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
+  * subscription manager register and attach host
+  * cd /home
+  * mkdir iso virt-images
+  * cd iso
+  * <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
 
 Still on virt host:
 
-  + cd /usr/local/src
-  + git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
-  + cd /usr/local/src/OCP4-Workshop
-  + cd config
-  + ln -s ../sample-configs/libvirt-nat/* .
-  + <PLACE PULL_SCRET HERE>: pull-secret.txt
+  * cd /usr/local/src
+  * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
+  * cd /usr/local/src/OCP4-Workshop
+  * cd config
+  * ln -s ../sample-configs/libvirt-nat/* .
+  * <PLACE PULL_SCRET HERE>: pull-secret.txt
 
 Once again, on virt host:
 
-+ cd /usr/local/src/OCP4-Workshop
-  + export HTTPPROXY if needed
-  + bash prepare-kvm-host.sh all
+  * cd /usr/local/src/OCP4-Workshop
+  * export HTTPPROXY if needed
+  * bash prepare-kvm-host.sh all
 
 If all goes well, should just work and about 30 minutes later you have an operational openshift cluster
 
