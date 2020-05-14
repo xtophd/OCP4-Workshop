@@ -54,12 +54,25 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 
 ##
 ## ----------------------------------------
+## g_clusterVIP
+##
+##   If you are planning to run a loadbalancer (haproxy)
+##   on a host other than the bastion (ie: the virt-host perhaps)
+##   specify the cluster virtual IP (VIP).  This is only
+##   used to create an additional haproxy.cfg and does
+##   not impact the cluster configuration or deployment
+##
+
+g_clusterVIP = "192.168.1.29"
+
+##
+## ----------------------------------------
 ## Proxy settings (affects playbooks and openshift config)
 ##
-## Examples:
-##    g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port> 
-##    g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port> 
-##    g_no_proxy = noProxy: example.com 
+##   Examples:
+##     g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port> 
+##     g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port> 
+##     g_no_proxy = noProxy: example.com 
 
 g_http_proxy  = ""
 g_https_proxy = ""
@@ -106,14 +119,15 @@ g_priNTP        = ""
 ##
 ##
 
-g_useDNS      = "True"
-g_useDHCP     = "True"
-g_usePXE      = "True"
-g_useHAPROXY  = "True"
-g_useMATCHBOX = "True"
-g_useNFS      = "True"
-g_useNTP      = "True"
-g_useREPOSYNC = "False"
+g_useDNS          = "True"
+g_useDHCP         = "True"
+g_usePXE          = "True"
+g_useHAPROXY      = "True"
+g_useHAPROXY_VIP  = "True"
+g_useMATCHBOX     = "True"
+g_useNFS          = "True"
+g_useNTP          = "True"
+g_useREPOSYNC     = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"

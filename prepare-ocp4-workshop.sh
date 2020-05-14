@@ -35,11 +35,14 @@ case "$1" in
         time  ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml
         ;;
          
+    "basics"    | \
+    "cockpit"   | \
     "dns"       | \
     "dhcp"      | \
     "nfs"       | \
     "ntp"       | \
     "haproxy"   | \
+    "haproxy_vip"   | \
     "matchbox"  | \
     "httpd"     | \
     "openshift" | \
@@ -50,7 +53,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | dns | dhcp | ntp | haproxy | matchbox | httpd | openshift | finish ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | dns | dhcp | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish ]"
         ;;
 
 esac         

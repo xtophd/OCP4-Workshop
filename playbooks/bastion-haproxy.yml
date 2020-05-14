@@ -38,6 +38,7 @@
 
   - name: "BASTION-HAPROXY: deploy stats config"
     vars:
+      - p_ip:       "*"
       - p_port:     "8404"
       - p_order:    "15"
       - p_name:     "{{ g_clusterName }}"
@@ -49,6 +50,7 @@
   - name: "BASTION-HAPROXY: deploy api base"
     vars:
       - p_type:     "api"
+      - p_ip:       "*"
       - p_port:     "6443"
       - p_order:    "20"
     template:
@@ -59,6 +61,7 @@
   - name: "BASTION-HAPROXY: deploy api servers"
     vars:
       - p_type:     "api"
+      - p_ip:       "*"
       - p_port:     "6443"
       - p_order:    "25"
       - p_item:     "{{ item }}"
@@ -75,6 +78,7 @@
   - name: "BASTION-HAPROXY: deploy config base"
     vars:
       - p_type:     "config"
+      - p_ip:       "*"
       - p_port:     "22623"
       - p_order:    "30"
     template:
@@ -85,6 +89,7 @@
   - name: "BASTION-HAPROXY: deploy config servers"
     vars:
       - p_type:     "config"
+      - p_ip:       "*"
       - p_port:     "22623"
       - p_order:    "35"
       - p_item:     "{{ item }}"
@@ -101,6 +106,7 @@
   - name: "BASTION-HAPROXY: deploy http base"
     vars:
       - p_type:     "http"
+      - p_ip:       "*"
       - p_port:     "80"
       - p_order:    "40"
     template:
@@ -111,6 +117,7 @@
   - name: "BASTION-HAPROXY: deploy http servers"
     vars:
       - p_type:     "http"
+      - p_ip:       "*"
       - p_port:     "80"
       - p_order:    "45"
       - p_item:     "{{ item }}"
@@ -127,6 +134,7 @@
   - name: "BASTION-HAPROXY: deploy https base"
     vars:
       - p_type:     "https"
+      - p_ip:       "*"
       - p_port:     "443"
       - p_order:    "50"
     template:
@@ -138,6 +146,7 @@
     vars:
       - p_type:     "https"
       - p_port:     "443"
+      - p_ip:       "*"
       - p_order:    "55"
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"

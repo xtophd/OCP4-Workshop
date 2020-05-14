@@ -21,6 +21,10 @@
   tags:
     - basics
 
+- import_playbook: bastion-cockpit.yml
+  tags:
+    - cockpit
+
 - import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
   tags:
@@ -40,6 +44,11 @@
   when: g_useHAPROXY == "True"
   tags:
     - haproxy
+
+- import_playbook: bastion-haproxy-vip.yml
+  when: g_useHAPROXY_VIP == "True"
+  tags:
+    - haproxy_vip
 
 - import_playbook: bastion-nfs.yml
   when: g_useNFS == "True"

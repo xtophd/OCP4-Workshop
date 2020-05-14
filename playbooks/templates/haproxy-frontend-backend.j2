@@ -3,7 +3,7 @@
 ## {{ p_type }} servers
 
 frontend openshift-{{ p_type }}-server
-    bind *:{{ p_port }}
+    bind {{ p_ip }}:{{ p_port }}
     mode tcp
     option tcplog
     default_backend openshift-{{ p_type }}-server
