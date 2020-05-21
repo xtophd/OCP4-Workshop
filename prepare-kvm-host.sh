@@ -32,6 +32,8 @@ case "$1" in
         ;;
 
     "deploy"     | \
+    "undeploy"   | \
+    "redeploy"   | \
     "basics"     | \
     "nested"     | \
     "cockpit"    | \
