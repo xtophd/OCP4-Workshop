@@ -55,7 +55,7 @@
     command: "ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa"
     when: test_ssh_key.stat.exists == false
 
-  - name: "BASTION-OPENSHIFT: download ocp software"
+  - name: "BASTION-OPENSHIFT: download ocp software [SRC: {{ g_ocp_src }}]"
     environment:
       http_proxy: "{{ g_http_proxy }}"
       https_proxy: "{{ g_https_proxy }}"
