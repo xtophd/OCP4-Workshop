@@ -3,7 +3,7 @@
 ## stats uri on
 
 listen stats
-    bind *:{{ p_port }}
+    bind {{ p_ip }}:{{ p_port }}
     stats enable
     stats uri /stats
     stats refresh 5s

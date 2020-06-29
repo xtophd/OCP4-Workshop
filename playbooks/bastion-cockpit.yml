@@ -1,0 +1,35 @@
+## Authors:
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook installs and enables the cockpit webconsole service
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+    - name: "BASTION-COCKPIT: yum install packages"
+      yum: name=cockpit,cockpit-dashboard,firewalld,sos state=installed
+      register: result
+      retries: 10
+      until: result is succeeded
+      delay: 5
+
+    - name: "BASTION-COCKPIT:SETUP WEBCONSOLE: create cockpit systemd drop-in directory"
+      file:
+        path: "/etc/systemd/system/cockpit.socket.d/"
+        mode: "0755"
+        owner: "root"
+        group: "root"
+        state: directory
+
+    - name: "BASTION-COCKPIT: service restart"
+      service: name="cockpit.socket" state=restarted enabled=yes daemon-reload=yes
+
+    - name: "BASTION-COCKPIT: firewalld service restart"
+      service: name="firewalld" state=restarted enabled=yes
+
+    - name: "BASTION-COCKPIT: firewall configuration"
+      firewalld: service="cockpit" permanent=yes immediate=yes state=enabled
+
