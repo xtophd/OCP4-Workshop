@@ -26,10 +26,10 @@ NOTE:  This project and playbooks strive to mimic the hands-on UPI approach to d
 
 
 Default architecture is 7 systems:
-  - bastion - utility vm
-  - bootstrap - ocp installation provisioner
-  - masters-{0,1,2}
-  - workers-{0,1}
+  * bastion - utility vm
+  * bootstrap - ocp installation provisioner
+  * masters-{0,1,2}
+  * workers-{0,1}
   
 At the completion of the install, the bootstrap node has served it's purpose and can be safely shutdown (or deleted).
 
@@ -43,9 +43,9 @@ This section describes the steps to configuring the utility server using RHEL 8.
 
 Starting with a simple deployment of RHEL 8
 
-  - Configure Repos (subscription-manager register)
-  - Install ansible-2.9
-  - Install git
+  * Configure Repos (subscription-manager register)
+  * Install ansible-2.9
+  * Install git
 
 ----
 yum install git ansible
