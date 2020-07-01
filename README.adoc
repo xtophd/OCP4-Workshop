@@ -59,21 +59,23 @@ Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
   * RHEL 7.7+ or 8.0+
   * installed packages: git, ansible 2.9
+  * configured (accessible) repos for base, optional/appstream and ansible
+  * log on to cloud.redhat.com and get your pull-secret.txt
 
-== Preperation
+== Preperation (libvirt)
 
 On your virt host:
 
   * subscription manager register and attach host
-  * cd /home
-  * mkdir iso virt-images
-  * cd iso
+  * mkdir -p /home/iso
+  * mkdir -p /home/virt-images
+  * cd /home/iso
   * <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
 
 Still on virt host:
 
   * cd /usr/local/src
-  * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
+  * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
   * cd /usr/local/src/OCP4-Workshop
   * cd config
   * ln -s ../sample-configs/libvirt-nat/* .
