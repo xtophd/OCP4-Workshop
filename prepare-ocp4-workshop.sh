@@ -8,7 +8,7 @@
 ##
 
 myInventory="./config/master-config.yml"
-myExtravars="./config/libvirt-config.yml"
+##myExtravars="./config/libvirt-config.yml"
 
 ## This script is intended to be run:
 ##     on the libvirt hypervisor node
@@ -32,7 +32,8 @@ fi
 case "$1" in
     "all")
         echo "ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml"
-        time  ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml
+        ## time  ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml
         ;;
          
     "basics"    | \
