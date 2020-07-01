@@ -22,16 +22,20 @@ NOTE: *THIS PROJECT IS IN ALPHA.  DOCUMENTATION WILL BE UPDATED AFTER BLUEPRINT 
 
 = Usage
 
-Default architecture is 7 VMs:
+NOTE:  This project and playbooks strive to mimic the hands-on UPI approach to deploying a Openshift cluster.  Shell commands are often used in preference to otherwise fanstastic ansible modules in order to preserve the steps outlined in the actual installation guide.
+
+
+Default architecture is 7 systems:
   - bastion - utility vm
   - bootstrap - ocp installation provisioner
   - masters-{0,1,2}
   - workers-{0,1}
-
+  
+At the completion of the install, the bootstrap node has served it's purpose and can be safely shutdown (or deleted).
 
 == Utility-Host-Only Services
 
-Deploying Openshift in an automated way depends on typical services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
+Deploying Openshift in an automated way depends on typical network services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
 
 This section describes the steps to configuring the utility server using RHEL 8.
 
@@ -79,7 +83,7 @@ cp <PULL_SECRET> .OCP4-Workshop/pull_secret.txt
 
 === Run the Playbooks
 
-Now it's time to configure and enable the services in preparation for cluster deployment
+Now it's time to run the playbooks which configure and enable the services in preparation for the Openshift cluster deployment.
 
 ----
 cd ./OCP4-Workshop/
