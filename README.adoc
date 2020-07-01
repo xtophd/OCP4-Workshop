@@ -90,6 +90,17 @@ cd ./OCP4-Workshop/
 bash prepare-ocp-workshop.sh all
 ----
 
+=== Boot the Bootstrap
+
+=== Boot the Masters
+
+=== Boot the Workers
+
+=== Extra Info
+
+Artifacts from the build will be in /root/ocp-<clustername>
+
+Authtority files will be in /root/ocp-<clustername>/auth
 
 
 == LIBVIRT/KVM Host with OCP as VMs
