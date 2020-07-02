@@ -6,8 +6,8 @@
 ##   Declare sources & versions of RHCOS
 ##
 
-g_rhcos_src:       "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
-g_rhcos_initramfs: "rhcos-4.3.0-x86_64-installer-initramfs.img"
-g_rhcos_kernel:    "rhcos-4.3.0-x86_64-installer-kernel"
-g_rhcos_bios:      "rhcos-4.3.0-x86_64-metal.raw.gz"
+g_rhcos_src:       "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3"
+g_rhcos_initramfs: "rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img"
+g_rhcos_kernel:    "rhcos-4.4.3-x86_64-installer-kernel-x86_64"
+g_rhcos_bios:      "rhcos-4.4.3-x86_64-metal.x86_64.raw.gz"
 
