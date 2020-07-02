@@ -29,7 +29,7 @@
     when: test_pull_secret.stat.exists == false
 
   - name: "BASTION-OPENSHIFT: fail if pull-secret absent"
-    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE ./{{ g_credsDir }}/pull-secret.txt"
+    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE {{ g_credsDir }}/pull-secret.txt"
     when: test_pull_secret.stat.exists == false
 
 ##
