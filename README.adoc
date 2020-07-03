@@ -78,7 +78,7 @@ Now adjust the parameters for your environment
 The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
 
 ----
-cp <PULL_SECRET> .OCP4-Workshop/config/pull-secret.txt
+cp <PULL_SECRET> ./OCP4-Workshop/config/pull-secret.txt
 ----
 
 === Run the Playbooks
@@ -153,7 +153,7 @@ Still on virt host:
   * cd /usr/local/src/OCP4-Workshop
   * cd config
   * ln -s ../sample-configs/libvirt-nat/* .
-  * <PLACE PULL_SCRET HERE>: pull-secret.txt
+  * <PLACE PULL_SECRET HERE>: pull-secret.txt
 
 Once again, on virt host:
 
