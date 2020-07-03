@@ -9,37 +9,52 @@
 - hosts: myBastion
   tasks:
 
-#  - include_vars: "{{ item }}"
-#    with_first_found:  "{{ vars_openshift }}"
-
-  - name: "BASTION-OPENSHIFT: Create openshift working directory"
+  - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
     file:
       path: "{{ g_credsDir }}"
       mode: "0755"
       state: directory
 
-## If deploying via the ws-deployer-kvm, pull_secret may already ben installed
-## Otherwise this is a manual step, following instructions as noted below
+  ########################################
+  ## PULL-SECRET
+  ##
+  ##   if    deploying via the ws-deployer-kvm, pull_secret may already be deployed
+  ##   else  could be in the ./config directory per instructions
+  ##   else  this is a manual step user must complete therefore show message and exit
+  ##
 
-  - name: "BASTION-OPENSHIFT: stat pull-secret"
+  - name: "BASTION-OPENSHIFT: stat pull-secret in {{ g_credsDir }}"
     stat: path="{{ g_credsDir }}/pull-secret.txt"
-    register: test_pull_secret
+    register: test_secret_credsDir
 
-  - debug: msg="Pull-Secret URL https://cloud.redhat.com/openshift/install/metal/user-provisioned"
-    when: test_pull_secret.stat.exists == false
+  - name: "LIBVIRT-POSTINSTALL-BASTION: stat pull-secret in ./config"
+    stat: path="../config/pull-secret.txt"
+    register: test_secret_confDir
 
-  - name: "BASTION-OPENSHIFT: fail if pull-secret absent"
-    fail: msg="COPY YOUR OCP4 PULL-SECRET HERE {{ g_credsDir }}/pull-secret.txt"
-    when: test_pull_secret.stat.exists == false
+  - block:
 
-##
-## libvirt just finished putting the pull secret here.  maybe don't cleanup
-##
-#
-#  - name: "BASTION-OPENSHIFT: Clean-up ocp working directory"
-#    shell:
-#      cmd: |
-#        if [[ -d {{ g_credsDir }} ]] ; then rm -rf {{ g_credsDir }} ; fi
+      - debug: msg="RETRIEVE PULL-SECRET https://cloud.redhat.com/openshift/install/metal/user-provisioned"
+
+      - debug: msg="SAVE PULL-SECRET HERE ./config/pull-secret.txt"
+
+      - fail: msg="MISSING PULL-SECRET"
+
+    when: 
+      - test_secret_credsDir.stat.exists == false
+      - test_secret_confDir.stat.exists == false
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret"
+    when: 
+      - test_secret_credsDir.stat.exists == false
+      - test_secret_confDir.stat.exists == true
+    template:
+      src: "../config/pull-secret.txt"
+      dest: "{{ g_credsDir }}"
+      owner: root
+      group: root
+      mode: 0644
+
+  ########################################
 
   - name: "BASTION-OPENSHIFT: Create ssh directory"
     file:
