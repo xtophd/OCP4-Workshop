@@ -78,7 +78,7 @@ Now adjust the parameters for your environment
 The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
 
 ----
-cp <PULL_SECRET> .OCP4-Workshop/pull_secret.txt
+cp <PULL_SECRET> .OCP4-Workshop/config/pull-secret.txt
 ----
 
 === Run the Playbooks
@@ -87,7 +87,7 @@ Now it's time to run the playbooks which configure and enable the services in pr
 
 ----
 cd ./OCP4-Workshop/
-bash prepare-ocp-workshop.sh all
+bash prepare-ocp4-workshop.sh all
 ----
 
 === Boot the Bootstrap
