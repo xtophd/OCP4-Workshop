@@ -205,7 +205,7 @@ h_mBoxDev = "vda"
 ## HOST VARS
 
 [myVirthost]
-virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.123.1"
+##virthost  h_pubMAC="" h_pubIP=""
 
 [myBastion]
 bastion   h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.123.160" 
