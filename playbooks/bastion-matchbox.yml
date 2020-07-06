@@ -107,7 +107,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -123,7 +123,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -139,7 +139,7 @@
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-group.j2"
       dest:  "/var/lib/matchbox/groups/{{ p_name }}-{{ p_hw }}.json"
@@ -159,8 +159,8 @@
       - p_profile:  "bootstrap"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
@@ -174,8 +174,8 @@
       - p_profile:  "master"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"
@@ -189,8 +189,8 @@
       - p_profile:  "worker"
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
-      - p_device:   "{{ hostvars[item]['h_mBoxDev'] }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
+      - p_device:   "{{ hostvars[item]['h_mBoxDev'] | default ('') }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ p_hw }}.json"

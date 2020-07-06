@@ -13,7 +13,9 @@
     "console=tty0",
     "console=ttyS0",
     "coreos.inst=yes",
+{% if p_device != '' %}
     "coreos.inst.install_dev={{ p_device }}",
+{% endif %}
     "coreos.inst.image_url=http://{{ p_addr }}:8080/assets/{{ g_rhcos_bios }}",
     "coreos.inst.ignition_url=http://{{ p_addr}}:8080/ignition?mac=${mac:hexhyp}"
    ]

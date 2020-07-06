@@ -182,6 +182,12 @@ h_ksPROF = "rhel8_lvm"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = "" 
+
+## h_mBoxDev : default is ''
+##   If RHCOS is not detecting the right boot device, you can be specific
+##   by adding and setting the full device path.  In my lab, vda needs to be
+##   specified, so for now that's the default.
+
 h_mBoxDev = "vda"
 
 ## -----------------
@@ -191,6 +197,7 @@ h_mBoxDev = "vda"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
+
 h_mBoxDev = "vda"
 
 ## -----------------
@@ -200,6 +207,7 @@ h_mBoxDev = "vda"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = ""
+
 h_mBoxDev = "vda"
 
 ##
@@ -213,7 +221,7 @@ virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.123.1"
 bastion   h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.123.160" 
 
 [myBootstrap]
-bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.123.161" matchbox_dev="vda"
+bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.123.161" 
 
 [myMasters]
 master-0  h_pubMAC="2c:c2:60:02:c3:c3" h_pubIP="192.168.123.162" h_etcdName="etcd-0"
