@@ -71,8 +71,16 @@ cd ./OCP4-Workshop/config
 cp ../sample-configs/utility-host-only/master-config.yml .
 ----
 
-Now adjust the parameters for your environment
+=== Edit Config Files
 
+WARNING:  You must edit the config files for your deployment.  There is no magic installation.
+
+Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
+in particular you need to:
+
+  * fix hostnames, mac addresses & ip addresses
+  * set or comment out h_mBoxDev accordingly
+  
 === Place the Pull Secret
 
 The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
