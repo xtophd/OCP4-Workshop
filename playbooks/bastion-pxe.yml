@@ -2,13 +2,18 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure the minimum requirements.  Ideally, to prepare a blueprint you would run
-##   this and then snap the blueprint for the workshops.  This playbook is NOT meant for student execution
+##   This playbook configures PXE to support installation of RHCOS
+##   
+##   Current the model should follow:
 ##
-## Playbook Assumptions:
-##     #1 you are executing this on the bastion-host
-##     #2 your client is registered to RH CDN with subscription-manager
-##     #3 the following packages have been installed: git, ansible
+##     If iPXE based, we boot from matchbox 
+##     If UEFI based, we chain load with ipxe.efi and try again as iPXE
+##     If  PXE based, we chain load with undionly and try again as iPXE
+##
+##   NOTE 1: pxelinux is installed but NOT configured.  I may switch 
+##           to this in the future
+##
+##   NOTE 2: configuration in dhcp must match files and paths here.
 ##
 
 ---
@@ -18,13 +23,16 @@
   - name: "BASTION-PXE: package installation"
     yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
 
-  - name: "BASTION-PXE: create directory"
+  - name: "BASTION-PXE: create tftpboot directories"
     file:
-      path: "/var/lib/tftpboot"
+      path: "{{ item }}"
       mode: "0755"
       state: directory
+    with_items:
+      - "/var/lib/tftpboot"
+      - "/var/lib/tftpboot/efi"
 
-  - name: "BASTION-PXE: copy file to tftp directory"
+  - name: "BASTION-PXE: copy ipxe files to tftpboot"
     copy: 
       src:   "/usr/share/ipxe/undionly.kpxe"
       dest:  "/var/lib/tftpboot"
@@ -32,6 +40,9 @@
       owner: root
       group: root
       remote_src: yes
+    with_items:
+      - "/usr/share/ipxe/undionly.kpxe"
+      - "/usr/share/ipxe/ipxe.efi"
 
   - name: "BASTION-PXE: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
