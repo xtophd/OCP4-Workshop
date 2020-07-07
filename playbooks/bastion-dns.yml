@@ -135,7 +135,9 @@
     shell:
       cmd: |
         nmcli con modify {{ item }} ipv4.dns 127.0.0.1
-        ifup {{ item }} 
+        if [[ -e /etc/sysconfig/network-scripts/ifcfg-{{item}} ]] ; then
+          ifup {{ item }} 
+        fi
     when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
     with_items:
       - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"

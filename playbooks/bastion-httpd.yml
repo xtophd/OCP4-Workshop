@@ -2,18 +2,9 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook attempts to configure a rhel 8.0 (or later) system with libvirt
-##   to host an openshift 4.2 deployment
+##   This playbook configures httpd on a bastion node to support
+##   the deployment of an Openshift Cluster (OCP)
 ##
-##   This playbook is NOT meant for student execution  
-##
-##   This playbook IS meant for someone who'd like to stand up Openshift on a single node
-##
-## Playbook Assumptions:
-##     #1 you are executing this on the OS already installed on bare-metal
-##     #2 your host is registered to RH CDN with subscription-manager
-##     #3 the following packages have been installed: git, ansible
-##     #4 system has plenty of storage and memory
 ##
 
 ---

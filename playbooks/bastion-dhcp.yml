@@ -14,9 +14,21 @@
 ---
 - hosts: myBastion
   tasks:
-  
-  - name: "BASTION-DHCP: package installation"
+
+  - debug:
+      msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
+
+  - name: "BASTION-DHCP: package installation (RHEL8)"
     yum: name=dhcp-server state=installed
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "8"
+  
+  - name: "BASTION-DHCP: package installation (RHEL7)"
+    yum: name=dhcp state=installed
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "7"
 
   - name: "BASTION-DHCP: clean cfg fragments directory"
     shell:
