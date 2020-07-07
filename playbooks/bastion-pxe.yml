@@ -42,7 +42,7 @@
       remote_src: yes
     with_items:
       - "/usr/share/ipxe/undionly.kpxe"
-      - "/usr/share/ipxe/ipxe.efi"
+      - "/usr/share/ipxe/ipxe-x86_64.efi"
 
   - name: "BASTION-PXE: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
