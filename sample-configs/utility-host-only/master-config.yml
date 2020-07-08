@@ -181,12 +181,15 @@ h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = "" 
 
-## h_mBoxDev : default is ''
-##   If RHCOS is not detecting the right boot device, you can be specific
-##   by adding and setting the full device path.  In my lab, vda needs to be
-##   specified, so for now that's the default.
+## h_mBoxDev : specify the root disk for rhcos
+##             if left undefined, default is 'sda'
+## h_mBoxNic : specify the network for rhcos
+##             if left undefined, default is 'dhcp'
+##             other examples: 'eno1:dhcp'
+##                             'ens192:dhcp'
 
 h_mBoxDev = "vda"
+h_mBoxNic = "dhcp"
 
 ## -----------------
 
@@ -195,7 +198,9 @@ h_mBoxDev = "vda"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
+
 h_mBoxDev = "vda"
+h_mBoxNic = "dhcp"
 
 ## -----------------
 
@@ -204,7 +209,9 @@ h_mBoxDev = "vda"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = ""
+
 h_mBoxDev = "vda"
+h_mBoxNic = "dhcp"
 
 ##
 ## ----------------------------------------
