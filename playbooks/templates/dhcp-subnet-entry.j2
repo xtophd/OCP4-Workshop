@@ -9,6 +9,9 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
 {% if g_usePXE == 'True' %}
 
+  class "pxeclients" {	
+    match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+
     next-server {{ p_nextsvr }};
 
     if exists user-class and option user-class = "iPXE" {
@@ -27,11 +30,18 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
       filename "ipxe-x86_64.efi";
 
     } else {
-    
-      ## UNDIONLY - If client is age old PXE, chain load iPXE capable client, retry
- 
-      filename "undionly.kpxe";
+
+      ## If client is UEFI, chainload an iPXE capable client, retry
+      ##
+      ##   ipxe.pxe uses native iPXE drivers, while undionly tries to reuse the 
+      ##   drivers available in your network card PXE stack. Sometimes this 
+      ##   interaction causes unforseen bugs.
+
+      filename "ipxe.lkrn";
+
+      # filename "undionly.kpxe";
     } 
+  }
 {% endif %}
 
 }

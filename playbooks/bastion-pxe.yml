@@ -43,6 +43,7 @@
     with_items:
       - "/usr/share/ipxe/undionly.kpxe"
       - "/usr/share/ipxe/ipxe-x86_64.efi"
+      - "/usr/share/ipxe/ipxe.lkrn"
 
   - name: "BASTION-PXE: restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
