@@ -8,8 +8,6 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 {% endif %}
 
 {% if g_usePXE == 'True' %}
-  class "pxeclients" {
-    match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
 
     next-server {{ p_nextsvr }};
 
@@ -34,7 +32,6 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
  
       filename "undionly.kpxe";
     } 
-  }
 {% endif %}
 
 }
