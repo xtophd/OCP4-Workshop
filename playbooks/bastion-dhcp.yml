@@ -94,7 +94,7 @@
       owner: root
       group: root
       mode: 644
-    loop: "{{ [ groups['myWorkers'], groups['myMasters'], groups['myBootstrap'] ]| flatten(1) }}"
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
 
   - name: "BASTION-DHCP: deploy dhcp group finish"
     template:

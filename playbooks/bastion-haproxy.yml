@@ -131,7 +131,7 @@
       owner: root
       group: root
       mode: 644
-    loop: "{{ [ groups['myWorkers'], groups['myMasters'] ] | flatten(1) }}"
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
   - name: "BASTION-HAPROXY: deploy https base"
     vars:
@@ -160,7 +160,7 @@
       owner: root
       group: root
       mode: 644
-    loop: "{{ [ groups['myWorkers'], groups['myMasters'] ] | flatten(1) }}"
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
   - name: "BASTION-HAPROXY: assemble config fragments"
     assemble:
