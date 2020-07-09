@@ -1,10 +1,12 @@
 
 subnet {{ p_network }} netmask {{ p_netmask }} {
   
+    option domain-name         "{{ p_cluster }}.{{ p_domain }}";
     option domain-name-servers {{ p_dns }};
-    option routers {{ p_gateway }};
+    option routers             {{ p_gateway }};
+    option broadcast-address   {{ p_broadcast }};
 {%if p_ntp is defined and p_ntp|length %}
-    option ntp-servers {{ p_ntp }};
+    option ntp-servers         {{ p_ntp }};
 {% endif %}
 
 {% if g_usePXE == 'True' %}
