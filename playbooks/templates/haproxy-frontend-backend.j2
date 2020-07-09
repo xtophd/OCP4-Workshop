@@ -2,13 +2,13 @@
 ## ---------------------------------------- 
 ## {{ p_type }} servers
 
-frontend openshift-{{ p_type }}-server
+frontend {{ p_cname }}-{{ p_type }}-service
     bind {{ p_ip }}:{{ p_port }}
     mode tcp
     option tcplog
-    default_backend openshift-{{ p_type }}-server
+    default_backend {{ p_cname }}-{{ p_type }}-service
 
-backend openshift-{{ p_type }}-server
+backend {{ p_cname }}-{{ p_type }}-service
     balance source
     mode tcp
    
