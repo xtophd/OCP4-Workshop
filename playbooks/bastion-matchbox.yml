@@ -88,6 +88,7 @@
       - "{{ g_rhcos_initramfs }}"
       - "{{ g_rhcos_kernel }}"
       - "{{ g_rhcos_bios }}"
+      - "{{ g_rhcos_iso }}"
 
   - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
     environment:
@@ -104,9 +105,21 @@
       - "{{ g_rhcos_initramfs }}"
       - "{{ g_rhcos_kernel }}"
       - "{{ g_rhcos_bios }}"
+      - "{{ g_rhcos_iso }}"
     register: coreos_download
     until: coreos_download is not failed
     retries: 5
+
+  - name: "BASTION-MATCHBOX: Red Hat CoreOS create friendly filenames"
+    file:
+      state: link
+      path: "/var/lib/matchbox/assets/{{ item.dst }}"
+      src:  "/var/lib/matchbox/assets/{{ item.src }}"
+    with_items:
+      - { src: "{{ g_rhcos_initramfs }}" ,dst: "initramfs.img" }
+      - { src: "{{ g_rhcos_kernel }}"    ,dst: "kernel.img"    }
+      - { src: "{{ g_rhcos_bios }}"      ,dst: "metal.img"     }
+      - { src: "{{ g_rhcos_iso }}"       ,dst: "rhcos.iso"     }
 
   - name: "BASTION-MATCHBOX: : deploy bootstrap group-configs"
     vars:
