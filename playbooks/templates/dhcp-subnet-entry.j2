@@ -1,15 +1,17 @@
 
 subnet {{ p_network }} netmask {{ p_netmask }} {
   
-  option domain-name-servers {{ p_dns }};
-  option routers {{ p_gateway }};
+    option domain-name         "{{ p_cluster }}.{{ p_domain }}";
+    option domain-name-servers {{ p_dns }};
+    option routers             {{ p_gateway }};
+    option broadcast-address   {{ p_broadcast }};
 {%if p_ntp is defined and p_ntp|length %}
-  option ntp-servers {{ p_ntp }};
+    option ntp-servers         {{ p_ntp }};
 {% endif %}
 
 {% if g_usePXE == 'True' %}
-
   class "pxeclients" {	
+
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
 
     next-server {{ p_nextsvr }};
@@ -33,16 +35,10 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
       ## If client is UEFI, chainload an iPXE capable client, retry
       ##
-      ##   ipxe.pxe uses native iPXE drivers, while undionly tries to reuse the 
-      ##   drivers available in your network card PXE stack. Sometimes this 
-      ##   interaction causes unforseen bugs.
 
-      filename "ipxe.lkrn";
-
-      # filename "undionly.kpxe";
+      filename "undionly.kpxe";
     } 
   }
 {% endif %}
-
 }
 

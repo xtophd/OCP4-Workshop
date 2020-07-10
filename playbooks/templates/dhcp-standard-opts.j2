@@ -4,8 +4,8 @@
 #   /etc/dhcp/cfg-fragments
 #
 
-default-lease-time 600;
-max-lease-time 7200;
+default-lease-time 7200;
+max-lease-time 21600;
 
 {% if g_usePXE == 'True' %}
 option client-system-arch code 93 = unsigned integer 16;

@@ -11,12 +11,6 @@
 
   tasks:
 
-  - name: "LIBVIRT-PREINSTALL-MASTERS: Create qcow directory"
-    file:
-      path: "{{ kvm_cfg.qcow_dir }}"
-      mode: "0775"
-      state: directory
-
   - name: "LIBVIRT-PREINSTALL-MASTERS: test CONFIG SERVER port on bootstrap ({{ f_bootstrap_ip }})"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
