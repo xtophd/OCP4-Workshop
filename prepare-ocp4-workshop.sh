@@ -31,8 +31,7 @@ fi
 
 case "$1" in
     "all")
-        echo "ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml"
-        ## time  ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10  ./playbooks/bastion-setup.yml
+        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml"
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml
         ;;
          
@@ -50,8 +49,7 @@ case "$1" in
     "openshift" | \
     "finish")
 
-        echo "ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10 --tags $1 ./playbooks/bastion-setup.yml"
-        ## time  ansible-playbook -i ${myInventory} -e @${myExtravars} -f 10 --tags $1 ./playbooks/bastion-setup.yml
+        echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml"
         time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
         ;;
 
