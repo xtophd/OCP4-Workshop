@@ -11,12 +11,6 @@
 
   tasks:
 
-  - name: "LIBVIRT-PREINSTALL-BOOTSTRAP: Create qcow directory"
-    file:
-      path: "{{ kvm_cfg.qcow_dir }}"
-      mode: "0775"
-      state: directory
-
   ##
   ## A generic set of tests to verify bastion services are up
   ##

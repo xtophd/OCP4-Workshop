@@ -60,7 +60,15 @@
       group: matchbox
       remote_src: yes
 
-  - name: "BASTION-DHCP create directories"
+  - name: "BASTION-MATCHBOX: clean prior cfg directories"
+    shell:
+      cmd: |
+        if [[ -d "{{ item }}" ]] ; then rm -rf "{{ item }}" ; fi
+    with_items:
+      - "/var/lib/matchbox/groups"
+      - "/var/lib/matchbox/profiles"
+
+  - name: "BASTION-MATCHBOX create directories"
     file:
       path: "{{ item }}"
       state: directory
