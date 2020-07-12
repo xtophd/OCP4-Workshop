@@ -110,25 +110,25 @@ g_priNTP        = ""
 ##
 ## Optional Local Services that can be enabled on bastion
 ##
-##   DNS          - provided by dnsmasq
-##   DHCP & PXE   - provided by dhcp-server
-##   LOADBALANCER - provided by haproxy
-##   MATCHBOX     - service to provide artifacts to RHCOS ( installation automation)
-##   NFS          - configure NFS server for persistent storage
-##   NTP          - configure cluster to use bastion as NTP server
-##   REPOSYNC     - have bastion sync content and create a repo
-##
+##   DNS          - enables DNS service via dnsmasq
+##   DHCP         - enables DHCP service via dhcpd
+##   PXE          - adds PXE config to DHCP
+##   UEFI_HTTP    - adds UEFI_HTTP config to DHCP
+##   LOADBALANCER - enable load balancer via haproxy
+##   MATCHBOX     - service to provide artifacts to RHCOS (installation automation)
+##   NFS          - enables NFS service for persistent storage
+##   NTP          - enables NTP service for clock accuracy
 ##
 
 g_useDNS          = "True"
 g_useDHCP         = "True"
 g_usePXE          = "True"
+g_useUEFI_HTTP    = "True"
 g_useHAPROXY      = "True"
 g_useHAPROXY_VIP  = "True"
 g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
-g_useREPOSYNC     = "False"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"

@@ -2,4 +2,10 @@
   host {{ p_name }} {
     hardware ethernet {{ p_mac }};
     fixed-address {{ p_addr }};
+
+    {% if g_useUEFI_HTTP == 'True' %}
+    if uefi_http_iso = "true" {
+      filename "http://192.168.123.160:8080/assets/{{ p_cluster }}-{{ p_name }}.iso";
+    }
+    {% endif %}
   }

@@ -14,7 +14,6 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 {% if g_usePXE == 'True' %}
   class "pxeclients" {	
 
-
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
 
     next-server {{ p_nextsvr }};
@@ -30,17 +29,34 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     } elsif option client-system-arch = 00:07 or option client-system-arch = 00:09 {
 
-      ## If client is UEFI, chainload an iPXE capable client, retry
+      ## If client is UEFI, chainload an iPXE UEFI capable client, retry
 
       filename "ipxe-x86_64.efi";
 
     } else {
 
-      ## If client is UEFI, chainload an iPXE capable client, retry
+      ## If client is Legacy BIOS, chainload an iPXE BIOS capable client, retry
       ##
 
       filename "undionly.kpxe";
     } 
+  }
+{% endif %}
+
+{% if g_useUEFI_HTTP == 'True' %}
+  class "httpclients" {	
+
+    option vendor-class-identifier "HTTPClient";
+    match if substring (option vendor-class-identifier, 0, 10) = "HTTPClient";
+
+    ## Because I need to provide a custom iso for any host using this method,
+    ## we just set a varilable here and specify the filename in the host section
+ 
+    set uefi_http_iso = "true";
+
+    ## Send a little output to log
+
+    log(info, concat ("uefi_http_iso = ", uefi_http_iso));
   }
 {% endif %}
 }

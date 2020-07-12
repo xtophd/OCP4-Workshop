@@ -35,10 +35,20 @@
   tags:
     - dhcp
 
+- import_playbook: bastion-matchbox.yml
+  when: g_useMATCHBOX == "True"
+  tags:
+    - matchbox
+
 - import_playbook: bastion-pxe.yml
   when: g_usePXE == "True"
   tags:
     - pxe
+
+- import_playbook: bastion-uefi.yml
+  when: g_useUEFI_HTTP == "True"
+  tags:
+    - uefi
 
 - import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
@@ -54,11 +64,6 @@
   when: g_useNFS == "True"
   tags:
     - nfs
-
-- import_playbook: bastion-matchbox.yml
-  when: g_useMATCHBOX == "True"
-  tags:
-    - matchbox
 
 - import_playbook: bastion-httpd.yml
   when: g_useMATCHBOX != "True"
