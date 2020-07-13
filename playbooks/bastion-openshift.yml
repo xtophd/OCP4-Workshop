@@ -136,7 +136,7 @@
       cmd: |
         chown matchbox.matchbox /var/lib/matchbox/ignition/*
 
-  - name: "BASTION-OPENSHIFT: package installation"
+  - name: "BASTION-OPENSHIFT: additional package installation"
     yum: name=bash-completion state=installed
 
   - name: "BASTION-OPENSHIFT: configure openshift bash completion"
