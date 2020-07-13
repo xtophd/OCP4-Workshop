@@ -147,6 +147,15 @@
       cmd: |
         chown matchbox.matchbox /var/lib/matchbox/ignition/*
 
+  ## Maybe matchbox needs a refresh of content updates, just to be safe restart
+
+  - name: "BASTION-OPENSHIFT: restart matchbox services"
+    service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes
+    with_items:
+      - "matchbox"
+    when: g_useMATCHBOX == "True"
+
+
   - name: "BASTION-OPENSHIFT: additional package installation"
     yum: name=bash-completion state=installed
 

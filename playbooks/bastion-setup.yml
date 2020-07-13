@@ -30,11 +30,6 @@
   tags:
     - dns
 
-- import_playbook: bastion-dhcp.yml
-  when: g_useDHCP == "True"
-  tags:
-    - dhcp
-
 - import_playbook: bastion-matchbox.yml
   when: g_useMATCHBOX == "True"
   tags:
@@ -49,6 +44,11 @@
   when: g_useUEFI_HTTP == "True"
   tags:
     - uefi
+
+- import_playbook: bastion-dhcp.yml
+  when: g_useDHCP == "True"
+  tags:
+    - dhcp
 
 - import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
