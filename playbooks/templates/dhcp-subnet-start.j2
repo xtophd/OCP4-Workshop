@@ -1,6 +1,9 @@
 
 subnet {{ p_network }} netmask {{ p_netmask }} {
-  
+
+    authoritive;  
+    next-server {{ p_nextsvr }};
+
     option domain-name         "{{ p_cluster }}.{{ p_domain }}";
     option domain-name-servers {{ p_dns }};
     option routers             {{ p_gateway }};
@@ -15,8 +18,6 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     option vendor-class-identifier "PXEClient";
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
-
-    next-server {{ p_nextsvr }};
 
     if exists user-class and option user-class = "iPXE" {
 
