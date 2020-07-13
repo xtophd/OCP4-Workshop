@@ -6,7 +6,6 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
     option routers             {{ p_gateway }};
     option broadcast-address   {{ p_broadcast }};
     option subnet-mask         {{ p_netmask }};
-
 {%if p_ntp is defined and p_ntp|length %}
     option ntp-servers         {{ p_ntp }};
 {% endif %}
@@ -68,5 +67,4 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
   }
 {% endif %}
-}
 

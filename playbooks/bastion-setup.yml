@@ -71,7 +71,7 @@
     - httpd
 
 - import_playbook: bastion-ntp.yml
-  when: g_useNTP != "True"
+  when: g_useNTP == "True"
   tags:
     - ntp
 

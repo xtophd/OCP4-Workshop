@@ -20,6 +20,12 @@
   - name: "BASTION-NTP: package installation"
     yum: name=chrony state=installed
 
+  - name: "BASTION-NTP: configure chrony as ntp server"
+    replace:
+      path: /etc/chrony.conf
+      regexp: '^#(local stratum 10).*?$'
+      replace: '\1'
+
   - name: "BASTION-NTP: restart service"
     service: name=chronyd state=restarted enabled=yes
 
