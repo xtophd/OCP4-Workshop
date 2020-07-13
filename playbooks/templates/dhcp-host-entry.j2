@@ -5,7 +5,9 @@
 
     {% if g_useUEFI_HTTP == 'True' %}
     if uefi_http_iso = "true" {
-      filename "http://192.168.123.160:8080/assets/{{ p_cluster }}-{{ p_name }}.iso";
+      log(info, "dhcpd-debug: (uefi http) {{ p_name }} filename = http://{{ p_nextsvr }}:8080/assets/{{ p_cluster }}-{{ p_name }}.iso");
+
+      filename "http://{{ p_nextsvr }}:8080/assets/{{ p_cluster }}-{{ p_name }}.iso";
     }
     {% endif %}
   }

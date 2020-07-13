@@ -67,6 +67,14 @@
       mode: 644
     loop: "{{ groups['myBastion'] }}"
 
+  ## We will need facts about the bastion host below, so save them
+
+  - name: "BASTION-DHCP: determine bastion pub IP"
+    set_fact:
+      f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
+      f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
   - name: "BASTION-DHCP: deploy dhcp group start"
     vars:
       - p_dhcpgroup: "{{ g_clusterName }}"
@@ -78,6 +86,7 @@
   - name: "BASTION-DHCP: deploy host config framents"
     vars:
       - p_item:      "{{ item }}"
+      - p_nextsvr:   "{{ f_bastionIP }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"

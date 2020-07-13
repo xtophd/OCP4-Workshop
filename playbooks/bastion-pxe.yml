@@ -51,7 +51,7 @@
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "8"
 
-  - name: "BASTION-DHCP: package installation (RHEL7)"
+  - name: "BASTION-PXE: package installation (RHEL7)"
     copy: 
       src:   "{{ item }}"
       dest:  "/var/lib/tftpboot"

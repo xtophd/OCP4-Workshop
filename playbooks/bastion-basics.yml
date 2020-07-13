@@ -17,6 +17,6 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-SETUP: install additional packages"
+  - name: "BASTION-BASICS: install additional packages"
     yum: name=tree,wget,bind-utils,tar,net-tools,httpd state=installed
 
