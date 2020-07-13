@@ -15,6 +15,17 @@
       mode: "0755"
       state: directory
 
+  - name: "BASTION-OPENSHIFT: Clean-up ignition,json and auth files"
+    shell:
+      cmd: |
+        if [[ -d "g_credsDir" ]] ; then 
+          rm -f {{ g_credsDir }}/*.ign
+          rm -f {{ g_credsDir }}/*.json
+          rm -rf {{ g_credsDir }}/auth ;
+        fi
+    ignore_errors: yes
+
+
   ########################################
   ## PULL-SECRET
   ##
@@ -115,7 +126,7 @@
       group: root
       mode: 644
 
-  - name: "BASTION-OPENSHIFT: Clean-up ignition directory"
+  - name: "BASTION-OPENSHIFT: Clean-up matchbox ignition directory"
     shell:
       cmd: |
         if [[ -d "/var/lib/matchbox/ignition/" ]] ; then rm -f /var/lib/matchbox/ignition/* ; fi
