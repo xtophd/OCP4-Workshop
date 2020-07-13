@@ -32,7 +32,7 @@
       mode: "0755"
       state: directory
     with_items:
-      - "/var/lib/tftpboot"
+      - "/var/lib/tftpboot/pxelinux"
       - "/var/lib/tftpboot/efi"
 
   - name: "BASTION-PXE: copy ipxe files to tftpboot (RHEL 8)"

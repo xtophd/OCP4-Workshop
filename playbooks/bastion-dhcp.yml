@@ -57,7 +57,6 @@
 
   - name: "BASTION-DHCP: deploy PUBLIC SUBNET config frament"
     vars:
-#      - p_item:      "{{ item }}"
       - p_nextsvr:   "{{ f_bastionIP }}"
       - p_network:   "{{ g_pubNET }}"
       - p_netmask:   "{{ g_pubNM }}"
