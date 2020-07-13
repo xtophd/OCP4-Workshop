@@ -6,7 +6,7 @@
 ##   Declare sources & versions of Openshift
 ##
 
-g_ocp_src:     "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.10"
-g_ocp_install: "openshift-install-linux-4.4.10.tar.gz"
-g_ocp_client:  "openshift-client-linux-4.4.10.tar.gz"
+g_ocp_src:     "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.12"
+g_ocp_install: "openshift-install-linux-4.4.12.tar.gz"
+g_ocp_client:  "openshift-client-linux-4.4.12.tar.gz"
 
