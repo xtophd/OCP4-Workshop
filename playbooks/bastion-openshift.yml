@@ -15,12 +15,13 @@
       mode: "0755"
       state: directory
 
-  - name: "BASTION-OPENSHIFT: Clean-up ignition,json and auth files"
+  - name: "BASTION-OPENSHIFT: Clean-up ignition,json,logs,artifacts and auth files"
     shell:
       cmd: |
         if [[ -d "g_credsDir" ]] ; then 
           rm -f {{ g_credsDir }}/*.ign
           rm -f {{ g_credsDir }}/*.json
+          rm -f {{ g_credsDir }}/.openshift*
           rm -rf {{ g_credsDir }}/auth ;
         fi
     ignore_errors: yes
@@ -125,6 +126,12 @@
       owner: root
       group: root
       mode: 644
+
+  - name: "BASTION-OPENSHIFT: Create a backup of the install-config.yaml"
+    shell:
+      cmd: |
+        cp "{{ g_credsDir }}/install-config.yaml" "{{ g_credsDir }}/install-config.bak"
+
 
   - name: "BASTION-OPENSHIFT: Clean-up matchbox ignition directory"
     shell:
