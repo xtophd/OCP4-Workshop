@@ -31,47 +31,35 @@
   ##   else  this is a manual step user must complete therefore show message and exit
   ##
 
-  - name: "BASTION-OPENSHIFT: stat pull-secret in /root/{{ g_credsDir }}-pull-secret.txt"
-    stat: path="/root/{{ g_clusterName }}-pull-secret.txt"
-    register: test_secret_rootDir
+  - name: "BASTION-OPENSHIFT: maybe find pull-secret in ../config"
+    copy:
+      src:   "../config/pull-secret.txt" 
+      dest:  "{{ g_credsDir }}/pull-secret.txt"
+      mode:  "0644"
+      owner: root
+      group: root
+    ignore_errors: yes
 
-  - name: "LIBVIRT-POSTINSTALL-BASTION: stat pull-secret in ./config/pull-secret.txt"
-    stat: path="../config/pull-secret.txt"
-    register: test_secret_confDir
+  - name: "BASTION-OPENSHIFT: maybe find pull-secret in /root"
+    copy:
+      src:   "/root/{{ g_clusterName }}-pull-secret.txt" 
+      dest:  "{{ g_credsDir }}/pull-secret.txt"
+      mode:  "0644"
+      owner: root
+      group: root
+      remote_src: yes
+    ignore_errors: yes
+
+  - name: "BASTION-OPENSHIFT: confirm pull-secret"
+    stat: path="{{ g_credsDir }}/pull-secret.txt"
+    register: found_secret
 
   - block:
-
       - debug: msg="RETRIEVE PULL-SECRET https://cloud.redhat.com/openshift/install/metal/user-provisioned"
-
       - debug: msg="SAVE PULL-SECRET HERE ./config/pull-secret.txt"
-
-      - fail: msg="MISSING PULL-SECRET"
-
+      - fail:  msg="MISSING PULL-SECRET"
     when: 
-      - test_secret_rootDir.stat.exists == false
-      - test_secret_confDir.stat.exists == false
-
-  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret from /root"
-    when: 
-      - test_secret_rootDir.stat.exists == true
-      - test_secret_confDir.stat.exists == false
-    template:
-      src: "/root/{{ g_clusterName }}-pull-secret.txt"
-      dest: "{{ g_credsDir }}/pull-secret.txt"
-      owner: root
-      group: root
-      mode: 0644
-
-  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret from ./configs"
-    when: 
-      - test_secret_credsDir.stat.exists == false
-      - test_secret_confDir.stat.exists == true
-    template:
-      src: "../config/pull-secret.txt"
-      dest: "{{ g_credsDir }}/pull-secret.txt"
-      owner: root
-      group: root
-      mode: 0644
+      - found_secret.stat.exists == false
 
   ########################################
 
