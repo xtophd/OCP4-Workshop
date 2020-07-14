@@ -31,22 +31,22 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     if exists user-class and option user-class = "iPXE" {
 
-      log (info, "dhcpd-debug: CLIENT METHOD: iPXE http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe");
+      log (info, "dhcpd-debug: CLIENT FILENAME: http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe");
       filename "http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe";
 
     } elsif option client-system-arch = 00:06 {
 
-      log (info, "dhcpd-debug: CLIENT METHOD: chainload ipxe-i386.efi");
+      log (info, "dhcpd-debug: CLIENT FILENAME: ipxe-i386.efi");
       filename "ipxe-i386.efi";
 
     } elsif option client-system-arch = 00:07 or option client-system-arch = 00:09 {
 
-      log (info, "dhcpd-debug: CLIENT METHOD: chainload ipxe-x86_64.efi");
+      log (info, "dhcpd-debug: CLIENT FILENAME: ipxe-x86_64.efi");
       filename "ipxe-x86_64.efi";
 
     } else {
 
-      log (info, "dhcpd-debug: CLIENT METHOD: chainload undionly.kpxe");
+      log (info, "dhcpd-debug: CLIENT FILENAME: undionly.kpxe");
       filename "undionly.kpxe";
     }
   }
@@ -60,17 +60,12 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     log (info, "dhcpd-debug: CLIENT IDENTIFIER: HTTPClient");
 
-    next-server {{ p_nextsvr }};
+    log (info,concat("dhcpd-debug: CLIENT FILENAME: ",
+                     "http://{{ p_nextsvr }}:{{ p_http_port }}/assets/{{g_clusterName}}-", 
+                     host-decl-name, 
+                     ".iso"));
 
-    ## Because I need to provide a custom iso for any host using this method,
-    ## we just set a varilable here and specify the filename in the host section
- 
-    set uefi_http_iso = "true";
-
-    ## Send a little output to log
-    ## log(info, concat ("dhcpd-debug: (uefi http) uefi_http_iso = ", uefi_http_iso));
-
-    log(info, "dhcpd-debug: (uefi http) setting uefi_http_iso = true");
+    filename = concat("http://{{ p_nextsvr }}:{{ p_http_port }}/assets/{{g_clusterName}}-", host-decl-name, ".iso");
 
   }
 {% endif %}
