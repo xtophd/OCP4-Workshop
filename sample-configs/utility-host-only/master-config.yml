@@ -172,18 +172,9 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
 ansible_connection = "local"
 
-h_hwPROF = "kvm_vda" 
-h_rsPROF = "bastion"
-h_ksPROF = "rhel8_lvm"
-
-
 ## -----------------
 
 [myBootstrap:vars]
-
-h_hwPROF = "kvm_vda"
-h_rsPROF = "sml"
-h_ksPROF = "" 
 
 ## h_mBoxDev : default is ''
 ##   If RHCOS is not detecting the right boot device, you can be specific
@@ -200,9 +191,6 @@ h_mBoxNic = "dhcp"
 
 [myMasters:vars]
 
-h_hwPROF = "kvm_vda"
-h_rsPROF = "med"
-h_ksPROF = ""
 h_mBoxDev = "sda"
 h_mBoxNic = "dhcp"
 
@@ -210,9 +198,6 @@ h_mBoxNic = "dhcp"
 
 [myWorkers:vars]
 
-h_hwPROF = "kvm_vda"
-h_rsPROF = "sml"
-h_ksPROF = ""
 h_mBoxDev = "sda"
 h_mBoxNic = "dhcp"
 

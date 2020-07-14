@@ -25,12 +25,14 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
     option vendor-class-identifier "PXEClient";
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
 
+    log (info, "dhcpd-debug: CLIENT IDENTIFIER: PXEClient");
+
     next-server {{ p_nextsvr }};
 
     if exists user-class and option user-class = "iPXE" {
 
-      log (info, "dhcpd-debug: CLIENT METHOD: iPXE http://192.168.123.160:8080/boot.ipxe");
-      filename "http://192.168.123.160:8080/boot.ipxe";
+      log (info, "dhcpd-debug: CLIENT METHOD: iPXE http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe");
+      filename "http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe";
 
     } elsif option client-system-arch = 00:06 {
 
@@ -55,6 +57,8 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     option vendor-class-identifier "HTTPClient";
     match if substring (option vendor-class-identifier, 0, 10) = "HTTPClient";
+
+    log (info, "dhcpd-debug: CLIENT IDENTIFIER: HTTPClient");
 
     next-server {{ p_nextsvr }};
 

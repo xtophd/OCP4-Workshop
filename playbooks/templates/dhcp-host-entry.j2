@@ -6,7 +6,7 @@
 {% if g_useUEFI_HTTP == 'True' %}
       if uefi_http_iso = "true" {
         log(info, "dhcpd-debug: (uefi http) {{ p_name }} filename = http://{{ p_nextsvr }}:8080/assets/{{ p_cluster }}-{{ p_name }}.iso");
-        filename "http://{{ p_nextsvr }}:8080/assets/{{ p_cluster }}-{{ p_name }}.iso";
+        filename "http://{{ p_nextsvr }}:{{ p_http_port }}/assets/{{ p_cluster }}-{{ p_name }}.iso";
       }
 {% endif %}
     }
