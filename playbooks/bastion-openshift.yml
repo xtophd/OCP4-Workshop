@@ -9,21 +9,19 @@
 - hosts: myBastion
   tasks:
 
+  - name: "BASTION-OPENSHIFT: Clean-up openshift installation artifacts"
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - "{{ g_credsDir }}"
+      - "/root/.kube"
+
   - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
     file:
       path: "{{ g_credsDir }}"
       mode: "0755"
       state: directory
-
-  - name: "BASTION-OPENSHIFT: Clean-up ignition,json,logs,artifacts and auth files"
-    file:
-      path: "{{ g_credsDir }}/{{ item }}"
-      state: absent
-    with_items:
-      - "*.ign"
-      - "/*.json"
-      - "/.openshift*"
-      - "/auth"
 
   ########################################
   ## PULL-SECRET
@@ -33,11 +31,11 @@
   ##   else  this is a manual step user must complete therefore show message and exit
   ##
 
-  - name: "BASTION-OPENSHIFT: stat pull-secret in {{ g_credsDir }}"
-    stat: path="{{ g_credsDir }}/pull-secret.txt"
-    register: test_secret_credsDir
+  - name: "BASTION-OPENSHIFT: stat pull-secret in /root/{{ g_credsDir }}-pull-secret.txt"
+    stat: path="/root/{{ g_clusterName }}-pull-secret.txt"
+    register: test_secret_rootDir
 
-  - name: "LIBVIRT-POSTINSTALL-BASTION: stat pull-secret in ./config"
+  - name: "LIBVIRT-POSTINSTALL-BASTION: stat pull-secret in ./config/pull-secret.txt"
     stat: path="../config/pull-secret.txt"
     register: test_secret_confDir
 
@@ -53,13 +51,24 @@
       - test_secret_credsDir.stat.exists == false
       - test_secret_confDir.stat.exists == false
 
-  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret"
+  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret from /root"
+    when: 
+      - test_secret_rootDir.stat.exists == true
+      - test_secret_confDir.stat.exists == false
+    template:
+      src: "/root/{{ g_clusterName }}-pull-secret.txt"
+      dest: "{{ g_credsDir }}/pull-secret.txt"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret from ./configs"
     when: 
       - test_secret_credsDir.stat.exists == false
       - test_secret_confDir.stat.exists == true
     template:
       src: "../config/pull-secret.txt"
-      dest: "{{ g_credsDir }}"
+      dest: "{{ g_credsDir }}/pull-secret.txt"
       owner: root
       group: root
       mode: 0644
