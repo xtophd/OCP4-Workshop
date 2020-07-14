@@ -48,7 +48,7 @@
       - fail: msg="MISSING PULL-SECRET"
 
     when: 
-      - test_secret_credsDir.stat.exists == false
+      - test_secret_rootDir.stat.exists == false
       - test_secret_confDir.stat.exists == false
 
   - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret from /root"

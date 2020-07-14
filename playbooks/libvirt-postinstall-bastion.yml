@@ -37,7 +37,7 @@
   - name: "LIBVIRT-POSTINSTALL-BASTION: deploy pull secret"
     template:
       src: "../config/pull-secret.txt"
-      dest: "{{ g_credsDir }}"
+      dest: "/root/{{ g_clusterName }}-pull-secret.txt"
       owner: root
       group: root
       mode: 0644
