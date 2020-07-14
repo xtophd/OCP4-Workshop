@@ -1,8 +1,6 @@
 
 subnet {{ p_network }} netmask {{ p_netmask }} {
 
-    authoritive;  
-
     option domain-name         "{{ p_cluster }}.{{ p_domain }}";
     option domain-name-servers {{ p_dns }};
     option routers             {{ p_gateway }};
@@ -18,11 +16,9 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
        log (info, concat ("dhcpd-debug: CLIENT MAC: ",      binary-to-ascii (16, 8, ":", substring (hardware, 1, 6))));
     }
 
-
 {% if g_usePXE == 'True' %}
   class "pxeclients" {	
 
-    option vendor-class-identifier "PXEClient";
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
 
     log (info, "dhcpd-debug: CLIENT IDENTIFIER: PXEClient");
@@ -31,6 +27,7 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
 
     if exists user-class and option user-class = "iPXE" {
 
+      log (info, "dhcpd-debug: CLIENT USER-CLASS: iPXE");
       log (info, "dhcpd-debug: CLIENT FILENAME: http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe");
       filename "http://{{ p_nextsvr }}:{{ p_http_port }}/boot.ipxe";
 
