@@ -67,7 +67,7 @@ git clone http://github.com/xtophd/OCP4-Workshop
 
 === Create Config Files
 
-You can use a sample-config to start this process.  Please note that in this example we are using a NAT example.
+You can use a sample-config to start this process.  Please note that in this example we are using a "utility-host-only" template.
 
 ----
 cd ./OCP4-Workshop/config
