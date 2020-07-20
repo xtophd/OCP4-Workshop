@@ -13,16 +13,11 @@ ifdef::env-github[]
 endif::[]
 :imagesdir: ./_include/_images/
 
-
-= DO NOT USE THIS PROJECT YET
-
-NOTE: *THIS PROJECT IS IN ALPHA.  DOCUMENTATION WILL BE UPDATED AFTER BLUEPRINT IS WORKING*
-
-= DO NOT USE THIS PROJECT YET
+NOTE: *ALTHOUGH THIS PROJECT IS FOCUSED ON DELIVERING AN OPENSHIFT WORKSHOP FOR EDUCATIONAL PURPOSED, THE PLAYBOOKS CAN BE USED TO AID INSTALLATION OF OPENSHIFT IN MANY DIFFERENT ENVIRONEMNTS*
 
 = Usage
 
-NOTE:  This project and playbooks strive to mimic the hands-on UPI approach to deploying a Openshift cluster.  Shell commands are often used in preference to otherwise fanstastic ansible modules in order to preserve the steps outlined in the actual installation guide.
+NOTE:  This "workshop" project and playbooks strive to mimic the hands-on UPI approach to deploying an Openshift cluster.  Shell commands are often used in preference to otherwise fanstastic ansible modules in order to preserve the steps outlined in the actual installation guide.
 
 
 Default architecture is 7 systems:
@@ -35,7 +30,7 @@ At the completion of the install, the bootstrap node has served it's purpose and
 
 == Utility-Host-Only Services
 
-Deploying Openshift in an automated way depends on typical network services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
+Deploying Openshift in an automated way typically depends on traditional network services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
 
 This section describes the steps to configuring the utility server using RHEL 8.
 
@@ -108,7 +103,7 @@ bash prepare-ocp4-workshop.sh all
 
 Artifacts from the build will be in /root/ocp-<clustername>
 
-Authtority files will be in /root/ocp-<clustername>/auth
+Authority files will be in /root/ocp-<clustername>/auth
 
 
 == LIBVIRT/KVM Host with OCP as VMs
@@ -121,18 +116,19 @@ dhcp, pxe don't conflict with public network
 it's a real cloud, ie: you get ingress through the haproxy loadbalancer
 
 The bastion host is built from DVD and post-configured with ansible plays to enable:
-dns
-dhcp
-pxe
-matchbox
-nfs for persistent storage (not supported in PROD, but works for POC)
-openshift install/ignition generation
+
+  * dns
+  * dhcp
+  * pxe
+  * matchbox
+  * nfs for persistent storage (not supported in PROD, but works for POC)
+  * openshift install/ignition generation
 
 Lastly, these are default configurations on the virt host but can be changed:
 
-vm images will go into /home/virt-images
-iso images will got into /home/iso
-network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
+  * vm images will go into /home/virt-images
+  * iso images will got into /home/iso
+  * network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
 
 Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
