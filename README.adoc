@@ -21,6 +21,7 @@ NOTE:  This "workshop" project and playbooks strive to mimic the hands-on UPI ap
 
 
 Default architecture is 7 systems:
+
   * bastion - utility vm
   * bootstrap - ocp installation provisioner
   * masters-{0,1,2}
