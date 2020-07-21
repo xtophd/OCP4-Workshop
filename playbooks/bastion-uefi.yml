@@ -82,8 +82,8 @@
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_storage:   "{{ hostvars[item]['h_mBoxDev'] | default ('sda')  }}"
-      - p_network:   "{{ hostvars[item]['h_mBoxNic'] | default ('dhcp') }}"
+      - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
+      - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
@@ -95,8 +95,8 @@
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_storage:   "{{ hostvars[item]['h_mBoxDev'] | default ('sda')  }}"
-      - p_network:   "{{ hostvars[item]['h_mBoxNic'] | default ('dhcp') }}"
+      - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
+      - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'

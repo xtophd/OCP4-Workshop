@@ -161,6 +161,23 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
 ##
 ## ----------------------------------------
+##
+## h_rhcosDEV : default is 'sda'
+##    If RHCOS is not detecting the right boot device, you can be specific
+##    by modifying this paramenter (examples: sda, vda, nvmen0)
+##
+## h_rhcosNIC : default is 'dhcp'
+##    If RHCOS is not detecting the right network device, you can be specific
+##    by modifying this paramenter (examples: eth0:dhcp, ens3:dhcp, ens192:dhcp)
+##
+## ** NOTE **  You can also declare these in the [hostgroup:vars] or for each individual host
+##
+
+h_rhcosDEV = "vda"
+h_rhcosNIC = "dhcp"
+
+##
+## ----------------------------------------
 ## HOSTGROUP VARS
 
 [myVirthost:vars]
@@ -184,16 +201,6 @@ h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = "" 
 
-## h_mBoxDev : specify the root disk for rhcos
-##             if left undefined, default is 'sda'
-## h_mBoxNic : specify the network for rhcos
-##             if left undefined, default is 'dhcp'
-##             other examples: 'eno1:dhcp'
-##                             
-
-h_mBoxDev = "vda"
-h_mBoxNic = "dhcp"
-
 ## -----------------
 
 [myMasters:vars]
@@ -202,9 +209,6 @@ h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
 
-h_mBoxDev = "vda"
-h_mBoxNic = "dhcp"
-
 ## -----------------
 
 [myWorkers:vars]
@@ -212,9 +216,6 @@ h_mBoxNic = "dhcp"
 h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = ""
-
-h_mBoxDev = "vda"
-h_mBoxNic = "dhcp"
 
 ##
 ## ----------------------------------------

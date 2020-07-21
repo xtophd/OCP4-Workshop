@@ -158,6 +158,25 @@ g_http_port = "8008"
 
 ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
+ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+
+##
+## ----------------------------------------
+##
+## h_rhcosDEV : default is 'sda'
+##    If RHCOS is not detecting the right boot device, you can be specific
+##    by modifying this paramenter (examples: sda, vda, nvmen0)
+##
+## h_rhcosNIC : default is 'dhcp'
+##    If RHCOS is not detecting the right network device, you can be specific
+##    by modifying this paramenter (examples: eth0:dhcp, ens3:dhcp, ens192:dhcp)
+##
+## ** NOTE **  You can also declare these in the [hostgroup:vars] or for each individual host
+##
+
+h_rhcosDEV = "sda"
+h_rhcosNIC = "dhcp"
+
 ##
 ## ----------------------------------------
 ## HOSTGROUP VARS
@@ -176,50 +195,33 @@ ansible_connection = "local"
 
 [myBootstrap:vars]
 
-## h_mBoxDev : default is ''
-##   If RHCOS is not detecting the right boot device, you can be specific
-##   by modifying this paramenter (examples: sda, vda, nvmen0)
-
-## h_mBoxNic : default is 'dhcp'
-##   If RHCOS is not detecting the right network device, you can be specific
-##   by modifying this paramenter (examples: eth0, ens3, ens192)
-
-h_mBoxDev = "sda"
-h_mBoxNic = "dhcp"
-
 ## -----------------
 
 [myMasters:vars]
 
-h_mBoxDev = "sda"
-h_mBoxNic = "dhcp"
-
 ## -----------------
 
 [myWorkers:vars]
-
-h_mBoxDev = "sda"
-h_mBoxNic = "dhcp"
 
 ##
 ## ----------------------------------------
 ## HOST VARS
 
 [myVirthost]
-##virthost  h_pubMAC="" h_pubIP=""
+## This config is for utility-host-only, no virthost to declare
 
 [myBastion]
-bastion   h_pubMAC="00:1a:4a:16:01:57" h_pubIP="192.168.1.150" 
+bastion  h_pubMAC="00:1a:4a:16:01:57" h_pubIP="192.168.1.150" 
 
 [myBootstrap]
-node1         h_pubMAC="00:1a:4a:16:01:51" h_pubIP="192.168.1.151"
+node1    h_pubMAC="00:1a:4a:16:01:51" h_pubIP="192.168.1.151"
 
 [myMasters]
-node2  h_etcdName="etcd-0" h_pubMAC="00:1a:4a:16:01:52" h_pubIP="192.168.1.152"
-node3  h_etcdName="etcd-1" h_pubMAC="00:1a:4a:16:01:56" h_pubIP="192.168.1.153"
-node4  h_etcdName="etcd-2" h_pubMAC="00:1a:4a:16:01:58" h_pubIP="192.168.1.154"
+node2    h_pubMAC="00:1a:4a:16:01:52" h_pubIP="192.168.1.152" h_etcdName="etcd-0"
+node3    h_pubMAC="00:1a:4a:16:01:56" h_pubIP="192.168.1.153" h_etcdName="etcd-1"
+node4    h_pubMAC="00:1a:4a:16:01:58" h_pubIP="192.168.1.154" h_etcdName="etcd-2"
 
 [myWorkers]
-node5  h_pubMAC="00:1a:4a:16:01:59" h_pubIP="192.168.1.155"
-node6  h_pubMAC="00:1a:4a:16:01:5d" h_pubIP="192.168.1.156"
+node5    h_pubMAC="00:1a:4a:16:01:59" h_pubIP="192.168.1.155"
+node6    h_pubMAC="00:1a:4a:16:01:5d" h_pubIP="192.168.1.156"
 
