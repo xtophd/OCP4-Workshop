@@ -158,8 +158,6 @@ g_http_port = "8008"
 
 ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
-ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
-
 ##
 ## ----------------------------------------
 ##
