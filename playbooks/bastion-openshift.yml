@@ -2,20 +2,33 @@
 ##   Christoph Doerbeck
 ##
 ## Summary:
-##   Downloads and unpacks software /root for OCP installation
+##   Downloads and unpacks software for OCP installation
 ##
 
 ---
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-OPENSHIFT: Clean-up openshift installation artifacts"
+#  - name: "BASTION-OPENSHIFT: Clean-up openshift installation artifacts"
+#    file:
+#      path: "{{ item }}"
+#      state: absent
+#    with_items:
+#      - "{{ g_credsDir }}"
+#      - "/root/.kube"
+
+  - name: "BASTION-OPENSHIFT: Back-up openshift installation artifacts in {{ g_credsDir }}"
+    shell:
+      cmd: |
+        if [[ -d "{{ g_credsDir }}" ]]; 
+          then mv -f "{{ g_credsDir }}" "{{ g_credsDir }}".`date +"%Y%m%d-%R"`
+        fi
+      removes: "{{ g_credsDir }}"
+
+  - name: "BASTION-OPENSHIFT: Clean-up kube artifacts in /root/.kube"
     file:
-      path: "{{ item }}"
+      path: "/root/.kube"
       state: absent
-    with_items:
-      - "{{ g_credsDir }}"
-      - "/root/.kube"
 
   - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
     file:
