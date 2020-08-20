@@ -1,0 +1,56 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+##
+
+
+---
+
+##
+## Run some tests
+##
+
+- import_playbook: bastion-tests.yml
+
+- hosts: myBastion
+  tasks:
+
+##
+## Deploy bootstrap
+##
+
+  - name: "DEPLOYMENT MONITOR: TIME TO DEPLOY BOOTSTRAP and test for config-server port"
+    wait_for:
+      host: "{{ hostvars[item]['h_pubIP'] }}"
+      connect_timeout: 5
+      delay: 3
+      port: "22623"
+      sleep: 1
+      state: started
+      timeout: 1800 
+    loop: "{{ groups['myBootstrap'] }}"
+
+
+##
+## Deploy masters
+##
+
+  - name: "DEPLOYMENT MONITOR: TIME TO DEPLOY MASTERS and test for config-server port"
+    wait_for:
+      host: "{{ hostvars[item]['h_pubIP'] }}"
+      connect_timeout: 5
+      delay: 3
+      port: 22623
+      sleep: 5
+      state: started
+      timeout: 1800
+    loop: "{{ groups['myMasters'] }}"
+
+##
+## Deploy workers (use general finish playbook)
+##
+
+- import_playbook: bastion-openshift-finish.yml
