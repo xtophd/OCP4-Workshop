@@ -20,26 +20,6 @@
       cmd: |
         if [[ -d "/etc/dnsmasq.d" ]] ; then rm -rf /etc/dnsmasq.d/* ; fi
 
-  - name: "BASTION-DNS: cleanup conflicting IPs in /etc/hosts"
-    lineinfile:
-      dest:   "/etc/hosts"
-      regexp: "{{ hostvars[item]['h_pubIP'] }} .*$"
-      state:  absent
-    loop: "{{ groups['all'] }}"
-
-  - name: "BASTION-DNS: cleanup conflicting names in /etc/hosts"
-    lineinfile:
-      dest:   "/etc/hosts"
-      regexp: ".*{{ item }}.{{ g_pubFQDN }}.*"
-      state:  absent
-    loop: "{{ groups['all'] }}"
-
-  - name: "BASTION-DNS: add comment to /etc/hosts"
-    lineinfile:
-      dest:   "/etc/hosts"
-      line: "\n## *NOTE* entries for openshift cluster are in /etc/dnsmasq.d/\n"
-      state:  present
-
   - name: "BASTION-DNS: deploy standard options"
     vars: 
       - p_nameServer:  "{{ g_pubDNS }}"
@@ -48,25 +28,25 @@
       dest: "/etc/dnsmasq.d/30-standard-opts.conf"
       owner: root
 
-  - name: "BASTION-DNS: deploy host configs"
-    vars: 
-      - p_item:     "{{ item }}"
-      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
-      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
-      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
-      - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
-      - p_netmask:  "{{ g_pubNM }}"
-      - p_gateway:  "{{ g_pubGW'] }}"
-      - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
-    when: g_publicNet == "True" 
-    template:
-      src: "dnsmasq-host-entry.j2"
-      dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
-      owner: root
-      group: root
-      mode: 644
-    loop: "{{ groups['all'] }}"
+#  - name: "BASTION-DNS: deploy host configs"
+#    vars: 
+#      - p_item:     "{{ item }}"
+#      - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
+#      - p_addr:     "{{ hostvars[item]['h_pubIP'] }}"
+#      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
+#      - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
+#      - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
+#      - p_netmask:  "{{ g_pubNM }}"
+#      - p_gateway:  "{{ g_pubGW'] }}"
+#      - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
+#    when: g_publicNet == "True" 
+#    template:
+#      src: "dnsmasq-host-entry.j2"
+#      dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
+#      owner: root
+#      group: root
+#      mode: 644
+#    loop: "{{ groups['all'] }}"
 
   - name: "BASTION-DNS: deploy ETCD configs"
     vars: 
@@ -111,8 +91,39 @@
       owner: root
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "BASTION-DNS: restart service"
-    service: name=dnsmasq state=restarted enabled=yes
+  - name: "BASTION-DNS: cleanup conflicting IPs in /etc/hosts"
+    lineinfile:
+      dest:   "/etc/hosts"
+      regexp: "{{ hostvars[item]['h_pubIP'] }} .*$"
+      state:  absent
+    loop: "{{ groups['all'] }}"
+
+  - name: "BASTION-DNS: cleanup conflicting names in /etc/hosts"
+    lineinfile:
+      dest:   "/etc/hosts"
+      regexp: ".*{{ item }}.{{ g_pubFQDN }}.*"
+      state:  absent
+    loop: "{{ groups['all'] }}"
+
+  - name: "BASTION-DNS: add entries in /etc/hosts"
+    lineinfile:
+      dest:   "/etc/hosts"
+      line:   "{{ hostvars[item]['h_pubIP'] }} {{ item }}.{{ g_pubFQDN }}"
+      state:  present
+    when: hostvars[item]['h_pubIP'] is defined
+    loop: "{{ groups['all'] }}"
+
+  - name: "BASTION-DNS: add comment to /etc/hosts"
+    lineinfile:
+      dest:   "/etc/hosts"
+      line: "\n## NOTE additional entries for openshift cluster are in /etc/dnsmasq.d/\n"
+      insertbefore: BOF
+      state:  present
+
+  - name: "BASTION-DNS: sig-hup dnsmasq"
+    shell:
+      cmd: |
+        pkill -hup dnsmasq
 
   - name: "BASTION-DNS: add firewalld service rules"
     firewalld:
@@ -121,18 +132,23 @@
       permanent: yes
       state: enabled
 
-  ##
-  ## This will loop through all ethernet interfaces and set DNS to localhost
-  ##
 
-  - name: "BASTION-DNS: fix resolv.conf to go localhost"
-    shell:
-      cmd: |
-        nmcli con modify {{ item }} ipv4.dns 127.0.0.1
-        if [[ -e /etc/sysconfig/network-scripts/ifcfg-{{item}} ]] ; then
-          ifup {{ item }} 
-        fi
-    when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
-    with_items:
-      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+  - name: "BASTION-DNS: restart service"
+    service: name=dnsmasq state=restarted enabled=yes
+
+
+#  ##
+#  ## This will loop through all ethernet interfaces and set DNS to localhost
+#  ##
+#
+#  - name: "BASTION-DNS: fix resolv.conf to go localhost"
+#    shell:
+#      cmd: |
+#        nmcli con modify {{ item }} ipv4.dns 127.0.0.1
+#        if [[ -e /etc/sysconfig/network-scripts/ifcfg-{{item}} ]] ; then
+#          ifup {{ item }} 
+#        fi
+#    when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
+#    with_items:
+#      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
 
