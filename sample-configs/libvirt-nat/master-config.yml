@@ -162,7 +162,7 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 ##
 ## ----------------------------------------
 ##
-## h_rhcosDEV : default is 'sda'
+## h_rhcosDEV : default is 'vda'
 ##    If RHCOS is not detecting the right boot device, you can be specific
 ##    by modifying this paramenter (examples: sda, vda, nvmen0)
 ##
@@ -170,17 +170,18 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 ##    If RHCOS is not detecting the right network device, you can be specific
 ##    by modifying this paramenter (examples: eth0:dhcp, ens3:dhcp, ens192:dhcp)
 ##
-## h_rhcosUSB : default is True
-##    Some baremetal nodes (ie: HP DL360) have usb storage that confuses kernel
-##    and moves the boot disk around.  Set this to 'False' to disable usb at 
-##    the kernel
+## h_rhcosUSBdelay : default is '0'
+##    Some baremetal nodes (ie: HP DL360) have usb storage cards in the LOM
+##    that confuses kernel and moves the boot disk around (maybe it's sda, maybe
+##    next time it's sdb).  Set this to delay the USB storage scan by X seconds.
+##    A good value might be h_rhcosUSBdelay = '10'
 ##
 ## ** NOTE **  You can also declare these in the [hostgroup:vars] or for each individual host
 ##
 
-h_rhcosDEV = "vda"
-h_rhcosNIC = "dhcp"
-h_rhcosUSB = True
+h_rhcosDEV      = "vda"
+h_rhcosNIC      = "dhcp"
+h_rhcosUSBdelay = "0"
 
 ##
 ## ----------------------------------------
@@ -214,7 +215,7 @@ h_ksPROF = ""
 h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
-h_rhcosUSB = False
+h_rhcosUSBdelay = "10"
 
 ## -----------------
 
