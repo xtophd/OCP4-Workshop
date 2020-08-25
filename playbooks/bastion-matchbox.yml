@@ -185,8 +185,9 @@
       - p_addr:     "{{ f_bastionIP }}"
       - p_port:     "{{ g_matchbox_port }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
-      - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
+      - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
+      - p_usb:      "{{ hostvars[item]['h_rhcosUSB'] | default (True)   }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"
@@ -204,6 +205,7 @@
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
+      - p_usb:      "{{ hostvars[item]['h_rhcosUSB'] | default (True)   }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"
@@ -221,6 +223,7 @@
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
+      - p_usb:      "{{ hostvars[item]['h_rhcosUSB'] | default (True)   }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"

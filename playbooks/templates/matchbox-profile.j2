@@ -12,6 +12,9 @@
     "rd.neednet=1",
     "console=tty0",
     "console=ttyS0",
+{% if p_usb == False %}
+    "nousb",
+{% endif %}
     "coreos.inst=yes",
     "coreos.inst.install_dev={{ p_storage }}",
     "coreos.inst.image_url=http://{{ p_addr }}:8080/assets/{{ g_rhcos_bios }}",
