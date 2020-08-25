@@ -215,8 +215,6 @@ h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
 
-h_rhcosUSB = False
-
 ## -----------------
 
 [myWorkers:vars]
