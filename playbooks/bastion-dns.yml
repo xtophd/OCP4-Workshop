@@ -117,6 +117,11 @@
         ##
       state:  present
 
+  - name: "BASTION-DNS: list interfaces"
+    debug: "interface = {{ item }}" 
+    with_items:
+      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+
   - name: "BASTION-DNS: adjust ether interfaces so resolv.conf points to localhost"
     shell:
       cmd: |

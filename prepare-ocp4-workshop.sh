@@ -54,9 +54,9 @@ case "$1" in
         time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
         ;;
 
-    "monitor")
-        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-monitor.yml"
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-monitor.yml
+    "watch")
+        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-watch.yml"
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-watch.yml
         ;;
 
     *)
