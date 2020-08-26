@@ -15,30 +15,32 @@
 
 - import_playbook: bastion-tests.yml
 
+
 - hosts: myBastion
   tasks:
 
-##
-## Test masters - if  you interrupt this playbook, restarting it could hang on the bootstrap
-##                since config-server shuts down after masters are online.  Thus, check if
-##                masters are online first, and only test bootstrap if needed
-##
+  ##
+  ## Test masters - if  you interrupt this playbook, restarting it could hang on the bootstrap
+  ##                since config-server shuts down after masters are online.  Thus, check if
+  ##                masters are online first, and only test bootstrap if needed
+  ##
 
   - name: "DEPLOYMENT MONITOR: Test if MASTERS already provide config-server service"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
-      connect_timeout: 5
+      connect_timeout: 2
       delay: 0
       port: 22623
-      sleep: 3
+      sleep: 0
       state: started
-      timeout: 15
+      timeout: 6
     loop: "{{ groups['myMasters'] }}"
+    ignore_errors: yes
     register: masters_online
 
-##
-## Deploy bootstrap
-##
+  ##
+  ## Deploy bootstrap
+  ##
 
   - name: "DEPLOYMENT MONITOR: Time to DEPLOY BOOTSTRAP and test for config-server port"
     wait_for:
@@ -50,11 +52,11 @@
       state: started
       timeout: 1800 
     loop: "{{ groups['myBootstrap'] }}"
-    when: masters_online == False
+    when: masters_online is failed
 
-##
-## Deploy masters
-##
+  ##
+  ## Deploy masters
+  ##
 
   - name: "DEPLOYMENT MONITOR: Time to DEPLOY MASTERS and test for config-server port"
     wait_for:
@@ -67,9 +69,9 @@
       timeout: 1800
     loop: "{{ groups['myMasters'] }}"
 
-##
-## Deploy workers 
-##
+  ##
+  ## Deploy workers 
+  ##
 
   - name: "DEPLOYMENT MONITOR: Time to DEPLOY WORKERS and test for ssh port"
     wait_for:
@@ -83,7 +85,7 @@
     loop: "{{ groups['myWorkers'] }}"
 
 ##
-## Now just watch for the deployment to finish
+## Now just watch for the deployment to finish using the regular finish playbook
 ##
 
 - import_playbook: bastion-openshift-finish.yml
