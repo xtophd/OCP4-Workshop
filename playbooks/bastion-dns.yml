@@ -118,7 +118,8 @@
       state:  present
 
   - name: "BASTION-DNS: list interfaces"
-    debug: "interface = {{ item }}" 
+    debug: 
+      msg: "interface = {{ item }}" 
     with_items:
       - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
 
