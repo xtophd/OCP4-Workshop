@@ -19,6 +19,24 @@
   tasks:
 
 ##
+## Test masters - if  you interrupt this playbook, restarting it could hang on the bootstrap
+##                since config-server shuts down after masters are online.  Thus, check if
+##                masters are online first, and only test bootstrap if needed
+##
+
+  - name: "DEPLOYMENT MONITOR: Test if MASTERS already provide config-server service"
+    wait_for:
+      host: "{{ hostvars[item]['h_pubIP'] }}"
+      connect_timeout: 5
+      delay: 0
+      port: 22623
+      sleep: 3
+      state: started
+      timeout: 15
+    loop: "{{ groups['myMasters'] }}"
+    register: masters_online
+
+##
 ## Deploy bootstrap
 ##
 
@@ -26,13 +44,13 @@
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
-      delay: 3
+      delay: 0
       port: "22623"
-      sleep: 1
+      sleep: 5
       state: started
       timeout: 1800 
     loop: "{{ groups['myBootstrap'] }}"
-
+    when: masters_online == False
 
 ##
 ## Deploy masters
@@ -42,7 +60,7 @@
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
-      delay: 3
+      delay: 0
       port: 22623
       sleep: 5
       state: started
@@ -57,9 +75,9 @@
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
-      delay: 15
+      delay: 0
       port: 22
-      sleep: 1
+      sleep: 5
       state: started
       timeout: 1800
     loop: "{{ groups['myWorkers'] }}"
