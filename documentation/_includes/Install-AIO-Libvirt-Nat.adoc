@@ -24,13 +24,13 @@ endif::[]
 
 === Register system
 
-However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7.
+However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7 and RHEL 8.2.
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-RHEL 8.1 would probably also work, but not confirmed yet.
+RHEL 8.1 also works.
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
@@ -40,10 +40,10 @@ RHEL 8.1 would probably also work, but not confirmed yet.
 
 NOTE: this process requires and is tested with ansible 2.9
 
-Besides an @Base installation and you will need httpd, git and ansible 2.9.  Once installed, the playbooks will take care of the rest.
+Besides an @Base installation and you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
 ----
-yum -y install httpd,git,ansible
+yum -y install git,ansible
 ----
 
 === Clone the project
@@ -64,14 +64,16 @@ copy ../config-samples/libvirt-nat .
 
 === Make Customizations
 
-Any changes you make to the files in './config/' will be left untouched in the event you update the repo.
+Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.
 
 === Retrieve RHEL 8.1 DVD
 
-----
-mkdir -p /var/www/html/iso/
+The utility server currently depends on a RHEL 8.1 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
 
-wget -O /var/www/html/iso/rhel-8.1-x86_64-dvd.iso "<URL>" 
+----
+mkdir -p /home/iso/
+
+wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
 ----
 
 === Retrieve Openshift Pull Secret
@@ -83,15 +85,9 @@ Using a browser, go to redhat.com and copy link to the pull-secret
 You can either:
 
     - download the pull-secret.txt and copy it to the virthost system, or
-    - "copy" the pull secret and paste it into the file
+    - "copy" the pull secret and paste it into the file ./config/pull-secret.txt
     
-Either way, /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
-
-=== /etc/hosts entry
-
-NOTE: This is required for numerous tasks including the monitoring of deployment progress.  This should be automated soon
-
-Add a entries for the all nodes in cluster to /etc/hosts using the fqdn and ip provided in the master-config.yml
+The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
 
 === Final Check List
 
@@ -102,10 +98,11 @@ Add a entries for the all nodes in cluster to /etc/hosts using the fqdn and ip p
     - Is the Openshift UPI Pull Secret downloaded and stored in the right place
     - Did you install (upgrade) Ansible 2.9
 
+
 == Installation
 
 ----
-bash setup-libvirt.sh all
+bash prepare-kvm-host.sh all
 ----
 
 == Post Installation
