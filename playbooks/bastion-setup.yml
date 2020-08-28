@@ -83,6 +83,10 @@
   tags:
     - openshift
 
+- import_playbook: workshop.yml
+  tags:
+    - workshop
+
 ##
 ## The special 'never' tag enforces that this is never run unless 'finish' is specified
 ##

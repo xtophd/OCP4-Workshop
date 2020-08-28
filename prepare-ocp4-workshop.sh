@@ -35,19 +35,20 @@ case "$1" in
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml
         ;;
          
-    "basics"    | \
-    "cockpit"   | \
-    "dns"       | \
-    "dhcp"      | \
-    "pxe"       | \
-    "uefi"       | \
-    "nfs"       | \
-    "ntp"       | \
-    "haproxy"   | \
-    "haproxy_vip"   | \
-    "matchbox"  | \
-    "httpd"     | \
-    "openshift" | \
+    "basics"      | \
+    "cockpit"     | \
+    "dns"         | \
+    "dhcp"        | \
+    "pxe"         | \
+    "uefi"        | \
+    "nfs"         | \
+    "ntp"         | \
+    "haproxy"     | \
+    "haproxy_vip" | \
+    "matchbox"    | \
+    "httpd"       | \
+    "openshift"   | \
+    "workshop"    | \
     "finish")
 
         echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml"

@@ -3,7 +3,7 @@
 - hosts: myBastion
   tasks:
 
-  - name: "WORKSHOP: install cheat-(scripts) in /var/tmp"
+  - name: "WORKSHOP: install workshop-(scripts) in /usr/local/bin"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -11,5 +11,35 @@
       group: root
       mode: 0744
     with_items:
-      - {src: 'cheat-healthcheck.j2',                dest: '/usr/local/bin/cheat-healthcheck.sh'}
+      - {src: 'workshop-healthcheck.j2',      dest: '/usr/local/bin/workshop-healthcheck.sh'}
+      - {src: 'workshop-config-registry.j2',  dest: '/usr/local/bin/workshop-config-registry.sh'}
+      - {src: 'workshop-config-identity.j2',  dest: '/usr/local/bin/workshop-config-identity.sh'}
+
+
+
+  - name: "WORKSHOP: install workshop-(yaml's) in /usr/local/etc"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0744
+    with_items:
+      - {src: 'workshop-yaml-identity.j2',      dest: '/usr/local/etc/workshop-identity.yaml'}
+
+    ##
+    ## This YAML needs the name of the bastion host
+    ##
+
+  - name: "WORKSHOP: deploy workshop-registryPV.yaml in /usr/local/etc"
+    vars:
+      - p_server: "{{ item }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_path:   "{{ g_nfsExport }}"
+    template:
+      src: "workshop-yaml-registryPV.j2"
+      dest: "/usr/local/etc/workshop-registryPV.yaml"
+      owner: root
+      group: root
+      mode: 0744
+    loop: "{{ groups['myBastion'] }}"
 
