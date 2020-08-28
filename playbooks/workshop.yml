@@ -1,0 +1,15 @@
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "WORKSHOP: install cheat-(scripts) in /var/tmp"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0744
+    with_items:
+      - {src: 'cheat-healthcheck.j2',                dest: '/usr/local/bin/cheat-healthcheck.sh'}
+
