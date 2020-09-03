@@ -171,17 +171,21 @@ Still on virt host:
   * cd /usr/local/src
   * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 
-=== Edit the Config Files
+=== Create the Config Files
 
 WARNING:  You must edit the config files for your deployment.  There is no magic installation.
 
-==== Decide on NAT (prviate) vs. Bridge (public) network configs
+==== For NAT (prviate) Netowrk design
 
   * cd /usr/local/src/OCP4-Workshop/config
-  * ln -s ../sample-configs/libvirt-nat/* .
-  OR
-  * ln -s ../sample-configs/libvirt-bridge/* .
+  * cp ../sample-configs/libvirt-nat/* .
+  
+==== For BRIDGE (public) Network design
+  
+  * cd /usr/local/src/OCP4-Workshop/config
+  * cp ../sample-configs/libvirt-bridge/* .
 
+=== Edit the Config Files
 
 Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
 in particular you need to:
