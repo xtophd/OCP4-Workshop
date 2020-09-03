@@ -115,7 +115,7 @@ Artifacts from the build will be in /root/ocp-<clustername>
 Authority files will be in /root/ocp-<clustername>/auth
 
 
-== LIBVIRT/KVM Host with OCP as VMs (NAT)
+== LIBVIRT/KVM Host with OCP as VMs
 
 If you plan to deploy OCP in a libvirt/kvm based environemnts, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
 
