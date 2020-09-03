@@ -145,7 +145,7 @@ Lastly, these are default configurations on the virt host but can be changed:
 Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
 
-=== Prequisits
+===  Prerequisites
 
   * RHEL 7.7+ or 8.0+
   * installed packages: git, ansible 2.9
@@ -164,14 +164,24 @@ On your virt host:
   * cd /home/iso
   * <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
 
+=== Git Clone Repo
+
 Still on virt host:
 
   * cd /usr/local/src
   * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
-  * cd /usr/local/src/OCP4-Workshop
-  * cd config
+  
+=== Decide on NAT (prviate) vs. Bridge (public) network configs
+
+  * cd /usr/local/src/OCP4-Workshop/config
   * ln -s ../sample-configs/libvirt-nat/* .
+  
+=== Place the Pull Secret
+
+  * cd /usr/local/src/OCP4-Workshop/config
   * <PLACE PULL_SECRET HERE>: pull-secret.txt
+
+=== Run the Play Books
 
 Once again, on virt host:
 
@@ -180,27 +190,6 @@ Once again, on virt host:
   * bash prepare-kvm-host.sh all
 
 If all goes well, should just work and about 30 minutes later you have an operational openshift cluster
-
-
-=== Download 
-
-Currently working on the 'wsdeployer' branch.  At this time I am not going to differentiate
-a workshop installation without the KVM install/config.  It's all or nothing
-
-----
-git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules -b wsdeployer
-----
-
-=== Config
-
-Fetch the openshift pull secret from Red Hat
-Create your configs.  Here I'm using the 'nat' network configs
-
-----
-cd ./OCP4-Workshop/config
-cp <PULL_SECRET> ./pull_secret.txt
-ln -s ..p/sample-configs/libvirt-nat/* ./OCP4-Workshop/config
-----
 
 == MORE COMING SOON...
 
