@@ -44,7 +44,7 @@ g_location = "Dallas"
 g_studentName = "cloud-user"
 
 ## Your OCP Cluster Name
-g_clusterName = "ocp"
+g_clusterName = "ocpnat"
 
 ## Your OCP Cluster Wildcard Name
 g_wildcardName = "apps"
@@ -236,13 +236,13 @@ virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.123.1"
 bastion   h_pubMAC="2c:c2:60:30:c1:c1" h_pubIP="192.168.123.160" 
 
 [myBootstrap]
-bootstrap h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.123.161" 
+node1 h_pubMAC="2c:c2:60:43:c2:c2" h_pubIP="192.168.123.161" 
 
 [myMasters]
-master-0  h_pubMAC="2c:c2:60:02:c3:c3" h_pubIP="192.168.123.162" h_etcdName="etcd-0"
-master-1  h_pubMAC="2c:c2:60:60:c4:c4" h_pubIP="192.168.123.163" h_etcdName="etcd-1"
-master-2  h_pubMAC="2c:c2:60:4d:c5:c5" h_pubIP="192.168.123.164" h_etcdName="etcd-2"
+node2  h_pubMAC="2c:c2:60:02:c3:c3" h_pubIP="192.168.123.162" h_etcdName="etcd-0"
+node3  h_pubMAC="2c:c2:60:60:c4:c4" h_pubIP="192.168.123.163" h_etcdName="etcd-1"
+node4  h_pubMAC="2c:c2:60:4d:c5:c5" h_pubIP="192.168.123.164" h_etcdName="etcd-2"
 
 [myWorkers]
-worker-0  h_pubMAC="2c:c2:60:4d:c6:c6" h_pubIP="192.168.123.165" 
-worker-1  h_pubMAC="2c:c2:60:4d:c7:c7" h_pubIP="192.168.123.166" 
+node5  h_pubMAC="2c:c2:60:4d:c6:c6" h_pubIP="192.168.123.165" 
+node6  h_pubMAC="2c:c2:60:4d:c7:c7" h_pubIP="192.168.123.166" 
