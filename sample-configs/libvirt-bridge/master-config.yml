@@ -59,7 +59,7 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 ##   not impact the cluster configuration or deployment
 ##
 
-g_clusterVIP = "192.168.1.29"
+g_clusterVIP = ""
 
 ##
 ## ----------------------------------------
