@@ -117,22 +117,27 @@
         ##
       state:  present
 
-  - name: "BASTION-DNS: list interfaces"
-    debug: 
-      msg: "interface = {{ item }}" 
-    with_items:
-      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+  ##
+  ## We need to disable networkmanager from toying with /etc/resolv.conf
+  ##
 
-  - name: "BASTION-DNS: adjust ether interfaces so resolv.conf points to localhost"
-    shell:
-      cmd: |
-        nmcli con modify {{ item }} ipv4.dns 127.0.0.1
-        if [[ -e /etc/sysconfig/network-scripts/ifcfg-{{item}} ]] ; then
-          ifup {{ item }} 
-        fi
-    when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
-    with_items:
-      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+  - name: "BASTION-DNS: disable network-manager /etc/resolv.conf adjustments"
+    template:
+      src:   "dns-resolv-fix.j2"
+      dest:  "/etc/NetworkManager/conf.d/90-dns-none.conf"
+      owner: root
+
+  - name: "BASTION-DNS: restart networkmanager service"
+    service: name=NetworkManager state=reloaded enabled=yes
+
+  - name: "BASTION-DNS: template deploy resolv.conf to point to localhost"
+    vars: 
+      - p_search:     "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_nameserver: "127.0.0.1"
+    template:
+      src:   "dns-resolv-conf.j2"
+      dest:  "/etc/resolv.conf"
+      owner: root
 
   - name: "BASTION-DNS: add firewalld service rules"
     firewalld:

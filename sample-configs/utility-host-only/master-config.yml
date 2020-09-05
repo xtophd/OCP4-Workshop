@@ -40,7 +40,7 @@ g_location = "Dallas"
 g_studentName = "cloud-user"
 
 ## Your OCP Cluster Name
-g_clusterName = "pubcluster"
+g_clusterName = "ocp"
 
 ## Your OCP Cluster Wildcard Name
 g_wildcardName = "apps"
@@ -59,7 +59,7 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 ##   not impact the cluster configuration or deployment
 ##
 
-g_clusterVIP = "192.168.1.29"
+g_clusterVIP = ""
 
 ##
 ## ----------------------------------------
@@ -178,7 +178,7 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 ## ** NOTE **  You can also declare these in the [hostgroup:vars] or for each individual host
 ##
 
-h_rhcosDEV      = "vda"
+h_rhcosDEV      = "sda"
 h_rhcosNIC      = "dhcp"
 h_rhcosUSBdelay = "0"
 
