@@ -102,6 +102,14 @@ cd ./OCP4-Workshop/
 bash prepare-ocp4-workshop.sh all
 ----
 
+Once the playbooks have completed without error, you can run the playbooks again with a different flag to help guide your deployment.
+
+----
+cd ./OCP4-Workshop/
+bash prepare-ocp4-workshop.sh usher
+----
+
+
 === Boot the Bootstrap
 
 === Boot the Masters
