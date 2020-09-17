@@ -55,13 +55,13 @@ case "$1" in
         time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
         ;;
 
-    "watch")
-        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-watch.yml"
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-watch.yml
+    "usher")
+        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml"
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish | usher ]"
         ;;
 
 esac         

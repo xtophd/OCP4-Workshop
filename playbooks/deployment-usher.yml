@@ -25,7 +25,7 @@
   ##                masters are online first, and only test bootstrap if needed
   ##
 
-  - name: "DEPLOYMENT MONITOR: Test if MASTERS already provide config-server service"
+  - name: "DEPLOYMENT USHER: Test if MASTERS already provide config-server service"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 2
@@ -42,7 +42,7 @@
   ## Deploy bootstrap
   ##
 
-  - name: "DEPLOYMENT MONITOR: Time to DEPLOY BOOTSTRAP and test for config-server port"
+  - name: "DEPLOYMENT USHER: Time to DEPLOY BOOTSTRAP and test for config-server port"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
@@ -58,7 +58,7 @@
   ## Deploy masters
   ##
 
-  - name: "DEPLOYMENT MONITOR: Time to DEPLOY MASTERS and test for config-server port"
+  - name: "DEPLOYMENT USHER: Time to DEPLOY MASTERS and test for config-server port"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
@@ -73,7 +73,7 @@
   ## Deploy workers 
   ##
 
-  - name: "DEPLOYMENT MONITOR: Time to DEPLOY WORKERS and test for ssh port"
+  - name: "DEPLOYMENT USHER: Time to DEPLOY WORKERS and test for ssh port"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5
