@@ -215,13 +215,12 @@ h_ksPROF = ""
 h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
 h_ksPROF = ""
-h_rhcosUSBdelay = "10"
 
 ## -----------------
 
 [myWorkers:vars]
 
-h_hwPROF = "kvm_vda"
+h_hwPROF = "kvm_nest_vda"
 h_rsPROF = "sml"
 h_ksPROF = ""
 
