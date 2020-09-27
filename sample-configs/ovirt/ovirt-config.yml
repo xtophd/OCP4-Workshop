@@ -1,0 +1,126 @@
+
+## ------------------------------
+## Ovirt Config Options
+##
+##     Parameters for the oVirt Machine Deployments 
+##
+
+ovirt_cfg: 
+
+  ##
+  ## ** NOTE ** username and password are stored in the
+  ## ** NOTE ** vaulted credentials.yml
+  ##
+
+  ## oVIRT API ip-address and fully qulified domain name
+
+  api:
+    ip:   "192.168.1.28"
+    fqdn: "rhvm.lab.linuxsoup.com"
+
+  ##
+  ## oVirt (data) Storage Domain to use
+  ##
+
+  cluster_name: "Default"
+
+  ##
+  ## oVirt (data) Storage Domain to use
+  ##
+
+#  storage_domain_iso:  "rhv-iso"
+  storage_domain: "rhv-data-hiperf"
+
+  ##
+  ## oVirt Network
+  ##
+
+  network_name: "ovirtmgmt"
+
+  ##
+  ## engine_cafile
+  ##
+
+  engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+
+
+deployer_cfg:
+
+  ## deployer hostname OR ip
+  ip: "192.168.1.170"
+
+  ## httpd,kickstart,repo service port
+  http_port:    "8008"                  
+
+  ## cockpit defaults to 9090, but you can change it
+  cockpit_port: "9090"
+
+  kickstart:
+    dir: "/var/www/html/ks"
+    url: "http://192.168.1.170:8008/ks"
+
+  iso:
+    dir: "/home/iso"
+
+  repo:
+    dir: "/var/www/html/repos"
+    url: "http://192.168.1.170:8008/repos"
+
+
+deployer_plan:
+
+  ## PRE/POST INSTALL SCRIPTS BEFORE AND AFTER DEPLOY
+  ##
+  ##   pre_install:       STR complete executable shell (PWD: is project directory) 
+  ##   post_install:      STR complete executable shell (PWD: is project directory) 
+
+  pre_install:  ""
+  post_install: "ansible-playbook -i ./config/master-config.yml -f 10 --tags finish ./playbooks/bastion-setup.yml"
+
+  ## 
+  ## each pass must define the following:
+  ##
+  ##   hostgroup:         STR ansible hostgroup to act on 
+  ##   inject_sshkey:     T/F create a ssh key to enable ansible on client 
+  ##   wait_for_shutdown: T/F wait for shutdown before install-02 (postconfig)
+  ##   post_config:       T/F run actions in install-02 (postconfig)
+  ##
+  ##   # PRE/POST INSTALL SCRIPTS BEFORE AND AFTER EACH HOSTGROUP
+  ##   pre_install:       STR complete executable shell (PWD: is project directory) 
+  ##   post_install:      STR complete executable shell (PWD: is project directory) 
+  ## 
+
+  passes: 
+    pass_1:
+      hostgroup:          "myBastion"
+      inject_sshkey:      True
+      wait_for_shutdown:  True
+      post_config:        True
+      pre_install:        ""
+      post_install:      "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-postinstall-bastion.yml"
+
+    pass_2:
+      hostgroup:          "myBootstrap"
+      inject_sshkey:      False
+      wait_for_shutdown:  False
+      post_config:        False
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-bootstrap.yml"
+      post_install:       ""
+
+    pass_3:
+      hostgroup:          "myMasters"
+      inject_sshkey:      False
+      wait_for_shutdown:  False
+      post_config:        False
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-masters.yml"
+      post_install:       ""
+
+    pass_4:
+      hostgroup:          "myWorkers"
+      inject_sshkey:      False
+      wait_for_shutdown:  False
+      post_config:        False
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-workers.yml"
+      post_install:       ""
+
