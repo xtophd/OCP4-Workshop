@@ -9,11 +9,25 @@
 - hosts: myBastion
   tasks:
 
+  # - debug:
+  #     msg: "{{ item }}"
+  #   with_items: 
+  #     - "{{ groups['myMasters'] }}"
+  #     - "{{ groups['myWorkers'] }}"
+
+  ##
+  ## For every node in cluster: 
+  ##   until ( node == ready )
+  ##    scan for pending CSR's
+  ##    approve pending CSR's
+  ##    sleep
+  ##
+
   - name: "BASTION-OPENSHIFT-FINISH: Approve CSR requests until all nodes 'Ready'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
-        if [[ `oc get nodes | grep -i '{{ item }}' | awk '{print $2}'` == "Ready" ]] ; then
+        if [[ `oc get node --no-headers {{ item }}.{{ g_pubFQDN }} | awk '{print $2}'` == "Ready" ]] ; then
           exit 0
         else
           for i in `oc get csr | grep -i pending | awk '{print $1}'`; do 
@@ -26,9 +40,20 @@
     until:  result.rc == 0
     retries: 600
     delay: 5
-    loop: "{{ groups['myWorkers'] }}"
+    with_items: 
+      - "{{ groups['myMasters'] }}"
+      - "{{ groups['myWorkers'] }}"
 
-  - name: "BASTION-OPENSHIFT-FINISH: Watch until all cluster operator availability is 'True'"
+  ##
+  ## Nodes are all ready
+  ## Now just watch for all clusteroperators ready
+  ## There can be cases when timing is just right, that
+  ## to results of 'get clusteroperators' can show all True.
+  ## But that is harmless.  This cluster is "mostly" ready
+  ## if this exits
+  ##
+
+  - name: "BASTION-OPENSHIFT-FINISH: Watch until all clusteroperators availability is 'True'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
