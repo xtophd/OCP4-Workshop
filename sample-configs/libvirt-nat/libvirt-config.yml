@@ -77,7 +77,7 @@ deployer_plan:
   ##   post_install:      STR complete executable shell (PWD: is project directory) 
 
   pre_install:  ""
-  post_install: "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10 --tags finish ./playbooks/bastion-setup.yml"
+  post_install: "ansible-playbook -i ./config/master-config.yml -f 10 --tags finish ./playbooks/bastion-setup.yml"
 
   ## 
   ## each pass must define the following:
@@ -99,14 +99,14 @@ deployer_plan:
       wait_for_shutdown:  True
       post_config:        True
       pre_install:        ""
-      post_install:       "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10  ./playbooks/libvirt-postinstall-bastion.yml"
+      post_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-postinstall-bastion.yml"
 
     pass_2:
       hostgroup:          "myBootstrap"
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10  ./playbooks/libvirt-preinstall-bootstrap.yml"
+      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-bootstrap.yml"
       post_install:       ""
 
     pass_3:
@@ -114,7 +114,7 @@ deployer_plan:
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10  ./playbooks/libvirt-preinstall-masters.yml"
+      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-masters.yml"
       post_install:       ""
 
     pass_4:
@@ -122,6 +122,6 @@ deployer_plan:
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -e @./config/libvirt-config.yml -f 10  ./playbooks/libvirt-preinstall-workers.yml"
+      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-workers.yml"
       post_install:       ""
 
