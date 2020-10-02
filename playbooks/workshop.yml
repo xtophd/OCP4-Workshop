@@ -26,6 +26,7 @@
       mode: 0744
     with_items:
       - {src: 'workshop-yaml-identity.j2',      dest: '/usr/local/etc/workshop-identity.yaml'}
+      - {src: 'workshop-users-htpasswd.j2',     dest: '/usr/local/etc/workshop-users.htpasswd'}
 
     ##
     ## This YAML needs the name of the bastion host
