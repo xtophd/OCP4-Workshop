@@ -5,11 +5,8 @@ export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
 echo "Configure Identity Provider (HTPASSWD)"
 echo "--------------------------------------"
 
-echo "Creating empty htpasswd in {{ g_credsDir }}"
-touch {{ g_credsDir }}/users.htpasswd
-
 echo "Creating openshift htpass-secret"
-oc create secret generic htpass-secret --from-file=htpasswd=/root/ocp-ocp/users.htpasswd -n openshift-config
+oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd -n openshift-config
 
 echo "Configuring identity provider"
 oc apply -f /usr/local/etc/workshop-identity.yaml
