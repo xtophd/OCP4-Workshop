@@ -14,34 +14,41 @@
 
   - name: "BASTION-NFS create directory"
     file:
-      path: "{{ g_nfsExport }}"
-      mode: "0755"
+      path: '{{ g_nfsExport }}'
+      mode: '0755'
+      owner: 65534
+      group: 65534
       state: directory
 
-  - name: "BASTION-NFS: deploy /etc/exports"
-    vars:
-      - p_export:   "{{ g_nfsExport }}"
-    template:
-      src: "nfs-exports.j2"
-      dest: "/etc/exports"
+  - name: "BASTION-NFS: cleanup conflicting entries in /etc/exports"
+    lineinfile:
+      dest:   '/etc/exports'
+      regexp: '{{ g_nfsExport }}(\s+).*$'
+      state:  absent
+
+  - name: 'BASTION-NFS: update entry in /etc/exports'
+    lineinfile:
+      dest: '/etc/exports'
+      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
+      state: present
       owner: root
       group: root
       mode: 644
 
-  - name: "BASTION-NFS: restart services"
+  - name: 'BASTION-NFS: restart services'
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
-      - "nfs-server"
-      - "rpcbind"
+      - 'nfs-server'
+      - 'rpcbind'
 
-  - name: "BASTION-NFS: add firewalld ports and services"
+  - name: 'BASTION-NFS: add firewalld ports and services'
     firewalld:
-      service: "{{ item }}"
+      service: '{{ item }}'
       immediate: yes
       permanent: yes
       state: enabled
     with_items:
-      - "nfs"
-      - "mountd"
-      - "rpc-bind"
+      - 'nfs'
+      - 'mountd'
+      - 'rpc-bind'
 
