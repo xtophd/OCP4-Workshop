@@ -11,7 +11,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= All In One: AIO Libvirt NAT
+= All In One: AIO Libvirt BRIDGE
 
 [discrete]
 == Overview
@@ -51,7 +51,7 @@ yum -y install git,ansible
 ----
 cd ~
 
-git clone http://github.com/xtophd/OCP4-Workshop
+git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 
 === Copy sample configurations to './config' directory
@@ -59,7 +59,7 @@ git clone http://github.com/xtophd/OCP4-Workshop
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/libvirt-nat .
+copy ../config-samples/libvirt-bridge .
 ----
 
 === Make Customizations
@@ -78,7 +78,7 @@ wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
 
 === Retrieve Openshift Pull Secret
 
-Using a browser, go to redhat.com and copy link to the pull-secret
+Using a browser, go to redhat.com and copy the link to the pull-secret
 
     - https://cloud.redhat.com/openshift/install/metal/user-provisioned
 
