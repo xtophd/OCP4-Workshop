@@ -44,9 +44,8 @@ NOTE: all of these deployments are a variant of the User Provided Infrastructure
 [discrete]
 == Deployment Architectures
 
-  . link:./Install-AIO-Libvirt-Nat.adoc[AOI using Libvirt/KVM Nat]
-  . link:./Install-AIO-Libvirt-Bridge.adoc[AOI using Libvirt/KVM Bridge]
-  . link:./Install-oVirt.adoc[Deploying with Red Hat Virtualization]
+  . link:./Install-AIO-Libvirt.adoc[Deploy OCP as AOI using Libvirt/KVM]
+  . link:./Install-oVirt.adoc[Deploy OCP with Red Hat Virtualization (oVirt)]
   . *TBD* link:./Install-RHV-Bridge.adoc[Deploying with AWS]
       
 [discrete]
