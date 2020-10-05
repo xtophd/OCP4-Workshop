@@ -56,9 +56,13 @@ git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 
 === Determine Network Configuration
 
+In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configure without conflict with what what's about tobe deployed.
+
+So pick one, and start editing your config files.
+
 ==== Copy sample NAT configurations to './config' directory
 
-If you are planning to use a NAT'd network, the playbooks will create the network using virsh.  You only need to provide the provide proper info for IP address space.
+Using the NAT'd network config will require the least amount of changes to the config.  You really only need to provide the provide proper info for IP address space.
 
 ----
 cd ~/OCP4-Workshop/config
