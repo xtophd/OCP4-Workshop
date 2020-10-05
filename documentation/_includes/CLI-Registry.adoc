@@ -1,0 +1,65 @@
+:gitrepo: https://github.com/xtophd/OCP-Workshop
+:includedir: _includes
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Configuring a Private Image Registry
+
+[discrete]
+== Additional Reference Materials
+
+NOTE: You are not required to reference outside documentation for these exercises.  This is informational only.
+
+Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
+
+
+    * link:https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html[Configuring the registry for bare metal]
+
+Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find all kinds of additional materials.
+
+    * link://https://www.okd.io/[OKD]
+
+== Overview
+
+On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as Removed. 
+This allows openshift-installer to complete installations on these platform types.  After installation, you must edit the 
+Image Registry Operator configuration to switch the managementState from Removed to Managed.
+
+NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
+
+NOTE: If you ARE using the deault workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
+
+=== Prerequisites
+
+    * Cluster administrator permissions.
+    * A cluster on bare metal (or VMs deployed with UPI and treated as BM)
+    * Provisioned persistent storage for your cluster taht supports ReadWriteMany access mode (ex: OCS or NFS)
+    * Must have "100Gi" capacity.
+
+== Configure Storage
+
+== Change Management State
+
+----
+$ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+----
+
+==
+
+
+[discrete]
+== End of Unit
+
+link:../OCP-Workshop.adoc#toc[Return to TOC]
+
+////
+Always end files with a blank line to avoid include problems.
+////
