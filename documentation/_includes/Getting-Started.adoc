@@ -44,10 +44,9 @@ NOTE: all of these deployments are a variant of the User Provided Infrastructure
 [discrete]
 == Deployment Architectures
 
-  . link:./Install-AIO-Libvirt-Nat.adoc[AOI using Libvirt/KVM Nat]
-  . *TBD* link:./Install-AIO-Libvirt-Bridge.adoc[AOI using Libvirt/KVM Bridge]
-  . *TBD* link:./Install-RHV-Bridge.adoc[AOI using Red Hat Virtualization Bridge]
-  . *TBD* link:./Install-VMWare-Bridge.adoc[AOI using VMWare Bridge]
+  . link:./Install-AIO-Libvirt.adoc[Deploy OCP as AOI using Libvirt/KVM]
+  . link:./Install-oVirt.adoc[Deploy OCP with Red Hat Virtualization (oVirt)]
+  . *TBD* link:./Install-RHV-Bridge.adoc[Deploying with AWS]
       
 [discrete]
 == End of Unit
