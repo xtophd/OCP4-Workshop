@@ -8,9 +8,11 @@ echo "------------------------"
 echo "Applying Registry PV configuration"
 oc apply -f /usr/local/etc/workshop-registryPV.yaml
 
-echo "Changing managementState : Managed"
-oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"managementState":"Managed"}}'
-
 echo "Changing storage: { pvc: { claim: } }"
 oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"storage":{"pvc":{"claim":""}}}}'
+
+sleep 3
+
+echo "Changing managementState : Managed"
+oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"managementState":"Managed"}}'
 
