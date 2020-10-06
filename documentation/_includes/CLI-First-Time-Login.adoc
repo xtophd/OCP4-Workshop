@@ -28,31 +28,33 @@ whoami
 .Your output should look like this
 [source,indent=4]
 ----
-workstation.example.com
+bastion.<clustername>.example.com
 
 root
 ----
 
 Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.
 
-=== Connect to host master.example.com
+=== Connect to host bastion
 
 As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not an established `root` user session.
 
-Proceed to connect to host *master*.
+Proceed to connect to host *bastion*.
 
 .[root@workstation ~]#
 ----    
-ssh master
+ssh bastion
 ----
 
-=== Login as *admin* to OCP Cluster
+=== Login as *kubeadmin* to OCP Cluster
 
 First order of business is to sign-on to the Openshift platform.  This is accomplished as follows.
 
 .[root@master ~]# 
 ----
-oc login -u admin
+export KUBEADMIN=/root/ocp-<clustername>/auth/kubeadmin
+
+oc whoami
 ----
 
 .Key-Values for Login
