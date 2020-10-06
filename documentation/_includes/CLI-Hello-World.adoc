@@ -394,7 +394,7 @@ Now let us reconfigure the UID range openshift will use to deploy the container.
 
 .[root@master ~]#
 ----
-cheat-patch-namespace-helloworld.sh
+workshop-patch-namespace-helloworld.sh
 ----
 
 [NOTE]
