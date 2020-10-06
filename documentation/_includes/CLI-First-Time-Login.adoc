@@ -14,11 +14,11 @@ The default and recommended method for interacting with the Openshift Container 
 
 == Login to OCP Cluster
 
-=== Verify Your Credentials
+=== Connect to host *bastion*
 
-Since you probably just completed the installation steps, you are more than likely already signed on with the proper credentials.  If you are not the user *root* on the *workstation* host, use the steps outlined in link:Getting-Started.adoc[Getting Started]  to get signed on.
+Since you probably just completed the installation steps, you are more than likely already signed on with the proper credentials.  If you are not the user *root* on the *bastion* host, use the steps outlined in link:Getting-Started.adoc[Getting Started]  to get signed on.
 
-.[root@workstation ~]#
+.[root@bastion ~]#
 ----
 uname -n
 
@@ -33,22 +33,11 @@ bastion.<clustername>.example.com
 root
 ----
 
-Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh`.
+Your workshop environment is preconfigured with distributed ssh-keys to ease the management of sessions from one host to another.  As the user *root* on the host *workstation* you can easily sign-on to any host in your cluster using `ssh core@nodeX`.
 
-=== Connect to host bastion
+=== Login to OCP Cluster as *kubeadmin*
 
-As mentioned, ssh keys have been distributed within the cluster to allow seemless connections without requiring the constant prompting for passwords.  If you are being prompted then it is likely that you are not an established `root` user session.
-
-Proceed to connect to host *bastion*.
-
-.[root@workstation ~]#
-----    
-ssh bastion
-----
-
-=== Login as *kubeadmin* to OCP Cluster
-
-First order of business is to sign-on to the Openshift platform.  This is accomplished as follows.
+First order of business is to sign-on to the Openshift platform from the command-line.  This is accomplished as follows.
 
 .[root@master ~]# 
 ----
@@ -56,11 +45,6 @@ export KUBEADMIN=/root/ocp-<clustername>/auth/kubeadmin
 
 oc whoami
 ----
-
-.Key-Values for Login
-[horizontal]
-*Username*:: admin
-*Password*:: redhat
 
 You can verify what credentials the current 'oc' session is using with `oc whoami`
 
@@ -72,7 +56,7 @@ oc whoami
 .Your output should look like this
 [source,indent=4]
 ----
-admin                                                                                 
+kubeadmin                                                                                 
 ----
 
 Now that you have logged in to Openshift using the *oc* command, you are ready to start interacting with the Openshift Container Platfrom.  This session will remain active until it expires.  
