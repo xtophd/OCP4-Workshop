@@ -277,7 +277,7 @@ Once again, there is a sample script to easily connect to the POD's shell.
 
 .[root@master ~]#
 ----
-cheat-rsh-pod.sh
+workshop-rsh.sh
 ----
 
 [NOTE]
