@@ -199,7 +199,7 @@ We can also monitor the deployment of the application by running `oc rollout sta
 
 .[root@master ~]#
 ----
-oc rollout status dc/hello-app
+oc rollout status deployment hello-app
 ----
 
 Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
