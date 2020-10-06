@@ -26,10 +26,18 @@
       regexp: '{{ g_nfsExport }}(\s+).*$'
       state:  absent
 
+  ##
+  ## Based on documentation:
+  ##   https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html
+  ##
+  ## If the storage type is NFS, you must enable the no_wdelay and root_squash mount options
+  ## 
+
   - name: 'BASTION-NFS: update entry in /etc/exports'
     lineinfile:
       dest: '/etc/exports'
-      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
+#      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
+      line: '{{ g_nfsExport }}   *(rw,sync,no_wdelay,root_squash,insecure,fsid=0)'
       state: present
       owner: root
       group: root
