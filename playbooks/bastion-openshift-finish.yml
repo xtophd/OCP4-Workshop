@@ -45,7 +45,42 @@
       - "{{ groups['myWorkers'] }}"
 
   ##
-  ## Nodes are all ready
+  ## Nodes are all ready, scan ssh keys into known hosts
+  ##
+
+  - name: "BASTION-OPENSHIFT-FINISH: Cleanup ssh keys in knownhosts"
+    vars:
+      - p_item:      "{{ item }}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cluster:   "{{ g_clusterName }}"
+      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+    shell:
+      cmd: |
+        ssh-keygen -R "{{ p_item }}"
+        ssh-keygen -R "{{ p_name }}"
+        ssh-keygen -R "{{ p_fqdn }}"
+        ssh-keygen -R "{{ p_addr }}"
+    ignore_errors: yes
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+
+  - name: "BASTION-OPENSHIFT-FINISH: Add new ssh keys for node"
+    vars:
+      - p_item:      "{{ item }}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cluster:   "{{ g_clusterName }}"
+      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+    shell:
+      cmd: |
+        ssh-keyscan "{{ p_name }}" >> /root/.ssh/known_hosts
+        ssh-keyscan "{{ p_fqdn }}" >> /root/.ssh/known_hosts
+    ignore_errors: yes
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+
+  ##
   ## Now just watch for all clusteroperators ready
   ## There can be cases when timing is just right, that
   ## to results of 'get clusteroperators' can show all True.
