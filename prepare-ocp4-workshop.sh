@@ -47,6 +47,7 @@ case "$1" in
     "haproxy_vip" | \
     "matchbox"    | \
     "httpd"       | \
+    "squid"       | \
     "openshift"   | \
     "workshop"    | \
     "finish")
