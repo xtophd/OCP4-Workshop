@@ -42,7 +42,7 @@ NOTE: you will need sufficient cpu, memory and disk resources for these installa
 NOTE: all of these deployments are a variant of the User Provided Infrastructure (UPI) installation method.
 
 [discrete]
-== Deployment Architectures
+== Deployment Architectures (supported by these playbooks)
 
   . link:./Install-AIO-Libvirt.adoc[Deploy OCP as AOI using Libvirt/KVM]
   . link:./Install-oVirt.adoc[Deploy OCP with Red Hat Virtualization (oVirt)]
