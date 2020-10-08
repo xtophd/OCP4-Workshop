@@ -35,7 +35,7 @@ Image Registry Operator configuration to switch the managementState from Removed
 
 NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
 
-NOTE: If you ARE using the deault workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
+NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
 
 === Prerequisites
 
