@@ -47,7 +47,26 @@ NOTE: all of these deployments are a variant of the User Provided Infrastructure
   . link:./Install-AIO-Libvirt.adoc[Deploy OCP as AOI using Libvirt/KVM]
   . link:./Install-oVirt.adoc[Deploy OCP with Red Hat Virtualization (oVirt)]
   . *TBD* link:./Install-RHV-Bridge.adoc[Deploying with AWS]
-      
+
+[discrete]
+== Post Installation Tasks
+
+=== Configure Registry Persistent Storage
+
+----
+workshop-config-registry.sh
+----
+
+=== Configure Master Nodes As Non-Schedulable
+
+Since versions 4.2, Openshift sets the spec in the sheduler  `mastersSchedulable: true` which allows for master nodes to function as worker nodes.  To alter this behavior, a simple patch has been provided.
+
+    . link:https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-master-schedulable_nodes-nodes-working[Configuring master nodes as schedulable]
+
+----
+workshop-config-scheduler.sh
+----
+
 [discrete]
 == End of Unit
 
