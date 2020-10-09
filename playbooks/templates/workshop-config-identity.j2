@@ -25,3 +25,7 @@ echo "----------------------------------------"
 
 oc apply -f /usr/local/etc/workshop-identity.yaml
 
+echo ""
+echo "Applying cluster-admin role to {{g_clusterUser }}"
+echo "-------------------------------------------------"
+oc adm policy add-cluster-role-to-user cluster-admin cloud-user
