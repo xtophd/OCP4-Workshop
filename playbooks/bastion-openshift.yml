@@ -9,73 +9,6 @@
 - hosts: myBastion
   tasks:
 
-#  - name: "BASTION-OPENSHIFT: Clean-up openshift installation artifacts"
-#    file:
-#      path: "{{ item }}"
-#      state: absent
-#    with_items:
-#      - "{{ g_credsDir }}"
-#      - "/root/.kube"
-
-  - name: "BASTION-OPENSHIFT: Back-up openshift installation artifacts in {{ g_credsDir }}"
-    shell:
-      cmd: |
-        if [[ -d "{{ g_credsDir }}" ]]; 
-          then mv -f "{{ g_credsDir }}" "{{ g_credsDir }}".`date +"%Y%m%d-%R"`
-        fi
-      removes: "{{ g_credsDir }}"
-
-  - name: "BASTION-OPENSHIFT: Clean-up kube artifacts in /root/.kube"
-    file:
-      path: "/root/.kube"
-      state: absent
-
-  - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
-    file:
-      path: "{{ g_credsDir }}"
-      mode: "0755"
-      state: directory
-
-  ########################################
-  ## PULL-SECRET
-  ##
-  ##   if    deploying via the ws-deployer-kvm, pull_secret may already be deployed
-  ##   else  could be in the ./config directory per instructions
-  ##   else  this is a manual step user must complete therefore show message and exit
-  ##
-
-  - name: "BASTION-OPENSHIFT: maybe find pull-secret in ../config"
-    copy:
-      src:   "../config/pull-secret.txt" 
-      dest:  "{{ g_credsDir }}/pull-secret.txt"
-      mode:  "0644"
-      owner: root
-      group: root
-    ignore_errors: yes
-
-  - name: "BASTION-OPENSHIFT: maybe find pull-secret in /root"
-    copy:
-      src:   "/root/{{ g_clusterName }}-pull-secret.txt" 
-      dest:  "{{ g_credsDir }}/pull-secret.txt"
-      mode:  "0644"
-      owner: root
-      group: root
-      remote_src: yes
-    ignore_errors: yes
-
-  - name: "BASTION-OPENSHIFT: confirm pull-secret"
-    stat: path="{{ g_credsDir }}/pull-secret.txt"
-    register: found_secret
-
-  - block:
-      - debug: msg="RETRIEVE PULL-SECRET https://cloud.redhat.com/openshift/install/metal/user-provisioned"
-      - debug: msg="SAVE PULL-SECRET HERE ./config/pull-secret.txt"
-      - fail:  msg="MISSING PULL-SECRET"
-    when: 
-      - found_secret.stat.exists == false
-
-  ########################################
-
   - name: "BASTION-OPENSHIFT: Create ssh directory"
     file:
       path: /root/.ssh
@@ -111,66 +44,6 @@
       - "{{ g_ocp_install }}"
       - "{{ g_ocp_client }}"
 
-  - name: "BASTION-OPENSHIFT: load pull secret"
-    shell: cat {{ g_credsDir }}/pull-secret.txt
-    register: pull_secret
-
-  - name: "BASTION-OPENSHIFT: load ssh key"
-    shell: cat /root/.ssh/id_rsa.pub
-    register: ssh_key
-
-  - name: "BASTION-OPENSHIFT: deploy install-config.yml"
-    vars:
-      - p_pullSecret:   "{{ pull_secret.stdout |quote }}"
-      - p_sshKey:       "{{ ssh_key.stdout |quote }}"
-      - p_clusterName:  "{{ g_clusterName }}"
-      - p_domain:       "{{ g_publicDomain }}"
-      - p_http_proxy:   "{{ g_http_proxy | default ('') }}"
-      - p_https_proxy:  "{{ g_https_proxy | default ('') }}"
-      - p_no_proxy:     "{{ g_no_proxy | default ('') }}"
-    template:
-      src: "ocp-install-config.j2"
-      dest: "{{ g_credsDir }}/install-config.yaml"
-      owner: root
-      group: root
-      mode: 644
-
-  - name: "BASTION-OPENSHIFT: Create a backup of the install-config.yaml"
-    shell:
-      cmd: |
-        cp "{{ g_credsDir }}/install-config.yaml" "{{ g_credsDir }}/install-config.bak"
-
-
-  - name: "BASTION-OPENSHIFT: Clean-up matchbox ignition directory"
-    shell:
-      cmd: |
-        if [[ -d "/var/lib/matchbox/ignition/" ]] ; then rm -f /var/lib/matchbox/ignition/* ; fi
-
-  - name: "BASTION-OPENSHIFT: create ignition files"
-    shell:
-      cmd: |
-        cd {{ g_credsDir }}
-        /usr/local/bin/openshift-install --dir={{ g_credsDir }} create ignition-configs
-
-  - name: "BASTION-OPENSHIFT: copy ignition files"
-    shell:
-      cmd: |
-        cp {{ g_credsDir }}/*.ign /var/lib/matchbox/ignition/
-
-  - name: "BASTION-OPENSHIFT: fix ignition file permissions"
-    shell:
-      cmd: |
-        chown matchbox.matchbox /var/lib/matchbox/ignition/*
-
-  ## Maybe matchbox needs a refresh of content updates, just to be safe restart
-
-  - name: "BASTION-OPENSHIFT: restart matchbox services"
-    service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes
-    with_items:
-      - "matchbox"
-    when: g_useMATCHBOX == "True"
-
-
   - name: "BASTION-OPENSHIFT: additional package installation"
     yum: name=bash-completion state=installed
 
@@ -179,6 +52,134 @@
       cmd: |
         /usr/local/bin/oc completion bash >> /etc/bash_completion.d/oc_completion
         /usr/local/bin/openshift-install completion bash >> /etc/bash_completion.d/openshift-install_completion
+
+  ##
+  ## Only execute tasks if workshop_lock == false
+  ##
+
+  - block:
+
+      ## 
+      ## Clean up installation artifacts
+      ##
+
+      - name: "BASTION-OPENSHIFT: Back-up openshift installation artifacts in {{ g_credsDir }}"
+        shell:
+          cmd: |
+            if [[ -d "{{ g_credsDir }}" ]]; 
+              then mv -f "{{ g_credsDir }}" "{{ g_credsDir }}".`date +"%Y%m%d-%R"`
+            fi
+          removes: "{{ g_credsDir }}"
+    
+      - name: "BASTION-OPENSHIFT: Clean-up kube artifacts in /root/.kube"
+        file:
+          path: "/root/.kube"
+          state: absent
+    
+      - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
+        file:
+          path: "{{ g_credsDir }}"
+          mode: "0755"
+          state: directory
+
+      - name: "BASTION-OPENSHIFT: Clean-up matchbox ignition directory"
+        shell:
+          cmd: |
+            if [[ -d "/var/lib/matchbox/ignition/" ]] ; then rm -f /var/lib/matchbox/ignition/* ; fi
+
+      ##
+      ## Track down the pull secret
+      ##
+      ##   if    deploying via the ws-deployer, pull_secret may already be deployed
+      ##   else  could be in the ./config directory per instructions
+      ##   else  this is a manual step user must complete therefore show message and exit
+      ##
+
+      - name: "BASTION-OPENSHIFT: maybe find pull-secret in ../config"
+        copy:
+          src:   "../config/pull-secret.txt" 
+          dest:  "{{ g_credsDir }}/pull-secret.txt"
+          mode:  "0644"
+          owner: root
+          group: root
+        ignore_errors: yes
+    
+      - name: "BASTION-OPENSHIFT: maybe find pull-secret in /root"
+        copy:
+          src:   "/root/{{ g_clusterName }}-pull-secret.txt" 
+          dest:  "{{ g_credsDir }}/pull-secret.txt"
+          mode:  "0644"
+          owner: root
+          group: root
+          remote_src: yes
+        ignore_errors: yes
+    
+      - name: "BASTION-OPENSHIFT: confirm pull-secret"
+        stat: path="{{ g_credsDir }}/pull-secret.txt"
+        register: found_secret
+    
+      - block:
+          - debug: msg="RETRIEVE PULL-SECRET https://cloud.redhat.com/openshift/install/metal/user-provisioned"
+          - debug: msg="SAVE PULL-SECRET HERE ./config/pull-secret.txt"
+          - fail:  msg="MISSING PULL-SECRET"
+        when: 
+          - found_secret.stat.exists == false
+    
+      - name: "BASTION-OPENSHIFT: load pull secret"
+        shell: cat {{ g_credsDir }}/pull-secret.txt
+        register: pull_secret
+    
+      - name: "BASTION-OPENSHIFT: load ssh key"
+        shell: cat /root/.ssh/id_rsa.pub
+        register: ssh_key
+    
+      - name: "BASTION-OPENSHIFT: deploy install-config.yml"
+        vars:
+          - p_pullSecret:   "{{ pull_secret.stdout |quote }}"
+          - p_sshKey:       "{{ ssh_key.stdout |quote }}"
+          - p_clusterName:  "{{ g_clusterName }}"
+          - p_domain:       "{{ g_publicDomain }}"
+          - p_http_proxy:   "{{ g_http_proxy | default ('') }}"
+          - p_https_proxy:  "{{ g_https_proxy | default ('') }}"
+          - p_no_proxy:     "{{ g_no_proxy | default ('') }}"
+        template:
+          src: "ocp-install-config.j2"
+          dest: "{{ g_credsDir }}/install-config.yaml"
+          owner: root
+          group: root
+          mode: 644
+    
+      - name: "BASTION-OPENSHIFT: Create a backup of the install-config.yaml"
+        shell:
+          cmd: |
+            cp "{{ g_credsDir }}/install-config.yaml" "{{ g_credsDir }}/install-config.bak"
+
+      - name: "BASTION-OPENSHIFT: create ignition files"
+        shell:
+          cmd: |
+            cd {{ g_credsDir }}
+            /usr/local/bin/openshift-install --dir={{ g_credsDir }} create ignition-configs
+    
+      - name: "BASTION-OPENSHIFT: copy ignition files"
+        shell:
+          cmd: |
+            cp {{ g_credsDir }}/*.ign /var/lib/matchbox/ignition/
+    
+      - name: "BASTION-OPENSHIFT: fix ignition file permissions"
+        shell:
+          cmd: |
+            chown matchbox.matchbox /var/lib/matchbox/ignition/*
+
+    when:
+      - workshop_lock == false
+
+  ## Maybe matchbox needs a refresh of content updates, just to be safe restart
+
+  - name: "BASTION-OPENSHIFT: restart matchbox services"
+    service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes
+    with_items:
+      - "matchbox"
+    when: g_useMATCHBOX == "True"
 
   - name: "BASTION-OPENSHIFT: DEBUG"
     debug: msg="YOU CAN NOW DEPLOY THE BOOTSTRAP"

@@ -2,12 +2,26 @@
 
 export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
 
-echo "Configure Identity Provider (HTPASSWD)"
-echo "--------------------------------------"
+echo ""
+echo "Set password for {{ g_clusterUser }}"
+echo "---------------------------"
 
-echo "Creating openshift htpass-secret"
-oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd -n openshift-config
+htpasswd /usr/local/etc/workshop-users.htpasswd {{ g_clusterUser }}
 
-echo "Configuring identity provider"
+echo ""
+echo "Creating/Updating openshift htpass-secret"
+echo "-----------------------------------------"
+
+if `oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd -n openshift-config > /dev/null 2>&1` ; then
+  echo "Identity secret created"
+else
+  oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd --dry-run -o yaml -n openshift-config 2>/dev/null | oc replace -f - > /dev/null 2>&1
+  echo "Identity secret replaced"
+fi
+
+echo ""
+echo "Configuring Identity Provider (HTPASSWD)"
+echo "----------------------------------------"
+
 oc apply -f /usr/local/etc/workshop-identity.yaml
 

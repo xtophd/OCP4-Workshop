@@ -14,6 +14,7 @@
       - {src: 'workshop-healthcheck.j2',                dest: '/usr/local/bin/workshop-healthcheck.sh'}
       - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
       - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
+      - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
