@@ -1,5 +1,9 @@
-## master-config.yml for ovirt
 ##
+## Assumptions (at this time):
+##   + PublicNet is required with unrestricted internet access
+##   + use RHEL 7.7 or later
+##   + use Ansible 2.9 or later
+##   
 
 ##
 ## First character of variable defines scope
@@ -12,11 +16,10 @@
 ##
 ##  p_Name - play: declared as part of a play/task
 ##
-##  b_Name - block: declared as part of a block
 
 ##
-## NOTE: paths to additional customizable variable files
-##       can be found in ./playbooks/group_vars/all/*
+## NOTE: paths to additional customizable variable files are
+##       declared in playbooks/group_vars/all/var_config.yml
 ##
 
 [all:vars]
@@ -32,8 +35,11 @@ g_owner = "Foo Bar"
 ## (Optional) What is the POC location
 g_location = "Dallas"
 
-## Configure the student name as this
-g_studentName = "cloud-user"
+## Declare the workhop admin and student usernames
+## Passwords will be set as part of the exercises
+
+g_clusterAdmin = "cloud-admin"
+g_clusterUser = "cloud-user"
 
 ## Your OCP Cluster Name
 g_clusterName = "ocprhv"
@@ -56,19 +62,6 @@ g_credsDir = "/root/ocp-{{ g_clusterName}}"
 ##
 
 g_clusterVIP = ""
-
-##
-## ----------------------------------------
-## Proxy settings (affects playbooks and openshift config)
-##
-##   Examples:
-##     g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port>
-##     g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port>
-##     g_no_proxy = noProxy: example.com
-
-g_http_proxy  = ""
-g_https_proxy = ""
-g_no_proxy    = ""
 
 ##
 ## ----------------------------------------
@@ -121,6 +114,7 @@ g_useHAPROXY_VIP  = "True"
 g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
+g_useSQUID        = "True"
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
@@ -134,10 +128,39 @@ g_nfsExport = "/home/nfs-{{ g_clusterName }}"
 ##
 ## ----------------------------------------
 ##
-## Matchbox Parameters
+## Reserved ports
 ##   
 
 g_matchbox_port = "8080"
+g_squid_port = "3128"
+
+##
+## ----------------------------------------
+## Proxy settings (affects playbooks and openshift config)
+##
+##   If these proxy settings == "" AND g_useSQUID == False 
+##     no proxy settings
+##
+##   If these proxy settings == "" AND g_useSQUID == True
+##     bastion gets no proxy settings
+##     cluster gets SQUID settings
+##
+##   If these proxy settings != "" AND g_useSQUID == False
+##     everything gets these proxy settings
+##
+##   If these proxy settings != "" AND g_useSQUID == True
+##     bastion gets these proxy settings
+##     cluster gets SQUID settings
+##
+##   Examples:
+##     g_http_proxy =  "http://<username>:<pswd>@<ip>:<port>"
+##     g_https_proxy = "https://<username>:<pswd>@<ip>:<port>"
+##     g_no_proxy =    "example.com"
+##
+
+g_http_proxy  = ""
+g_https_proxy = ""
+g_no_proxy    = ""
 
 ##
 ## ----------------------------------------
@@ -146,7 +169,7 @@ g_matchbox_port = "8080"
 ## we won't have to specify FQDN in host vars section below
 ##
 
-ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+ansible_host = "{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
 ##
 ## ----------------------------------------
@@ -216,19 +239,19 @@ h_ksPROF = ""
 ## HOST VARS
 
 [myVirthost]
-## virthost   h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.1.28"
+## virthost h_pubIP="192.168.1.28"
 
 [myBastion]
-bastion h_pubMAC="00:1a:4a:16:01:7f" h_pubIP="192.168.1.160"
+bastion h_pubIP="192.168.1.160"
 
 [myBootstrap]
-node1   h_pubMAC="00:1a:4a:16:02:5f" h_pubIP="192.168.1.161"
+node1   h_pubIP="192.168.1.161"
 
 [myMasters]
-node2   h_pubMAC="00:1a:4a:16:03:5f" h_pubIP="192.168.1.162" h_etcdName="etcd-0"
-node3   h_pubMAC="00:1a:4a:16:04:5f" h_pubIP="192.168.1.163" h_etcdName="etcd-1"
-node4   h_pubMAC="00:1a:4a:16:05:5f" h_pubIP="192.168.1.164" h_etcdName="etcd-2"
+node2   h_pubIP="192.168.1.162" h_etcdName="etcd-0"
+node3   h_pubIP="192.168.1.163" h_etcdName="etcd-1"
+node4   h_pubIP="192.168.1.164" h_etcdName="etcd-2"
 
 [myWorkers]
-node5   h_pubMAC="00:1a:4a:16:06:5f" h_pubIP="192.168.1.165"
-node6   h_pubMAC="00:1a:4a:16:07:5f" h_pubIP="192.168.1.166"
+node5   h_pubIP="192.168.1.165"
+node6   h_pubIP="192.168.1.166"

@@ -38,6 +38,7 @@ case "$1" in
     "network"    | \
     "postconfig" | \
     "postinstall"| \
+    "prep"       | \
     "rhsm")
 
         time  ansible-playbook --ask-vault-pass -i ${myInventory} -e @${myExtravars} -f 10 --tags $1 ./playbooks.deployer-kvm/ovirt.yml 
