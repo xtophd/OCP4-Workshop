@@ -13,15 +13,29 @@
 
   tasks:
 
+  # - debug:
+  #     msg: "{{ item }}"
+  #   with_items: 
+  #     - "{{ groups['myMasters'] }}"
+  #     - "{{ groups['myWorkers'] }}"
+
+  ##
+  ## For every node in cluster: 
+  ##   until ( node == ready )
+  ##    scan for pending CSR's
+  ##    approve pending CSR's
+  ##    sleep
+  ##
+
   - name: "BASTION-OPENSHIFT-FINISH: Approve CSR requests until all nodes 'Ready'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
-        if [[ `{{ oc_cmd }} get nodes | grep -i '{{ item }}' | awk '{print $2}'` == "Ready" ]] ; then
+        if [[ `{{ oc_cmd }} get node --no-headers {{ item }}.{{ g_pubFQDN }} | awk '{print $2}'` == "Ready" ]] ; then
           exit 0
         else
           for i in `{{ oc_cmd }} get csr | grep -i pending | awk '{print $1}'`; do 
-            {{ oc_cmd }} adm certificate approve $i
+            oc adm certificate approve $i
             sleep 1
           done
           exit 1
@@ -30,9 +44,55 @@
     until:  result.rc == 0
     retries: 600
     delay: 5
-    loop: "{{ groups['myWorkers'] }}"
+    with_items: 
+      - "{{ groups['myMasters'] }}"
+      - "{{ groups['myWorkers'] }}"
 
-  - name: "BASTION-OPENSHIFT-FINISH: Watch until all cluster operator availability is 'True'"
+  ##
+  ## Nodes are all ready, scan ssh keys into known hosts
+  ##
+
+  - name: "BASTION-OPENSHIFT-FINISH: Cleanup ssh keys in knownhosts"
+    vars:
+      - p_item:      "{{ item }}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cluster:   "{{ g_clusterName }}"
+      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+    shell:
+      cmd: |
+        ssh-keygen -R "{{ p_item }}"
+        ssh-keygen -R "{{ p_name }}"
+        ssh-keygen -R "{{ p_fqdn }}"
+        ssh-keygen -R "{{ p_addr }}"
+    ignore_errors: yes
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+
+  - name: "BASTION-OPENSHIFT-FINISH: Add new ssh keys for node"
+    vars:
+      - p_item:      "{{ item }}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
+      - p_domain:    "{{ g_publicDomain }}"
+      - p_cluster:   "{{ g_clusterName }}"
+      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+    shell:
+      cmd: |
+        ssh-keyscan "{{ p_name }}" >> /root/.ssh/known_hosts
+        ssh-keyscan "{{ p_fqdn }}" >> /root/.ssh/known_hosts
+    ignore_errors: yes
+    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+
+  ##
+  ## Now just watch for all clusteroperators ready
+  ## There can be cases when timing is just right, that
+  ## to results of 'get clusteroperators' can show all True.
+  ## But that is harmless.  This cluster is "mostly" ready
+  ## if this exits
+  ##
+
+  - name: "BASTION-OPENSHIFT-FINISH: Watch until all clusteroperators availability is 'True'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig

@@ -52,7 +52,7 @@ case "$1" in
     "finish")
 
         echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml"
-        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
+        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 -vvv ./playbooks/bastion-setup.yml
         ;;
 
     "usher")
