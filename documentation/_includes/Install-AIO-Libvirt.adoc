@@ -11,7 +11,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= All In One: AIO Libvirt NAT
+= All In One: AIO Libvirt
 
 [discrete]
 == Overview
@@ -51,10 +51,18 @@ yum -y install git,ansible
 ----
 cd ~
 
-git clone http://github.com/xtophd/OCP4-Workshop
+git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 
-=== Copy sample configurations to './config' directory
+=== Determine Network Configuration
+
+In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configure without conflict with what what's about tobe deployed.
+
+So pick one, and start editing your config files.
+
+==== Copy sample NAT configurations to './config' directory
+
+Using the NAT'd network config will require the least amount of changes to the config.  You really only need to provide the provide proper info for IP address space.
 
 ----
 cd ~/OCP4-Workshop/config
@@ -62,9 +70,26 @@ cd ~/OCP4-Workshop/config
 copy ../config-samples/libvirt-nat .
 ----
 
+==== Copy sample BRIDGE configurations to './config' directory
+
+If you are planning to use a bridged network, all of the network information is vital.  Although the playbooks will create a bridge using virsh, you must provide accurate IPs and MACs for the planned VMs.  At this time, the playbooks do NOT generate MACs for the systems.
+
+----
+cd ~/OCP4-Workshop/config
+
+copy ../config-samples/libvirt-bridge .
+----
+
 === Make Customizations
 
-Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.
+NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
+
+The majority of configuration options are documented in the sample config files.
+
+It is paramount that you update the configs for your environment.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).
+
+  + master-config.yml
+  + libvirt-cofig.yml
 
 === Retrieve RHEL 8.1 DVD
 

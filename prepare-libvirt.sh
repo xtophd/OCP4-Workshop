@@ -35,6 +35,7 @@ case "$1" in
     "undeploy"   | \
     "redeploy"   | \
     "basics"     | \
+    "prep"       | \
     "nested"     | \
     "cockpit"    | \
     "network"    | \

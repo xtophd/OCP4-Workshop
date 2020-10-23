@@ -17,6 +17,18 @@
 - hosts: myBastion
   tasks:
 
+  - name: "BASTION-SETUP: determine if deployment is locked '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
+    stat: path="{{ g_credsDir }}/ocp-workshop-deployment.lock"
+    register: deployment_lock
+    tags: always
+
+  - set_fact:
+      workshop_lock: "{{ deployment_lock.stat.exists }}"
+    tags: always
+
+  - debug: var=workshop_lock
+    tags: always
+
 - import_playbook: bastion-basics.yml
   tags:
     - basics
@@ -75,6 +87,12 @@
   tags:
     - ntp
 
+## Currently disabled and being developed
+#- import_playbook: bastion-squid.yml
+#  when: g_useSQUID == "True"
+#  tags:
+#    - squid
+
 - import_playbook: bastion-tests.yml
   tags:
     - tests
@@ -83,6 +101,10 @@
   tags:
     - openshift
 
+- import_playbook: bastion-lock.yml
+  tags:
+    - lock
+
 - import_playbook: workshop.yml
   tags:
     - workshop
@@ -90,6 +112,11 @@
 ##
 ## The special 'never' tag enforces that this is never run unless 'finish' is specified
 ##
+
+- import_playbook: bastion-unlock.yml
+  tags:
+    - never
+    - unlock
 
 - import_playbook: bastion-openshift-finish.yml
   tags:

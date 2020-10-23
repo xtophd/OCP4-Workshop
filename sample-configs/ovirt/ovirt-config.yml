@@ -1,73 +1,72 @@
 
 ## ------------------------------
-## KVM/Libvirt Config Options
+## Ovirt Config Options
 ##
-##     Parameters for the Virtual Machine Host (libvirt)
-##
-
-##
-## Profile: NAT bridge
+##     Parameters for the oVirt Machine Deployments 
 ##
 
-# virt-host addr in private network
-g_kvmhost_ip:   "192.168.123.1"
+ovirt_cfg: 
 
-# httpd,kickstart,repo service port
-g_http_port:    "8008"                  
+  ##
+  ## ** NOTE ** username and password are stored in the
+  ## ** NOTE ** vaulted credentials.yml
+  ##
 
-# cockpit defaults to 9090, but you can change it
-g_cockpit_port: "9090"
+  ## oVIRT API ip-address and fully qulified domain name
 
-kvm_cfg: 
+  api:
+    ip:   "192.168.1.28"
+    fqdn: "rhvm.lab.linuxsoup.com"
 
-  enable_nested_virt: true
+  ##
+  ## oVirt (data) Storage Domain to use
+  ##
 
-  http_port:    "{{ g_http_port }}"
-  cockpit_port: "{{ g_cockpit_port }}"
- 
-  qcow_dir:     "/home/virt-images"
+  cluster_name: "Default"
 
-  network:
-    name:       "virbr-{{ g_clusterName }}"
-    bridge:     "virbr-{{ g_clusterName }}"
-    fwd_type:   "nat"
-    dev:        "eno1"
-    ipv4:
-      addr:     "{{ g_kvmhost_ip }}/{{ g_pubPREFIX }}"
-      nm:       "{{ g_pubNM }}"
+  ##
+  ## oVirt (data) Storage Domain to use
+  ##
 
-  kickstart:
-    dir: "/var/www/html/ks"
-    url: "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/ks"
+#  storage_domain_iso:  "rhv-iso"
+  storage_domain: "rhv-data-hiperf"
 
-  iso:
-    dir:        "/home/iso"
+  ##
+  ## oVirt Network
+  ##
 
-  repo:
-    dir: "/var/www/html/repos"
-    url: "http://{{ g_kvmhost_ip }}:{{ g_http_port }}/repos"
+  network_name: "ovirtmgmt"
+
+  ##
+  ## engine_cafile
+  ##
+
+  engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+
 
 deployer_cfg:
 
   ## deployer hostname OR ip
-  ip: "{{ g_kvmhost_ip }}"
+  ip: "192.168.1.170"
 
   ## httpd,kickstart,repo service port
-  http_port:    "8008"
+  http_port:    "8008"                  
 
   ## cockpit defaults to 9090, but you can change it
   cockpit_port: "9090"
 
   kickstart:
     dir: "/var/www/html/ks"
-    url: "http://{{ g_kvmhost_ip }}:8008/ks"
+    url: "http://192.168.1.170:8008/ks"
 
   iso:
     dir: "/home/iso"
 
   repo:
     dir: "/var/www/html/repos"
-    url: "http://{{ g_kvmhost_ip }}:8008/repos"
+    url: "http://192.168.1.170:8008/repos"
+
 
 deployer_plan:
 
@@ -99,14 +98,14 @@ deployer_plan:
       wait_for_shutdown:  True
       post_config:        True
       pre_install:        ""
-      post_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-postinstall-bastion.yml"
+      post_install:      "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-postinstall-bastion.yml"
 
     pass_2:
       hostgroup:          "myBootstrap"
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-bootstrap.yml"
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-bootstrap.yml"
       post_install:       ""
 
     pass_3:
@@ -114,7 +113,7 @@ deployer_plan:
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-masters.yml"
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-masters.yml"
       post_install:       ""
 
     pass_4:
@@ -122,6 +121,6 @@ deployer_plan:
       inject_sshkey:      False
       wait_for_shutdown:  False
       post_config:        False
-      pre_install:       "ansible-playbook -i ./config/master-config.yml -f 10  ./playbooks/libvirt-preinstall-workers.yml"
+      pre_install:        "ansible-playbook -i ./config/master-config.yml -f 10 ./playbooks/deployer-preinstall-workers.yml"
       post_install:       ""
 

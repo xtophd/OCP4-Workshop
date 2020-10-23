@@ -2,15 +2,30 @@
 
 export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
 
-echo "Configure Identity Provider (HTPASSWD)"
-echo "--------------------------------------"
+echo ""
+echo "Set password for {{ g_clusterUser }}"
+echo "---------------------------"
 
-echo "Creating empty htpasswd in {{ g_credsDir }}"
-touch {{ g_credsDir }}/users.htpasswd
+htpasswd /usr/local/etc/workshop-users.htpasswd {{ g_clusterUser }}
 
-echo "Creating openshift htpass-secret"
-oc create secret generic htpass-secret --from-file=htpasswd=/root/ocp-ocp/users.htpasswd -n openshift-config
+echo ""
+echo "Creating/Updating openshift htpass-secret"
+echo "-----------------------------------------"
 
-echo "Configuring identity provider"
+if `oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd -n openshift-config > /dev/null 2>&1` ; then
+  echo "Identity secret created"
+else
+  oc create secret generic htpass-secret --from-file=htpasswd=/usr/local/etc/workshop-users.htpasswd --dry-run -o yaml -n openshift-config 2>/dev/null | oc replace -f - > /dev/null 2>&1
+  echo "Identity secret replaced"
+fi
+
+echo ""
+echo "Configuring Identity Provider (HTPASSWD)"
+echo "----------------------------------------"
+
 oc apply -f /usr/local/etc/workshop-identity.yaml
 
+echo ""
+echo "Applying cluster-admin role to {{g_clusterUser }}"
+echo "-------------------------------------------------"
+oc adm policy add-cluster-role-to-user cluster-admin cloud-user

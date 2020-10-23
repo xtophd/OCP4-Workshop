@@ -41,14 +41,18 @@ case "$1" in
     "dhcp"        | \
     "pxe"         | \
     "uefi"        | \
+    "lock"        | \
+    "unlock"      | \
     "nfs"         | \
     "ntp"         | \
     "haproxy"     | \
     "haproxy_vip" | \
     "matchbox"    | \
     "httpd"       | \
+    "squid"       | \
     "openshift"   | \
     "workshop"    | \
+    "refresh"     | \
     "finish")
 
         echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml"

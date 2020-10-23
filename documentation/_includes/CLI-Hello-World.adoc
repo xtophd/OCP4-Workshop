@@ -33,11 +33,11 @@ NOTE: Arguably, in a production environment step-5 (making modifications) would 
 
 == My First Application
 
-=== Sign-on as admin
+  === Sign-on as admin
 
 You may have already established a session in the "CLI: First Time Login".  Never the less, here are the condensed instructions again.
 
-Connect to the master and sign-in as user *admin*.
+Connect to the *bastion* and sign-in as user *kubeadmin*.
 
 .[root@workstation ~]#
 ----
@@ -199,7 +199,7 @@ We can also monitor the deployment of the application by running `oc rollout sta
 
 .[root@master ~]#
 ----
-oc rollout status dc/hello-app
+oc rollout status deployment hello-app
 ----
 
 Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
@@ -227,14 +227,14 @@ In Openshift, routers are the processes responsible for making services accessib
 
 Let's create a route for our new application.
 
-.[root@master ~]#
+.[root@bastion ~]#
 ----
-oc expose service hello-app --hostname=helloworld.cloud.example.com
+oc expose service hello-app
 ----
 
 You can retrieve the current list of configured routes with the `oc get routes` command.
 
-.[root@master ~]#
+.[root@bastion ~]#
 ----
 oc get routes
 ----
@@ -242,8 +242,8 @@ oc get routes
 .Your output should look like this
 [source,indent=4]
 ----
-NAME        HOST/PORT                      PATH      SERVICES    PORT       TERMINATION   WILDCARD
-hello-app   helloworld.cloud.example.com             hello-app   8080-tcp                 None
+NAME        HOST/PORT                                           PATH   SERVICES    PORT       TERMINATION   WILDCARD
+hello-app   hello-app-helloworld.apps.CLUSTERNAME.example.com          hello-app   8080-tcp                 None
 ----
 
 [discrete]
@@ -251,7 +251,7 @@ hello-app   helloworld.cloud.example.com             hello-app   8080-tcp       
 
 .[root@master ~]#
 ----
-curl http://helloworld.cloud.example.com
+curl http://hello-app-helloworld.apps.CLUSTERNAME.example.com
 ----
 
 The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific so we can verify a functional httpd server.  
@@ -277,7 +277,7 @@ Once again, there is a sample script to easily connect to the POD's shell.
 
 .[root@master ~]#
 ----
-cheat-rsh-pod.sh
+workshop-rsh.sh
 ----
 
 [NOTE]
@@ -394,7 +394,7 @@ Now let us reconfigure the UID range openshift will use to deploy the container.
 
 .[root@master ~]#
 ----
-cheat-patch-namespace-helloworld.sh
+workshop-patch-namespace-helloworld.sh
 ----
 
 [NOTE]

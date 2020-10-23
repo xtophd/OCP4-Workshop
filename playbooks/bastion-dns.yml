@@ -146,5 +146,20 @@
       permanent: yes
       state: enabled
 
+  - name: "BASTION-DNS: create systemd override directory"
+    file:
+      path: /etc/systemd/system/dnsmasq.service.d
+      mode: "0755"
+      state: directory
+
+  - name: "BASTION-HAPROXY: set systemd overrides"
+    template:
+      src: "dnsmasq-systemd-overrides.j2"
+      dest: "/etc/systemd/system/dnsmasq.service.d/overrides.conf"
+      owner: root
+      group: root
+      mode: 644
+
   - name: "BASTION-DNS: restart service"
-    service: name=dnsmasq state=restarted enabled=yes
+    service: name=dnsmasq state=restarted enabled=yes daemon_reload=yes
+

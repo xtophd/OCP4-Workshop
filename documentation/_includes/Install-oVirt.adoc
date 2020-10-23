@@ -1,0 +1,147 @@
+:gitrepo: https://github.com/xtophd/OCP-Workshop
+:includedir: _includes
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= oVirt / Red Hat Virtualization
+
+[discrete]
+== Overview
+
+== Preperations
+
+=== Where to Install and Execute the Playbooks
+
+We will refer to the system that runs the Ansible Playbooks as the "deployer".  At this time, it is easiest to use 
+a dedicated system as the deployer BUT you could opt to run the deployment from the oVirt engine (or RHV Manager).
+
+For this example, we will assume a dedicated system.
+
+=== Install RHEL @Base
+
+=== Register system
+
+However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7 and RHEL 8.2.
+
+    - "rhel-7-server-rpms"
+    - "rhel-7-server-optional-rpms"
+    - "rhel-7-server-ansible-2.9-rpms"
+
+RHEL 8 also works.
+
+    - "rhel-8-for-x86_64-baseos-rpms"
+    - "rhel-8-for-x86_64-appstream-rpms"
+    - "ansible-2.9-for-rhel-8-x86_64-rpms"
+ 
+=== Install additional packages
+
+NOTE: this process requires and is tested with ansible 2.9
+
+Besides an @Base installation and you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
+
+----
+yum -y install git,ansible
+----
+
+=== Clone the project
+
+----
+cd ~
+
+git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
+----
+
+==== Copy sample oVirt configurations to './config' directory
+
+----
+cd ~/OCP4-Workshop/config
+
+copy ../config-samples/ovirt/* .
+----
+
+=== Make Customizations
+
+NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
+
+The majority of configuration options are documented in the sample config files.
+
+It is paramount that you update the configs for your environment.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).
+
+  + master-config.yml
+  + ovirt-cofig.yml
+  + credentials.yml
+
+When you are done with modifcations, you must encrypt the credentials.yml file
+
+----
+cd ~/OCP4-Workshop/config
+
+ansible-vault encrypt credentials.yml
+----
+
+
+=== Retrieve RHEL 8.1 DVD
+
+The utility server currently depends on a RHEL 8.1 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
+
+----
+mkdir -p /home/iso/
+
+wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
+----
+
+=== Retrieve Openshift Pull Secret
+
+Using a browser, go to redhat.com and copy link to the pull-secret
+
+    - https://cloud.redhat.com/openshift/install/metal/user-provisioned
+
+You can either:
+
+    - download the pull-secret.txt and copy it to the config directory
+    
+The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer host before you continue.
+
+=== Final Check List
+
+    - All config files present and updated
+        + master-config.yml
+        + ovirt-config.yml
+        + credentials.yml
+        + pull-secret.txt
+    - Is there enough memory?
+    - Is there enough cpu?
+    - Is there enough disk space and is it in the right location?
+    - Is the RHEL ISO downloaded and stored in the right place
+    - Did you install (upgrade) Ansible 2.9
+
+== Installation
+
+----
+bash prepare-ovirt.sh all
+----
+
+== Post Installation
+
+----
+Coming soon...
+----
+
+[discrete]
+= The End
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+
+////
+Always end files with a blank line to avoid include problems.
+////

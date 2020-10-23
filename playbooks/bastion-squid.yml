@@ -1,0 +1,23 @@
+## Authors: 
+##   Christoph Doerbeck
+##
+## Summary:
+##
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "BASTION-SQUID: package installation"
+    yum: name=squid state=installed
+
+  - name: "BASTION-SQUID: restart services"
+    service: name=squid state=restarted enabled=yes masked=no
+
+  - name: "BASTION-SQUID: add firewalld ports and services"
+    firewalld:
+      service: "squid"
+      immediate: yes
+      permanent: yes
+      state: enabled
