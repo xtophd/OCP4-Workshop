@@ -1,20 +1,74 @@
 ##
 ## ----------------------------------------
 ##
-## Red Hat Openshift Parameters
-##
-##   Declare sources & versions of Openshift
+## Red Hat Openshift & CoreOS Sources
 ##
 
-## Openshift 4.5.x
-g_ocp_src:     "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.2"
-g_ocp_install: "openshift-install-linux-4.5.2.tar.gz"
-g_ocp_client:  "openshift-client-linux-4.5.2.tar.gz"
+ocp_assets:
 
-## -- retired --
+  "4_6":
+    name:        "openshift"
+    version:     "4.6"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.1"
+    install_tar: "openshift-install-linux-4.6.1.tar.gz"
+    client_tar:  "openshift-client-linux-4.6.1.tar.gz"
 
-## Openshift 4.4.x
-#g_ocp_src:     "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.12"
-#g_ocp_install: "openshift-install-linux-4.4.12.tar.gz"
-#g_ocp_client:  "openshift-client-linux-4.4.12.tar.gz"
+  "4_5":
+    name:        "openshift"
+    version:     "4.5"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.2"
+    install_tar: "openshift-install-linux-4.5.2.tar.gz"
+    client_tar:  "openshift-client-linux-4.5.2.tar.gz"
 
+  "4_4":
+    name:        "openshift"
+    version:     "4.4"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.12"
+    install_tar: "openshift-install-linux-4.4.12.tar.gz"
+    client_tar:  "openshift-client-linux-4.4.12.tar.gz"
+
+  "4_3":
+    name:        "openshift"
+    version:     "4.3"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
+    install_tar: "openshift-install-linux-4.3.0.tar.gz"
+    client_tar:  "openshift-client-linux-4.3.0.tar.gz"
+
+rhcos_assets:
+
+  "4_6":
+    name:        "rhcos"
+    version:     "4.6"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/4.6.1"
+    initramfs:   "rhcos-4.6.1-x86_64-live-initramfs.x86_64.img"
+    rootfs:      "rhcos-4.6.1-x86_64-live-rootfs.x86_64.img"
+    kernel:      "rhcos-4.6.1-x86_64-live-kernel-x86_64"
+    bios:        "rhcos-4.6.1-x86_64-metal.x86_64.raw.gz"
+    iso:         "rhcos-4.6.1-x86_64-live.x86_64.iso"
+
+  "4_5":
+    name:        "rhcos"
+    version:     "4.5"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2"
+    initramfs:   "rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img"
+    kernel:      "rhcos-4.5.2-x86_64-installer-kernel-x86_64"
+    bios:        "rhcos-4.5.2-x86_64-metal.x86_64.raw.gz"
+    iso:         "rhcos-4.5.2-x86_64-installer.x86_64.iso"
+
+  "4_4":
+    name:        "rhcos"
+    version:     "4.4"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3"
+    initramfs:   "rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img"
+    kernel:      "rhcos-4.4.3-x86_64-installer-kernel-x86_64"
+    bios:        "rhcos-4.4.3-x86_64-metal.x86_64.raw.gz"
+    iso:         "rhcos-4.4.3-x86_64-installer.x86_64.iso"
+
+  "4_3":
+    name:        "rhcos"
+    version:     "4.3"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
+    initramfs:   "rhcos-4.3.0-x86_64-installer-initramfs.x86_64.img"
+    kernel:      "rhcos-4.3.0-x86_64-installer-kernel-x86_64"
+    bios:        "rhcos-4.3.0-x86_64-metal.x86_64.raw.gz"
+    iso:         "rhcos-4.3.0-x86_64-installer.x86_64.iso"

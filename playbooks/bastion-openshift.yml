@@ -23,17 +23,17 @@
     command: "ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa"
     when: test_ssh_key.stat.exists == false
 
-  - name: "BASTION-OPENSHIFT: download ocp software [SRC: {{ g_ocp_src }}]"
+  - name: "BASTION-OPENSHIFT: download ocp software [SRC: {{ ocp_assets[g_clusterVersion]['url'] }}]"
     environment:
       http_proxy: "{{ g_http_proxy }}"
       https_proxy: "{{ g_https_proxy }}"
     get_url:
-      url: "{{ g_ocp_src }}/{{ item }}"
+      url: "{{ ocp_assets[g_clusterVersion]['url'] }}/{{ item }}"
       dest: "/usr/local/src/{{ item }}"
       mode: "0644"
     with_items:
-      - "{{ g_ocp_install }}"
-      - "{{ g_ocp_client }}"
+      - "{{ ocp_assets[g_clusterVersion]['install_tar'] }}"
+      - "{{ ocp_assets[g_clusterVersion]['client_tar'] }}"
 
   - name: "BASTION-OPENSHIFT: unpack ocp software"
     shell:
@@ -41,8 +41,8 @@
         cd /usr/local/bin
         tar zxvf /usr/local/src/{{ item }}
     with_items:
-      - "{{ g_ocp_install }}"
-      - "{{ g_ocp_client }}"
+      - "{{ ocp_assets[g_clusterVersion]['install_tar'] }}"
+      - "{{ ocp_assets[g_clusterVersion]['client_tar'] }}"
 
   - name: "BASTION-OPENSHIFT: additional package installation"
     yum: name=bash-completion state=installed
@@ -173,7 +173,7 @@
     when:
       - workshop_lock == false
 
-  ## Maybe matchbox needs a refresh of content updates, just to be safe restart
+  ## Maybe matchbox needs a refresh of content updates, so just to be safe... restart
 
   - name: "BASTION-OPENSHIFT: restart matchbox services"
     service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes

@@ -3,9 +3,9 @@
  "name": "{{ p_profile}}-{{ p_name }} server",
  "ignition_id": "{{ p_profile }}.ign",
  "boot": {
-  "kernel": "/assets/{{ g_rhcos_kernel }}",
+  "kernel": "/assets/{{ rhcos_assets[g_clusterVersion]['kernel'] }}",
   "initrd": [
-   "/assets/{{ g_rhcos_initramfs }}"
+   "/assets/{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
    ],
    "args": [
     "ip={{ p_network }}",
@@ -14,7 +14,11 @@
     "usb-storage.delay_use={{ p_usbdelay }}",
     "coreos.inst=yes",
     "coreos.inst.install_dev={{ p_storage }}",
-    "coreos.inst.image_url=http://{{ p_addr }}:8080/assets/{{ g_rhcos_bios }}",
+    "coreos.inst.image_url=http://{{ p_addr }}:8080/assets/{{ rhcos_assets[g_clusterVersion]['bios'] }}",
+{% if rhcos_assets[g_clusterVersion]['rootfs'] is defined %}
+    "coreos.inst.insecure=yes",
+    "coreos.live.rootfs_url=http://{{ p_addr}}:8080/assets/{{ rhcos_assets[g_clusterVersion]['rootfs'] }}",
+{% endif %}
     "coreos.inst.ignition_url=http://{{ p_addr}}:8080/ignition?mac=${mac:hexhyp}"
    ]
  }

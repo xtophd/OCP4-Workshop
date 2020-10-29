@@ -45,6 +45,9 @@ g_location = "Dallas"
 g_clusterAdmin = "cloud-admin"
 g_clusterUser = "cloud-user"
 
+## Your OCP Cluster Version
+g_clusterVersion = "4_6"
+
 ## Your OCP Cluster Name
 g_clusterName = "ocpnat"
 
@@ -207,7 +210,7 @@ h_ksPROF = "rhel8_lvm"
 [myBootstrap:vars]
 
 h_hwPROF = "kvm_vda"
-h_rsPROF = "sml"
+h_rsPROF = "med"
 h_ksPROF = "" 
 
 ## -----------------

@@ -41,6 +41,9 @@ g_location = "Dallas"
 g_clusterAdmin = "cloud-admin"
 g_clusterUser = "cloud-user"
 
+## Your OCP Cluster Version
+g_clusterVersion = "4_6"
+
 ## Your OCP Cluster Name
 g_clusterName = "ocprhv"
 

@@ -82,44 +82,57 @@
       - "/var/lib/matchbox/profiles"
       - "/var/lib/matchbox/ignition"
 
-  - name: "BASTION-MATCHBOX: debug - file download urls"
-    debug: msg="{{ g_rhcos_src }}/{{ item }}"
-    with_items:
-      - "{{ g_rhcos_initramfs }}"
-      - "{{ g_rhcos_kernel }}"
-      - "{{ g_rhcos_bios }}"
-      - "{{ g_rhcos_iso }}"
+  ## THIS WAS HELPFUL FOR DEBUGGING, BUT NO LONGER NECCESSARY
+  # - name: "BASTION-MATCHBOX: debug - file download urls"
+  #   debug: msg="{{ rhcos_assets[g_clusterVersion]['url'] }}/{{ item }}"
+  #   with_items:
+  #     - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
+  #     - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
+  #     - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
+  #     - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
+  #     - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
+
+  ##
+  ## ** NOTE **
+  ##
+  ##       'rootfs' was introduced in ocp-4.6 and previous releases won't have that asset defined
+  ##       so I am including some logic to maintain backwards compatability for a while.  hence
+  ##       the default ({}) empty set if rootfs is undefined
+  ##
 
   - name: "BASTION-MATCHBOX: Red Hat CoreOS image download"
     environment:
       http_proxy: "{{ g_http_proxy }}"
       https_proxy: "{{ g_https_proxy }}"
     get_url:
-      url: "{{ g_rhcos_src }}/{{ item }}"
+      url: "{{ rhcos_assets[g_clusterVersion]['url'] }}/{{ item }}"
       dest: "/var/lib/matchbox/assets/{{ item }}"
       owner: matchbox
       group: matchbox
       mode: "0644"
       timeout: 60
     with_items:
-      - "{{ g_rhcos_initramfs }}"
-      - "{{ g_rhcos_kernel }}"
-      - "{{ g_rhcos_bios }}"
-      - "{{ g_rhcos_iso }}"
+      - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
+      - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
+      - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
+      - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
+      - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
     register: coreos_download
     until: coreos_download is not failed
     retries: 5
 
-  - name: "BASTION-MATCHBOX: Red Hat CoreOS create friendly filenames"
-    file:
-      state: link
-      path: "/var/lib/matchbox/assets/{{ item.dst }}"
-      src:  "/var/lib/matchbox/assets/{{ item.src }}"
-    with_items:
-      - { src: "{{ g_rhcos_initramfs }}" ,dst: "initramfs.img" }
-      - { src: "{{ g_rhcos_kernel }}"    ,dst: "kernel.img"    }
-      - { src: "{{ g_rhcos_bios }}"      ,dst: "metal.img"     }
-      - { src: "{{ g_rhcos_iso }}"       ,dst: "rhcos.iso"     }
+  ## THIS WAS HELPFUL FOR DEBUGGING, BUT NO LONGER NECCESSARY
+  # - name: "BASTION-MATCHBOX: Red Hat CoreOS create friendly filenames"
+  #   file:
+  #     state: link
+  #     path: "/var/lib/matchbox/assets/{{ item.dst }}"
+  #     src:  "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion][item.src] }}"
+  #   with_items:
+  #     - { src: "initramfs" ,dst: "initramfs.img" }
+  #     - { src: "kernel"    ,dst: "kernel.img"    }
+  #     - { src: "bios"      ,dst: "metal.img"     }
+  #     - { src: "iso"       ,dst: "rhcos.iso"     }
+  #     - { src: "rootfs"    ,dst: "rootfs.img"    }
 
   - name: "BASTION-MATCHBOX: : deploy bootstrap group-configs"
     vars:

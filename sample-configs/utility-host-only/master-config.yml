@@ -39,6 +39,9 @@ g_location = "Dallas"
 ## Configure the student name as this
 g_studentName = "cloud-user"
 
+## Your OCP Cluster Version
+g_clusterVersion = "4_6"
+
 ## Your OCP Cluster Name
 g_clusterName = "ocp"
 

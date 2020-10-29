@@ -54,7 +54,7 @@
     vars:
     mount:
       path:   "/mnt/rhcos"
-      src:    "/var/lib/matchbox/assets/{{ g_rhcos_iso }}"
+      src:    "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
       opts:   "loop,ro"
       state:  "mounted"
       fstype: "iso9660"
@@ -85,10 +85,11 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
+      - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
-      replace: '\1append\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ g_rhcos_bios }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+      replace: '\1append\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
   - name: "BASTION-UEFI: customize grub configs"
@@ -99,10 +100,11 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
+      - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'
-      replace: '\1linux\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ g_rhcos_bios }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+      replace: '\1linux\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
   - name: "BASTION-UEFI: for each host generate custom iso image"
