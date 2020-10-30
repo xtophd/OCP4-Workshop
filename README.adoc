@@ -125,7 +125,7 @@ Authority files will be in /root/ocp-<clustername>/auth
 
 == LIBVIRT/KVM Host with OCP as VMs
 
-If you plan to deploy OCP in a libvirt/kvm based environemnts, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
+If you plan to deploy OCP in a libvirt/kvm based environment, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
 
 Using this configuration, Openshift will be deployed as virtual machines in a NAT'd internal network.  You can easily change this to a bridged network by using alternate playbooks as the template.
 
