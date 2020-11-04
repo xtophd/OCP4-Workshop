@@ -34,6 +34,12 @@ ocp_assets:
     install_tar: "openshift-install-linux-4.3.0.tar.gz"
     client_tar:  "openshift-client-linux-4.3.0.tar.gz"
 
+  "4_2":
+    name:        "openshift"
+    version:     "4.2"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.18"
+    install_tar: "openshift-install-linux-4.2.18.tar.gz"
+    client_tar:  "openshift-client-linux-4.2.18.tar.gz"
 rhcos_assets:
 
   "4_6":
@@ -72,3 +78,12 @@ rhcos_assets:
     kernel:      "rhcos-4.3.0-x86_64-installer-kernel"
     bios:        "rhcos-4.3.0-x86_64-metal.raw.gz"
     iso:         "rhcos-4.3.0-x86_64-installer.iso"
+
+  "4_2":
+    name:        "rhcos"
+    version:     "4.2"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.18"
+    initramfs:   "rhcos-4.2.18-x86_64-installer-initramfs.img"
+    kernel:      "rhcos-4.2.18-x86_64-installer-kernel"
+    bios:        "rhcos-4.2.18-x86_64-metal-bios.raw.gz"
+    iso:         "rhcos-4.2.18-x86_64-installer.iso"
