@@ -36,8 +36,11 @@ g_owner = "Foo Bar"
 ## (Optional) What is the POC location
 g_location = "Dallas"
 
-## Configure the student name as this
-g_studentName = "cloud-user"
+## Declare the workhop admin and student usernames
+## Passwords will be set as part of the exercises
+
+g_clusterAdmin = "cloud-admin"
+g_clusterUser = "cloud-user"
 
 ## Your OCP Cluster Version
 g_clusterVersion = "4_6"
