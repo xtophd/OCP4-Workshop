@@ -134,7 +134,24 @@ docker-registry-1-52lk5    1/1       Running   0          1h
 registry-console-1-8qlb2   1/1       Running   0          1h
 router-1-q92xl             1/1       Running   0          1h
 ----
-        
+
+== Gather Information About Cluster
+
+NOTE: It can take considerable time and space to gather the output from the 'must-gather' command.  Please be sure your workshop environment is suited to support this acitivity.
+
+To support debugging and troubleshooting issues, you can gather information from your cluster with a simple command.  Collection data includes:  
+
+    * Resource definitions
+    * Audit logs
+    * Service logs
+
+.[root@bastion ~]# 
+----    
+oc adm must-gather
+----
+
+The output is collected into a directory and can be 100+ MB in size.
+
 == Conclusion
 
 At this point it should be clear that the primary commandline interface to Openshift is the `oc` utility.
