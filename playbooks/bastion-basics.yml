@@ -17,6 +17,6 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-BASICS: install additional packages"
+  - name: "ocp4-workshop : bastion-basics : install additional packages"
     yum: name=tree,wget,bind-utils,tar,net-tools,httpd state=installed
 

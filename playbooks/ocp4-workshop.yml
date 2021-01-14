@@ -30,62 +30,50 @@
     tags: always
 
 - import_playbook: bastion-basics.yml
-  tags:
-    - basics
+  tags: basics
 
 - import_playbook: bastion-cockpit.yml
-  tags:
-    - cockpit
+  tags: cockpit
 
 - import_playbook: bastion-dns.yml
   when: g_useDNS == "True"
-  tags:
-    - dns
+  tags: dns
 
 - import_playbook: bastion-matchbox.yml
   when: g_useMATCHBOX == "True"
-  tags:
-    - matchbox
+  tags: matchbox
 
 - import_playbook: bastion-pxe.yml
   when: g_usePXE == "True"
-  tags:
-    - pxe
+  tags: pxe
 
 - import_playbook: bastion-uefi.yml
   when: g_useUEFI_HTTP == "True"
-  tags:
-    - uefi
+  tags: uefi
 
 - import_playbook: bastion-dhcp.yml
   when: g_useDHCP == "True"
-  tags:
-    - dhcp
+  tags: dhcp
 
 - import_playbook: bastion-haproxy.yml
   when: g_useHAPROXY == "True"
-  tags:
-    - haproxy
+  tags: haproxy
 
 - import_playbook: bastion-haproxy-vip.yml
   when: g_useHAPROXY_VIP == "True"
-  tags:
-    - haproxy_vip
+  tags: haproxy_vip
 
 - import_playbook: bastion-nfs.yml
   when: g_useNFS == "True"
-  tags:
-    - nfs
+  tags: nfs
 
 - import_playbook: bastion-httpd.yml
   when: g_useMATCHBOX != "True"
-  tags:
-    - httpd
+  tags: httpd
 
 - import_playbook: bastion-ntp.yml
   when: g_useNTP == "True"
-  tags:
-    - ntp
+  tags: ntp
 
 ## Currently disabled and being developed
 #- import_playbook: bastion-squid.yml
@@ -94,31 +82,14 @@
 #    - squid
 
 - import_playbook: bastion-tests.yml
-  tags:
-    - tests
+  tags: tests
 
 - import_playbook: bastion-openshift.yml
-  tags:
-    - openshift
+  tags: openshift
 
 - import_playbook: bastion-lock.yml
-  tags:
-    - lock
+  tags: lock
 
 - import_playbook: workshop.yml
-  tags:
-    - workshop
+  tags: workshop
 
-##
-## The special 'never' tag enforces that this is never run unless 'finish' is specified
-##
-
-- import_playbook: bastion-unlock.yml
-  tags:
-    - never
-    - unlock
-
-- import_playbook: bastion-openshift-finish.yml
-  tags:
-    - never
-    - finish

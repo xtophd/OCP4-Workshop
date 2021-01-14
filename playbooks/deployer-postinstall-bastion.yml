@@ -3,14 +3,13 @@
 ##
 ## Summary:
 ##
+##     This playbook performs simple task of copying 
+##     pull-secret.txt from local config directory to
+##     the bastion host.
 ##
-##
-
-##
-## This playbook performs simple task of copying pull-secret.txt from local
-## config directory to the bastion host.
-##
-## It then invokes the bastion-setup playbooks
+##     Then invoke the workshop playbooks which prepare
+##     services on the bastion to support an 
+##     Openshift deployment
 ##
 
 ---
@@ -29,7 +28,13 @@
     fail: msg="COPY YOUR OCP4 PULL-SECRET HERE ./config/pull-secret.txt"
     when: test_pull_secret.stat.exists == false
 
-##############################
+
+
+##
+##    Copy the pull secret to bastion server
+## 
+
+
 
 - hosts: myBastion
 
@@ -49,6 +54,12 @@
       group: root
       mode: 0644
 
-##############################
 
-- import_playbook: bastion-setup.yml
+
+##
+##    Now invoke the normal workshop playbook
+##
+
+
+
+- import_playbook: ocp4-workshop.yml

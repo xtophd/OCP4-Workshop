@@ -8,15 +8,19 @@
 
 ---
 - hosts: localhost
-
   tasks:
 
+
+
   ##
-  ## Because the bootstrap disables itself once masters are online, test
-  ## if masters already provide config-service.
+  ##    Because the bootstrap disables itself once
+  ##    masters are online, test if masters already 
+  ##    provide config-service.
   ##
 
-  - name: "LIBVIRT-PREINSTALL-MASTERS: test CONFIG SERVER port on masters (if cluster already exists)"
+
+
+  - name: "ocp4-workshop : deployer-preinstall-masters : test CONFIG SERVER port on masters (if cluster already exists)"
     ignore_errors: true
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
@@ -29,13 +33,17 @@
     loop: "{{ groups['myMasters'] }}"
     register: config_service_status
 
-  ## - debug: var=config_service_status
+
 
   ##
-  ## Masters are not providing config-service, so we need to wait until the bootstrap does provide it
+  ##    Masters are not providing config-service, 
+  ##    so we need to wait until the bootstrap 
+  ##    does provide it
   ##
 
-  - name: "LIBVIRT-PREINSTALL-MASTERS: wait for  CONFIG SERVER port on bootstrap ({{ f_bootstrap_ip }})"
+
+
+  - name: "ocp4-workshop : deployer-preinstall-masters : wait for  CONFIG SERVER port on bootstrap"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5

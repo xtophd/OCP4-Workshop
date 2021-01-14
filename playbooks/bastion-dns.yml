@@ -1,40 +1,72 @@
 ## Authors: 
-##   Christoph Doerbeck
+##    Christoph Doerbeck
 ##
 ## Summary:
-##   This playbook intends to do the heavy lifting of configuring the bastion-host based on the paremeters defined in the
-##   ansible inventory (config).
-##
-##   This will configure needed dns services using dnsmasq
 ##
 
 ---
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-DNS: package installation"
+
+  ##
+  ##    Create a list of hosts in the cluster
+  ##
+
+
+
+  - set_fact: cluster_hosts="{{ [ groups['myBastion'], groups['myMasters'], groups['myWorkers'], groups['myBootstrap'] ] | flatten(1) }}"
+
+
+  ##
+  ##    Install needed packags
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : package installation"
     yum: name=dnsmasq state=installed
 
-  - name: "BASTION-DNS: clean cfg directory"
+
+
+  ##
+  ##    NOTE: This project does NOT play nice with other projects
+  ##          that monkey with dnsmasq configs.  Bastion host
+  ##          should be a dedicated system for openshift.
+  ##    
+  ##    Cleanup any previous dnsmasq configs, IPs and hostnames   
+  ##    
+
+
+
+  - name: "ocp4-workshop : bastion-dns : clean cfg directory"
     shell:
       cmd: |
         if [[ -d "/etc/dnsmasq.d" ]] ; then rm -rf /etc/dnsmasq.d/* ; fi
 
-  - name: "BASTION-DNS: cleanup conflicting IPs in /etc/hosts"
+  - name: "ocp4-workshop : bastion-dns : cleanup conflicting IPs in /etc/hosts"
     lineinfile:
       dest:   "/etc/hosts"
       regexp: "{{ hostvars[item]['h_pubIP'] }} .*$"
       state:  absent
-    loop: "{{ groups['all'] }}"
+    loop: "{{ cluster_hosts }}"
 
-  - name: "BASTION-DNS: cleanup conflicting names in /etc/hosts"
+  - name: "ocp4-workshop : bastion-dns : cleanup conflicting names in /etc/hosts"
     lineinfile:
       dest:   "/etc/hosts"
       regexp: ".*{{ item }}.{{ g_pubFQDN }}.*"
       state:  absent
-    loop: "{{ groups['all'] }}"
+    loop: "{{ cluster_hosts }}"
 
-  - name: "BASTION-DNS: deploy STANDARD options"
+
+
+  ##
+  ##    Create config entries dnsmasq using templates
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : deploy STANDARD options"
     vars: 
       - p_nameServer:  "{{ g_pubDNS }}"
     template:
@@ -42,7 +74,7 @@
       dest: "/etc/dnsmasq.d/30-standard-opts.conf"
       owner: root
 
-  - name: "BASTION-DNS: deploy HOST entries"
+  - name: "ocp4-workshop : bastion-dns : deploy HOST entries"
     vars: 
       - p_item:     "{{ item }}"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -60,9 +92,9 @@
       owner: root
       group: root
       mode: 644
-    loop: "{{ groups['all'] }}"
+    loop: "{{ cluster_hosts }}"
 
-  - name: "BASTION-DNS: deploy ETCD entries"
+  - name: "ocp4-workshop : bastion-dns : deploy ETCD entries"
     vars: 
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -78,9 +110,9 @@
       owner: root
       group: root
       mode: 644
-    loop: "{{ groups['all'] }}"
+    loop: "{{ cluster_hosts }}"
 
-  - name: "BASTION-DNS: deploy API config"
+  - name: "ocp4-workshop : bastion-dns : deploy API config"
     vars: 
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
@@ -93,7 +125,7 @@
       owner: root
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "BASTION-DNS: deploy PUBLIC wildcard"
+  - name: "ocp4-workshop : bastion-dns : deploy PUBLIC wildcard"
     vars: 
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
@@ -105,7 +137,17 @@
       owner: root
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "BASTION-DNS: add comment to /etc/hosts"
+
+
+  ##
+  ##    Put a friendly note in /etc/hosts to 
+  ##    inform people that the config parameters
+  ##    are in /etc/dnsmasq.d
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : add comment to /etc/hosts"
     blockinfile:
       dest:   "/etc/hosts"
       insertbefore: BOF
@@ -117,20 +159,34 @@
         ##
       state:  present
 
+
+
   ##
-  ## We need to disable networkmanager from toying with /etc/resolv.conf
+  ##    We need to disable networkmanager 
+  ##    from toying with /etc/resolv.conf
   ##
 
-  - name: "BASTION-DNS: disable network-manager /etc/resolv.conf adjustments"
+
+
+  - name: "ocp4-workshop : bastion-dns : disable network-manager /etc/resolv.conf adjustments"
     template:
       src:   "dns-resolv-fix.j2"
       dest:  "/etc/NetworkManager/conf.d/90-dns-none.conf"
       owner: root
 
-  - name: "BASTION-DNS: restart networkmanager service"
+  - name: "ocp4-workshop : bastion-dns : restart networkmanager service"
     service: name=NetworkManager state=reloaded enabled=yes
 
-  - name: "BASTION-DNS: template deploy resolv.conf to point to localhost"
+
+
+  ##
+  ##    Now deploy a /etc/resolv.conf that 
+  ##    points to our bastion dns server
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : template deploy resolv.conf to point to localhost"
     vars: 
       - p_search:     "{{ g_clusterName }}.{{ g_publicDomain }}"
       - p_nameserver: "127.0.0.1"
@@ -139,20 +195,31 @@
       dest:  "/etc/resolv.conf"
       owner: root
 
-  - name: "BASTION-DNS: add firewalld service rules"
+
+
+  ##
+  ##    Last couple of items:
+  ##      firewall rules
+  ##      systemd overrides
+  ##      service restart
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : add firewalld service rules"
     firewalld:
       service: dns
       immediate: yes
       permanent: yes
       state: enabled
 
-  - name: "BASTION-DNS: create systemd override directory"
+  - name: "ocp4-workshop : bastion-dns : create systemd override directory"
     file:
       path: /etc/systemd/system/dnsmasq.service.d
       mode: "0755"
       state: directory
 
-  - name: "BASTION-HAPROXY: set systemd overrides"
+  - name: "ocp4-workshop : bastion-dns : set systemd overrides"
     template:
       src: "dnsmasq-systemd-overrides.j2"
       dest: "/etc/systemd/system/dnsmasq.service.d/overrides.conf"
@@ -160,6 +227,6 @@
       group: root
       mode: 644
 
-  - name: "BASTION-DNS: restart service"
+  - name: "ocp4-workshop : bastion-dns : restart service"
     service: name=dnsmasq state=restarted enabled=yes daemon_reload=yes
 

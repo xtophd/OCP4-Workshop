@@ -10,6 +10,8 @@
 - hosts: myBastion
   tasks:
   
+  - set_fact: cluster_hosts="{{ [ groups['myBastion'], groups['myMasters'], groups['myWorkers'], groups['myBootstrap'] ] | flatten(1) }}"
+
   - name: "BASTION-TESTS: TEST PUBLIC dns"
     vars: 
       - p_server:  "localhost"
@@ -23,25 +25,7 @@
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
         dig -x @{{ p_server }} {{ p_addr }} +short
-    loop: "{{ groups['all'] }}"
-    changed_when: false
-
-
-
-  - name: "BASTION-TESTS: TEST PRIVATE dns"
-    vars: 
-      - p_server:  "localhost"
-      - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
-      - p_addr:    "{{ hostvars[item]['h_priIP'] }}"
-      - p_domain:  "{{ g_clusterName }}.{{ g_privateDomain }}"
-    when:
-      - g_useDNS == "True" 
-      - g_privateNet == "True" 
-    shell: 
-      cmd: |
-        dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
-        dig -x @{{ p_server }} {{ p_addr }} +short
-    loop: "{{ groups['all'] }}"
+    loop: "{{ cluster_hosts }}"
     changed_when: false
 
 

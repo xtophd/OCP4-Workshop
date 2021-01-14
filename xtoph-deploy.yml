@@ -1,0 +1,207 @@
+##
+##    Using Ansbile tags are horrible when coupled with
+##    import_playbooks.  Thus, we use a variable called
+##    'xtoph_deploy_cmd' to determine what to execute.
+##    This variable should useually be passed from the 
+##    commandline.
+##    
+##        -e xtoph_deploy_cmd="[deploy | undeploy | redeploy | setup]"
+##
+##
+
+##
+##    First, need to set up the deployhost with
+##    needed software, services and settings
+##
+
+
+
+- hosts: myDeployhost
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "setup"
+      when: xtoph_deploy_cmd == "setup"
+
+
+
+
+##
+##    Next, execute undeploy activities
+##
+##     NOTE: hosts may (or may not) exist, 
+##           majority of tasks run as 'delegate_to'
+##           and so we don't gather_facts
+##
+
+
+
+- hosts: myBastion,myWorkers,myMasters,myBootstrap
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "undeploy"
+      when: xtoph_deploy_cmd == "undeploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##     Before we start deploying systems, we
+##     need to ensure certain basics are configured.
+##     Run the 'deploy_pre' to:
+##       - generate MAC addresses if needed
+##       - add DNS entries to /etc/hosts
+##       - maybe more stuff, go look!
+##
+
+
+
+- hosts: myBastion,myWorkers,myMasters,myBootstrap
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_pre"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##     For the OCP4  Workshop, there are 
+##     concurrency considerations.  We need to 
+##     deploy systems in specific order:
+##
+##       1) bastion
+##       2) bootstrap
+##       3) masters
+##       4) workers
+##
+##     NOTE: 'serial: #' limits concurrent 
+##           deployments and resolves problems
+##           related to disk space and i/o
+##           limits
+##
+
+
+
+- hosts: myBastion
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_monitor"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_post"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##    Bastion host should be deployed,
+##    proceed with bastion configuration
+##
+
+
+
+- import_playbook: playbooks/deployer-postinstall-bastion.yml
+  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##    Bootstrap
+##
+
+
+
+- import_playbook: playbooks/deployer-preinstall-bootstrap.yml
+  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+- hosts: myBootstrap
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_monitor"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##    Masters   
+##    
+
+
+
+- import_playbook: playbooks/deployer-preinstall-masters.yml
+  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+- hosts: myMasters
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_monitor"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##    Workers
+##    
+
+
+
+#- import_playbook: playbooks/deployer-preinstall-workers.yml
+#  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+- hosts: myWorkers
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "deploy_monitor"
+      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+
+
+
+## 
+##    Finish OCP Deployment
+##
+
+
+
+- import_playbook: playbooks/bastion-openshift-finish.yml
+  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+

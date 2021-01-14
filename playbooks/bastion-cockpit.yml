@@ -9,14 +9,26 @@
 - hosts: myBastion
   tasks:
 
-    - name: "BASTION-COCKPIT: yum install packages"
+
+
+    ##
+    ##    Pretty straight forward cockpit setup:
+    ##
+    ##      install packages
+    ##      service config & enablement
+    ##      firewall config & enablement 
+    ##
+
+
+
+    - name: "ocp4-workshop : bastion-cockpit : yum install packages"
       yum: name=cockpit,cockpit-dashboard,firewalld,sos state=installed
       register: result
       retries: 10
       until: result is succeeded
       delay: 5
 
-    - name: "BASTION-COCKPIT:SETUP WEBCONSOLE: create cockpit systemd drop-in directory"
+    - name: "ocp4-workshop : bastion-cockpit : create cockpit systemd drop-in directory"
       file:
         path: "/etc/systemd/system/cockpit.socket.d/"
         mode: "0755"
@@ -24,12 +36,12 @@
         group: "root"
         state: directory
 
-    - name: "BASTION-COCKPIT: service restart"
+    - name: "ocp4-workshop : bastion-cockpit : service restart"
       service: name="cockpit.socket" state=restarted enabled=yes daemon-reload=yes
 
-    - name: "BASTION-COCKPIT: firewalld service restart"
+    - name: "ocp4-workshop : bastion-cockpit : firewalld service restart"
       service: name="firewalld" state=restarted enabled=yes
 
-    - name: "BASTION-COCKPIT: firewall configuration"
+    - name: "ocp4-workshop : bastion-cockpit : firewall configuration"
       firewalld: service="cockpit" permanent=yes immediate=yes state=enabled
 

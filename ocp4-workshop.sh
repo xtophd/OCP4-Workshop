@@ -3,17 +3,21 @@
 ##
 ## NOTE: you must point to the correct inventory
 ##
-##   Take a sample config from ./configs and
-##   copy it to ./playbooks/vars-custom/master-config.yml
+##   Take a sample config from ./sample-configs/[platform]/* and
+##   copy it (or them) to ./config.
 ##
 
 myInventory="./config/master-config.yml"
-##myExtravars="./config/libvirt-config.yml"
 
-## This script is intended to be run:
-##     on the libvirt hypervisor node
-##     in the project directory
-##     EX: CWD == ~root/OCP4-Workshop
+##    
+##    NOTE: This script is intended to be run
+##          on the deployhost (xtoph_deploy)
+##          or on the host that will be the 
+##          cluster bastion
+##
+##    NOTE: You MUST be in the project directory
+##          to run this
+##
 
 if [ ! -e "${myInventory}" ] ; then
     echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
@@ -31,7 +35,6 @@ fi
 
 case "$1" in
     "all")
-        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml"
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml
         ;;
          
@@ -55,17 +58,23 @@ case "$1" in
     "refresh"     | \
     "finish")
 
-        echo "ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml"
         time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
         ;;
 
+    "unlock")
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-unlock.yml
+        ;;
+
+    "finish")
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-openshift-finish.yml
+        ;;
+
     "usher")
-        echo "ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml"
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish | usher ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish | lock | unlock | usher ]"
         ;;
 
 esac         

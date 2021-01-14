@@ -13,30 +13,74 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-HAPROXY: package installation"
+
+
+  ##
+  ##    Install haproxy packages
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : package installation"
     yum: name=haproxy state=installed
 
-  - name: "BASTION-HAPROXY: add persistant SELINUX boolean"
+
+
+  ##
+  ##    Set SELinux boolean to allow haproxy
+  ##    to work on any port
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : add persistant SELINUX boolean"
     shell: setsebool -P haproxy_connect_any on
 
-  - name: "BASTION-HAPROXY: clean cfg fragment directory"
+
+
+  ##
+  ##    Create the haproxy config by assembling
+  ##    various chunks (fragments) from templates
+  ##
+  ##    NOTE: This method does not play nice
+  ##          with other services that might want
+  ##          to use haproxy.  It's only meant
+  ##          for haproxy on the bastion host.
+  ##
+
+  ##
+  ##    Clean fragment directory
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : clean cfg fragment directory"
     shell:
       cmd: |
         if [[ -d "/etc/haproxy/cfg-fragments" ]] ; then rm -rf /etc/haproxy/cfg-fragments ; fi
 
-  - name: "BASTION-HAPROXY create fresh cfg fragment directory"
+  - name: "ocp4-worshop : bastion-haproxy : create fresh cfg fragment directory"
     file:
       path: /etc/haproxy/cfg-fragments
       mode: "0755"
       state: directory
 
-  - name: "BASTION-HAPROXY: deploy default config"
+
+
+  ##
+  ##    Debloy the base and enable
+  ##    the stats config pages
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : deploy default config"
     template:
       src: "haproxy-defaults.j2"
       dest: "/etc/haproxy/cfg-fragments/10-defaults.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy stats config"
+  - name: "ocp4-worshop : bastion-haproxy : deploy stats config"
     vars:
       - p_ip:       "*"
       - p_port:     "8404"
@@ -46,7 +90,21 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-stats.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy api base"
+
+ 
+  ##
+  ##    OCP API service
+  ##
+  ##    NOTE: the bootstrap provides this service until
+  ##          the masters are up.  Thus, you can technically
+  ##          remove the bootstrap from the config.  But,
+  ##          I'm not going to deal with it toady.  Maybe
+  ##          tomorrow
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : api server frontends"
     vars:
       - p_type:     "api"
       - p_ip:       "*"
@@ -58,7 +116,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy api servers"
+  - name: "ocp4-worshop : bastion-haproxy : api server backends"
     vars:
       - p_type:     "api"
       - p_ip:       "*"
@@ -75,7 +133,15 @@
       mode: 644
     loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-HAPROXY: deploy config base"
+
+ 
+  ##
+  ##    OCP Config Service
+  ## 
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : config server frontends"
     vars:
       - p_type:     "config"
       - p_ip:       "*"
@@ -87,7 +153,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy config servers"
+  - name: "ocp4-worshop : bastion-haproxy : config server backends"
     vars:
       - p_type:     "config"
       - p_ip:       "*"
@@ -104,7 +170,15 @@
       mode: 644
     loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-HAPROXY: deploy http base"
+
+
+    ##
+    ##    OCP HTTP and HTTPS Service
+    ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : http server frontend"
     vars:
       - p_type:     "http"
       - p_ip:       "*"
@@ -116,7 +190,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy http servers"
+  - name: "ocp4-worshop : bastion-haproxy : http server backends"
     vars:
       - p_type:     "http"
       - p_ip:       "*"
@@ -133,7 +207,10 @@
       mode: 644
     loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
-  - name: "BASTION-HAPROXY: deploy https base"
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : https server frontend"
     vars:
       - p_type:     "https"
       - p_ip:       "*"
@@ -145,7 +222,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY: deploy https servers"
+  - name: "ocp4-worshop : bastion-haproxy : https server backends"
     vars:
       - p_type:     "https"
       - p_port:     "443"
@@ -162,7 +239,16 @@
       mode: 644
     loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
-  - name: "BASTION-HAPROXY: assemble config fragments"
+
+
+  ##
+  ##    Assemble all the config fragments in
+  ##    a single /etc/haproxy/haproxy.cfg
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : assemble config fragments"
     assemble:
       src: "/etc/haproxy/cfg-fragments"
       dest: "/etc/haproxy/haproxy.cfg"
@@ -170,13 +256,21 @@
       group: root
       mode: 644
 
-  - name: "BASTION-HAPROXY: create systemd override directory"
+
+
+  ##
+  ##    Config and enable haproxy service
+  ##
+
+
+
+  - name: "ocp4-worshop : bastion-haproxy : create systemd override directory"
     file:
       path: /etc/systemd/system/haproxy.service.d
       mode: "0755"
       state: directory
 
-  - name: "BASTION-HAPROXY: set systemd overrides"
+  - name: "ocp4-worshop : bastion-haproxy : set systemd overrides"
     template:
       src: "haproxy-systemd-overrides.j2"
       dest: "/etc/systemd/system/haproxy.service.d/overrides.conf"
@@ -184,10 +278,10 @@
       group: root
       mode: 644
 
-  - name: "BASTION-HAPROXY: restart service"
+  - name: "ocp4-worshop : bastion-haproxy : restart service"
     service: name=haproxy state=restarted enabled=yes daemon_reload=yes
 
-  - name: "BASTION-HAPROXY: add firewalld service rules"
+  - name: "ocp4-worshop : bastion-haproxy : add firewalld service rules"
     firewalld:
       service: "{{ item }}"
       immediate: yes
@@ -197,7 +291,12 @@
       - "http"
       - "https"
 
-  - name: "BASTION-HAPROXY: add firewalld port rules"
+
+  ##
+  ##    Enable the firewall ports/services
+  ##
+
+  - name: "ocp4-worshop : bastion-haproxy : add firewalld port rules"
     firewalld:
       port: "{{ item }}"
       immediate: yes

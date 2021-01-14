@@ -1,128 +1,48 @@
-## libvirt-nat
 ##
-## Assumptions (at this time):
-##   + PublicNet is required with unrestricted internet access
-##   + use RHEL 7.7 or later
-##   + use Ansible 2.9 or later
-##   + dhcp/dnsmasq has been disabled in libvirt's default bridged (nat) network
-##       - virsh net-edit default
-##       - remove <dhcp .... .... /dhcp> block 
-##       - restart the network  `virsh net-{destroy,start} default`
+##    First character of variable:
 ##
-
+##     g_Name - global: declared in this file
 ##
-## First character of variable defines scope
-## and should help tracking where it is defined.
+##     h_Name - host: declared in host inventory OR
+##                    in a [hostname:vars] block
 ##
-##  g_Name - global: declared in this file
-##
-##  h_Name - host: declared in host inventory OR
-##                 in a [hostname:vars] block
-##
-##  p_Name - play: declared as part of a play
+##     p_Name - play: declared as part of a play/task
 ##
 
-##
-## NOTE: paths to additional customizable variable files are 
-##       declared in playbooks/group_vars/all/var_config.yml
-##
+
 
 [all:vars]
 
-##
 ## ----------------------------------------
-## General Parameters
+##     Openshift Deployment Parameters
 ##
+##     g_clusterVersion 
+##     g_wildcardName 
+##     g_clusterUser
+##     g_credsDir
 
-## (Optional) Who is the POC owner
-g_owner = "Foo Bar"
-
-## (Optional) What is the POC location
-g_location = "Dallas"
-
-## Passwords will be set as part of the exercises
-
-g_clusterAdmin = "cloud-admin"
-g_clusterUser = "cloud-user"
-
-## Your OCP Cluster Version
 g_clusterVersion = "4_6"
-
-## Your OCP Cluster Name
-g_clusterName = "ocpnat"
-
-## Your OCP Cluster Wildcard Name
-g_wildcardName = "apps"
-
-## Your OCP Cluster Creds Dir
-g_credsDir = "/root/ocp-{{ g_clusterName}}"
-
-##
-## ----------------------------------------
-## g_clusterVIP
-##
-##   If you are planning to run a loadbalancer (haproxy)
-##   on a host other than the bastion (ie: the virt-host perhaps)
-##   specify the cluster virtual IP (VIP).  This is only
-##   used to create an additional haproxy.cfg and does
-##   not impact the cluster configuration or deployment
-##
-
-g_clusterVIP = "192.168.1.29"
+g_clusterAdmin   = "cloud-admin"
+g_clusterUser    = "cloud-user"
+g_credsDir       = "/root/ocp-{{ g_clusterName}}"
+g_credsDir       = "/root/ocp-{{ g_clusterName}}"
+g_wildcardName   = "apps"
 
 ##
 ## ----------------------------------------
 ## Proxy settings (affects playbooks and openshift config)
 ##
 ##   Examples:
-##     g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port> 
-##     g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port> 
-##     g_no_proxy = noProxy: example.com 
+##     g_http_proxy = httpProxy: http://<username>:<pswd>@<ip>:<port>
+##     g_https_proxy = httpsProxy: http://<username>:<pswd>@<ip>:<port>
+##     g_no_proxy = noProxy: example.com
 
 g_http_proxy  = ""
 g_https_proxy = ""
 g_no_proxy    = ""
 
-##
 ## ----------------------------------------
-## Networking Parameters
-##
-
-## Configure the public (primary) network
-g_publicNet     = "True"
-g_publicDomain  = "example.com"
-g_pubNET        = "192.168.123.0"
-g_pubNM         = "255.255.255.0"
-g_pubBC         = "192.168.123.255"
-g_pubPREFIX     = "24"
-g_pubGW         = "192.168.123.1"
-g_pubDNS        = "192.168.123.1"
-g_pubNTP        = "192.168.123.160"
-g_pubFQDN       = "{{ g_clusterName }}.{{ g_publicDomain }}"
-
-## Configure the private (secondary) network
-g_privateNet    = "False"
-g_privateDomain = "private.example.com"
-g_priNET        = "10.0.0.0"
-g_priNM         = "255.255.255.0"
-g_priPREFIX     = ""
-g_priGW         = ""
-g_priDNS        = ""
-g_priNTP        = ""
-
-##
-## ----------------------------------------
-##
-## Optional Local Services that can be enabled on bastion
-##
-##   DNS          - enables DNS service via dnsmasq
-##   DHCP         - enables DHCP service via dhcpd
-##   PXE          - adds PXE config to DHCP
-##   UEFI_HTTP    - adds UEFI_HTTP config to DHCP
-##   LOADBALANCER - enable load balancer via haproxy
-##   MATCHBOX     - service to provide artifacts to RHCOS (installation automation)
-##   NFS          - enables NFS service for persistent storage
-##   NTP          - enables NTP service for clock accuracy
+##     Bastion Configuration Parameters
 ##
 
 g_useDNS          = "True"
@@ -134,26 +54,51 @@ g_useHAPROXY_VIP  = "True"
 g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
+g_useDNSwildcard  = "True"
 
-## Configure DNS wildcard on bastion host
-g_useDNSwildcard = "True"
+g_nfsExport       = "/home/nfs-{{ g_clusterName }}"
+
+## ----------------------------------------
+##    g_clusterName
+##
+##    used with network basedomain to create 
+##    unique network domain for the cluster
+##
+
+g_clusterName = "ocp4kvm"
+
+## ----------------------------------------
+##    g_clusterVIP
+##
+##    If you are planning to run a loadbalancer (haproxy)
+##    on a host other than the bastion (ie: the virt-host perhaps)
+##    specify the cluster virtual IP (VIP).  This is only
+##    used to create an additional haproxy.cfg and does
+##    not impact the cluster configuration or deployment
+##
+
+g_clusterVIP = ""
 
 ##
 ## ----------------------------------------
-## NFS server variables
-
-g_nfsExport = "/home/nfs-{{ g_clusterName }}"
-
+##    g_network0_*
 ##
-## ----------------------------------------
+##    Parameters for the default network
 ##
-## HTTPD Parameters 
+##    NOTE: sticking with older workshop variable names
+##          to preserve compatibility
 ##
-##     http server on virthost to
-##     support kickstart and repo
-##   
 
-g_http_port = "8008"
+g_publicNet     = "True"
+g_publicDomain  = "example.com"
+g_pubNET        = "192.168.123.0"
+g_pubNM         = "255.255.255.0"
+g_pubBC         = "192.168.123.255"
+g_pubPREFIX     = "24"
+g_pubGW         = "192.168.123.1"
+g_pubDNS        = "192.168.123.1"
+g_pubNTP        = "192.168.123.160"
+g_pubFQDN       = "{{ g_clusterName }}.{{ g_publicDomain }}"
 
 ##
 ## ----------------------------------------
@@ -162,7 +107,7 @@ g_http_port = "8008"
 ## we won't have to specify FQDN in host vars section below
 ##
 
-ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
+ansible_host = "{{ inventory_hostname }}.{{ g_pubFQDN }}"
 
 ##
 ## ----------------------------------------
@@ -192,18 +137,17 @@ h_rhcosUSBdelay = "0"
 ## ----------------------------------------
 ## HOSTGROUP VARS
 
-[myVirthost:vars]
+[myDeployhost:vars]
 
-## We are running the playbooks on the baremetal virthost
-ansible_connection = "local"
+ansible_connection=local
 
 ## -----------------
 
 [myBastion:vars]
 
-h_hwPROF = "kvm_vda" 
+h_hwPROF = "kvm_vda"
 h_rsPROF = "bastion"
-h_ksPROF = "rhel8_lvm"
+h_ksPROF = "rhel82-bootiso"
 
 ## -----------------
 
@@ -211,7 +155,7 @@ h_ksPROF = "rhel8_lvm"
 
 h_hwPROF = "kvm_vda"
 h_rsPROF = "med"
-h_ksPROF = "" 
+h_ksPROF = ""
 
 ## -----------------
 
@@ -225,7 +169,7 @@ h_ksPROF = ""
 
 [myWorkers:vars]
 
-h_hwPROF = "kvm_nest_vda"
+h_hwPROF = "kvm_vda"
 h_rsPROF = "sml"
 h_ksPROF = ""
 
@@ -233,14 +177,17 @@ h_ksPROF = ""
 ## ----------------------------------------
 ## HOST VARS
 
-[myVirthost]
-virthost  h_pubMAC="54:e1:ad:6c:2a:66" h_pubIP="192.168.123.1"
+[myDeployhost]
+test-amd.lab.linuxsoup.com
 
 [myBastion]
-bastion   h_pubIP="192.168.123.160" 
+bastion h_pubIP="192.168.123.110"
+
+[myBastion]
+bastion   h_pubIP="192.168.123.160"
 
 [myBootstrap]
-node1     h_pubIP="192.168.123.161" 
+node1     h_pubIP="192.168.123.161"
 
 [myMasters]
 node2     h_pubIP="192.168.123.162" h_etcdName="etcd-0"
@@ -248,5 +195,6 @@ node3     h_pubIP="192.168.123.163" h_etcdName="etcd-1"
 node4     h_pubIP="192.168.123.164" h_etcdName="etcd-2"
 
 [myWorkers]
-node5     h_pubIP="192.168.123.165" 
-node6     h_pubIP="192.168.123.166" 
+node5     h_pubIP="192.168.123.165"
+node6     h_pubIP="192.168.123.166"
+

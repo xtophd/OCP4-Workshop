@@ -18,24 +18,24 @@
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
 
-  - name: "BASTION-DHCP: package installation (RHEL8)"
+  - name: "ocp4-workshop : bastion-dhcp : package installation (RHEL8)"
     yum: name=dhcp-server state=installed
     when:
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "8"
   
-  - name: "BASTION-DHCP: package installation (RHEL7)"
+  - name: "ocp4-workshop : bastion-dhcp : package installation (RHEL7)"
     yum: name=dhcp state=installed
     when:
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "7"
 
-  - name: "BASTION-DHCP: clean cfg fragments directory"
+  - name: "ocp4-workshop : bastion-dhcp : clean cfg fragments directory"
     shell:
       cmd: |
         if [[ -d "/etc/dhcp/cfg-fragments" ]] ; then rm -rf /etc/dhcp/cfg-fragments ; fi
 
-  - name: "BASTION-DHCP create cfg fragments directory"
+  - name: "ocp4-workshop : bastion-dhcp : create cfg fragments directory"
     file:
       path: /etc/dhcp/cfg-fragments
       mode: "0755"
@@ -43,19 +43,19 @@
 
   ## We will need facts about the bastion host below, so save them
 
-  - name: "BASTION-DHCP: determine bastion pub IP"
+  - name: "ocp4-workshop : bastion-dhcp : determine bastion pub IP"
     set_fact:
       f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
       f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "BASTION-DHCP: deploy standard options"
+  - name: "ocp4-workshop : bastion-dhcp : deploy standard options"
     template:
       src: "dhcp-standard-opts.j2"
       dest: "/etc/dhcp/cfg-fragments/10-standard-opts.conf"
       owner: root
 
-  - name: "BASTION-DHCP: deploy PUBLIC SUBNET config frament"
+  - name: "ocp4-workshop : bastion-dhcp : deploy PUBLIC SUBNET config frament"
     vars:
       - p_nextsvr:   "{{ f_bastionIP }}"
       - p_network:   "{{ g_pubNET }}"
@@ -74,7 +74,7 @@
       group: root
       mode: 644
 
-  - name: "BASTION-DHCP: deploy dhcp group start"
+  - name: "ocp4-workshop : bastion-dhcp : deploy dhcp group start"
     vars:
       - p_dhcpgroup: "{{ g_clusterName }}"
     template:
@@ -82,7 +82,7 @@
       dest: "/etc/dhcp/cfg-fragments/30-group-start.conf"
       owner: root
 
-  - name: "BASTION-DHCP: deploy host config framents"
+  - name: "ocp4-workshop : bastion-dhcp : deploy host config framents"
     vars:
       - p_item:      "{{ item }}"
       - p_nextsvr:   "{{ f_bastionIP }}"
@@ -105,7 +105,7 @@
       mode: 644
     loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-DHCP: deploy dhcp group finish"
+  - name: "ocp4-workshop : bastion-dhcp : deploy dhcp group finish"
     vars:
       - p_dhcpgroup: "{{ g_clusterName }}"
     template:
@@ -113,7 +113,7 @@
       dest: "/etc/dhcp/cfg-fragments/50-group-finish.conf"
       owner: root
 
-  - name: "BASTION-DHCP: deploy PUBLIC SUBNET config frament"
+  - name: "ocp4-workshop : bastion-dhcp : deploy PUBLIC SUBNET config frament"
     vars:
       - p_item:      "{{ item }}"
       - p_nextsvr:   "{{ f_bastionIP }}"
@@ -132,7 +132,7 @@
       group: root
       mode: 644
 
-  - name: "BASTION-DHCP: assemble config fragments"
+  - name: "ocp4-workshop : bastion-dhcp : assemble config fragments"
     assemble:
       src: "/etc/dhcp/cfg-fragments"
       dest: "/etc/dhcp/dhcpd.conf"
@@ -140,13 +140,13 @@
       group: root
       mode: 644
 
-  - name: "BASTION-DHCP: restart services"
+  - name: "ocp4-workshop : bastion-dhcp : restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
     when: g_usePXE == "True"
     with_items:
       - "dhcpd"
 
-  - name: "BASTION-DHCP: add firewalld ports and services"
+  - name: "ocp4-workshop : bastion-dhcp : add firewalld ports and services"
     firewalld:
       service: "{{ item }}"
       immediate: yes
