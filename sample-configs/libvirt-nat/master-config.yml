@@ -181,9 +181,6 @@ h_ksPROF = ""
 test-amd.lab.linuxsoup.com
 
 [myBastion]
-bastion h_pubIP="192.168.123.110"
-
-[myBastion]
 bastion   h_pubIP="192.168.123.160"
 
 [myBootstrap]
