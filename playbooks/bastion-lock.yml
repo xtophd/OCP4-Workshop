@@ -9,7 +9,7 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-LOCK: touch '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
+  - name: "ocp4-workshop : bastion-lock : touch '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
     file:
       path:  "{{ g_credsDir }}/ocp-workshop-deployment.lock"
       state: touch

@@ -20,7 +20,7 @@
 
 
 
-  - name: "ocp4-workshop : deployer-preinstall-masters : test CONFIG SERVER port on masters (if cluster already exists)"
+  - name: "ocp4-workshop : deployer-preinstall-masters : verify CONFIG SERVER port on masters is NOT active"
     ignore_errors: true
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
@@ -31,7 +31,7 @@
       state: started
       timeout: 15
     loop: "{{ groups['myMasters'] }}"
-    register: config_service_status
+    register: config_service_master
 
 
 
@@ -41,7 +41,8 @@
   ##    does provide it
   ##
 
-
+  - debug:
+      var: config_service_master
 
   - name: "ocp4-workshop : deployer-preinstall-masters : wait for  CONFIG SERVER port on bootstrap"
     wait_for:
@@ -53,5 +54,9 @@
       state: started
       timeout: 1800 
     loop: "{{ groups['myBootstrap'] }}"
-    when: config_service_status.failed is defined
+    register: config_service_bootstrap
+    when: config_service_master.failed is defined
+
+  - debug:
+      var: config_service_bootstrap
 

@@ -12,7 +12,7 @@
   
   - set_fact: cluster_hosts="{{ [ groups['myBastion'], groups['myMasters'], groups['myWorkers'], groups['myBootstrap'] ] | flatten(1) }}"
 
-  - name: "BASTION-TESTS: TEST PUBLIC dns"
+  - name: "ocp4-workshop : bastion-tests : test dns"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -30,7 +30,7 @@
 
 
 
-  - name: "BASTION-TESTS: TEST WILDCARD dns"
+  - name: "ocp4-workshop : bastion-tests : test wildcard"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ g_wildcardName }}"

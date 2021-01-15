@@ -26,7 +26,6 @@
 
 
 
-
 ##
 ##    Next, execute undeploy activities
 ##
@@ -37,7 +36,7 @@
 
 
 
-- hosts: myBastion,myWorkers,myMasters,myBootstrap
+- hosts: myBastion,myBootstrap,myWorkers,myMasters
   gather_facts: no 
   roles:
 
@@ -51,7 +50,7 @@
 ##
 ##     Before we start deploying systems, we
 ##     need to ensure certain basics are configured.
-##     Run the 'deploy_pre' to:
+##     Run the 'deploy_preprocess' to:
 ##       - generate MAC addresses if needed
 ##       - add DNS entries to /etc/hosts
 ##       - maybe more stuff, go look!
@@ -65,7 +64,7 @@
 
     - role: xtoph_deploy
       vars: 
-        xtoph_deploy_action: "deploy_pre"
+        xtoph_deploy_action: "deploy_preprocess"
       when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
 
@@ -97,16 +96,6 @@
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy_monitor"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
-
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy_post"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
-
 
 
 ##
@@ -116,7 +105,7 @@
 
 
 
-- import_playbook: playbooks/deployer-postinstall-bastion.yml
+- import_playbook: playbooks/deployer-configure-bastion.yml
   when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
 
@@ -139,11 +128,6 @@
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy_monitor"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
-
 
 
 ##
@@ -164,11 +148,6 @@
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy_monitor"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
-
 
 
 ##
@@ -177,8 +156,8 @@
 
 
 
-#- import_playbook: playbooks/deployer-preinstall-workers.yml
-#  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+- import_playbook: playbooks/deployer-preinstall-workers.yml
+  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
 - hosts: myWorkers
   gather_facts: no 
@@ -187,11 +166,6 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
-
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy_monitor"
       when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
 
 

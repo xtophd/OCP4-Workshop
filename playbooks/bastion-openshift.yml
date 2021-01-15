@@ -9,21 +9,21 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-OPENSHIFT: Create ssh directory"
+  - name: "ocp4-workshop : bastion-openshift : Create ssh directory"
     file:
       path: /root/.ssh
       mode: "0700"
       state: directory
 
-  - name: "BASTION-OPENSHIFT: test ssh key"
+  - name: "ocp4-workshop : bastion-openshift : test ssh key"
     stat: path="/root/.ssh/id_rsa.pub"
     register: test_ssh_key
 
-  - name: "BASTION-OPENSHIFT: create ssh key"
+  - name: "ocp4-workshop : bastion-openshift : create ssh key"
     command: "ssh-keygen -t rsa -b 2048 -N '' -f /root/.ssh/id_rsa"
     when: test_ssh_key.stat.exists == false
 
-  - name: "BASTION-OPENSHIFT: download ocp software [SRC: {{ ocp_assets[g_clusterVersion]['url'] }}]"
+  - name: "ocp4-workshop : bastion-openshift : download ocp software [SRC: {{ ocp_assets[g_clusterVersion]['url'] }}]"
     environment:
       http_proxy: "{{ g_http_proxy }}"
       https_proxy: "{{ g_https_proxy }}"
@@ -35,7 +35,7 @@
       - "{{ ocp_assets[g_clusterVersion]['install_tar'] }}"
       - "{{ ocp_assets[g_clusterVersion]['client_tar'] }}"
 
-  - name: "BASTION-OPENSHIFT: unpack ocp software"
+  - name: "ocp4-workshop : bastion-openshift : unpack ocp software"
     shell:
       cmd: |
         cd /usr/local/bin
@@ -44,10 +44,10 @@
       - "{{ ocp_assets[g_clusterVersion]['install_tar'] }}"
       - "{{ ocp_assets[g_clusterVersion]['client_tar'] }}"
 
-  - name: "BASTION-OPENSHIFT: additional package installation"
+  - name: "ocp4-workshop : bastion-openshift : additional package installation"
     yum: name=bash-completion state=installed
 
-  - name: "BASTION-OPENSHIFT: configure openshift bash completion"
+  - name: "ocp4-workshop : bastion-openshift : configure openshift bash completion"
     shell: 
       cmd: |
         /usr/local/bin/oc completion bash >> /etc/bash_completion.d/oc_completion
@@ -63,7 +63,7 @@
       ## Clean up installation artifacts
       ##
 
-      - name: "BASTION-OPENSHIFT: Back-up openshift installation artifacts in {{ g_credsDir }}"
+      - name: "ocp4-workshop : bastion-openshift : Back-up openshift installation artifacts in {{ g_credsDir }}"
         shell:
           cmd: |
             if [[ -d "{{ g_credsDir }}" ]]; 
@@ -71,18 +71,18 @@
             fi
           removes: "{{ g_credsDir }}"
     
-      - name: "BASTION-OPENSHIFT: Clean-up kube artifacts in /root/.kube"
+      - name: "ocp4-workshop : bastion-openshift : Clean-up kube artifacts in /root/.kube"
         file:
           path: "/root/.kube"
           state: absent
     
-      - name: "BASTION-OPENSHIFT: Create openshift working directory {{ g_credsDir }}"
+      - name: "ocp4-workshop : bastion-openshift : Create openshift working directory {{ g_credsDir }}"
         file:
           path: "{{ g_credsDir }}"
           mode: "0755"
           state: directory
 
-      - name: "BASTION-OPENSHIFT: Clean-up matchbox ignition directory"
+      - name: "ocp4-workshop : bastion-openshift : Clean-up matchbox ignition directory"
         shell:
           cmd: |
             if [[ -d "/var/lib/matchbox/ignition/" ]] ; then rm -f /var/lib/matchbox/ignition/* ; fi
@@ -95,7 +95,7 @@
       ##   else  this is a manual step user must complete therefore show message and exit
       ##
 
-      - name: "BASTION-OPENSHIFT: maybe find pull-secret in ../config"
+      - name: "ocp4-workshop : bastion-openshift : maybe find pull-secret in ../config"
         copy:
           src:   "../config/pull-secret.txt" 
           dest:  "{{ g_credsDir }}/pull-secret.txt"
@@ -104,7 +104,7 @@
           group: root
         ignore_errors: yes
     
-      - name: "BASTION-OPENSHIFT: maybe find pull-secret in /root"
+      - name: "ocp4-workshop : bastion-openshift : maybe find pull-secret in /root"
         copy:
           src:   "/root/{{ g_clusterName }}-pull-secret.txt" 
           dest:  "{{ g_credsDir }}/pull-secret.txt"
@@ -114,7 +114,7 @@
           remote_src: yes
         ignore_errors: yes
     
-      - name: "BASTION-OPENSHIFT: confirm pull-secret"
+      - name: "ocp4-workshop : bastion-openshift : confirm pull-secret"
         stat: path="{{ g_credsDir }}/pull-secret.txt"
         register: found_secret
     
@@ -125,15 +125,15 @@
         when: 
           - found_secret.stat.exists == false
     
-      - name: "BASTION-OPENSHIFT: load pull secret"
+      - name: "ocp4-workshop : bastion-openshift : load pull secret"
         shell: cat {{ g_credsDir }}/pull-secret.txt
         register: pull_secret
     
-      - name: "BASTION-OPENSHIFT: load ssh key"
+      - name: "ocp4-workshop : bastion-openshift : load ssh key"
         shell: cat /root/.ssh/id_rsa.pub
         register: ssh_key
     
-      - name: "BASTION-OPENSHIFT: deploy install-config.yml"
+      - name: "ocp4-workshop : bastion-openshift : deploy install-config.yml"
         vars:
           - p_pullSecret:   "{{ pull_secret.stdout |quote }}"
           - p_sshKey:       "{{ ssh_key.stdout |quote }}"
@@ -149,23 +149,23 @@
           group: root
           mode: 644
     
-      - name: "BASTION-OPENSHIFT: Create a backup of the install-config.yaml"
+      - name: "ocp4-workshop : bastion-openshift : Create a backup of the install-config.yaml"
         shell:
           cmd: |
             cp "{{ g_credsDir }}/install-config.yaml" "{{ g_credsDir }}/install-config.bak"
 
-      - name: "BASTION-OPENSHIFT: create ignition files"
+      - name: "ocp4-workshop : bastion-openshift : create ignition files"
         shell:
           cmd: |
             cd {{ g_credsDir }}
             /usr/local/bin/openshift-install --dir={{ g_credsDir }} create ignition-configs
     
-      - name: "BASTION-OPENSHIFT: copy ignition files"
+      - name: "ocp4-workshop : bastion-openshift : copy ignition files"
         shell:
           cmd: |
             cp {{ g_credsDir }}/*.ign /var/lib/matchbox/ignition/
     
-      - name: "BASTION-OPENSHIFT: fix ignition file permissions"
+      - name: "ocp4-workshop : bastion-openshift : fix ignition file permissions"
         shell:
           cmd: |
             chown matchbox.matchbox /var/lib/matchbox/ignition/*
@@ -175,11 +175,11 @@
 
   ## Maybe matchbox needs a refresh of content updates, so just to be safe... restart
 
-  - name: "BASTION-OPENSHIFT: restart matchbox services"
+  - name: "ocp4-workshop : bastion-openshift : restart matchbox services"
     service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes
     with_items:
       - "matchbox"
     when: g_useMATCHBOX == "True"
 
-  - name: "BASTION-OPENSHIFT: DEBUG"
+  - name: "ocp4-workshop : bastion-openshift : DEBUG"
     debug: msg="YOU CAN NOW DEPLOY THE BOOTSTRAP"

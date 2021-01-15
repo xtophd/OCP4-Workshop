@@ -13,21 +13,19 @@
 
   tasks:
 
-  # - debug:
-  #     msg: "{{ item }}"
-  #   with_items: 
-  #     - "{{ groups['myMasters'] }}"
-  #     - "{{ groups['myWorkers'] }}"
+
 
   ##
-  ## For every node in cluster: 
-  ##   until ( node == ready )
-  ##    scan for pending CSR's
-  ##    approve pending CSR's
-  ##    sleep
+  ##    For every node in cluster: 
+  ##      until ( node == ready )
+  ##       scan for pending CSR's
+  ##       approve pending CSR's
+  ##       sleep
   ##
 
-  - name: "BASTION-OPENSHIFT-FINISH: Approve CSR requests until all nodes 'Ready'"
+
+
+  - name: "ocp4-workshop : bastion-openshift-finish : Approve CSR requests until all nodes 'Ready'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
@@ -48,11 +46,21 @@
       - "{{ groups['myMasters'] }}"
       - "{{ groups['myWorkers'] }}"
 
+
+
   ##
-  ## Nodes are all ready, scan ssh keys into known hosts
+  ##    Nodes are all ready, scan ssh keys into known hosts
+  ##
+  ##
+  ##    NOTE:  the technique of adding '| true' just ensures
+  ##           that regardless of what ssh-keygen finds, the
+  ##           result is 'true'.  This should remove the red
+  ##           errors we ignore from the output
   ##
 
-  - name: "BASTION-OPENSHIFT-FINISH: Cleanup ssh keys in knownhosts"
+
+
+  - name: "ocp4-workshop : bastion-openshift-finish : Cleanup ssh keys in knownhosts"
     vars:
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -62,14 +70,16 @@
       - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
     shell:
       cmd: |
-        ssh-keygen -R "{{ p_item }}"
-        ssh-keygen -R "{{ p_name }}"
-        ssh-keygen -R "{{ p_fqdn }}"
-        ssh-keygen -R "{{ p_addr }}"
+        ssh-keygen -R "{{ p_item }}" | true
+        ssh-keygen -R "{{ p_name }}" | true
+        ssh-keygen -R "{{ p_fqdn }}" | true
+        ssh-keygen -R "{{ p_addr }}" | true
     ignore_errors: yes
     loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-OPENSHIFT-FINISH: Add new ssh keys for node"
+
+
+  - name: "ocp4-workshop : bastion-openshift-finish : Add new ssh keys for node"
     vars:
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -84,15 +94,19 @@
     ignore_errors: yes
     loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
 
+
+
   ##
-  ## Now just watch for all clusteroperators ready
-  ## There can be cases when timing is just right, that
-  ## to results of 'get clusteroperators' can show all True.
-  ## But that is harmless.  This cluster is "mostly" ready
-  ## if this exits
+  ##    Now just watch for all clusteroperators ready
+  ##    There can be cases when timing is just right, that
+  ##    to results of 'get clusteroperators' can show all True.
+  ##    But that is harmless.  This cluster is "mostly" ready
+  ##    if this exits
   ##
 
-  - name: "BASTION-OPENSHIFT-FINISH: Watch until all clusteroperators availability is 'True'"
+
+
+  - name: "ocp4-workshop : bastion-openshift-finish : Watch until all clusteroperators availability is 'True'"
     shell:
       cmd: |
         export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig

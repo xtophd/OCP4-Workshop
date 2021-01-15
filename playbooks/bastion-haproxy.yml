@@ -21,7 +21,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : package installation"
+  - name: "ocp4-workshop : bastion-haproxy : package installation"
     yum: name=haproxy state=installed
 
 
@@ -33,7 +33,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : add persistant SELINUX boolean"
+  - name: "ocp4-workshop : bastion-haproxy : add persistant SELINUX boolean"
     shell: setsebool -P haproxy_connect_any on
 
 
@@ -54,12 +54,12 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : clean cfg fragment directory"
+  - name: "ocp4-workshop : bastion-haproxy : clean cfg fragment directory"
     shell:
       cmd: |
         if [[ -d "/etc/haproxy/cfg-fragments" ]] ; then rm -rf /etc/haproxy/cfg-fragments ; fi
 
-  - name: "ocp4-worshop : bastion-haproxy : create fresh cfg fragment directory"
+  - name: "ocp4-workshop : bastion-haproxy : create fresh cfg fragment directory"
     file:
       path: /etc/haproxy/cfg-fragments
       mode: "0755"
@@ -74,13 +74,13 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : deploy default config"
+  - name: "ocp4-workshop : bastion-haproxy : deploy default config"
     template:
       src: "haproxy-defaults.j2"
       dest: "/etc/haproxy/cfg-fragments/10-defaults.cfg"
       owner: root
 
-  - name: "ocp4-worshop : bastion-haproxy : deploy stats config"
+  - name: "ocp4-workshop : bastion-haproxy : deploy stats config"
     vars:
       - p_ip:       "*"
       - p_port:     "8404"
@@ -104,7 +104,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : api server frontends"
+  - name: "ocp4-workshop : bastion-haproxy : api server frontends"
     vars:
       - p_type:     "api"
       - p_ip:       "*"
@@ -116,7 +116,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "ocp4-worshop : bastion-haproxy : api server backends"
+  - name: "ocp4-workshop : bastion-haproxy : api server backends"
     vars:
       - p_type:     "api"
       - p_ip:       "*"
@@ -141,7 +141,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : config server frontends"
+  - name: "ocp4-workshop : bastion-haproxy : config server frontends"
     vars:
       - p_type:     "config"
       - p_ip:       "*"
@@ -153,7 +153,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "ocp4-worshop : bastion-haproxy : config server backends"
+  - name: "ocp4-workshop : bastion-haproxy : config server backends"
     vars:
       - p_type:     "config"
       - p_ip:       "*"
@@ -178,7 +178,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : http server frontend"
+  - name: "ocp4-workshop : bastion-haproxy : http server frontend"
     vars:
       - p_type:     "http"
       - p_ip:       "*"
@@ -190,7 +190,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "ocp4-worshop : bastion-haproxy : http server backends"
+  - name: "ocp4-workshop : bastion-haproxy : http server backends"
     vars:
       - p_type:     "http"
       - p_ip:       "*"
@@ -210,7 +210,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : https server frontend"
+  - name: "ocp4-workshop : bastion-haproxy : https server frontend"
     vars:
       - p_type:     "https"
       - p_ip:       "*"
@@ -222,7 +222,7 @@
       dest: "/etc/haproxy/cfg-fragments/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "ocp4-worshop : bastion-haproxy : https server backends"
+  - name: "ocp4-workshop : bastion-haproxy : https server backends"
     vars:
       - p_type:     "https"
       - p_port:     "443"
@@ -248,7 +248,7 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : assemble config fragments"
+  - name: "ocp4-workshop : bastion-haproxy : assemble config fragments"
     assemble:
       src: "/etc/haproxy/cfg-fragments"
       dest: "/etc/haproxy/haproxy.cfg"
@@ -264,13 +264,13 @@
 
 
 
-  - name: "ocp4-worshop : bastion-haproxy : create systemd override directory"
+  - name: "ocp4-workshop : bastion-haproxy : create systemd override directory"
     file:
       path: /etc/systemd/system/haproxy.service.d
       mode: "0755"
       state: directory
 
-  - name: "ocp4-worshop : bastion-haproxy : set systemd overrides"
+  - name: "ocp4-workshop : bastion-haproxy : set systemd overrides"
     template:
       src: "haproxy-systemd-overrides.j2"
       dest: "/etc/systemd/system/haproxy.service.d/overrides.conf"
@@ -278,10 +278,10 @@
       group: root
       mode: 644
 
-  - name: "ocp4-worshop : bastion-haproxy : restart service"
+  - name: "ocp4-workshop : bastion-haproxy : restart service"
     service: name=haproxy state=restarted enabled=yes daemon_reload=yes
 
-  - name: "ocp4-worshop : bastion-haproxy : add firewalld service rules"
+  - name: "ocp4-workshop : bastion-haproxy : add firewalld service rules"
     firewalld:
       service: "{{ item }}"
       immediate: yes
@@ -296,7 +296,7 @@
   ##    Enable the firewall ports/services
   ##
 
-  - name: "ocp4-worshop : bastion-haproxy : add firewalld port rules"
+  - name: "ocp4-workshop : bastion-haproxy : add firewalld port rules"
     firewalld:
       port: "{{ item }}"
       immediate: yes

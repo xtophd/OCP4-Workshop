@@ -10,30 +10,30 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-HAPROXY-VIP: ensure /etc/haproxy exists"
+  - name: "ocp4-workshop : bastion-haproxy-vip : ensure /etc/haproxy exists"
     file:
       path: /etc/haproxy
       mode: "0755"
       state: directory
 
-  - name: "BASTION-HAPROXY-VIP: clean cfg fragment directory"
+  - name: "ocp4-workshop : bastion-haproxy-vip : clean cfg fragment directory"
     shell:
       cmd: |
         if [[ -d "/etc/haproxy/cfg-fragments-vip" ]] ; then rm -rf /etc/haproxy/cfg-fragments-vip ; fi
 
-  - name: "BASTION-HAPROXY-VIP create fresh cfg fragment directory"
+  - name: "ocp4-workshop : bastion-haproxy-vip create fresh cfg fragment directory"
     file:
       path: /etc/haproxy/cfg-fragments-vip
       mode: "0755"
       state: directory
 
-  - name: "BASTION-HAPROXY-VIP: deploy default config"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy default config"
     template:
       src: "haproxy-defaults.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/10-defaults.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy stats config"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy stats config"
     vars:
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "8404"
@@ -44,7 +44,7 @@
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-stats.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy api base"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy api base"
     vars:
       - p_type:     "api"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -56,7 +56,7 @@
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy api servers"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy api servers"
     vars:
       - p_type:     "api"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -73,7 +73,7 @@
       mode: 644
     loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-HAPROXY-VIP: deploy config base"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy config base"
     vars:
       - p_type:     "config"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -85,7 +85,7 @@
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy config servers"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy config servers"
     vars:
       - p_type:     "config"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -102,7 +102,7 @@
       mode: 644
     loop: "{{ groups['myMasters'] + groups['myBootstrap'] }}"
 
-  - name: "BASTION-HAPROXY-VIP: deploy http base"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy http base"
     vars:
       - p_type:     "http"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -114,7 +114,7 @@
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy http servers"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy http servers"
     vars:
       - p_type:     "http"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -131,7 +131,7 @@
       mode: 644
     loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
-  - name: "BASTION-HAPROXY-VIP: deploy https base"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy https base"
     vars:
       - p_type:     "https"
       - p_ip:       "{{ g_clusterVIP }}"
@@ -143,7 +143,7 @@
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
       owner: root
 
-  - name: "BASTION-HAPROXY-VIP: deploy https servers"
+  - name: "ocp4-workshop : bastion-haproxy-vip : deploy https servers"
     vars:
       - p_type:     "https"
       - p_port:     "443"
@@ -160,7 +160,7 @@
       mode: 644
     loop: "{{ groups['myWorkers'] + groups['myMasters'] }}"
 
-  - name: "BASTION-HAPROXY-VIP: assemble config fragments"
+  - name: "ocp4-workshop : bastion-haproxy-vip : assemble config fragments"
     assemble:
       src: "/etc/haproxy/cfg-fragments-vip"
       dest: "/etc/haproxy/haproxy-vip.cfg"

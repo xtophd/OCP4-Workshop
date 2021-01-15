@@ -9,13 +9,13 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-SQUID: package installation"
+  - name: "ocp4-workshop : bastion-squid : package installation"
     yum: name=squid state=installed
 
-  - name: "BASTION-SQUID: restart services"
+  - name: "ocp4-workshop : bastion-squid : restart services"
     service: name=squid state=restarted enabled=yes masked=no
 
-  - name: "BASTION-SQUID: add firewalld ports and services"
+  - name: "ocp4-workshop : bastion-squid : add firewalld ports and services"
     firewalld:
       service: "squid"
       immediate: yes

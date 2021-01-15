@@ -9,10 +9,10 @@
 - hosts: myBastion
   tasks:
   
-  - name: "BASTION-NFS: package installation"
+  - name: "ocp4-workshop : bastion-nfs : package installation"
     yum: name=nfs-utils,rpcbind state=installed
 
-  - name: "BASTION-NFS create directory"
+  - name: "ocp4-workshop : bastion-nfs  create directory"
     file:
       path: '{{ g_nfsExport }}'
       mode: '0755'
@@ -20,7 +20,7 @@
       group: 65534
       state: directory
 
-  - name: "BASTION-NFS: cleanup conflicting entries in /etc/exports"
+  - name: "ocp4-workshop : bastion-nfs : cleanup conflicting entries in /etc/exports"
     lineinfile:
       dest:   '/etc/exports'
       regexp: '{{ g_nfsExport }}(\s+).*$'
@@ -33,7 +33,7 @@
   ## If the storage type is NFS, you must enable the no_wdelay and root_squash mount options
   ## 
 
-  - name: 'BASTION-NFS: update entry in /etc/exports'
+  - name: 'ocp4-workshop : bastion-nfs : update entry in /etc/exports'
     lineinfile:
       dest: '/etc/exports'
 #      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
@@ -43,13 +43,13 @@
       group: root
       mode: 644
 
-  - name: 'BASTION-NFS: restart services'
+  - name: 'ocp4-workshop : bastion-nfs : restart services'
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
       - 'nfs-server'
       - 'rpcbind'
 
-  - name: 'BASTION-NFS: add firewalld ports and services'
+  - name: 'ocp4-workshop : bastion-nfs : add firewalld ports and services'
     firewalld:
       service: '{{ item }}'
       immediate: yes

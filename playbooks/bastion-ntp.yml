@@ -17,19 +17,19 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-NTP: package installation"
+  - name: "ocp4-workshop : bastion-ntp : package installation"
     yum: name=chrony state=installed
 
-  - name: "BASTION-NTP: configure chrony as ntp server"
+  - name: "ocp4-workshop : bastion-ntp : configure chrony as ntp server"
     replace:
       path: /etc/chrony.conf
       regexp: '^#(local stratum 10).*?$'
       replace: '\1'
 
-  - name: "BASTION-NTP: restart service"
+  - name: "ocp4-workshop : bastion-ntp : restart service"
     service: name=chronyd state=restarted enabled=yes
 
-  - name: "BASTION-NTP: add firewalld service rules"
+  - name: "ocp4-workshop : bastion-ntp : add firewalld service rules"
     firewalld:
       service: ntp
       immediate: yes

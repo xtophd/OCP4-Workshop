@@ -23,10 +23,10 @@
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
   
-  - name: "BASTION-PXE: package installation"
+  - name: "ocp4-workshop : bastion-pxe : package installation"
     yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
 
-  - name: "BASTION-PXE: create tftpboot directories"
+  - name: "ocp4-workshop : bastion-pxe : create tftpboot directories"
     file:
       path: "{{ item }}"
       mode: "0755"
@@ -35,7 +35,7 @@
       - "/var/lib/tftpboot/pxelinux"
       - "/var/lib/tftpboot/efi"
 
-  - name: "BASTION-PXE: copy ipxe files to tftpboot (RHEL 8)"
+  - name: "ocp4-workshop : bastion-pxe : copy ipxe files to tftpboot (RHEL 8)"
     copy: 
       src:   "{{ item }}"
       dest:  "/var/lib/tftpboot"
@@ -51,7 +51,7 @@
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "8"
 
-  - name: "BASTION-PXE: package installation (RHEL7)"
+  - name: "ocp4-workshop : bastion-pxe : package installation (RHEL7)"
     copy: 
       src:   "{{ item }}"
       dest:  "/var/lib/tftpboot"
@@ -67,12 +67,12 @@
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "7"
 
-  - name: "BASTION-PXE: restart services"
+  - name: "ocp4-workshop : bastion-pxe : restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
     with_items:
       - "tftp"
 
-  - name: "BASTION-PXE: add firewalld services"
+  - name: "ocp4-workshop : bastion-pxe : add firewalld services"
     firewalld:
       service: "{{ item }}"
       immediate: yes

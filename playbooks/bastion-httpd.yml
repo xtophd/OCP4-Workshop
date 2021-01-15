@@ -11,10 +11,10 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-HTTPD: install additional packages"
+  - name: "ocp4-workshop : bastion-httpd : install additional packages"
     yum: name=httpd state=installed
 
-  - name: "BASTION-HTTPD: deploy httpd configuration"
+  - name: "ocp4-workshop : bastion-httpd : deploy httpd configuration"
     vars:
       - p_port: "8080"
     template:
@@ -24,7 +24,7 @@
       group: root
       mode: 0644
 
-  - name: "BASTION-HTTPD: SELinux restore contexts on doc-root"
+  - name: "ocp4-workshop : bastion-httpd : SELinux restore contexts on doc-root"
     shell: restorecon -R /var/www/html 
 
   # Use service_facts module to collect systemd info
@@ -35,23 +35,23 @@
   #      var: ansible_facts.services
   #      var: ansible_facts.services["httpd.service"]
 
-  - name: "BASTION-HTTPD: populate system service facts"
+  - name: "ocp4-workshop : bastion-httpd : populate system service facts"
     service_facts:
 
-  - name: "BASTION-HTTPD: stop, disable and mask possible conflicting service (matchbox)"
+  - name: "ocp4-workshop : bastion-httpd : stop, disable and mask possible conflicting service (matchbox)"
     service: name="matchbox" state=stopped enabled=no masked=yes daemon_reload=yes
     when: ansible_facts.services["matchbox.service"] is defined
 
-  - name: "BASTION-HTTPD: stop, disable and mask possible conflicting service (nginx)"
+  - name: "ocp4-workshop : bastion-httpd : stop, disable and mask possible conflicting service (nginx)"
     service: name="nginx" state=stopped enabled=no masked=yes daemon_reload=yes
     when: ansible_facts.services["nginx.service"] is defined
 
-  - name: "BASTION-HTTPD: enable and restart services"
+  - name: "ocp4-workshop : bastion-httpd : enable and restart services"
     service: name="{{ item }}" state=restarted enabled=yes masked=no daemon_reload=yes
     with_items:
       - "httpd"
 
-  - name: "BASTION-HTTPD: add firewalld ports"
+  - name: "ocp4-workshop : bastion-httpd : add firewalld ports"
     firewalld:
       port: "{{ item }}"
       immediate: yes
