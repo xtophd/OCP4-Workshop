@@ -65,7 +65,7 @@ g_nfsExport       = "/home/nfs-{{ g_clusterName }}"
 ##    unique network domain for the cluster
 ##
 
-g_clusterName = "ocp4kvm"
+g_clusterName = "ocp4nat"
 
 ## ----------------------------------------
 ##    g_clusterVIP
