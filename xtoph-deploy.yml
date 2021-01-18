@@ -22,7 +22,10 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "setup"
-      when: xtoph_deploy_cmd == "setup"
+      when: xtoph_deploy_cmd == "setup" or
+            xtoph_deploy_cmd == "setup+"
+
+
 
 
 
@@ -43,7 +46,10 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "undeploy"
-      when: xtoph_deploy_cmd == "undeploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+
 
 
 
@@ -65,7 +71,9 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "preprocess"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -94,7 +102,10 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
+
 
 
 
@@ -106,7 +117,9 @@
 
 
 - import_playbook: playbooks/deployer-configure-bastion.yml
-  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+  when: xtoph_deploy_cmd == "deploy" or
+        xtoph_deploy_cmd == "setup+" or
+        xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -117,7 +130,9 @@
 
 
 - import_playbook: playbooks/deployer-preinstall-bootstrap.yml
-  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+  when: xtoph_deploy_cmd == "deploy" or
+        xtoph_deploy_cmd == "setup+" or
+        xtoph_deploy_cmd == "redeploy"
 
 - hosts: myBootstrap
   gather_facts: no 
@@ -126,7 +141,9 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -146,7 +163,9 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -157,7 +176,9 @@
 
 
 - import_playbook: playbooks/deployer-preinstall-workers.yml
-  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+  when: xtoph_deploy_cmd == "deploy" or
+        xtoph_deploy_cmd == "setup+" or
+        xtoph_deploy_cmd == "redeploy"
 
 - hosts: myWorkers
   gather_facts: no 
@@ -166,7 +187,9 @@
     - role: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -177,5 +200,27 @@
 
 
 - import_playbook: playbooks/bastion-openshift-finish.yml
-  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+  when: xtoph_deploy_cmd == "deploy" or
+        xtoph_deploy_cmd == "setup+" or
+        xtoph_deploy_cmd == "redeploy"
+
+
+
+##
+##    Bootstrap server has servered it's purpose.
+##    We can delete it.   
+##
+
+
+
+- hosts: myBootstrap
+  gather_facts: no 
+  roles:
+
+    - role: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "undeploy"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
