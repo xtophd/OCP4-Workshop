@@ -35,7 +35,7 @@ fi
 
 case "$1" in
     "all")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-setup.yml
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/ocp4-workshop.yml
         ;;
          
     "basics"      | \
@@ -58,11 +58,7 @@ case "$1" in
     "refresh"     | \
     "finish")
 
-        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/bastion-setup.yml
-        ;;
-
-    "unlock")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-unlock.yml
+        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
         ;;
 
     "finish")
