@@ -24,7 +24,7 @@
   tasks:
   
   - name: "ocp4-workshop : bastion-uefi : package installation"
-    yum: name=genisoimage state=installed
+    yum: name=genisoimage,xorriso state=installed
 
   - name: "ocp4-workshop : bastion-uefi : clean-up iso directory /var/tmp/{{ g_clusterName }}/iso"
     shell:
@@ -38,44 +38,62 @@
       state=directory
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}" 
 
-  - name: "ocp4-workshop : bastion-uefi : stat mount point /mnt/rhcos"
-    stat: path="/mnt/rhcos"
-    register: test_iso_mount
+#  - name: "ocp4-workshop : bastion-uefi : stat mount point /mnt/rhcos"
+#    stat: path="/mnt/rhcos"
+#    register: test_iso_mount
 
-  - name: "ocp4-workshop : bastion-uefi : create mount point /mnt/rhcos"
-    file: 
-      path="/mnt/rhcos" 
-      mode="0755" 
-      state=directory
-    when:
-      - test_iso_mount.stat.exists == false
+#  - name: "ocp4-workshop : bastion-uefi : create mount point /mnt/rhcos"
+#    file: 
+#      path="/mnt/rhcos" 
+#      mode="0755" 
+#      state=directory
+#    when:
+#      - test_iso_mount.stat.exists == false
 
-  - name: "ocp4-workshop : bastion-uefi : mount source iso /mnt/rhcos"
+#  - name: "ocp4-workshop : bastion-uefi : mount source iso /mnt/rhcos"
+#    vars:
+#    mount:
+#      path:   "/mnt/rhcos"
+#      src:    "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
+#      opts:   "loop,ro"
+#      state:  "mounted"
+#      fstype: "iso9660"
+
+#  - name: "ocp4-workshop : bastion-uefi : clone source"
+#    shell:
+#      cmd: |
+#        tar cf - -C /mnt/rhcos . | tar xf - -C /var/tmp/{{ g_clusterName }}/iso/{{ item }}
+#    loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
+
+  - name: "ocp4-workshop : clone ISO source to temp workspace"
     vars:
-    mount:
-      path:   "/mnt/rhcos"
-      src:    "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
-      opts:   "loop,ro"
-      state:  "mounted"
-      fstype: "iso9660"
-
-  - name: "ocp4-workshop : bastion-uefi : clone source"
+      t_isofile:  "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
+      t_destdir: "/var/tmp/{{ g_clusterName }}/iso/{{ item }}"
     shell:
       cmd: |
-        tar cf - -C /mnt/rhcos . | tar xf - -C /var/tmp/{{ g_clusterName }}/iso/{{ item }}
+        xorriso -osirrox on -indev "{{ t_isofile }}" -extract / "{{ t_destdir }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
-  - name: "ocp4-workshop : bastion-uefi : unmount source"
-    vars:
-    mount:
-      path:   "/mnt/rhcos"
-      state:  "unmounted"
+#  - name: "ocp4-workshop : bastion-uefi : unmount source"
+#    vars:
+#    mount:
+#      path:   "/mnt/rhcos"
+#      state:  "unmounted"
 
   - name: "ocp4-workshop : bastion-uefi : determine bastion pub IP"
     set_fact:
       f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
       f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
+
+
+
+  ##
+  ##    NOTE:  because I am using http (not https), I need to add
+  ##           "coreos.inst.insecure=yes" to my list of kernel options
+  ##
+
+
 
   - name: "ocp4-workshop : bastion-uefi : customize isolinux configs"
     vars:
@@ -89,7 +107,15 @@
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
-      replace: '\1append\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+#      replace: '\1append\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+      replace: >
+          \1append\2 rd.neednet=1 
+          usb-storage.delay_use={{p_usbdelay}} 
+          ip={{ p_network }} 
+          "coreos.inst=yes" 
+          "coreos.inst.insecure=yes" 
+          "coreos.inst.install_dev={{ p_storage }}" 
+          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
   - name: "ocp4-workshop : bastion-uefi : customize grub configs"
@@ -104,21 +130,38 @@
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'
-      replace: '\1linux\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+#      replace: '\1linux\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
+      replace: >
+          \1linux\2 rd.neednet=1 
+          usb-storage.delay_use={{p_usbdelay}} 
+          ip={{ p_network }} 
+          "coreos.inst=yes" 
+          "coreos.inst.insecure=yes" 
+          "coreos.inst.install_dev={{ p_storage }}" 
+          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
+
+  - name: "ocp4-workshop : bastion-uefi : preserve ISO volume id"
+    vars:
+      t_isofile: "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
+    shell:
+      cmd: |
+        isoinfo -d -i {{ t_isofile }} | grep 'Volume id:' | sed -e 's/Volume id: //g'
+    register: isoinfo
 
   - name: "ocp4-workshop : bastion-uefi : for each host generate custom iso image"
     vars:
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
+      - p_volumeid:  "{{ isoinfo.stdout }}"
     shell:
       cmd: |
         cd /var/tmp/{{ g_clusterName }}/iso/{{ item }}
         genisoimage -U -r -v -T -J -joliet-long        \
-                    -V      "RHCOS-{{p_name}}"         \
-                    -volset "RHCOS-{{p_name}}"         \
-                    -A      "RHCOS-{{p_name}}"         \
+                    -V      "{{ p_volumeid }}"         \
+                    -volset "{{ p_volumeid }}"         \
+                    -A      "{{ p_volumeid }}"         \
                     -b      isolinux/isolinux.bin      \
                     -c      isolinux/boot.cat          \
                     -no-emul-boot                      \
