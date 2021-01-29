@@ -39,7 +39,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters
+- hosts: myBastion,myBootstrap,myWorkers,myMasters,!myShelter
   gather_facts: no 
   roles:
 
@@ -210,17 +210,25 @@
 ##    Bootstrap server has servered it's purpose.
 ##    We can delete it.   
 ##
+##    NOTE: I am leaving this step included BUT commented
+##          out.  Deleting a host that's part of a cluster
+##          affects the sanity of running "deploy" multiple
+##          times on an existing cluster.  
+##
+##          So if you DO NOT plan to run "deploy" again,
+##          it's safe to automate the removal of the bootstrap
+##
 
 
 
-- hosts: myBootstrap
-  gather_facts: no 
-  roles:
-
-    - role: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "undeploy"
-      when: xtoph_deploy_cmd == "deploy" or
-            xtoph_deploy_cmd == "setup+" or
-            xtoph_deploy_cmd == "redeploy"
+#- hosts: myBootstrap
+#  gather_facts: no 
+#  roles:
+#
+#    - role: xtoph_deploy
+#      vars: 
+#        xtoph_deploy_action: "undeploy"
+#      when: xtoph_deploy_cmd == "deploy" or
+#            xtoph_deploy_cmd == "setup+" or
+#            xtoph_deploy_cmd == "redeploy"
 
