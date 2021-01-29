@@ -20,11 +20,25 @@
   - name: "ocp4-workshop : bastion-ntp : package installation"
     yum: name=chrony state=installed
 
-  - name: "ocp4-workshop : bastion-ntp : configure chrony as ntp server"
-    replace:
-      path: /etc/chrony.conf
-      regexp: '^#(local stratum 10).*?$'
-      replace: '\1'
+
+
+  ##
+  ##    The config should point the local bastion to
+  ##    the NTP service defined in master-confg.yml AND
+  ##    enable the bastion as a time service provider
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-ntp : deploy ntp/chrony config"
+    vars:
+      - p_ntp:       "{{ g_pubNTP }}"
+    template:
+      src: "chrony-conf.j2"
+      dest: "/etc/chrony.conf"
+      owner: root
+      group: root
+      mode: 644
 
   - name: "ocp4-workshop : bastion-ntp : restart service"
     service: name=chronyd state=restarted enabled=yes

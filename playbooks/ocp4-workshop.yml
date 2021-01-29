@@ -71,8 +71,14 @@
   when: g_useMATCHBOX != "True"
   tags: httpd
 
+##
+##    NTP needs to be configured on bastion regardless
+##    of g_useNTP.  If g_useNTP is "True" then
+##    bastion will be enabled as a source for the 
+##    cluster nodes to reference
+##
+
 - import_playbook: bastion-ntp.yml
-  when: g_useNTP == "True"
   tags: ntp
 
 ## Currently disabled and being developed
