@@ -90,6 +90,11 @@
 - import_playbook: bastion-lock.yml
   tags: lock
 
+- import_playbook: bastion-unlock.yml
+  tags: 
+    - never
+    - unlock
+
 - import_playbook: workshop.yml
   tags: workshop
 
