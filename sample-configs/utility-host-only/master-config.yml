@@ -43,7 +43,7 @@ g_clusterAdmin = "cloud-admin"
 g_clusterUser = "cloud-user"
 
 ## Your OCP Cluster Version
-g_clusterVersion = "4_6"
+g_clusterVersion = "4.6"
 
 ## Your OCP Cluster Name
 g_clusterName = "ocp"
@@ -236,3 +236,4 @@ node4    h_pubMAC="00:1a:4a:16:01:58" h_pubIP="192.168.1.154" h_etcdName="etcd-2
 node5    h_pubMAC="00:1a:4a:16:01:59" h_pubIP="192.168.1.155"
 node6    h_pubMAC="00:1a:4a:16:01:5d" h_pubIP="192.168.1.156"
 
+[myShelter]
