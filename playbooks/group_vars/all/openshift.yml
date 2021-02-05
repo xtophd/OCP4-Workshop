@@ -6,35 +6,35 @@
 
 ocp_assets:
 
-  "4_6":
+  "4.6":
     name:        "openshift"
     version:     "4.6"
     url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.1"
     install_tar: "openshift-install-linux-4.6.1.tar.gz"
     client_tar:  "openshift-client-linux-4.6.1.tar.gz"
 
-  "4_5":
+  "4.5":
     name:        "openshift"
     version:     "4.5"
     url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.5.2"
     install_tar: "openshift-install-linux-4.5.2.tar.gz"
     client_tar:  "openshift-client-linux-4.5.2.tar.gz"
 
-  "4_4":
+  "4.4":
     name:        "openshift"
     version:     "4.4"
     url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.4.12"
     install_tar: "openshift-install-linux-4.4.12.tar.gz"
     client_tar:  "openshift-client-linux-4.4.12.tar.gz"
 
-  "4_3":
+  "4.3":
     name:        "openshift"
     version:     "4.3"
     url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.3.0"
     install_tar: "openshift-install-linux-4.3.0.tar.gz"
     client_tar:  "openshift-client-linux-4.3.0.tar.gz"
 
-  "4_2":
+  "4.2":
     name:        "openshift"
     version:     "4.2"
     url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.2.18"
@@ -43,7 +43,7 @@ ocp_assets:
 
 rhcos_assets:
 
-  "4_6":
+  "4.6":
     name:        "rhcos"
     version:     "4.6"
     url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/4.6.8"
@@ -53,7 +53,7 @@ rhcos_assets:
     bios:        "rhcos-4.6.8-x86_64-metal.x86_64.raw.gz"
     iso:         "rhcos-4.6.8-x86_64-live.x86_64.iso"
 
-  "4_5":
+  "4.5":
     name:        "rhcos"
     version:     "4.5"
     url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2"
@@ -62,7 +62,7 @@ rhcos_assets:
     bios:        "rhcos-4.5.2-x86_64-metal.x86_64.raw.gz"
     iso:         "rhcos-4.5.2-x86_64-installer.x86_64.iso"
 
-  "4_4":
+  "4.4":
     name:        "rhcos"
     version:     "4.4"
     url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3"
@@ -71,7 +71,7 @@ rhcos_assets:
     bios:        "rhcos-4.4.3-x86_64-metal.x86_64.raw.gz"
     iso:         "rhcos-4.4.3-x86_64-installer.x86_64.iso"
 
-  "4_3":
+  "4.3":
     name:        "rhcos"
     version:     "4.3"
     url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.0"
@@ -80,7 +80,7 @@ rhcos_assets:
     bios:        "rhcos-4.3.0-x86_64-metal.raw.gz"
     iso:         "rhcos-4.3.0-x86_64-installer.iso"
 
-  "4_2":
+  "4.2":
     name:        "rhcos"
     version:     "4.2"
     url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.2/4.2.18"

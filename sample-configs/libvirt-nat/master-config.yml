@@ -21,7 +21,7 @@
 ##     g_clusterUser
 ##     g_credsDir
 
-g_clusterVersion = "4_6"
+g_clusterVersion = "4.6"
 g_clusterAdmin   = "cloud-admin"
 g_clusterUser    = "cloud-user"
 g_credsDir       = "/root/ocp-{{ g_clusterName}}"
@@ -195,3 +195,4 @@ node4     h_pubIP="192.168.123.164" h_etcdName="etcd-2"
 node5     h_pubIP="192.168.123.165"
 node6     h_pubIP="192.168.123.166"
 
+[myShelter]
