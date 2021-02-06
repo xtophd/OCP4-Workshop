@@ -25,6 +25,21 @@ xtoph_deploy_config:
     ip: "192.168.123.1"
 
     ##
+    ##    dnsmasq_enable: ensures dnsmasq is installed
+    ##                    and enabled on the deployhost
+    ##
+    ##    NOTE: This will also pass the deployhost's
+    ##          ip-address to the deployed systems as
+    ##          primary DNS resolver
+    ##
+    ##          vm resolves to ->
+    ##            deployhost forwards to ->
+    ##              real-dns
+    ##
+
+    dnsmasq_enable:  true
+
+    ##
     ##    http_port:      port to provide kickstart and
     ##                    yum repo services
     ##
