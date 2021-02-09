@@ -27,8 +27,6 @@
 
 
 
-
-
 ##
 ##    Next, execute undeploy activities
 ##
@@ -48,8 +46,6 @@
         xtoph_deploy_action: "undeploy"
       when: xtoph_deploy_cmd == "undeploy" or
             xtoph_deploy_cmd == "redeploy"
-
-
 
 
 
@@ -108,10 +104,15 @@
 
 
 
-
 ##
 ##    Bastion host should be deployed,
 ##    proceed with bastion configuration
+##
+##    NOTE: that at the completion of this
+##          step, the workshop playbook 'locks' the
+##          state of the configs on the bastion
+##          to prevent successive attempts
+##          to deploy from creating new certs.
 ##
 
 
