@@ -183,7 +183,7 @@ Still on virt host:
 
 WARNING:  You must edit the config files for your deployment.  There is no magic installation.
 
-==== For NAT (private) Netowrk design
+==== For NAT (private) Network design
 
   * cd /usr/local/src/OCP4-Workshop/config
   * cp ../sample-configs/libvirt-nat/* .
