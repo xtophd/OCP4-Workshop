@@ -99,10 +99,10 @@ Now it's time to run the playbooks which configure and enable the services in pr
 
 ----
 cd ./OCP4-Workshop/
-bash prepare-ocp4-workshop.sh all
+bash ocp4-workshop.sh all
 ----
 
-Once the playbooks have completed without error, you can run the playbooks again with a different flag to help guide your deployment.
+Once the playbooks have completed without error, you can run the playbooks again with a different flag ('usher') to help guide your manual deployment.
 
 ----
 cd ./OCP4-Workshop/
@@ -208,11 +208,13 @@ in particular you need to:
 
 === Run the Play Books
 
+NOTE: there are several options available for xtoph-deploy.sh to execute.  Using 'setup+' will perform all tasks to configure the host platform and deploy the systems.  If you have previously successfully completed the setup, you can use 'deploy' to only run the deployment tasks.
+
 Once again, on virt host:
 
   * cd /usr/local/src/OCP4-Workshop
   * export HTTPPROXY if needed
-  * bash prepare-kvm-host.sh all
+  * ./xtoph_deploy.sh setup+
 
 If all goes well, should just work and about 30 minutes later you have an operational openshift cluster
 
