@@ -1,0 +1,21 @@
+This document in intended to capture common problems and their mitigations.  Newest additions will be at the top of the document.
+
+NOTE: Trouble Shooting is broken into two categories: using xtoph_deploy, and NOT using xtoph_deploy.
+
+= Using xtoph_deploy
+
+== RHEL 8.2 and early 8.3 issues (2021/02/22)
+
+Libvirtd introduced it's own zone into the firwalld ruleset.  The latest xtoph_deploy ansible role has a shell script to detect the existence of the ruleset and will trigger the duplication of the firewall rules for the libvirt zone.
+
+libgcrypt in 8.2 has a bug that creates a symptom of not being able to deploy a vm into libvirt with virt-install.  The error reports as permission denied. (I will try to capture the exact text the next time I spot it)
+
+INFO: Both of these issues are resolved by updating to the latest RHEL 8.3 releases and using the lastest workshop playbooks.
+
+== Bastion builds but other systems get stuck
+
+The bastion runs the openshift installer which creates a certificate that is valid for 24 hours.  Simply trying to rerun the deployer after the 24 hour window can have many odd symptoms.
+
+INFO: To delete all VMs and simply start again, run `xtoph_deploy.sh redeploy`.  
+
+INFO: To preserve the existing bastion VM and it's current downloads, run `opc4_workshop.sh unlock` followed by `xtoph_deploy.sh deploy`.  This will permit the openshift installer to generate a new certificate without having to download everything anew.
