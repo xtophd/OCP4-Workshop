@@ -15,18 +15,25 @@ endif::[]
 
 
 This document in intended to capture common problems and their mitigations.  Newest additions will be at the top of the document.
+At some point, xtoph_deploy problems and mitigations will be moved to the xtoph_deploy repo and simply linked here, but for now it is one document
 
-NOTE: Trouble Shooting is broken into two categories: using xtoph_deploy, and NOT using xtoph_deploy.
 
-= Using xtoph_deploy
 
-== RHEL 8.2 and early 8.3 issues (2021/02/22)
+== (xtoph_deploy) ERROR Host does not support any virtualization options (2021/02/23)
+
+libgcrypt in 8.2 (GA) has a bug that creates a symptom of not being able to deploy a vm into libvirt with virt-install.  Error reports as "Host does not support any virtualization options".
+
+NOTE: resolved by updating libgcrypt with `yum update libgcrypt`
+
+
+
+== (xtoph_deploy) Deploying bastion host hangs on iso installation options menu (2021/02/22)
 
 Libvirtd introduced it's own zone into the firwalld ruleset.  The latest xtoph_deploy ansible role has a shell script to detect the existence of the ruleset and will trigger the duplication of the firewall rules for the libvirt zone.
 
-libgcrypt in 8.2 has a bug that creates a symptom of not being able to deploy a vm into libvirt with virt-install.  The error reports as permission denied. (I will try to capture the exact text the next time I spot it)
+NOTE: resolved by updating to the latest RHEL 8.3 releases with `yum update` AND using the lastest workshop playbooks with `git pull`.
 
-NOTE: Both of these issues are resolved by updating to the latest RHEL 8.3 releases and using the lastest workshop playbooks.
+
 
 == Bastion builds but other systems do not progress (2021/02/21)
 
