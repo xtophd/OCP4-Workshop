@@ -45,3 +45,15 @@
 
 
 
+  - name: "ocp4-workshop : bastion-tests : test quay.io"
+    vars: 
+      - p_server:  "localhost"
+      - p_name:    "quay.io"
+    when:
+      - g_useDNS == "True" 
+      - g_publicNet == "True" 
+    shell: 
+      cmd: |
+        dig @{{ p_server }} {{ p_name }} +short
+    changed_when: false
+
