@@ -41,4 +41,4 @@ The bastion runs the openshift installer which creates a certificate that is val
 
 NOTE: To delete all VMs and simply start again, run `xtoph_deploy.sh redeploy`.  
 
-NOTE: To preserve the existing bastion VM and it's current downloads, run `opc4_workshop.sh unlock` followed by `xtoph_deploy.sh deploy`.  This will permit the openshift installer to generate a new certificate without having to download everything anew.
+NOTE: To preserve the existing bastion VM and it's current downloads: manually delete all OCP cluster nodes, run `opc4_workshop.sh unlock` followed by `xtoph_deploy.sh deploy`.  This will permit the openshift installer to generate a new certificate without having to download everything anew.  
