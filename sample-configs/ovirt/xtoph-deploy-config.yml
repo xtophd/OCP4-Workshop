@@ -25,19 +25,20 @@ xtoph_deploy_config:
     ip: "192.168.1.170"
 
     ##
-    ##    dnsmasq_enable: ensures dnsmasq is installed 
-    ##                    and enabled on the deployhost
+    ##    dnsmasq_enable:    ensures dnsmasq is installed 
+    ##                       and enabled on the deployhost
+    ##
+    ##    dnsmasq_asprimary: deployed hosts/vms will be
+    ##                       configured to use deployhost's
+    ##                       dns as primary resolver
     ##                    
-    ##    NOTE: This will also pass the deployhost's 
-    ##          ip-address to the deployed systems as 
-    ##          primary DNS resolver
-    ##                    
-    ##          vm resolves to -> 
-    ##            deployhost forwards to -> 
-    ##              real-dns          
+    ##                       host/vm resolves to -> 
+    ##                         deployhost which forwards to -> 
+    ##                           real-dns          
     ##                    
 
-    dnsmasq_enable:  false
+    dnsmasq_enable:  true
+    dnsmasq_asprimary:  true
 
     ##
     ##    http_port:      port to provide kickstart and
@@ -119,16 +120,16 @@ xtoph_deploy_config:
         enabled:         ""
         has_internet:    ""
 
-        ip:              "{{ h_pubIP        }}"
-        basedomain:      "{{ g_publicDomain }}"
-        network:         "{{ g_pubNET       }}"
-        netmask:         "{{ g_pubNM        }}"
-        broadcast:       "{{ g_pubBC        }}"
-        prefix:          "{{ g_pubPREFIX    }}"
-        gateway:         "{{ g_pubGW        }}"
-        nameserver:      "{{ g_pubDNS       }}"
-        timeserver:      "{{ g_pubNTP       }}"
-        fqdn:            "{{ g_pubFQDN      }}"
+        ip:                "{{ h_pubIP        }}"
+        basedomain:        "{{ g_publicDomain }}"
+        network:           "{{ g_pubNET       }}"
+        netmask:           "{{ g_pubNM        }}"
+        broadcast:         "{{ g_pubBC        }}"
+        prefix:            "{{ g_pubPREFIX    }}"
+        gateway:           "{{ g_pubGW        }}"
+        nameserver:        "{{ g_pubDNS       }}"
+        timeserver:        "{{ g_pubNTP       }}"
+        fqdn:              "{{ g_pubFQDN      }}"
 
     storage:
 
