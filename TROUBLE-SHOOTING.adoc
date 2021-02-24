@@ -42,3 +42,11 @@ The bastion runs the openshift installer which creates a certificate that is val
 NOTE: To delete all VMs and simply start again, run `xtoph_deploy.sh redeploy`.  
 
 NOTE: To preserve the existing bastion VM and it's current downloads: manually delete all OCP cluster nodes, run `opc4_workshop.sh unlock` followed by `xtoph_deploy.sh deploy`.  This will permit the openshift installer to generate a new certificate without having to download everything anew.  
+
+
+
+== Some cluster nodes build, other do not (TLS errors in journalctl output) (2021/02/21)
+
+This usually tracks back to faulty DNS configuration, or even another DHCP server on the network providing faulty DNS info.  Check the workshop configs and the xtoph_deploy configs, and more importantly run some DNS tests to see if everything works as expected.
+
+NOTE: These playbooks assume a fresh "@Base" installation on the target hosts.  There is no excessive validation checking before installation/deployment is attempted.
