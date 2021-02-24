@@ -180,7 +180,7 @@ h_ksPROF = "pxe_wait"
 ## HOST VARS
 
 [myDeployhost]
-test-amd.lab.linuxsoup.com h_pubIP="192.168.123.1"
+deployer  h_pubIP="192.168.123.1"
 
 [myBastion]
 bastion   h_pubIP="192.168.123.160"
