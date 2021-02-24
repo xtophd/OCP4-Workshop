@@ -47,6 +47,6 @@ NOTE: To preserve the existing bastion VM and it's current downloads: manually d
 
 == Some cluster nodes build, other do not (TLS errors in journalctl output) (2021/02/21)
 
-This usually tracks back to caulty DNS config, or even another DHCP server on the network providing faulty DNS info.
+This usually tracks back to faulty DNS configuration, or even another DHCP server on the network providing faulty DNS info.  Check the workshop configs and the xtoph_deploy configs, and more importantly run some DNS tests to see if everything works as expected.
 
 NOTE: These playbooks assume a fresh "@Base" installation on the target hosts.  There is no excessive validation checking before installation/deployment is attempted.
