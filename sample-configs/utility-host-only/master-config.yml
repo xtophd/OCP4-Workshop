@@ -134,6 +134,8 @@ g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
 g_useREPOSYNC     = "False"
+g_useDESKTOP_GUI  = "False"
+
 
 ## Configure DNS wildcard on bastion host
 g_useDNSwildcard = "True"
