@@ -38,33 +38,6 @@
       state=directory
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}" 
 
-#  - name: "ocp4-workshop : bastion-uefi : stat mount point /mnt/rhcos"
-#    stat: path="/mnt/rhcos"
-#    register: test_iso_mount
-
-#  - name: "ocp4-workshop : bastion-uefi : create mount point /mnt/rhcos"
-#    file: 
-#      path="/mnt/rhcos" 
-#      mode="0755" 
-#      state=directory
-#    when:
-#      - test_iso_mount.stat.exists == false
-
-#  - name: "ocp4-workshop : bastion-uefi : mount source iso /mnt/rhcos"
-#    vars:
-#    mount:
-#      path:   "/mnt/rhcos"
-#      src:    "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
-#      opts:   "loop,ro"
-#      state:  "mounted"
-#      fstype: "iso9660"
-
-#  - name: "ocp4-workshop : bastion-uefi : clone source"
-#    shell:
-#      cmd: |
-#        tar cf - -C /mnt/rhcos . | tar xf - -C /var/tmp/{{ g_clusterName }}/iso/{{ item }}
-#    loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
-
   - name: "ocp4-workshop : clone ISO source to temp workspace"
     vars:
       t_isofile:  "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
@@ -73,12 +46,6 @@
       cmd: |
         xorriso -osirrox on -indev "{{ t_isofile }}" -extract / "{{ t_destdir }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
-
-#  - name: "ocp4-workshop : bastion-uefi : unmount source"
-#    vars:
-#    mount:
-#      path:   "/mnt/rhcos"
-#      state:  "unmounted"
 
   - name: "ocp4-workshop : bastion-uefi : determine bastion pub IP"
     set_fact:
@@ -107,7 +74,6 @@
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
-#      replace: '\1append\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
       replace: >
           \1append\2 rd.neednet=1 
           usb-storage.delay_use={{p_usbdelay}} 
@@ -130,7 +96,6 @@
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'
-#      replace: '\1linux\2 rd.neednet=1 usb-storage.delay_use={{p_usbdelay}} coreos.inst=yes ip={{ p_network }} coreos.inst.install_dev={{ p_storage }} "coreos.inst.image_url=http://{{ f_bastionIP }}:8080/assets/{{ p_bios_img }}" "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"'
       replace: >
           \1linux\2 rd.neednet=1 
           usb-storage.delay_use={{p_usbdelay}} 
@@ -170,18 +135,24 @@
                     -eltorito-alt-boot                 \
                     -e images/efiboot.img              \
                     -no-emul-boot                      \
-                    -o ../{{ p_name }}.iso .          
+                    -o /var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso . 
+
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
-  - name: "ocp4-workshop : bastion-uefi : copy ISOs to asset directory"
-    vars:
-      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
-    copy:
-      src:  "/var/tmp/{{ g_clusterName }}/iso/{{ p_name }}.iso"
-      dest: "/var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso"
-      mode:  "0644"
-      owner: root
-      group: root
-      remote_src: yes
-    loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
+#  - name: "ocp4-workshop : bastion-uefi : copy ISOs to asset directory"
+#    vars:
+#      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+#    copy:
+#      src:  "/var/tmp/{{ g_clusterName }}/iso/{{ p_name }}.iso"
+#      dest: "/var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso"
+#      mode:  "0644"
+#      owner: root
+#      group: root
+#      remote_src: yes
+#    loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
+
+  - name: "ocp4-workshop : bastion-uefi : clean-up iso directory /var/tmp/{{ g_clusterName }}/iso"
+    shell:
+      cmd: |
+        if [[ -d "/var/tmp/{{ g_clusterName }}/iso" ]] ; then rm -rf /var/tmp/{{ g_clusterName }}/iso ; fi
 

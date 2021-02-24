@@ -36,7 +36,7 @@
   tags: cockpit
 
 - import_playbook: bastion-desktop-gui.yml
-  when: g_useDESKTOP-GUI == "True"
+  when: g_useDESKTOP_GUI == "True"
   tags: gui
 
 - import_playbook: bastion-dns.yml
