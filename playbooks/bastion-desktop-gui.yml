@@ -19,14 +19,11 @@
     delay: 5
 
   - name: "ocp4-workshop : bastion-desktop-gui : yum install extra packages"
-    yum: name=gnome-tweaks state=installed
+    yum: name=gnome-tweaks,firefox state=installed
     register: result
     retries: 10
     until: result is succeeded
     delay: 5
-
-  - name: "ocp4-workshop : bastion-desktop-gui : user modification"
-    user: name="{{ g_studentName }}" groups="wheel"
 
   - name: "ocp4-workshop : bastion-desktop-gui : change to graphical mode"
     shell:
