@@ -56,8 +56,7 @@ case "$1" in
     "squid"       | \
     "openshift"   | \
     "workshop"    | \
-    "refresh"     | \
-    "finish")
+    "refresh")
 
         time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
         ;;

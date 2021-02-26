@@ -21,7 +21,7 @@
 ##     g_clusterUser
 ##     g_credsDir
 
-g_clusterVersion = "4.6"
+g_clusterVersion = "4.7"
 g_clusterAdmin   = "cloud-admin"
 g_clusterUser    = "cloud-user"
 g_credsDir       = "/root/ocp-{{ g_clusterName}}"
