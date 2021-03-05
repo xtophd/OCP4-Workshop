@@ -58,6 +58,7 @@ rhcos_assets:
     rootfs:      "rhcos-4.7.0-x86_64-live-rootfs.x86_64.img"
     kernel:      "rhcos-4.7.0-x86_64-live-kernel-x86_64"
     bios:        "rhcos-4.7.0-x86_64-metal.x86_64.raw.gz"
+    bios4k:      "rhcos-4.7.0-x86_64-metal4k.x86_64.raw.gz"
     iso:         "rhcos-4.7.0-x86_64-live.x86_64.iso"
 
   "4.6":
@@ -68,6 +69,7 @@ rhcos_assets:
     rootfs:      "rhcos-4.6.8-x86_64-live-rootfs.x86_64.img"
     kernel:      "rhcos-4.6.8-x86_64-live-kernel-x86_64"
     bios:        "rhcos-4.6.8-x86_64-metal.x86_64.raw.gz"
+    bios4k:      "rhcos-4.6.8-x86_64-metal4k.x86_64.raw.gz"
     iso:         "rhcos-4.6.8-x86_64-live.x86_64.iso"
 
   "4.5":

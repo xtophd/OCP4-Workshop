@@ -139,18 +139,6 @@
 
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
-#  - name: "ocp4-workshop : bastion-uefi : copy ISOs to asset directory"
-#    vars:
-#      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
-#    copy:
-#      src:  "/var/tmp/{{ g_clusterName }}/iso/{{ p_name }}.iso"
-#      dest: "/var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso"
-#      mode:  "0644"
-#      owner: root
-#      group: root
-#      remote_src: yes
-#    loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
-
   - name: "ocp4-workshop : bastion-uefi : clean-up iso directory /var/tmp/{{ g_clusterName }}/iso"
     shell:
       cmd: |

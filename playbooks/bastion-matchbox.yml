@@ -82,23 +82,17 @@
       - "/var/lib/matchbox/profiles"
       - "/var/lib/matchbox/ignition"
 
-  ## THIS WAS HELPFUL FOR DEBUGGING, BUT NO LONGER NECCESSARY
-  # - name: "ocp4-workshop : bastion-matchbox : debug - file download urls"
-  #   debug: msg="{{ rhcos_assets[g_clusterVersion]['url'] }}/{{ item }}"
-  #   with_items:
-  #     - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
-  #     - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
-  #     - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
-  #     - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
-  #     - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
+
 
   ##
   ## ** NOTE **
   ##
-  ##       'rootfs' was introduced in ocp-4.6 and previous releases won't have that asset defined
+  ##       'rootfs' and 'bios4k' was introduced in ocp-4.6 and previous releases won't have that asset defined
   ##       so I am including some logic to maintain backwards compatability for a while.  hence
   ##       the default ({}) empty set if rootfs is undefined
   ##
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS image download"
     environment:
@@ -117,22 +111,12 @@
       - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
       - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
       - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
+      - "{{ rhcos_assets[g_clusterVersion]['bios4k'] | default([]) }}"
     register: coreos_download
     until: coreos_download is not failed
     retries: 5
 
-  ## THIS WAS HELPFUL FOR DEBUGGING, BUT NO LONGER NECCESSARY
-  # - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS create friendly filenames"
-  #   file:
-  #     state: link
-  #     path: "/var/lib/matchbox/assets/{{ item.dst }}"
-  #     src:  "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion][item.src] }}"
-  #   with_items:
-  #     - { src: "initramfs" ,dst: "initramfs.img" }
-  #     - { src: "kernel"    ,dst: "kernel.img"    }
-  #     - { src: "bios"      ,dst: "metal.img"     }
-  #     - { src: "iso"       ,dst: "rhcos.iso"     }
-  #     - { src: "rootfs"    ,dst: "rootfs.img"    }
+
 
   - name: "ocp4-workshop : bastion-matchbox : : deploy bootstrap group-configs"
     vars:
@@ -151,6 +135,8 @@
       group: matchbox
     loop: "{{ groups['myBootstrap'] }}"
 
+
+
   - name: "ocp4-workshop : bastion-matchbox : : deploy master group-configs"
     vars:
       - p_profile:  "master"
@@ -167,6 +153,8 @@
       owner: matchbox
       group: matchbox
     loop: "{{ groups['myMasters'] }}"
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : : deploy worker group-configs"
     vars:
@@ -185,11 +173,15 @@
       group: matchbox
     loop: "{{ groups['myWorkers'] }}"
 
+
+
   - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
     set_fact: 
       f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
       f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : deploy bootstrap profiles"
     vars:
@@ -209,6 +201,8 @@
       group: matchbox
     loop: "{{ groups['myBootstrap'] }}"
 
+
+
   - name: "ocp4-workshop : bastion-matchbox : deploy master profiles"
     vars:
       - p_profile:  "master"
@@ -226,6 +220,8 @@
       owner: matchbox
       group: matchbox
     loop: "{{ groups['myMasters'] }}"
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : deploy worker profiles"
     vars:
@@ -245,8 +241,12 @@
       group: matchbox
     loop: "{{ groups['myWorkers'] }}"
 
+
+
   - name: "ocp4-workshop : bastion-matchbox : SELinux restore contexts on doc-root"
     shell: restorecon -R /var/lib/matchbox 
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : deploy systemd config"
     vars:
@@ -257,6 +257,8 @@
       mode:  "644"
       owner: root
       group: root
+
+
 
   # Use service_facts module to collect systemd info
   # We can then sanely test existence of units
