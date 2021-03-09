@@ -3,6 +3,13 @@
 ##
 ## Red Hat Openshift & CoreOS Sources
 ##
+##
+##    NOTE:  The primary label corresponds to the selected
+##           g_clusterVersion in master_config.yml
+##
+##           In the case of ocp_assets and openshift_assets,
+##           these values are the same.
+##
 
 ocp_assets:
 
@@ -107,3 +114,48 @@ rhcos_assets:
     kernel:      "rhcos-4.2.18-x86_64-installer-kernel"
     bios:        "rhcos-4.2.18-x86_64-metal-bios.raw.gz"
     iso:         "rhcos-4.2.18-x86_64-installer.iso"
+
+matchbox_assets:
+
+  "4.7":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+
+  "4.6":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+
+  "4.5":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+
+  "4.4":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+
+  "4.3":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+
+  "4.2":
+    name:        "matchbox"
+    version:     "0.8.3"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.8.3"
+    filename:    "matchbox-v0.8.3-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.8.3-linux-amd64"
+

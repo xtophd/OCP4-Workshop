@@ -13,29 +13,64 @@
 - hosts: myBastion
   tasks:
 
-  - name: "ocp4-workshop : bastion-matchbox : stat software"
-    stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
-    register: test_matchbox_src
+
+  ## REMOVE-ME (3/9/2021) This test is unnessary as get_url already 
+  ##                      skips download if local copy is present.
+  ##
+  #- name: "ocp4-workshop : bastion-matchbox : stat software"
+  #  stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
+  #  register: test_matchbox_src
+
+
+
+  ## REMOVE-ME (3/9/2021) Added a set of variables in group_vars/all/openshift.yml
+  ##                      to define matchbox assets.  Leaving this until new tasks
+  ##                      are tested and validated
+  ##
+  #- name: "ocp4-workshop : bastion-matchbox : software download"
+  #  environment:
+  #    http_proxy: "{{ g_http_proxy }}"
+  #    https_proxy: "{{ g_https_proxy }}"
+  #  get_url:
+  #    url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
+  #    dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
+  #    mode: "0644"
+  #    timeout: 60
+  #  when: test_matchbox_src.stat.exists == false
+  #  register: matchbox_download
+  #  until: matchbox_download is not failed
+  #  retries: 5
+
+  #- name: "ocp4-workshop : bastion-matchbox : unpack software"
+  #  shell:
+  #    cmd: |
+  #      cd /usr/local/src
+  #      tar zxvf matchbox-v0.8.3-linux-amd64.tar.gz
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : software download"
     environment:
-      http_proxy: "{{ g_http_proxy }}"
+      http_proxy:  "{{ g_http_proxy }}"
       https_proxy: "{{ g_https_proxy }}"
     get_url:
-      url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
-      dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
+      url:  "{{ matchbox_assets[g_clusterVersion]['url'] }}/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
+      dest: "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
       mode: "0644"
       timeout: 60
-    when: test_matchbox_src.stat.exists == false
     register: matchbox_download
     until: matchbox_download is not failed
     retries: 5
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : unpack software"
     shell:
       cmd: |
         cd /usr/local/src
-        tar zxvf matchbox-v0.8.3-linux-amd64.tar.gz
+        tar zxvf {{ matchbox_assets[g_clusterVersion]['filename'] }}
+
+
 
   - name: "ocp4-workshop : bastion-matchbox : create matchbox group"
     user:
@@ -53,11 +88,11 @@
 
   - name: "ocp4-workshop : bastion-matchbox : install matchbox binary"
     copy:
-      src: /usr/local/src/matchbox-v0.8.3-linux-amd64/matchbox
-      dest: /usr/local/bin
-      mode: "0555"
-      owner: matchbox
-      group: matchbox
+      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/matchbox"
+      dest:  "/usr/local/bin"
+      mode:  "0555"
+      owner: "matchbox"
+      group: "matchbox"
       remote_src: yes
 
   - name: "ocp4-workshop : bastion-matchbox : clean prior cfg directories"
@@ -89,7 +124,7 @@
   ##
   ##       'rootfs' and 'bios4k' was introduced in ocp-4.6 and previous releases won't have that asset defined
   ##       so I am including some logic to maintain backwards compatability for a while.  hence
-  ##       the default ({}) empty set if rootfs is undefined
+  ##       the default ({}) empty set if rootfs or bios4k are undefined
   ##
 
 
