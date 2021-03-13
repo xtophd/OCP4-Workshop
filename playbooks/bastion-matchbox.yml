@@ -49,6 +49,15 @@
 
 
 
+  - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
+    set_fact: 
+      f_bastionName:   "{{ hostvars[item]['inventory_hostname_short']}}"
+      f_bastionIP:     "{{ hostvars[item]['h_pubIP'] }}"
+      f_bastionFQDN:   "{{ hostvars[item]['h_pubIP'] }}.{{ g_pubFQDN }}"
+    loop: "{{ groups['myBastion'] }}"
+
+
+
   - name: "ocp4-workshop : bastion-matchbox : software download"
     environment:
       http_proxy:  "{{ g_http_proxy }}"
@@ -72,11 +81,23 @@
 
 
 
+  - name: "ocp4-workshop : bastion-matchbox : create self signed certs"
+    environment:
+      SAN: "DNS.1:{{ f_bastionName }}.{{ f_bastionFQDN }},IP.1:{{ f_bastionIP }}"
+    shell:
+      cmd: |
+        cd "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/scripts/tls"
+        ./cert-gen
+
+
+
   - name: "ocp4-workshop : bastion-matchbox : create matchbox group"
     user:
       name: "matchbox"
       state: present
       password: "*"
+
+
     
   - name: "ocp4-workshop : bastion-matchbox : create matchbox user"
     user:
@@ -86,14 +107,7 @@
       password: "*"
       group: "matchbox"
 
-  - name: "ocp4-workshop : bastion-matchbox : install matchbox binary"
-    copy:
-      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/matchbox"
-      dest:  "/usr/local/bin"
-      mode:  "0555"
-      owner: "matchbox"
-      group: "matchbox"
-      remote_src: yes
+
 
   - name: "ocp4-workshop : bastion-matchbox : clean prior cfg directories"
     shell:
@@ -102,6 +116,8 @@
     with_items:
       - "/var/lib/matchbox/groups"
       - "/var/lib/matchbox/profiles"
+
+
 
   - name: "ocp4-workshop : bastion-matchbox  create directories"
     file:
@@ -112,10 +128,36 @@
       mode: "0755"
     with_items:
       - "/etc/matchbox"
+      - "/etc/matchbox/ssl"
       - "/var/lib/matchbox/assets"
       - "/var/lib/matchbox/groups"
       - "/var/lib/matchbox/profiles"
       - "/var/lib/matchbox/ignition"
+
+
+
+  - name: "ocp4-workshop : bastion-matchbox : install matchbox binary"
+    copy:
+      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/matchbox"
+      dest:  "/usr/local/bin"
+      mode:  "0555"
+      owner: "matchbox"
+      group: "matchbox"
+      remote_src: yes
+
+
+
+  - name: "ocp4-workshop : bastion-matchbox : install matchbox self-signed certs"
+    copy:
+      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/scripts/tls/{{ item }}"
+      dest:  "/etc/matchbox/ssl"
+      mode:  "0644"
+      owner: "matchbox"
+      group: "matchbox"
+      remote_src: yes
+    with_items:
+      - "server.crt"
+      - "server.key"
 
 
 
@@ -209,12 +251,6 @@
     loop: "{{ groups['myWorkers'] }}"
 
 
-
-  - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
-    set_fact: 
-      f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
-      f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
-    loop: "{{ groups['myBastion'] }}"
 
 
 
