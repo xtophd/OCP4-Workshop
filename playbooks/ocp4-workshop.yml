@@ -36,43 +36,43 @@
   tags: cockpit
 
 - import_playbook: bastion-desktop-gui.yml
-  when: g_useDESKTOP_GUI == "True" | default("False")
+  when: g_useDESKTOP_GUI|default("False")  == "True"
   tags: gui
 
 - import_playbook: bastion-dns.yml
-  when: g_useDNS == "True" | default("True")
+  when: g_useDNS|default("True") == "True" 
   tags: dns
 
 - import_playbook: bastion-matchbox.yml
-  when: g_useMATCHBOX == "True" | default("True")
+  when: g_useMATCHBOX|default("True") == "True"
   tags: matchbox
 
 - import_playbook: bastion-pxe.yml
-  when: g_usePXE == "True" | default("True")
+  when: g_usePXE|default("True") == "True"
   tags: pxe
 
 - import_playbook: bastion-uefi.yml
-  when: g_useUEFI_HTTP == "True" | default("True")
+  when: g_useUEFI_HTTP|default("True") == "True"
   tags: uefi
 
 - import_playbook: bastion-dhcp.yml
-  when: g_useDHCP == "True" | default("True")
+  when: g_useDHCP|default("True") == "True" 
   tags: dhcp
 
 - import_playbook: bastion-haproxy.yml
-  when: g_useHAPROXY == "True" | default("True")
+  when: g_useHAPROXY|default("True") == "True" 
   tags: haproxy
 
 - import_playbook: bastion-haproxy-vip.yml
-  when: g_useHAPROXY_VIP == "True" | default("True")
+  when: g_useHAPROXY_VIP|default("True") == "True"
   tags: haproxy_vip
 
 - import_playbook: bastion-nfs.yml
-  when: g_useNFS == "True" | default("True")
+  when: g_useNFS|default("True") == "True"
   tags: nfs
 
 - import_playbook: bastion-httpd.yml
-  when: g_useMATCHBOX != "True" | default("True")
+  when: g_useMATCHBOX|default("True") != "True"
   tags: httpd
 
 ##
