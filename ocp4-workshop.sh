@@ -44,7 +44,7 @@ case "$1" in
     "dhcp"        | \
     "gui"         | \
     "pxe"         | \
-    "uefi"        | \
+    "iso"         | \
     "lock"        | \
     "unlock"      | \
     "nfs"         | \
