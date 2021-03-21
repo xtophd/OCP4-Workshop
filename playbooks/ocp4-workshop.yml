@@ -51,9 +51,9 @@
   when: g_usePXE|default("True") == "True"
   tags: pxe
 
-- import_playbook: bastion-uefi.yml
-  when: g_useUEFI_HTTP|default("True") == "True"
-  tags: uefi
+- import_playbook: bastion-iso.yml
+  when: g_useISO|default("True") == "True"
+  tags: iso
 
 - import_playbook: bastion-dhcp.yml
   when: g_useDHCP|default("True") == "True" 
