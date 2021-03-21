@@ -19,7 +19,11 @@
     "coreos.inst.insecure=yes",
     "coreos.live.rootfs_url=http://{{ p_addr}}:8080/assets/{{ rhcos_assets[g_clusterVersion]['rootfs'] }}",
 {% endif %}
+{% if p_loader is defined and p_loader == "efi" %}
+    "coreos.inst.ignition_url=http://{{ p_addr}}:8080/ignition?mac=$net_default_mac"
+{% else %}
     "coreos.inst.ignition_url=http://{{ p_addr}}:8080/ignition?mac=${mac:hexhyp}"
+{% endif %}
    ]
  }
 }

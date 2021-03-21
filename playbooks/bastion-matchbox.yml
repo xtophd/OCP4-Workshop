@@ -264,6 +264,8 @@
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay: "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
+      - p_loader:   "{{ hostvars[item]['h_rhcosLOADER']   | default ('bios') }}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"
@@ -284,6 +286,8 @@
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay: "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
+      - p_loader:   "{{ hostvars[item]['h_rhcosLOADER']   | default ('bios') }}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"
@@ -304,6 +308,8 @@
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay: "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
+      - p_loader:   "{{ hostvars[item]['h_rhcosLOADER']   | default ('bios') }}"
+      - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
     template:
       src:   "matchbox-profile.j2"
       dest:  "/var/lib/matchbox/profiles/{{ p_profile }}-{{ item }}.json"

@@ -20,11 +20,13 @@
 - hosts: myBastion
   tasks:
 
+
+
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
   
   - name: "ocp4-workshop : bastion-pxe : package installation"
-    yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot state=installed
+    yum: name=tftp-server,ipxe-bootimgs,syslinux-tftpboot,yum-utils state=installed
 
   - name: "ocp4-workshop : bastion-pxe : create tftpboot directories"
     file:
@@ -34,6 +36,97 @@
     with_items:
       - "/var/lib/tftpboot/pxelinux"
       - "/var/lib/tftpboot/efi"
+
+
+
+  ##
+  ##    PXE->GRUB setup for UEFI based deployments
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-pxe : clean-up efi directory /var/tmp/{{ g_clusterName }}/efi"
+    shell:
+      cmd: |
+        if [[ -d "/var/tmp/{{ g_clusterName }}/efi" ]] ; then rm -rf /var/tmp/{{ g_clusterName }}/efi ; fi
+
+  - name: "ocp4-workshop : bastion-pxe : create fresh efi work directory"
+    file:
+      path="/var/tmp/{{ g_clusterName }}/efi"
+      mode="0755"
+      state=directory
+
+  - name: "ocp4-workshop : bastion-pxe : download rpms (do not install) for efi artifacts"
+    yum: 
+      name: shim-x64,grub2-efi-x64
+      state: latest
+      download_dir: "/var/tmp/{{ g_clusterName }}/efi"
+      download_only: yes 
+
+  - name: "ocp4-workshop : bastion-pxe : unpack contents of rpms for efi artifacts"
+    shell:
+      cmd: |
+        cd /var/tmp/{{ g_clusterName }}/efi; rpm2cpio {{ item }}*.rpm | cpio -dimv
+    with_items:
+      - "shim-x64"
+      - "grub2-efi"
+
+#  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (RHEL 7)"
+#    copy: 
+#      src:   "{{ item }}"
+#      dest:  "/var/lib/tftpboot"
+#      mode:  "0644"
+#      owner: root
+#      group: root
+#      remote_src: yes
+#    with_items:
+#      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/shim.efi"
+#      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/grubx64.efi"
+#    when:
+#      - ansible_distribution == "RedHat"
+#      - ansible_distribution_major_version == "7"
+
+  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (RHEL 8)"
+    copy: 
+      src:   "{{ item }}"
+      dest:  "/var/lib/tftpboot"
+      mode:  "0644"
+      owner: root
+      group: root
+      remote_src: yes
+    with_items:
+      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/shimx64.efi"
+      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/grubx64.efi"
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "8"
+
+
+  
+  - name: "ocp4-workshop : bastion-pxe : determine bastion pub IP"
+    set_fact:
+      f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
+      f_bastionIP:   "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
+  - name: "ocp4-workshop : bastion-pxe : deploy grub.cfg in tftpboot directory"
+    vars:
+      - p_nextsvr:   "{{ f_bastionIP }}"
+      - p_http_port: "{{ g_matchbox_port }}"
+    template:
+      src:   "pxe-grub-config.j2"
+      dest:  "/var/lib/tftpboot/grub.cfg"
+      mode:  "0644"
+      owner: root
+      group: root
+
+
+
+  ##
+  ##    PXE->iPXE setup for BIOS based deployments
+  ##
+
+
 
   - name: "ocp4-workshop : bastion-pxe : copy ipxe files to tftpboot (RHEL 8)"
     copy: 
@@ -45,7 +138,6 @@
       remote_src: yes
     with_items:
       - "/usr/share/ipxe/undionly.kpxe"
-      - "/usr/share/ipxe/ipxe-x86_64.efi"
       - "/usr/share/ipxe/ipxe.lkrn"
     when:
       - ansible_distribution == "RedHat"
@@ -61,7 +153,6 @@
       remote_src: yes
     with_items:
       - "/usr/share/ipxe/undionly.kpxe"
-      - "/usr/share/ipxe/ipxe.efi"
       - "/usr/share/ipxe/ipxe.lkrn"
     when:
       - ansible_distribution == "RedHat"
