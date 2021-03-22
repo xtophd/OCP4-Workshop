@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+
+echo "Check Cluster Operators"
+echo "-----------------------"
+
+oc get clusteroperators
+
+echo ""

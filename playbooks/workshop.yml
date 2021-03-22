@@ -11,7 +11,9 @@
       group: root
       mode: 0744
     with_items:
-      - {src: 'workshop-healthcheck.j2',                dest: '/usr/local/bin/workshop-healthcheck.sh'}
+      - {src: 'workshop-check-health.j2',               dest: '/usr/local/bin/workshop-check-health.sh'}
+      - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
+      - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
       - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
       - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
       - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
