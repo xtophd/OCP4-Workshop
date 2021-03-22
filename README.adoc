@@ -17,7 +17,7 @@ NOTE: *ALTHOUGH THIS PROJECT IS FOCUSED ON DELIVERING AN OPENSHIFT WORKSHOP FOR 
 
 = Usage
 
-NOTE:  This "workshop" project and playbooks strive to mimic the hands-on UPI approach to deploying an Openshift cluster.  Shell commands are often used in preference to otherwise fanstastic ansible modules in order to preserve the steps outlined in the actual installation guide.
+NOTE:  This "workshop" project and playbooks strive to mimic the hands-on UPI approach to deploying an Openshift cluster.  Shell commands are often used in preference to otherwise fanstastic ansible modules in order to preserve the steps outlined in the actual installation guide.  Also, these playbooks opt to use standard OS services vs. many of the (recently available) prepackaged containerized solutions.  The lends to the backwards compatability and broad customization that is possible with this solution.  At this time, deployments as far back as Openshift 4.2 are still possible using this project.
 
 
 Default architecture is 7 systems:
