@@ -183,12 +183,20 @@ ansible_host="{{ inventory_hostname }}.{{ g_pubFQDN }}"
 ##    next time it's sdb).  Set this to delay the USB storage scan by X seconds.
 ##    A good value might be h_rhcosUSBdelay = '10'
 ##
+## h_rhcosLOADER   : default is 'bios'
+##    If the host is configured for EFI or UEFI, a value of 'efi' will
+##    enable support for PXE based deployment.  In the future, I hope to
+##    remove this parameter and just have it be auto detected by the dhcpd
+##    server and subsequent loaders, but for this implementation it was
+##    not possible.
+##
 ## ** NOTE **  You can also declare these in the [hostgroup:vars] or for each individual host
 ##
 
 h_rhcosDEV      = "sda"
 h_rhcosNIC      = "dhcp"
 h_rhcosUSBdelay = "0"
+h_rhcosLOADER   = "bios"
 
 ##
 ## ----------------------------------------
