@@ -65,6 +65,16 @@ cd ~
 git clone http://github.com/xtophd/OCP4-Workshop
 ----
 
+=== Review the Change History
+
+In the git project directory you just cloned, run the following to view the development activity and changes you need to be aware of.
+
+----
+cd ~/OCP4-Workshop
+
+git log --oneline --decorate
+----
+
 === Create Config Files
 
 You can use a sample-config to start this process.  Please note that in this example we are using a "utility-host-only" template.
