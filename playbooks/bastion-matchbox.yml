@@ -58,6 +58,11 @@
 
 
 
+  - name: "ocp4-workshop : bastion-matchbox : stat software"
+    stat: 
+      path: "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
+    register: test_matchbox_src
+
   - name: "ocp4-workshop : bastion-matchbox : software download"
     environment:
       http_proxy:  "{{ g_http_proxy }}"
@@ -67,6 +72,7 @@
       dest: "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
       mode: "0644"
       timeout: 60
+    when: test_matchbox_src.stat.exists == false
     register: matchbox_download
     until: matchbox_download is not failed
     retries: 5
