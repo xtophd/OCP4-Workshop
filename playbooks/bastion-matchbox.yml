@@ -14,40 +14,6 @@
   tasks:
 
 
-  ## REMOVE-ME (3/9/2021) This test is unnessary as get_url already 
-  ##                      skips download if local copy is present.
-  ##
-  #- name: "ocp4-workshop : bastion-matchbox : stat software"
-  #  stat: path=/usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
-  #  register: test_matchbox_src
-
-
-
-  ## REMOVE-ME (3/9/2021) Added a set of variables in group_vars/all/openshift.yml
-  ##                      to define matchbox assets.  Leaving this until new tasks
-  ##                      are tested and validated
-  ##
-  #- name: "ocp4-workshop : bastion-matchbox : software download"
-  #  environment:
-  #    http_proxy: "{{ g_http_proxy }}"
-  #    https_proxy: "{{ g_https_proxy }}"
-  #  get_url:
-  #    url: https://github.com/poseidon/matchbox/releases/download/v0.8.3/matchbox-v0.8.3-linux-amd64.tar.gz
-  #    dest: /usr/local/src/matchbox-v0.8.3-linux-amd64.tar.gz
-  #    mode: "0644"
-  #    timeout: 60
-  #  when: test_matchbox_src.stat.exists == false
-  #  register: matchbox_download
-  #  until: matchbox_download is not failed
-  #  retries: 5
-
-  #- name: "ocp4-workshop : bastion-matchbox : unpack software"
-  #  shell:
-  #    cmd: |
-  #      cd /usr/local/src
-  #      tar zxvf matchbox-v0.8.3-linux-amd64.tar.gz
-
-
 
   - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
     set_fact: 
@@ -255,8 +221,6 @@
       owner: matchbox
       group: matchbox
     loop: "{{ groups['myWorkers'] }}"
-
-
 
 
 
