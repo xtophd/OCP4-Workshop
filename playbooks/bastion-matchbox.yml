@@ -143,6 +143,20 @@
 
 
 
+  - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS image stats"
+    stat:
+      path: "/var/lib/matchbox/assets/{{ item }}"
+    with_items:
+      - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
+      - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
+      - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
+      - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
+      - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
+      - "{{ rhcos_assets[g_clusterVersion]['bios4k'] | default([]) }}"
+    register: asset_stats
+
+  - debug: var=asset_stats.results
+
   - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS image download"
     environment:
       http_proxy: "{{ g_http_proxy }}"
@@ -154,13 +168,8 @@
       group: matchbox
       mode: "0644"
       timeout: 60
-    with_items:
-      - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
-      - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
-      - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
-      - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
-      - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
-      - "{{ rhcos_assets[g_clusterVersion]['bios4k'] | default([]) }}"
+      force: no
+    loop: "{{ asset_stats.results | rejectattr('stat.exists') | map(attribute='item') | list }}"
     register: coreos_download
     until: coreos_download is not failed
     retries: 5
