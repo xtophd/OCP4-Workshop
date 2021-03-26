@@ -155,8 +155,6 @@
       - "{{ rhcos_assets[g_clusterVersion]['bios4k'] | default([]) }}"
     register: asset_stats
 
-  - debug: var=asset_stats.results
-
   - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS image download"
     environment:
       http_proxy: "{{ g_http_proxy }}"
@@ -176,7 +174,7 @@
 
 
 
-  - name: "ocp4-workshop : bastion-matchbox : : deploy bootstrap group-configs"
+  - name: "ocp4-workshop : bastion-matchbox : deploy bootstrap group-configs"
     vars:
       - p_profile:  "bootstrap"
       - p_item:     "{{ item }}"
@@ -195,7 +193,7 @@
 
 
 
-  - name: "ocp4-workshop : bastion-matchbox : : deploy master group-configs"
+  - name: "ocp4-workshop : bastion-matchbox : deploy master group-configs"
     vars:
       - p_profile:  "master"
       - p_item:     "{{ item }}"
@@ -214,7 +212,7 @@
 
 
 
-  - name: "ocp4-workshop : bastion-matchbox : : deploy worker group-configs"
+  - name: "ocp4-workshop : bastion-matchbox : deploy worker group-configs"
     vars:
       - p_profile:  "worker"
       - p_item:     "{{ item }}"
