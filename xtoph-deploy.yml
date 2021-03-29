@@ -17,9 +17,10 @@
 
 
 - hosts: myDeployhost
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "setup"
       when: xtoph_deploy_cmd == "setup" or
@@ -39,14 +40,18 @@
 
 - hosts: myBastion,myBootstrap,myWorkers,myMasters,!myShelter
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** BEGIN UNDEPLOY  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "undeploy"
       when: xtoph_deploy_cmd == "undeploy" or
             xtoph_deploy_cmd == "redeploy"
 
+    - debug: msg="**** END UNDEPLOY  ****"
 
 
 ##
@@ -62,15 +67,19 @@
 
 - hosts: myBastion,myWorkers,myMasters,myBootstrap
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** BEGIN PREPROCESS  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "preprocess"
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
+    - debug: msg="**** END PREPROCESS  ****"
 
 
 ##
@@ -93,14 +102,19 @@
 
 - hosts: myBastion
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** BEGIN myBastion  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END myBastion  ****"
 
 
 
@@ -137,14 +151,19 @@
 
 - hosts: myBootstrap
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** BEGIN myBootstrap  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END myBootstrap  ****"
 
 
 
@@ -155,19 +174,27 @@
 
 
 - import_playbook: playbooks/deployer-preinstall-masters.yml
-  when: xtoph_deploy_cmd == "deploy" or xtoph_deploy_cmd == "redeploy"
+  when: xtoph_deploy_cmd == "deploy" or 
+        xtoph_deploy_cmd == "setup+" or 
+        xtoph_deploy_cmd == "redeploy"
+
+
 
 - hosts: myMasters
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** START myMasters  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or
-            xtoph_deploy_cmd == "setup+" or
+      when: xtoph_deploy_cmd == "deploy" or 
+            xtoph_deploy_cmd == "setup+" or 
             xtoph_deploy_cmd == "redeploy"
 
+    - debug: msg="**** END myMasters  ****"
 
 
 ##
@@ -181,17 +208,23 @@
         xtoph_deploy_cmd == "setup+" or
         xtoph_deploy_cmd == "redeploy"
 
+
+
 - hosts: myWorkers
   gather_facts: no 
-  roles:
+  tasks:
 
-    - role: xtoph_deploy
+    - debug: msg="**** BEGIN myWorkers  ****"
+
+    - include_role: 
+        name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "deploy"
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
+    - debug: msg="**** END myWorkers  ****"
 
 
 ## 
@@ -224,12 +257,16 @@
 
 #- hosts: myBootstrap
 #  gather_facts: no 
-#  roles:
+#  tasks:
 #
-#    - role: xtoph_deploy
+#    - debug: msg="**** BEGIN RECLAIM myBootstrap ****"
+#
+#    - include_role: 
+#        name: xtoph_deploy
 #      vars: 
 #        xtoph_deploy_action: "undeploy"
 #      when: xtoph_deploy_cmd == "deploy" or
 #            xtoph_deploy_cmd == "setup+" or
 #            xtoph_deploy_cmd == "redeploy"
-
+#
+#    - debug: msg="**** BEGIN RECLAIM myBootstrap ****"

@@ -15,12 +15,12 @@
   ## A generic set of tests to verify bastion services are up
   ##
 
-  - name: "OVIRT-PREINSTALL-BOOTSTRAP: determine bastion IP address"
+  - name: "ocp4-workshop : deployer-preinstall-bootstrap : determine bastion IP address"
     set_fact:
       f_bastion_ip: "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
 
-  - name: "OVIRT-PREINSTALL-BOOTSTRAP: test DNS port on bastion {{ f_bastion_ip }}"
+  - name: "deployer-preinstall-bootstrap: test DNS port on bastion {{ f_bastion_ip }}"
     when: g_useDNS == "True"
     wait_for:
       host: "{{ f_bastion_ip }}"
@@ -31,7 +31,7 @@
       state: started
       timeout: 30
 
-  - name: "OVIRT-PREINSTALL-BOOTSTRAP: test MATCHBOX port on bastion ({{ f_bastion_ip }})"
+  - name: "ocp4-workshop : deployer-preinstall-bootstrap : test MATCHBOX port on bastion ({{ f_bastion_ip }})"
     when: g_useMATCHBOX == "True"
     wait_for:
       host: "{{ f_bastion_ip }}"

@@ -33,6 +33,9 @@
     loop: "{{ groups['myMasters'] }}"
     register: config_service_master
 
+  #- debug:
+  #    var: config_service_master
+
 
 
   ##
@@ -41,8 +44,7 @@
   ##    does provide it
   ##
 
-  - debug:
-      var: config_service_master
+
 
   - name: "ocp4-workshop : deployer-preinstall-masters : wait for  CONFIG SERVER port on bootstrap"
     wait_for:
@@ -57,6 +59,6 @@
     register: config_service_bootstrap
     when: config_service_master.failed is defined
 
-  - debug:
-      var: config_service_bootstrap
+  #- debug:
+  #    var: config_service_bootstrap
 

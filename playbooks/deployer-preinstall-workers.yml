@@ -11,7 +11,7 @@
 
   tasks:
 
-  - name: "DEPLOYER-PREINSTALL-WORKERS: wait for availability of config-server on masters"
+  - name: "ocp4-workshop : deployer-preinstall-workers.yml : wait for availability of config-server on masters"
     wait_for:
       host: "{{ hostvars[item]['h_pubIP'] }}"
       connect_timeout: 5

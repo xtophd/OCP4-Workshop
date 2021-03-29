@@ -28,9 +28,9 @@ else
   echo "GOOD... Nodes Ready"
 fi
 
-if `oc get clusteroperators --no-headers | awk '{print $3}' | grep -i false`; then
+if `oc get clusteroperators --no-headers | awk '{print $3}' | grep -q -i false`; then
   echo " BAD... There are cluster operators in a false (not available) state"
-  echo "        Use `oc get clusteroperators` to inspect"
+  echo "        Use 'oc get clusteroperators' to inspect"
 else
   echo "GOOD... Cluster operators are available"
 fi
