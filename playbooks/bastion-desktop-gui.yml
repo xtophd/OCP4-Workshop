@@ -10,7 +10,7 @@
   tasks:
 
   - name: "ocp4-workshop : bastion-desktop-gui : yum install minimum GUI packages"
-    yum: name=gnome-shell,gnome-tweaks,firefox state=installed
+    yum: name=gnome-shell,gnome-tweaks,firefox,gnome-terminal state=installed
     register: result
 
   - name: "ocp4-workshop : bastion-desktop-gui : change to graphical mode"
