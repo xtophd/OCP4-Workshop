@@ -11,7 +11,9 @@
 
   - name: "ocp4-workshop : bastion-desktop-gui : yum install minimum GUI packages"
     yum: name=gnome-shell,gnome-tweaks,firefox,gnome-terminal state=installed
-    register: result
+
+  - name: "ocp4-workshop : bastion-desktop-gui : yum install minimum fonts packages"
+    yum: name=dejavu-sans-fonts,dejavu-sans-mono-fonts,dejavu-serif-fonts,dejavu-fonts-common state=installed
 
   - name: "ocp4-workshop : bastion-desktop-gui : change to graphical mode"
     shell:
