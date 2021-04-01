@@ -131,10 +131,10 @@
 
 
 
-- import_playbook: playbooks/deployer-configure-bastion.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy"
+#- import_playbook: playbooks/deployer-configure-bastion.yml
+#  when: xtoph_deploy_cmd == "deploy" or
+#        xtoph_deploy_cmd == "setup+" or
+#        xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -144,10 +144,10 @@
 
 
 
-- import_playbook: playbooks/deployer-preinstall-bootstrap.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy"
+#- import_playbook: playbooks/deployer-preinstall-bootstrap.yml
+#  when: xtoph_deploy_cmd == "deploy" or
+#        xtoph_deploy_cmd == "setup+" or
+#        xtoph_deploy_cmd == "redeploy"
 
 - hosts: myBootstrap
   gather_facts: no 
@@ -173,10 +173,10 @@
 
 
 
-- import_playbook: playbooks/deployer-preinstall-masters.yml
-  when: xtoph_deploy_cmd == "deploy" or 
-        xtoph_deploy_cmd == "setup+" or 
-        xtoph_deploy_cmd == "redeploy"
+#- import_playbook: playbooks/deployer-preinstall-masters.yml
+#  when: xtoph_deploy_cmd == "deploy" or 
+#        xtoph_deploy_cmd == "setup+" or 
+#        xtoph_deploy_cmd == "redeploy"
 
 
 
