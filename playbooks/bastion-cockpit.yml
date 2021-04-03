@@ -14,19 +14,36 @@
     ##
     ##    Pretty straight forward cockpit setup:
     ##
-    ##      install packages
+    ##      install packages (cockpit-dashboard is not available in RHEL 7)
     ##      service config & enablement
     ##      firewall config & enablement 
     ##
 
 
 
-    - name: "ocp4-workshop : bastion-cockpit : yum install packages"
+    - name: "ocp4-workshop : bastion-cockpit : yum install packages (RHEL 8)"
       yum: name=cockpit,cockpit-dashboard,firewalld,sos state=installed
       register: result
       retries: 10
       until: result is succeeded
       delay: 5
+      when:
+        - ansible_distribution == "RedHat"
+        - ansible_distribution_major_version == "8"
+
+
+
+    - name: "ocp4-workshop : bastion-cockpit : yum install packages (RHEL 7)"
+      yum: name=cockpit,firewalld,sos state=installed
+      register: result
+      retries: 10
+      until: result is succeeded
+      delay: 5
+      when:
+        - ansible_distribution == "RedHat"
+        - ansible_distribution_major_version == "7"
+
+
 
     - name: "ocp4-workshop : bastion-cockpit : create cockpit systemd drop-in directory"
       file:
@@ -36,11 +53,17 @@
         group: "root"
         state: directory
 
+
+
     - name: "ocp4-workshop : bastion-cockpit : service restart"
       service: name="cockpit.socket" state=restarted enabled=yes daemon-reload=yes
 
+
+
     - name: "ocp4-workshop : bastion-cockpit : firewalld service restart"
       service: name="firewalld" state=restarted enabled=yes
+
+
 
     - name: "ocp4-workshop : bastion-cockpit : firewall configuration"
       firewalld: service="cockpit" permanent=yes immediate=yes state=enabled
