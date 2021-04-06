@@ -71,6 +71,7 @@
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
       - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
+      - p_port:      "{{ g_matchbox_port }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
@@ -81,7 +82,7 @@
           "coreos.inst=yes" 
           "coreos.inst.insecure=yes" 
           "coreos.inst.install_dev={{ p_storage }}" 
-          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"
+          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:{{ p_port }}/ignition?mac={{ p_mac }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
   - name: "ocp4-workshop : bastion-iso : customize grub configs"
@@ -93,6 +94,7 @@
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
       - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
+      - p_port:      "{{ g_matchbox_port }}"
     replace:
       path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'
@@ -103,7 +105,7 @@
           "coreos.inst=yes" 
           "coreos.inst.insecure=yes" 
           "coreos.inst.install_dev={{ p_storage }}" 
-          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:8080/ignition?mac={{ p_mac }}"
+          "coreos.inst.ignition_url=http://{{ f_bastionIP }}:{{ p_port }}/ignition?mac={{ p_mac }}"
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
   - name: "ocp4-workshop : bastion-iso : preserve ISO volume id"

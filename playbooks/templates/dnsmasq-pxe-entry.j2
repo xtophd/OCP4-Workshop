@@ -19,5 +19,5 @@ dhcp-boot=tag:efi64,ipxe.efi,{{ p_name }}.{{ p_domain }},{{ p_addr }}
 
 ##iPXE - chainload to ipxe boot script
 dhcp-userclass=set:ipxe,iPXE
-dhcp-boot=tag:ipxe,http://{{ p_name }}.{{ p_domain }}:8080/boot.ipxe
+dhcp-boot=tag:ipxe,http://{{ p_name }}.{{ p_domain }}:{{ p_port }}/boot.ipxe
 
