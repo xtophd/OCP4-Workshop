@@ -236,7 +236,7 @@
       - p_profile:  "bootstrap"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:     "{{ f_bastionIP }}"
-      - p_port:     "{{ g_matchbox_port }}"
+      - p_port:     "{{ matchbox.port }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
@@ -258,7 +258,7 @@
       - p_profile:  "master"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:     "{{ f_bastionIP }}"
-      - p_port:     "{{ g_matchbox_port }}"
+      - p_port:     "{{ matchbox.port }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
@@ -280,7 +280,7 @@
       - p_profile:  "worker"
       - p_name:     "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:     "{{ f_bastionIP }}"
-      - p_port:     "{{ g_matchbox_port }}"
+      - p_port:     "{{ matchbox.port }}"
       - p_hw:       "{{ hostvars[item]['h_hwPROF'] }}"
       - p_storage:  "{{ hostvars[item]['h_rhcosDEV'] | default ('sda') }}"
       - p_network:  "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
@@ -304,7 +304,7 @@
 
   - name: "ocp4-workshop : bastion-matchbox : deploy systemd config"
     vars:
-      - p_port: "{{ g_matchbox_port }}"
+      - p_port: "{{ matchbox.port }}"
     template:
       src:   "matchbox-systemd.j2"
       dest:  "/etc/systemd/system/matchbox.service"
@@ -345,5 +345,5 @@
       permanent: yes
       state: enabled
     with_items:
-      - "{{ g_matchbox_port }}/tcp"
+      - "{{ matchbox.port }}/tcp"
 

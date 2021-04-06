@@ -5,5 +5,7 @@
 ##
 ##
 
-g_matchbox_port: "8080"
+matchbox:
+
+  port: "{{ g_matchbox_port | default('8080') }}"
 
