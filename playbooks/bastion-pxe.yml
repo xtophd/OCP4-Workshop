@@ -56,6 +56,12 @@
       mode="0755"
       state=directory
 
+  - name: "ocp4-workshop : bastion-pxe : create target efi directory"
+    file:
+      path="/var/lib/tftpboot/efi"
+      mode="0755"
+      state=directory
+
   - name: "ocp4-workshop : bastion-pxe : download rpms (do not install) for efi artifacts"
     yum: 
       name: shim-x64,grub2-efi-x64
@@ -89,7 +95,7 @@
   - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (RHEL 8)"
     copy: 
       src:   "{{ item }}"
-      dest:  "/var/lib/tftpboot"
+      dest:  "/var/lib/tftpboot/efi"
       mode:  "0644"
       owner: root
       group: root
@@ -112,10 +118,10 @@
   - name: "ocp4-workshop : bastion-pxe : deploy grub.cfg in tftpboot directory"
     vars:
       - p_nextsvr:   "{{ f_bastionIP }}"
-      - p_http_port: "{{ g_matchbox_port }}"
+      - p_http_port: "{{ matchbox.port }}"
     template:
       src:   "pxe-grub-config.j2"
-      dest:  "/var/lib/tftpboot/grub.cfg"
+      dest:  "/var/lib/tftpboot/efi/grub.cfg"
       mode:  "0644"
       owner: root
       group: root

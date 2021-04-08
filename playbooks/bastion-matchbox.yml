@@ -346,4 +346,5 @@
       state: enabled
     with_items:
       - "{{ matchbox.port }}/tcp"
+      - "{{ matchbox.port }}/udp"
 

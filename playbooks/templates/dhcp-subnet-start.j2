@@ -39,7 +39,7 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
     } elsif option client-system-arch = 00:07 or option client-system-arch = 00:09 {
 
       log (info, "dhcpd-debug: CLIENT FILENAME: shimx64.efi");
-      filename "shimx64.efi";
+      filename "/efi/shimx64.efi";
 
     } else {
 
