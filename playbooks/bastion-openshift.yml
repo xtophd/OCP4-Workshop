@@ -34,6 +34,10 @@
     with_items:
       - "{{ ocp_assets[g_clusterVersion]['install_tar'] }}"
       - "{{ ocp_assets[g_clusterVersion]['client_tar'] }}"
+    register: openshift_download
+    until: openshift_download is not failed
+    retries: 5
+
 
   - name: "ocp4-workshop : bastion-openshift : unpack ocp software"
     shell:
