@@ -21,6 +21,7 @@
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
       - {src: 'workshop-patch-namespace-helloworld.j2', dest: '/usr/local/bin/workshop-patch-namespace-helloworld.sh'}
+      - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
 
 
 
