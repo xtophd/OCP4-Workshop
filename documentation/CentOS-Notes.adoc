@@ -24,10 +24,16 @@ Assumptions
 
 == Starting with minimal installation
 
+Configure EPEL repo for CentOS7 / RHEL7
+
+----
+# yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+----
+
 Install additional packages
 
 ----
-yum install git
+# yum install -y git ansible
 ----
 
 It should be the default but verify that ansible 2.9 was installed
