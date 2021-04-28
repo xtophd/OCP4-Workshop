@@ -27,7 +27,7 @@ Assumptions
 Install additional packages
 
 ----
-yum install git ansible
+yum install git
 ----
 
 It should be the default but verify that ansible 2.9 was installed
