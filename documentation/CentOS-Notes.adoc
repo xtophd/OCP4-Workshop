@@ -1,6 +1,7 @@
-NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another time.
 
 # Outline of steps for using CentOS 7 as the deployhost.
+
+NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another time.
 
 Assumptions
   * Internet or other complete repos for CentOS 7 are availablie
