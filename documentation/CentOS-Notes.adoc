@@ -19,7 +19,7 @@ NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another 
 Assumptions
 
   * Internet or other complete repos for CentOS 7 are configured and availablie
-
+  * Openshift installation relies on internet accessibility, these playbooks do not address a disconnected installation
 
 
 == Starting with minimal installation
