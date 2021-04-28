@@ -26,6 +26,10 @@ Current testing and documentation is assuming the following:
     * Bastion host will be running RHEL 8.2
     * ALL Openshift nodes will be running Red Hat CoreOS
     
+Other critical assumptions:
+
+    * NO competing DHCP servers in the network if bastion dhcp is enabled
+    
 == Preperations
 
 === Where to Install and Execute the Playbooks
