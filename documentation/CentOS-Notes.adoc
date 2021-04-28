@@ -1,5 +1,18 @@
+:gitrepo: https://github.com/xtophd/OCP-Workshop
+:includedir: _includes
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
-# Outline of steps for using CentOS 7 as the deployhost.
+
+= Outline of steps for using CentOS 7 as the deployhost.
 
 NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another time.
 
@@ -9,12 +22,17 @@ Assumptions
 
 
 
-## Start with minimal installation
+== Starting with minimal installation
 
-## Install additional packages
+Install additional packages
 
+----
+yum install git ansible
+----
 
-  # yum install git ansible
+It should be the default but verify that ansible 2.9 was installed
 
-  It should be the default but verify that ansible 2.9 was installed
+----
+rpm -qa | grep ansible
+----
 
