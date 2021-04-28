@@ -100,11 +100,11 @@ ansible-vault encrypt credentials.yml
 ----
 
 
-=== Retrieve RHEL 8.1
+=== Retrieve RHEL 8.2
 
 WARNING: Please do NOT use RHEL 8.3, there are several issues that affect this setup.  
 
-The utility server currently depends on a RHEL 8.2 images.  
+The utility server is currently tested with the RHEL 8.2 images.  
 
 You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.  Download and store the images in /home/iso.
 
