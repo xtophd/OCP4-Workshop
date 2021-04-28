@@ -11,43 +11,6 @@
 
 
 
-# (04/14/2021): RHEL 8.4 removed cockpit-dashboard, and since it is not a dependency for OCP, I'm removing it
-#               from the package set and reverting a generic set of rpms that work for RHEL 7 and 8.
-#               Remove the following commented lines after QA
-#    ##
-#    ##    Pretty straight forward cockpit setup:
-#    ##
-#    ##      install packages (cockpit-dashboard is not available in RHEL 7)
-#    ##      service config & enablement
-#    ##      firewall config & enablement 
-#    ##
-#
-#
-#
-#    - name: "ocp4-workshop : bastion-cockpit : yum install packages (RHEL 8)"
-#      yum: name=cockpit,cockpit-dashboard,firewalld,sos state=installed
-#      register: result
-#      retries: 10
-#      until: result is succeeded
-#      delay: 5
-#      when:
-#        - ansible_distribution == "RedHat"
-#        - ansible_distribution_major_version == "8"
-#
-#
-#
-#    - name: "ocp4-workshop : bastion-cockpit : yum install packages (RHEL 7)"
-#      yum: name=cockpit,firewalld,sos state=installed
-#      register: result
-#      retries: 10
-#      until: result is succeeded
-#      delay: 5
-#      when:
-#        - ansible_distribution == "RedHat"
-#        - ansible_distribution_major_version == "7"
-
-
-
     - name: "ocp4-workshop : bastion-cockpit : yum install packages"
       yum: name=cockpit,firewalld,sos state=installed
       register: result

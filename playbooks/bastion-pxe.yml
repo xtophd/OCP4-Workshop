@@ -77,22 +77,7 @@
       - "shim-x64"
       - "grub2-efi"
 
-#  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (RHEL 7)"
-#    copy: 
-#      src:   "{{ item }}"
-#      dest:  "/var/lib/tftpboot"
-#      mode:  "0644"
-#      owner: root
-#      group: root
-#      remote_src: yes
-#    with_items:
-#      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/shim.efi"
-#      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/grubx64.efi"
-#    when:
-#      - ansible_distribution == "RedHat"
-#      - ansible_distribution_major_version == "7"
-
-  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (RHEL 8)"
+  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (Red Hat)"
     copy: 
       src:   "{{ item }}"
       dest:  "/var/lib/tftpboot/efi"
@@ -105,10 +90,21 @@
       - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/grubx64.efi"
     when:
       - ansible_distribution == "RedHat"
-      - ansible_distribution_major_version == "8"
 
+  - name: "ocp4-workshop : bastion-pxe : copy efi files to tftpboot (CentOS)"
+    copy: 
+      src:   "{{ item }}"
+      dest:  "/var/lib/tftpboot/efi"
+      mode:  "0644"
+      owner: root
+      group: root
+      remote_src: yes
+    with_items:
+      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/centos/shimx64.efi"
+      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/centos/grubx64.efi"
+    when:
+      - ansible_distribution == "CentOS"
 
-  
   - name: "ocp4-workshop : bastion-pxe : determine bastion pub IP"
     set_fact:
       f_bastionName: "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -134,7 +130,7 @@
 
 
 
-  - name: "ocp4-workshop : bastion-pxe : copy ipxe files to tftpboot (RHEL 8)"
+  - name: "ocp4-workshop : bastion-pxe : copy ipxe files to tftpboot"
     copy: 
       src:   "{{ item }}"
       dest:  "/var/lib/tftpboot"
@@ -145,24 +141,6 @@
     with_items:
       - "/usr/share/ipxe/undionly.kpxe"
       - "/usr/share/ipxe/ipxe.lkrn"
-    when:
-      - ansible_distribution == "RedHat"
-      - ansible_distribution_major_version == "8"
-
-  - name: "ocp4-workshop : bastion-pxe : package installation (RHEL7)"
-    copy: 
-      src:   "{{ item }}"
-      dest:  "/var/lib/tftpboot"
-      mode:  "0644"
-      owner: root
-      group: root
-      remote_src: yes
-    with_items:
-      - "/usr/share/ipxe/undionly.kpxe"
-      - "/usr/share/ipxe/ipxe.lkrn"
-    when:
-      - ansible_distribution == "RedHat"
-      - ansible_distribution_major_version == "7"
 
   - name: "ocp4-workshop : bastion-pxe : restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
