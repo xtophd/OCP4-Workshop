@@ -16,6 +16,11 @@ endif::[]
 [discrete]
 == Overview
 
+== Assumptions
+
+    * Currently using and testing with oVirt 4.3
+    * Currently using and testing with Ansible 2.9
+
 == Preperations
 
 === Where to Install and Execute the Playbooks
@@ -37,13 +42,13 @@ RHEL 7 Repos
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-
 CentOS 7 Repos
 
     - "base/7/x86_64"
     - "extras/7/x86_64"
     - "updates/7/x86_64"
-    - "*epel/x86_64"
+    - EPEL: `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
+    - OVIRT: `yum install -y https://resources.ovirt.org/pub/yum-repo/ovirt-release43.rpm`
 
 RHEL 8 Repos
 
