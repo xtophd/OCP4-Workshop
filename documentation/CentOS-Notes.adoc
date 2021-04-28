@@ -18,7 +18,7 @@ NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another 
 
 Assumptions
 
-  * Internet or other complete repos for CentOS 7 are availablie
+  * Internet or other complete repos for CentOS 7 are configured and availablie
 
 
 
