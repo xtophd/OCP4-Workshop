@@ -29,13 +29,23 @@ For this example, we will assume a dedicated system.
 
 === Register system
 
-However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7 and RHEL 8.2.
+However you get it done, the deplyhost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7, CentOS 7 and RHEL 8.2.
+
+RHEL 7 Repos
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-RHEL 8 also works.
+
+CentOS 7 Repos
+
+    - "base/7/x86_64"
+    - "extras/7/x86_64"
+    - "updates/7/x86_64"
+    - "*epel/x86_64"
+
+RHEL 8 Repos
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
@@ -47,8 +57,10 @@ NOTE: this process requires and is tested with ansible 2.9
 
 Besides an @Base installation and you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
+All steps here are performed as the root user.
+
 ----
-yum -y install git,ansible
+yum -y install git ansible
 ----
 
 === Clone the project
@@ -64,7 +76,7 @@ git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/ovirt/* .
+cp ../sample-configs/ovirt/* .
 ----
 
 === Make Customizations
@@ -88,14 +100,19 @@ ansible-vault encrypt credentials.yml
 ----
 
 
-=== Retrieve RHEL 8.1 DVD
+=== Retrieve RHEL 8.1
 
-The utility server currently depends on a RHEL 8.1 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
+WARNING: Please do NOT use RHEL 8.3, there are several issues that affect this setup.  
+
+The utility server currently depends on a RHEL 8.2 images.  
+
+You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.  Download and store the images in /home/iso.
 
 ----
 mkdir -p /home/iso/
 
-wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
+wget -O /home/iso/rhel-8.2-x86_64-boot.iso '<URL>'
+wget -O /home/iso/rhel-8.2-x86_64-dvd.iso '<URL>'
 ----
 
 === Retrieve Openshift Pull Secret
@@ -120,13 +137,17 @@ The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer h
     - Is there enough memory?
     - Is there enough cpu?
     - Is there enough disk space and is it in the right location?
-    - Is the RHEL ISO downloaded and stored in the right place
+    - Are the RHEL ISOs downloaded and stored in the right place
     - Did you install (upgrade) Ansible 2.9
 
 == Installation
 
 ----
-bash prepare-ovirt.sh all
+cd ~/OCP4-Workshop
+
+xtoph-deploy.sh setup
+
+xtoph-deploy.sh deploy
 ----
 
 == Post Installation
