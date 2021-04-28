@@ -4,7 +4,10 @@
 NOTE: Starting with CentOS 7 now, we'll look at using a CentOS 8 Stream another time.
 
 Assumptions
+
   * Internet or other complete repos for CentOS 7 are availablie
 
-  # Start with minimal installation
+
+
+## Start with minimal installation
 
