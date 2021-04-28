@@ -35,19 +35,27 @@ a dedicated system as the deployhost BUT you could opt to run the deployment fro
 
 For this example, we will assume a dedicated system.
 
-=== Install Base OS
+=== Deployhost Preparation
 
-=== Register system
+==== Install Base OS on Deployhost
 
-However you get it done, the deployhost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7, CentOS 7 and RHEL 8.2.
+Step #1 is naturally to find a home to run the playbooks. Again, we call this the deployhost and can be any of the following operating systems:
 
-RHEL 7 Repos
+  * RHEL 8.2
+  * RHEL 7.9 
+  * CentOS 7
+
+==== Configure Repos / Register System
+
+However you get it done, the deployhost system will need access to additional repos as detailed below:
+
+  * RHEL 7 Repos
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-CentOS 7 Repos
+  * CentOS 7 Repos
 
     - "base/7/x86_64"
     - "extras/7/x86_64"
@@ -55,7 +63,7 @@ CentOS 7 Repos
     - EPEL: `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
     - OVIRT: `yum install -y https://resources.ovirt.org/pub/yum-repo/ovirt-release43.rpm`
 
-RHEL 8 Repos
+  * RHEL 8 Repos
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
