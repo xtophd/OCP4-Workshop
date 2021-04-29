@@ -3,7 +3,7 @@
 - hosts: myBastion
   tasks:
 
-  - name: "WORKSHOP: install workshop-(scripts) in /usr/local/bin"
+  - name: "ocp4-workshop : workshop : install workshop-(scripts) in /usr/local/bin"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -25,7 +25,7 @@
 
 
 
-  - name: "WORKSHOP: install workshop-(yaml's) in /usr/local/etc"
+  - name: "ocp4-workshop : workshop : install workshop-(yaml's) in /usr/local/etc"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -40,7 +40,7 @@
     ## This YAML needs the name of the bastion host
     ##
 
-  - name: "WORKSHOP: deploy workshop-registryPV.yaml in /usr/local/etc"
+  - name: "ocp4-workshop : workshop :deploy workshop-registryPV.yaml in /usr/local/etc"
     vars:
       - p_server: "{{ item }}.{{ g_clusterName }}.{{ g_publicDomain }}"
       - p_path:   "{{ g_nfsExport }}"
@@ -51,4 +51,13 @@
       group: root
       mode: 0744
     loop: "{{ groups['myBastion'] }}"
+
+  - name: "ocp4-workshop : workshop : create workshop-user"
+    user:
+      name: "{{ workshopuser_username }}"
+      password: "{{ workshopuser_password | password_hash('sha512') }}"
+      state: present
+    when:
+      - (workshopuser_username is defined) and (workshopuser_username|length > 0)
+      - (workshopuser_password is defined) and (workshopuser_password|length > 0)
 

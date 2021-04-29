@@ -67,6 +67,7 @@
     user:
       name: "matchbox"
       state: present
+      system: yes
       password: "*"
 
 
