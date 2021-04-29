@@ -26,6 +26,10 @@ Current testing and documentation is assuming the following:
     * Bastion host will be running RHEL 8.2
     * ALL Openshift nodes will be running Red Hat CoreOS
     
+Other critical assumptions:
+
+    * NO competing DHCP servers in the network if bastion dhcp is enabled
+    
 == Preperations
 
 === Where to Install and Execute the Playbooks
@@ -35,19 +39,27 @@ a dedicated system as the deployhost BUT you could opt to run the deployment fro
 
 For this example, we will assume a dedicated system.
 
-=== Install Base OS
+=== Deployhost Preparation
 
-=== Register system
+==== Install Base OS on Deployhost
 
-However you get it done, the deployhost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7, CentOS 7 and RHEL 8.2.
+Step #1 is naturally to find a home to run the playbooks. Again, we call this the deployhost and can be any of the following operating systems:
 
-RHEL 7 Repos
+  * RHEL 8.2
+  * RHEL 7.9 
+  * CentOS 7
+
+==== Configure Repos / Register System
+
+However you get it done, the deployhost system will need access to additional repos as detailed below:
+
+  * RHEL 7 Repos
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-CentOS 7 Repos
+  * CentOS 7 Repos
 
     - "base/7/x86_64"
     - "extras/7/x86_64"
@@ -55,7 +67,7 @@ CentOS 7 Repos
     - EPEL: `yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
     - OVIRT: `yum install -y https://resources.ovirt.org/pub/yum-repo/ovirt-release43.rpm`
 
-RHEL 8 Repos
+  * RHEL 8 Repos
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
@@ -81,7 +93,7 @@ cd ~
 git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 
-==== Copy sample oVirt configurations to './config' directory
+=== Copy sample oVirt configurations to './config' directory
 
 ----
 cd ~/OCP4-Workshop/config
@@ -114,7 +126,7 @@ ansible-vault encrypt credentials.yml
 
 WARNING: Please do NOT use RHEL 8.3, there are several issues that affect this setup.  
 
-The utility server is currently tested with the RHEL 8.2 images.  
+The utility (bastion) server is primarily tested with the RHEL 8.2 images, and secondarily with RHEL 7.9 and CentOS 7.
 
 You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.  Download and store the images in /home/iso.
 
@@ -124,6 +136,18 @@ mkdir -p /home/iso/
 wget -O /home/iso/rhel-8.2-x86_64-boot.iso '<URL>'
 wget -O /home/iso/rhel-8.2-x86_64-dvd.iso '<URL>'
 ----
+
+ISO Images you need to download for selected OS on the bastion:
+
+  * RHEL 8.2
+    * rhel-8.2-x86_64-dvd.iso
+    * rhel-8.2-x86_64-boot.iso
+  * RHEL 7.9
+    * rhel-server-7.8-x86_64-dvd.iso
+    * rhel-server-7.9-x86_64-boot.iso
+  * CentOS 7
+    * CentOS-7-x86_64-DVD-2009.iso
+    * CentOS-7-x86_64-NetInstall-2009.iso
 
 === Retrieve Openshift Pull Secret
 
