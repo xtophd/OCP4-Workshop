@@ -62,16 +62,12 @@
     yum: 
       name:
         - "@^Server with GUI"
-        - "gnome-tweak-tool"
       exclude: 
         - "libvirt*"
-        - "PackageKit"
-        - "gnome-packagekit*"
-        - "yelp*"
         - "gnome-boxes"
         - "gnome-software"
-        - "anaconda-gui"
-        - "initial-setup-gui" 
+        - "PackageKit"
+        - "gnome-packagekit*"
       state: present
     when:
       - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
