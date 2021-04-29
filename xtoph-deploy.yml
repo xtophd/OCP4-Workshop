@@ -134,8 +134,7 @@
 - import_playbook: playbooks/deployer-configure-bastion.yml
   when: xtoph_deploy_cmd == "deploy" or
         xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy" or
-        xtoph_deploy_cmd == "workshop"
+        xtoph_deploy_cmd == "redeploy" 
 
 
 

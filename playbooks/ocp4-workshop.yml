@@ -29,6 +29,9 @@
   - debug: var=workshop_lock
     tags: always
 
+- import_playbook: workshop.yml
+  tags: workshop
+
 - import_playbook: bastion-basics.yml
   tags: basics
 
@@ -104,7 +107,4 @@
   tags: 
     - never
     - unlock
-
-- import_playbook: workshop.yml
-  tags: workshop
 
