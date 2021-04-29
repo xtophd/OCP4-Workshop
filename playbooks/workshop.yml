@@ -52,6 +52,8 @@
       mode: 0744
     loop: "{{ groups['myBastion'] }}"
 
+
+
   - name: "ocp4-workshop : workshop : create workshopuser-username"
     user:
       name: "{{ workshopuser_username }}"
@@ -61,14 +63,43 @@
       - (workshopuser_username is defined) and (workshopuser_username|length > 0)
       - (workshopuser_password is defined) and (workshopuser_password|length > 0)
 
-  - name: "ocp4-workshop : workshop : create workshopuser-username openshift console link"
+
+
+  - name: "ocp4-workshop : workshop : create workshopuser-username Desktop directory"
+    file:
+      path:  "~{{ workshopuser_username }}/Desktop"
+      mode:  "0755"
+      owner: "{{ workshopuser_username }}"
+      group: "{{ workshopuser_username }}"
+      state: directory
+    when:
+      - (workshopuser_username is defined) and (workshopuser_username|length > 0)
+      - (workshopuser_password is defined) and (workshopuser_password|length > 0)
+
+
+
+  - name: "ocp4-workshop : workshop : create workshopuser-username openshift console link (RHEL 7)"
     vars:
-      - t_link:    "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+      - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     template:
       src: "ocp-console-link.j2"
       dest: "~{{ workshopuser_username }}/Desktop/Openshift-Console.desktop"
       owner: "{{ workshopuser_username }}"
     when:
+      - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "7"
       - (workshopuser_username is defined) and (workshopuser_username|length > 0)
       - (workshopuser_password is defined) and (workshopuser_password|length > 0)
+
+
+
+#  - name: "ocp4-workshop : workshop : enable desktop icons (RHEL 8)"
+#    shell:
+#      cmd: "gsettings set org.gnome.shell enabled-extensions \"['desktop-icons@gnome-shell-extensions.gcampax.github.com']\""
+#    become_user: "{{ workshopuser_username }}"  
+#    when:
+#      - ansible_distribution == "RedHat" 
+#      - ansible_distribution_major_version == "8"
+#      - (workshopuser_username is defined) and (workshopuser_username|length > 0)
+#      - (workshopuser_password is defined) and (workshopuser_password|length > 0)
 
