@@ -25,10 +25,16 @@
 
 
 
+  ##
+  ##    RHEL8 is a "Package Group" so we use @
+  ##
+
+
+
   - name: "ocp4-workshop : bastion-desktop-gui : Server-with-GUI packages installation (RHEL 8)"
     yum: 
       name:
-        - "@^Server with GUI"
+        - "@Server with GUI"
         - "gnome-tweaks"
       exclude: 
         - "libvirt*"
@@ -43,6 +49,14 @@
     when:
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "8"
+
+
+
+  ##
+  ##    RHEL7 is an "Environment Group" so we use @^
+  ##
+
+
 
   - name: "ocp4-workshop : bastion-desktop-gui : Server-with-GUI packages installation (RHEL 7)"
     yum: 
