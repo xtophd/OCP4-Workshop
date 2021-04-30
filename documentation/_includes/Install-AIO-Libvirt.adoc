@@ -73,7 +73,7 @@ For RHEL 8.2:
  
 === Install additional packages
 
-NOTE: this process requires and is tested with ansible 2.9.  Anything older that Ansible 2.9 *WILL NOT WORK!!!*
+CRITICAL: this process requires and is tested with ansible 2.9.  Anything older that Ansible 2.9 *WILL NOT WORK!!!*
 
 Besides an @Base installation, you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
