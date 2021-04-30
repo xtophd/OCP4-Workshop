@@ -176,6 +176,8 @@ The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost b
 
 == Post Installation
 
+If you elected to deploy the workshop materials in your configuartion, you will find a number of convenient scripts in /usr/local/bin.
+
 === Extra Info
 
 Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
