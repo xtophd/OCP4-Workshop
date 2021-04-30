@@ -16,11 +16,42 @@ endif::[]
 [discrete]
 == Overview
 
-== Preperations
+If you plan to deploy OCP in a libvirt/kvm based environment, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
 
-=== Install RHEL @Base
+Using this configuration, Openshift will be deployed as virtual machines in a NAT'd internal network.  You can easily change this to a bridged network by using alternate playbooks as the template.
+
+NAT is easy because:
+
+  * dhcp, pxe don't conflict with public network
+  * it's a real cloud, meaning you get ingress through the haproxy loadbalancer.  The outside world cannot reach your cluter nodes directly.
+
+After setup of the libvirt host is complete, the bastion host is built from DVD and post-configured with ansible plays to enable:
+
+  * dns
+  * dhcp
+  * pxe
+  * matchbox
+  * nfs for persistent storage (not supported in PROD, but works for POC)
+  * openshift install/ignition generation
+  * more...
+
+Lastly, these are default configurations on the virt host but can be changed:
+
+  * vm images will go into /home/virt-images
+  * iso images will got into /home/iso
+  * network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
+
+Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
 
+
+== Prerequisites
+
+  * RHEL 7.7+ or 8.0+ base installation
+  * Installed packages: git, ansible 2.9
+  * RHEL 7.9 or 8.2 DVD ISO saved in /home/iso
+  * log on to cloud.redhat.com and get your pull-secret.txt
+  * internet access (either direct or via proxy)
 
 === Register system
 
@@ -42,13 +73,15 @@ For RHEL 8.2:
 
 NOTE: this process requires and is tested with ansible 2.9
 
-Besides an @Base installation and you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
+Besides an @Base installation, you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
 ----
 yum -y install git,ansible
 ----
 
-=== Clone the project
+=== Git Clone Repo
+
+Still on your virt host:
 
 ----
 cd ~
@@ -56,42 +89,41 @@ cd ~
 git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 
-=== Determine Network Configuration
+=== Create the Config Files
+
+==== Determine Network Configuration
 
 In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configure without conflict with what what's about tobe deployed.
 
-So pick one, and start editing your config files.
+In this example, we will use the NAT'd configuration.
 
-==== Copy sample NAT configurations to './config' directory
+==== Copy NAT configurations to './config' directory
 
 Using the NAT'd network config will require the least amount of changes to the config.  You really only need to provide the provide proper info for IP address space.
 
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/libvirt-nat .
+copy ../config-samples/libvirt-nat/* .
 ----
 
-==== Copy sample BRIDGE configurations to './config' directory
-
-If you are planning to use a bridged network, all of the network information is vital.  Although the playbooks will create a bridge using virsh, you must provide accurate IPs and MACs for the planned VMs.  At this time, the playbooks do NOT generate MACs for the systems.
-
-----
-cd ~/OCP4-Workshop/config
-
-copy ../config-samples/libvirt-bridge/* .
-----
-
-=== Make Customizations
+=== Edit the Config Files
 
 NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
 
-The majority of configuration options are documented in the sample config files.
+Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
+in particular you need to:
+
+  * fix hostnames, mac addresses & ip addresses
+  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
+
+The majority of configuration options are documented in the config files themselves.
 
 It is paramount that you update the configs for your environment.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).
 
   + master-config.yml
-  + libvirt-cofig.yml
+  + xtoph-deploy-config.yml
+  + credentials.yml
 
 === Retrieve RHEL 8.2 DVD
 
@@ -145,6 +177,10 @@ The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost b
 Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
 
 Authority files will be on the bastion host in /root/ocp-<clustername>/auth
+
+The workshop document and exercises can be found here:
+
+* link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
 
 [discrete]
 = The End
