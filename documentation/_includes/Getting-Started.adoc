@@ -39,7 +39,7 @@ NOTE: you will need sufficient cpu, memory and disk resources for these installa
 
 NOTE: all of these deployments are a variant of the User Provided Infrastructure (UPI) installation method.
 
-If you have not already done so, select one of the following deployment guides based on your platform to deploy openshift:
+If you have not already done so, select one of the following deployment guides based on your platform to deploy openshift.  Be sure to return to this guide to complete the post installation tasks:
 
   * link:{docsdir}/{includedir}/Install-AIO-Libvirt.adoc[All-in-One using libvirt]
   * link:{docsdir}/{includedir}/Install-oVirt.adoc[oVirt (Red Hat Virtualization)]
@@ -47,17 +47,25 @@ If you have not already done so, select one of the following deployment guides b
 
 == Post Installation Tasks
 
+NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
+
+NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the persistent storage and the image registry: `/usr/local/bin/workshop-config-registry.sh`
+
 === Configure Registry Persistent Storage
+
+----
+oc apply -f /usr/local/etc/workshop-registryPV.yaml
+----
+
+----
+oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"storage":{"pvc":{"claim":""}}}}'
+----
 
 === Configuring a Private Image Registry
 
 On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as Removed. 
 This allows openshift-installer to complete installations on these platform types.  After installation, you must edit the 
 Image Registry Operator configuration to switch the managementState from Removed to Managed.
-
-NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
-
-NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
 
 ==== Prerequisites
 
@@ -73,8 +81,6 @@ $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --pa
 
 ==== Additional Reference Materials
 
-NOTE: You are not required to reference outside documentation for these exercises.  This is informational only.
-
 Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
 
@@ -84,16 +90,12 @@ Also worth mentioning is the upstream Openshift community project (formally call
 
     * link://https://www.okd.io/[OKD]
 
-==
-
-
-----
-workshop-config-registry.sh
-----
 
 === Configure Master Nodes As Non-Schedulable
 
-Since versions 4.2, Openshift sets the spec in the sheduler  `mastersSchedulable: true` which allows for master nodes to function as worker nodes.  To alter this behavior, a simple patch has been provided.
+NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set adjust the scheduler: `/usr/local/bin/workshop-config-scheduler.sh`
+
+Since versions 4.2, Openshift sets a spec in the scheduler  `mastersSchedulable: true` which allows for master nodes to function as worker nodes.  To alter this behavior, a simple adjustment (patch) is needed.
 
     . link:https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-master-schedulable_nodes-nodes-working[Configuring master nodes as schedulable]
 
