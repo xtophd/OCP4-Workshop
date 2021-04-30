@@ -85,7 +85,7 @@ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patc
 ====
 
 
-==== Additional Reference Materials
+===== Additional Reference Materials
 
 Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
 
@@ -99,15 +99,26 @@ Also worth mentioning is the upstream Openshift community project (formally call
 
 === Configure Master Nodes As Non-Schedulable
 
-NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set adjust the scheduler: `/usr/local/bin/workshop-config-scheduler.sh`
 
 Since versions 4.2, Openshift sets a spec in the scheduler  `mastersSchedulable: true` which allows for master nodes to function as worker nodes.  To alter this behavior, a simple adjustment (patch) is needed.
 
-    . link:https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-master-schedulable_nodes-nodes-working[Configuring master nodes as schedulable]
+If you ARE using the default workshop setup, you can simply run the script on the bastion host to set adjust the scheduler.
 
 ----
-workshop-config-scheduler.sh
+/usr/local/bin/workshop-config-scheduler.sh
 ----
+
+[NOTE]
+====
+_Native command(s) to configure image registry_
+----
+oc patch schedulers.config.openshift.io/cluster --type merge -p '{"spec":{"mastersSchedulable": false }}'
+----
+====
+
+===== Additional Reference Materials
+
+    * link:https://docs.openshift.com/container-platform/4.5/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-master-schedulable_nodes-nodes-working[Configuring master nodes as schedulable]
 
 [discrete]
 == End of Unit
