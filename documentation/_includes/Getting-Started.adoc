@@ -33,25 +33,59 @@ Also worth mentioning is the upstream Openshift community project (formally call
 
 With that said, the steps of preparing and installing OCP in this workshop environment have (currently) been condensed into 2 scripts which execute a set of Ansible Playbooks.  Please follow the steps below to begin your installation of the Openshift Container Platform.
 
-== Preparing for Installation
-
-Please select from one of the following deployment architectures and use the link to complete your installation.
+== Installation, Setup and Deployment
 
 NOTE: you will need sufficient cpu, memory and disk resources for these installations.  Minimum is 16 cores, 64GB memory and 500GB of disk.  
 
 NOTE: all of these deployments are a variant of the User Provided Infrastructure (UPI) installation method.
 
-[discrete]
-== Deployment Architectures (supported by these playbooks)
+If you have not already done so, select one of the following deployment guides based on your platform to deploy openshift:
 
-  . link:./Install-AIO-Libvirt.adoc[Deploy OCP as AOI using Libvirt/KVM]
-  . link:./Install-oVirt.adoc[Deploy OCP with Red Hat Virtualization (oVirt)]
-  . *TBD* link:./Install-RHV-Bridge.adoc[Deploying with AWS]
+  * link:{docsdir}/{includedir}/Install-AIO-Libvirt.adoc[All-in-One using libvirt]
+  * link:{docsdir}/{includedir}/Install-oVirt.adoc[oVirt (Red Hat Virtualization)]
+  * link:{docsdir}/{includedir}/Install-Utiliity-Only.adoc[Utility Server Only]
 
-[discrete]
 == Post Installation Tasks
 
 === Configure Registry Persistent Storage
+
+=== Configuring a Private Image Registry
+
+On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as Removed. 
+This allows openshift-installer to complete installations on these platform types.  After installation, you must edit the 
+Image Registry Operator configuration to switch the managementState from Removed to Managed.
+
+NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
+
+NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
+
+=== Prerequisites
+
+    * Cluster administrator permissions.
+    * Provisioned persistent storage for your cluster that supports ReadWriteMany access mode (ex: OCS or NFS)
+    * Must have "100Gi" capacity.
+    
+=== Change Management State
+
+----
+$ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+----
+
+==== Additional Reference Materials
+
+NOTE: You are not required to reference outside documentation for these exercises.  This is informational only.
+
+Red Hat's official documentation can be found publicly with the links provided below.  It is important to note that this workshop guide supports a very narrowly scoped and simple installation of the Openshift Container Platform (OCP).  Please refer to the official Red Hat documentation for complete information on the installation procedures.
+
+
+    * link:https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html[Configuring the registry for bare metal]
+
+Also worth mentioning is the upstream Openshift community project (formally called Origin, now OKD).  There you can find all kinds of additional materials.
+
+    * link://https://www.okd.io/[OKD]
+
+==
+
 
 ----
 workshop-config-registry.sh
