@@ -182,6 +182,8 @@ Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
 
 Authority files will be on the bastion host in /root/ocp-<clustername>/auth
 
+== Continue to the Workshop
+
 The workshop document and exercises can be found here:
 
 * link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
