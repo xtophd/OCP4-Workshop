@@ -49,23 +49,16 @@ If you have not already done so, select one of the following deployment guides b
 
 NOTE: The workshop playbooks can configure a default basic NFS export on the bastion host to use as persistent store for image registry.  This is accomplished with setting `g_useNFS = "True"` in ../config/master-config.yml
 
-NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the persistent storage and the image registry: `/usr/local/bin/workshop-config-registry.sh`
-
-=== Configure Registry Persistent Storage
-
-----
-oc apply -f /usr/local/etc/workshop-registryPV.yaml
-----
-
-----
-oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"storage":{"pvc":{"claim":""}}}}'
-----
-
-=== Configuring a Private Image Registry
+=== Configure Registry with Persistent Storage
 
 On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as Removed. 
 This allows openshift-installer to complete installations on these platform types.  After installation, you must edit the 
 Image Registry Operator configuration to switch the managementState from Removed to Managed.
+
+There are 2 steps to configuring the registry with a persistent store:
+
+  * config the pvc and pv
+  * change the management registry state
 
 ==== Prerequisites
 
@@ -73,11 +66,25 @@ Image Registry Operator configuration to switch the managementState from Removed
     * Provisioned persistent storage for your cluster that supports ReadWriteMany access mode (ex: OCS or NFS)
     * Must have "100Gi" capacity.
     
-==== Change Management State
+If you are using the default workshop setup, you can simply run the script on the bastion host to set up the persistent storage and the image registry.
 
 ----
-$ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+/usr/local/bin/workshop-config-registry.sh
 ----
+
+
+[NOTE]
+====
+_Native command(s) to configure image registry_
+----
+oc apply -f /usr/local/etc/workshop-registryPV.yaml
+
+oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"storage":{"pvc":{"claim":""}}}}'
+
+oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+----
+====
+
 
 ==== Additional Reference Materials
 
