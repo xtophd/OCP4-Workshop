@@ -60,18 +60,17 @@ There are 2 steps to configuring the registry with a persistent store:
   * config the pvc and pv
   * change the management registry state
 
-==== Prerequisites
+Please note the prerequisites
 
-    * Cluster administrator permissions.
-    * Provisioned persistent storage for your cluster that supports ReadWriteMany access mode (ex: OCS or NFS)
-    * Must have "100Gi" capacity.
-    
+  * Cluster administrator permissions.
+  * Provisioned persistent storage for your cluster that supports ReadWriteMany access mode (ex: OCS or NFS)
+  * Must have "100Gi" capacity.
+        
 If you are using the default workshop setup, you can simply run the script on the bastion host to set up the persistent storage and the image registry.
 
 ----
 /usr/local/bin/workshop-config-registry.sh
 ----
-
 
 [NOTE]
 ====
