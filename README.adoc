@@ -33,9 +33,9 @@ At the completion of the install, the bootstrap node has served it's purpose and
 
 Select one of the following deployment guides based on your platform:
 
-  * link:{docsdir}/Install-AIO-Libvirt.adoc[All-in-One using libvirt]
-  * link:{docsdir}/Install-oVirt.adoc[oVirt (Red Hat Virtualization)]
-  * link:{docsdir}/Install-Utiliity-Only.adoc[Utility Server Only]
+  * link:{docsdir}/{includedir}/Install-AIO-Libvirt.adoc[All-in-One using libvirt]
+  * link:{docsdir}/{includedir}/Install-oVirt.adoc[oVirt (Red Hat Virtualization)]
+  * link:{docsdir}/{includedir}/Install-Utiliity-Only.adoc[Utility Server Only]
 
 
 == Workshop Guide and Exercises
