@@ -59,13 +59,13 @@ NOTE: The workshop playbooks can configure a default basic NFS export on the bas
 
 NOTE: If you ARE using the default workshop setup, you can simply run the script on the bastion host to set up the image registry: `/usr/local/bin/workshop-config-registry.sh`
 
-=== Prerequisites
+==== Prerequisites
 
     * Cluster administrator permissions.
     * Provisioned persistent storage for your cluster that supports ReadWriteMany access mode (ex: OCS or NFS)
     * Must have "100Gi" capacity.
     
-=== Change Management State
+==== Change Management State
 
 ----
 $ oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
