@@ -1,6 +1,6 @@
 :gitrepo: https://github.com/xtophd/RHEL7-Workshop
 :docsdir: documentation
-:includedir: _include
+:includedir: _includes
 :doctype: book
 :sectnums:
 :sectnumlevels: 3
