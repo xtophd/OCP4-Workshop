@@ -24,13 +24,15 @@ endif::[]
 
 === Register system
 
-However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7 and RHEL 8.2.
+However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.9 and RHEL 8.2.
+
+For RHEL 7.9
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-RHEL 8.1 also works.
+For RHEL 8.2:
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
@@ -77,7 +79,7 @@ If you are planning to use a bridged network, all of the network information is 
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/libvirt-bridge .
+copy ../config-samples/libvirt-bridge/* .
 ----
 
 === Make Customizations
@@ -91,14 +93,14 @@ It is paramount that you update the configs for your environment.  Please pay cl
   + master-config.yml
   + libvirt-cofig.yml
 
-=== Retrieve RHEL 8.1 DVD
+=== Retrieve RHEL 8.2 DVD
 
 The utility server currently depends on a RHEL 8.1 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
 
 ----
 mkdir -p /home/iso/
 
-wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
+wget -O /home/iso/rhel-8.2-x86_64-dvd.iso '<URL>'
 ----
 
 === Retrieve Openshift Pull Secret
@@ -124,17 +126,25 @@ The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost b
     - Did you install (upgrade) Ansible 2.9
 
 
-== Installation
+== Platform Setup
 
 ----
-bash prepare-kvm-host.sh all
+./xtoph-deploy.sh setup
+----
+
+== OCP Deployment
+
+----
+./xtoph-deploy.sh deploy
 ----
 
 == Post Installation
 
-----
-Coming soon...
-----
+=== Extra Info
+
+Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
+
+Authority files will be on the bastion host in /root/ocp-<clustername>/auth
 
 [discrete]
 = The End
