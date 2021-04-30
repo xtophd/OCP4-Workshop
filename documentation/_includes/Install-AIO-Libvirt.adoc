@@ -95,7 +95,7 @@ git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 
 ==== Determine Network Configuration
 
-In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configure without conflict with what what's about tobe deployed.
+In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configured on the virt host without conflict with what is about to be deployed.
 
 In this example, we will use the NAT'd configuration.
 
@@ -112,6 +112,8 @@ copy ../config-samples/libvirt-nat/* .
 === Edit the Config Files
 
 NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
+
+MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
 
 Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
 in particular you need to:
