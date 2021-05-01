@@ -1,0 +1,54 @@
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "ocp4-workshop : workshop : install workshop-(scripts) in /usr/local/bin"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0744
+    with_items:
+      - {src: 'workshop-check-health.j2',               dest: '/usr/local/bin/workshop-check-health.sh'}
+      - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
+      - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
+      - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
+      - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
+      - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
+      - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
+      - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
+      - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
+      - {src: 'workshop-patch-namespace-helloworld.j2', dest: '/usr/local/bin/workshop-patch-namespace-helloworld.sh'}
+      - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
+
+
+
+  - name: "ocp4-workshop : workshop : install workshop-(yaml's) in /usr/local/etc"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0744
+    with_items:
+      - {src: 'workshop-yaml-identity.j2',      dest: '/usr/local/etc/workshop-identity.yaml'}
+      - {src: 'workshop-users-htpasswd.j2',     dest: '/usr/local/etc/workshop-users.htpasswd'}
+
+    ##
+    ## This YAML needs the name of the bastion host
+    ##
+
+  - name: "ocp4-workshop : workshop :deploy workshop-registryPV.yaml in /usr/local/etc"
+    vars:
+      - p_server: "{{ item }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_path:   "{{ g_nfsExport }}"
+    template:
+      src: "workshop-yaml-registryPV.j2"
+      dest: "/usr/local/etc/workshop-registryPV.yaml"
+      owner: root
+      group: root
+      mode: 0744
+    loop: "{{ groups['myBastion'] }}"
+

@@ -17,7 +17,7 @@
 - hosts: myBastion
   tasks:
 
-  - name: "BASTION-SETUP: determine if deployment is locked '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
+  - name: "ocp4-workshop : main : determine if deployment is locked '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
     stat: path="{{ g_credsDir }}/ocp-workshop-deployment.lock"
     register: deployment_lock
     tags: always
@@ -29,17 +29,29 @@
   - debug: var=workshop_lock
     tags: always
 
-- import_playbook: workshop.yml
-  tags: workshop
-
 - import_playbook: bastion-basics.yml
   tags: basics
 
 - import_playbook: bastion-cockpit.yml
+  when: g_useCOCKPIT|default("True") == "True"
   tags: cockpit
+
+- import_playbook: bastion-workshop.yml
+  when: g_useWORKSHOP_USER|default("True") == "True"
+  tags: workshop
+
+- import_playbook: bastion-workshop-user.yml
+  when: g_useWORKSHOP_USER|default("False") == "True"
+  tags: user
 
 - import_playbook: bastion-desktop-gui.yml
   when: g_useDESKTOP_GUI|default("False")  == "True"
+  tags: gui
+
+- import_playbook: bastion-desktop-chrome.yml
+  when: 
+    - g_useDESKTOP_GUI|default("False")  == "True"
+    - g_useCHROME|default("False")  == "True"
   tags: gui
 
 - import_playbook: bastion-dns.yml

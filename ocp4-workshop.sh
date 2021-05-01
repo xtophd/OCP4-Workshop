@@ -35,7 +35,7 @@ fi
 
 case "$1" in
     "all")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/ocp4-workshop.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10  ./playbooks/ocp4-workshop.yml
         ;;
          
     "basics"      | \
@@ -56,9 +56,10 @@ case "$1" in
     "squid"       | \
     "openshift"   | \
     "workshop"    | \
+    "user"        | \
     "refresh")
 
-        time  ansible-playbook -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
         ;;
 
     "finish")
@@ -70,7 +71,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | finish | lock | unlock | usher ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | usher ]"
         ;;
 
 esac         

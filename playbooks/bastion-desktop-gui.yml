@@ -79,10 +79,11 @@
     yum: name=firefox,dejavu-sans-fonts,dejavu-sans-mono-fonts,dejavu-serif-fonts,dejavu-fonts-common state=installed
 
 
-
   - name: "ocp4-workshop : bastion-desktop-gui : change to graphical mode"
     shell:
       cmd: |
-        systemctl isolate graphical.target
-        systemctl set-default graphical.target
+        if ! systemctl get-default | grep -q graphical ; then
+          systemctl isolate graphical.target
+          systemctl set-default graphical.target
+        fi
 

@@ -1,0 +1,56 @@
+
+---
+- hosts: myBastion
+  tasks:
+
+  - name: "ocp4-workshop : workshop-user : loading credentials"
+    include_vars:
+      file: "../config/credentials.yml"
+    when: workshopuser_username is undefined
+
+
+
+  - name: "ocp4-workshop-user : workshop-user: create workshopuser-username"
+    user:
+      name: "{{ workshopuser_username }}"
+      password: "{{ workshopuser_password | password_hash('sha512') }}"
+      state: present
+
+
+
+  - name: "ocp4-workshop-user : workshop-user : add sudo configuration"
+    vars:
+      t_name: "{{ workshopuser_username }}"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0600
+    with_items:
+      - {src: 'sudoers.j2', dest: '/etc/sudoers.d/ocp4-workshop'}
+      - {src: 'sudoers-student.j2', dest: '/etc/sudoers.d/{{ t_name }}'}
+
+
+
+  - name: "ocp4-workshop-user : workshop-user : create ~Desktop directory"
+    file:
+      path:  "~{{ workshopuser_username }}/Desktop"
+      mode:  "0755"
+      owner: "{{ workshopuser_username }}"
+      group: "{{ workshopuser_username }}"
+      state: directory
+
+
+
+  - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 7)"
+    vars:
+      - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+    template:
+      src: "ocp-console-link.j2"
+      dest: "~{{ workshopuser_username }}/Desktop/Openshift-Console.desktop"
+      owner: "{{ workshopuser_username }}"
+    when:
+      - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "7"
+

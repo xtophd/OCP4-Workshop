@@ -133,8 +133,9 @@ g_useHAPROXY_VIP  = "True"
 g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
-g_useREPOSYNC     = "False"
 g_useDESKTOP_GUI  = "False"
+g_useCHROME       = "False"
+
 
 
 ## Configure DNS wildcard on bastion host

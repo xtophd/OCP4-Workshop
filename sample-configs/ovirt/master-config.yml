@@ -64,6 +64,8 @@ g_useNFS          = "True"
 g_useNTP          = "True"
 g_useDNSwildcard  = "True"
 g_useDESKTOP_GUI  = "False"
+g_useCHROME       = "False"
+
 
 
 g_nfsExport       = "/home/nfs-{{ g_clusterName }}"
