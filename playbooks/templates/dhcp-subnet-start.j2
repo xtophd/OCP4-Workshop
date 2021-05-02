@@ -16,7 +16,7 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
        log (info, concat ("dhcpd-debug: CLIENT MAC: ",      binary-to-ascii (16, 8, ":", substring (hardware, 1, 6))));
     }
 
-{% if g_usePXE == 'True' %}
+{% if g_usePXE == true %}
   class "pxeclients" {	
 
     match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
@@ -49,7 +49,7 @@ subnet {{ p_network }} netmask {{ p_netmask }} {
   }
 {% endif %}
 
-{% if g_useUEFI_HTTP == 'True' %}
+{% if g_useUEFI_HTTP == true %}
   class "httpclients" {	
 
     option vendor-class-identifier "HTTPClient";

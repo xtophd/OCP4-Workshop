@@ -47,10 +47,57 @@
     vars:
       - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     template:
-      src: "ocp-console-link.j2"
-      dest: "~{{ workshopuser_username }}/Desktop/Openshift-Console.desktop"
+      src: "workshopuser-console-link-rhel7.j2"
+      dest: "~{{ workshopuser_username }}/Desktop/OCP-Console.desktop"
       owner: "{{ workshopuser_username }}"
+      group: "{{ workshopuser_username }}"
+      mode: 0744
     when:
       - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
       - ansible_distribution_major_version == "7"
+
+
+
+  - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 8)"
+    vars:
+      - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+    template:
+      src: "workshopuser-console-link-rhel8.j2"
+      dest: "~{{ workshopuser_username }}/Desktop/OCP-Console.desktop"
+      owner: "{{ workshopuser_username }}"
+      group: "{{ workshopuser_username }}"
+      mode: 0744
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "8"
+
+
+  
+  - name: "ocp4-workshop-user : workshop-user : create AccountService directory (RHEL 8)"
+    file:
+      path:  "/var/lib/AccountsService/users/"
+      mode:  "0755"
+      owner: "root"
+      group: "root"
+      state: directory
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "8"
+
+
+
+  - name: "ocp4-workshop-user : workshop-user : select classic gnome desktop for workshopuser (RHEL 8)"
+    template:
+      src: "workshopuser-classic-desktop.j2"
+      dest: "/var/lib/AccountsService/users/{{ workshopuser_username }}"
+      owner: "root"
+      group: "root"
+      mode: 0644
+    when:
+      - ansible_distribution == "RedHat"
+      - ansible_distribution_major_version == "8"
+
+
+
+
 

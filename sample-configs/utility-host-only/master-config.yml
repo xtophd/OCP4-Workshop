@@ -133,17 +133,12 @@ g_useHAPROXY_VIP  = "True"
 g_useMATCHBOX     = "True"
 g_useNFS          = "True"
 g_useNTP          = "True"
+g_useDNSwildcard  = "True"
 g_useDESKTOP_GUI  = "False"
 g_useCHROME       = "False"
+g_useWORKSHOP_USER      = "True"
+g_useWORKSHOP_MATERIALS = "True"
 
-
-
-## Configure DNS wildcard on bastion host
-g_useDNSwildcard = "True"
-
-##
-## ----------------------------------------
-## NFS server variables
 
 g_nfsExport = "/home/nfs-{{ g_clusterName }}"
 

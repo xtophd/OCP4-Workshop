@@ -85,7 +85,7 @@
       - p_netmask:  "{{ g_pubNM }}"
       - p_gateway:  "{{ g_pubGW'] }}"
       - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
-    when: g_publicNet == "True" 
+    when: g_publicNet == true
     template:
       src: "dnsmasq-host-entry.j2"
       dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
@@ -118,7 +118,7 @@
       - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
       - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
     when:
-      - g_useDNS == "True" 
+      - g_useDNS == true
     template:
       src: "dnsmasq-api-entry.j2"
       dest: "/etc/dnsmasq.d/55-api-{{ g_clusterName }}.conf"
@@ -130,7 +130,7 @@
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
-      - g_useDNSwildcard == "True"
+      - g_useDNSwildcard == true
     template:
       src: "dnsmasq-wildcard-entry.j2"
       dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"

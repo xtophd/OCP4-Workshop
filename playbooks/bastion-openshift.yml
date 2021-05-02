@@ -183,7 +183,7 @@
     service: name="{{ item }}" state=restarted enabled=yes daemon_reload=yes
     with_items:
       - "matchbox"
-    when: g_useMATCHBOX == "True"
+    when: g_useMATCHBOX == true
 
   - name: "ocp4-workshop : bastion-openshift : DEBUG"
     debug: msg="YOU CAN NOW DEPLOY THE BOOTSTRAP"

@@ -19,8 +19,8 @@
       - p_addr:    "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
-      - g_useDNS == "True" 
-      - g_publicNet == "True" 
+      - g_useDNS == true
+      - g_publicNet == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
@@ -36,8 +36,8 @@
       - p_name:    "{{ g_wildcardName }}"
       - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
     when:
-      - g_useDNS == "True" 
-      - g_publicNet == "True" 
+      - g_useDNS == true
+      - g_publicNet == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
@@ -50,8 +50,8 @@
       - p_server:  "localhost"
       - p_name:    "quay.io"
     when:
-      - g_useDNS == "True" 
-      - g_publicNet == "True" 
+      - g_useDNS == true
+      - g_publicNet == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }} +short

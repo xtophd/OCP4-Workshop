@@ -33,66 +33,66 @@
   tags: basics
 
 - import_playbook: bastion-cockpit.yml
-  when: g_useCOCKPIT|default("True") == "True"
+  when: g_useCOCKPIT|default(true) == true
   tags: cockpit
 
-- import_playbook: bastion-workshop.yml
-  when: g_useWORKSHOP_USER|default("True") == "True"
+- import_playbook: bastion-desktop-gui.yml
+  when: g_useDESKTOP_GUI|default(false)  == true
+  tags: gui
+
+- import_playbook: bastion-workshop-materials.yml
+  when: g_useWORKSHOP|default(true) == true
   tags: workshop
 
 - import_playbook: bastion-workshop-user.yml
-  when: g_useWORKSHOP_USER|default("False") == "True"
+  when: g_useWORKSHOP_USER|default(false) == true
   tags: user
-
-- import_playbook: bastion-desktop-gui.yml
-  when: g_useDESKTOP_GUI|default("False")  == "True"
-  tags: gui
 
 - import_playbook: bastion-desktop-chrome.yml
   when: 
-    - g_useDESKTOP_GUI|default("False")  == "True"
-    - g_useCHROME|default("False")  == "True"
+    - g_useDESKTOP_GUI|default(false)  == true
+    - g_useCHROME|default(false)  == true
   tags: gui
 
 - import_playbook: bastion-dns.yml
-  when: g_useDNS|default("True") == "True" 
+  when: g_useDNS|default(true) == true 
   tags: dns
 
 - import_playbook: bastion-matchbox.yml
-  when: g_useMATCHBOX|default("True") == "True"
+  when: g_useMATCHBOX|default(true) == true
   tags: matchbox
 
 - import_playbook: bastion-pxe.yml
-  when: g_usePXE|default("True") == "True"
+  when: g_usePXE|default(true) == true
   tags: pxe
 
 - import_playbook: bastion-iso.yml
-  when: g_useISO|default("True") == "True"
+  when: g_useISO|default(true) == true
   tags: iso
 
 - import_playbook: bastion-dhcp.yml
-  when: g_useDHCP|default("True") == "True" 
+  when: g_useDHCP|default(true) == true 
   tags: dhcp
 
 - import_playbook: bastion-haproxy.yml
-  when: g_useHAPROXY|default("True") == "True" 
+  when: g_useHAPROXY|default(true) == true 
   tags: haproxy
 
 - import_playbook: bastion-haproxy-vip.yml
-  when: g_useHAPROXY_VIP|default("True") == "True"
+  when: g_useHAPROXY_VIP|default(true) == true
   tags: haproxy_vip
 
 - import_playbook: bastion-nfs.yml
-  when: g_useNFS|default("True") == "True"
+  when: g_useNFS|default(true) == true
   tags: nfs
 
 - import_playbook: bastion-httpd.yml
-  when: g_useMATCHBOX|default("True") != "True"
+  when: g_useMATCHBOX|default(true) != true
   tags: httpd
 
 ##
 ##    NTP needs to be configured on bastion regardless
-##    of g_useNTP.  If g_useNTP is "True" then
+##    of g_useNTP.  If g_useNTP is true then
 ##    bastion will be enabled as a source for the 
 ##    cluster nodes to reference
 ##
@@ -102,7 +102,7 @@
 
 ## Currently disabled and being developed
 #- import_playbook: bastion-squid.yml
-#  when: g_useSQUID == "True"
+#  when: g_useSQUID == true
 #  tags:
 #    - squid
 
