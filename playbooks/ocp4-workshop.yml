@@ -29,6 +29,9 @@
   - debug: var=workshop_lock
     tags: always
 
+  - debug: var=g_useDESKTOP_GUI
+    tags: always
+
 - import_playbook: bastion-basics.yml
   tags: basics
 
@@ -37,7 +40,13 @@
   tags: cockpit
 
 - import_playbook: bastion-desktop-gui.yml
-  when: g_useDESKTOP_GUI|default(false)  == true
+  when: g_useDESKTOP_GUI|default(false) == true
+  tags: gui
+
+- import_playbook: bastion-desktop-chrome.yml
+  when: 
+    - g_useDESKTOP_GUI|default(false)  == true
+    - g_useCHROME|default(false)  == true
   tags: gui
 
 - import_playbook: bastion-workshop-materials.yml
@@ -47,12 +56,6 @@
 - import_playbook: bastion-workshop-user.yml
   when: g_useWORKSHOP_USER|default(false) == true
   tags: user
-
-- import_playbook: bastion-desktop-chrome.yml
-  when: 
-    - g_useDESKTOP_GUI|default(false)  == true
-    - g_useCHROME|default(false)  == true
-  tags: gui
 
 - import_playbook: bastion-dns.yml
   when: g_useDNS|default(true) == true 
@@ -87,7 +90,7 @@
   tags: nfs
 
 - import_playbook: bastion-httpd.yml
-  when: g_useMATCHBOX|default(true) != true
+  when: g_useMATCHBOX|default(true) == false
   tags: httpd
 
 ##

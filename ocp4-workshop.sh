@@ -7,7 +7,7 @@
 ##   copy it (or them) to ./config.
 ##
 
-myInventory="./config/master-config.yml"
+myInventory="./config/master-config.ini"
 
 ##    
 ##    NOTE: This script is intended to be run
