@@ -1,6 +1,6 @@
 :gitrepo: https://github.com/xtophd/RHEL7-Workshop
 :docsdir: documentation
-:includedir: _include
+:includedir: _includes
 :doctype: book
 :sectnums:
 :sectnumlevels: 3
@@ -29,207 +29,17 @@ Default architecture is 7 systems:
   
 At the completion of the install, the bootstrap node has served it's purpose and can be safely shutdown (or deleted).
 
-== Utility-Host-Only Setup
+== Deployment Guides
 
-Deploying Openshift in an automated way typically depends on traditional network services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
+Select one of the following deployment guides based on your platform:
 
-Alhtough the utility host can be preloaded with RHEL 7 or 8, the majoirty of the testing is done with RHEL 8.
+  * link:{docsdir}/{includedir}/Install-AIO-Libvirt.adoc[All-in-One using libvirt]
+  * link:{docsdir}/{includedir}/Install-oVirt.adoc[oVirt (Red Hat Virtualization)]
+  * link:{docsdir}/{includedir}/Install-Utility-Only.adoc[Utility Server Only]
 
-=== Prequisits
 
-  * RHEL 7.7+ or 8.0+
-  * installed packages: git, ansible 2.9
-  * configured (accessible) repos for base, optional/appstream and ansible
-  * log on to cloud.redhat.com and get your pull-secret.txt
-  * internet access (either direct or via proxy)
+== Workshop Guide and Exercises
 
-=== RHEL 8 @Base Installation
-
-Starting with a simple deployment of RHEL 8
-
-  * Configure Repos (subscription-manager register)
-  * Install ansible-2.9
-  * Install git
-
-----
-yum install git ansible
-----
-
-=== Clone git Repo
-
-As the user 'root', change to you home directory and clone the source.
-
-----
-cd ~
-
-git clone http://github.com/xtophd/OCP4-Workshop
-----
-
-=== Review the Change History
-
-In the git project directory you just cloned, run the following to view the development activity and changes you need to be aware of.
-
-----
-cd ~/OCP4-Workshop
-
-git log --oneline --decorate
-----
-
-=== Create Config Files
-
-You can use a sample-config to start this process.  Please note that in this example we are using a "utility-host-only" template.
-
-----
-cd ./OCP4-Workshop/config
-
-cp ../sample-configs/utility-host-only/master-config.yml .
-----
-
-=== Edit Config Files
-
-WARNING:  You must edit the config files for your deployment.  There is no magic installation.
-
-Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
-in particular you need to:
-
-  * fix hostnames, mac addresses & ip addresses
-  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
-  
-=== Place the Pull Secret
-
-The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
-
-----
-cp <PULL_SECRET> ./OCP4-Workshop/config/pull-secret.txt
-----
-
-=== Run the Playbooks
-
-Now it's time to run the playbooks which configure and enable the services in preparation for the Openshift cluster deployment.
-
-----
-cd ./OCP4-Workshop/
-bash ocp4-workshop.sh all
-----
-
-Once the playbooks have completed without error, you can run the playbooks again with a different flag ('usher') to help guide your manual deployment.
-
-----
-cd ./OCP4-Workshop/
-bash prepare-ocp4-workshop.sh usher
-----
-
-
-=== Boot the Bootstrap
-
-=== Boot the Masters
-
-=== Boot the Workers
-
-=== Extra Info
-
-Artifacts from the build will be in /root/ocp-<clustername>
-
-Authority files will be in /root/ocp-<clustername>/auth
-
-
-== LIBVIRT/KVM Host with OCP as VMs
-
-If you plan to deploy OCP in a libvirt/kvm based environment, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
-
-Using this configuration, Openshift will be deployed as virtual machines in a NAT'd internal network.  You can easily change this to a bridged network by using alternate playbooks as the template.
-
-NAT is easy because:
-
-  * dhcp, pxe don't conflict with public network
-  * it's a real cloud, meaning you get ingress through the haproxy loadbalancer.  The outside world cannot reach your cluter nodes directly.
-
-After setup of the libvirt host is complete, the bastion host is built from DVD and post-configured with ansible plays to enable:
-
-  * dns
-  * dhcp
-  * pxe
-  * matchbox
-  * nfs for persistent storage (not supported in PROD, but works for POC)
-  * openshift install/ignition generation
-  * more...
-
-Lastly, these are default configurations on the virt host but can be changed:
-
-  * vm images will go into /home/virt-images
-  * iso images will got into /home/iso
-  * network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
-
-Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
-
-
-===  Prerequisites
-
-  * RHEL 7.7+ or 8.0+
-  * installed packages: git, ansible 2.9
-  * RHEL 8.2 ISO saved in /home/iso
-  * configured (accessible) repos for base, optional/appstream and ansible
-  * log on to cloud.redhat.com and get your pull-secret.txt
-  * internet access (either direct or via proxy)
-
-=== Preperation (libvirt)
-
-On your virt host:
-
-  * subscription manager register and attach host
-  * mkdir -p /home/iso
-  * mkdir -p /home/virt-images
-  * cd /home/iso
-  * <PLACE RHEL ISO's HERE>: rhel-8.1-x86_64-dvd.iso rhel-8.2-x86_64-dvd.iso
-
-=== Git Clone Repo
-
-Still on virt host:
-
-  * cd /usr/local/src
-  * git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
-
-=== Create the Config Files
-
-WARNING:  You must edit the config files for your deployment.  There is no magic installation.
-
-==== For NAT (private) Network design
-
-  * cd /usr/local/src/OCP4-Workshop/config
-  * cp ../sample-configs/libvirt-nat/* .
-  
-==== For BRIDGE (public) Network design
-  
-  * cd /usr/local/src/OCP4-Workshop/config
-  * cp ../sample-configs/libvirt-bridge/* .
-
-=== Edit the Config Files
-
-Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
-in particular you need to:
-
-  * fix hostnames, mac addresses & ip addresses
-  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
-  
-=== Place the Pull Secret
-
-  * cd /usr/local/src/OCP4-Workshop/config
-  * <PLACE PULL_SECRET HERE>: pull-secret.txt
-
-=== Run the Play Books
-
-NOTE: there are several options available for xtoph-deploy.sh to execute.  Using 'setup+' will perform all tasks to configure the host platform and deploy the systems.  If you have previously successfully completed the setup, you can use 'deploy' to only run the deployment tasks.
-
-Once again, on virt host:
-
-  * cd /usr/local/src/OCP4-Workshop
-  * export HTTPPROXY if needed
-  * ./xtoph-deploy.sh setup+
-
-If all goes well, should just work and about 30 minutes later you have an operational openshift cluster
-
-== MORE COMING SOON...
-
-Master document for this branch can be found here:
+Master document for the workshop & exercises be found here:
 
 * link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]

@@ -16,37 +16,74 @@ endif::[]
 [discrete]
 == Overview
 
-== Preperations
+If you plan to deploy OCP in a libvirt/kvm based environment, you are in luck.  These playbooks can automate everything including the setup of the libvirt/kvm host itself.
 
-=== Install RHEL @Base
+Using this configuration, Openshift will be deployed as virtual machines in a NAT'd internal network.  You can easily change this to a bridged network by using alternate configuration templates.
+
+NAT is easy because:
+
+  * dhcp, pxe don't conflict with public network
+  * it's a real cloud, meaning you get ingress through the haproxy loadbalancer.  The outside world cannot reach your cluster nodes directly.
+
+After setup of the libvirt host is complete, the bastion host is built from a DVD and post-configured with ansible plays to enable:
+
+  * dns
+  * dhcp
+  * pxe
+  * matchbox
+  * nfs for persistent storage (not supported in PROD, but works for POC)
+  * openshift install/ignition generation
+  * more...
+
+Lastly, these are default configurations on the virt host but can be changed in the config files:
+
+  * vm images will go into /home/virt-images
+  * iso images will got into /home/iso
+  * network is NAT by default with 192.168.123.xxx and ocp.example.com as internal domain.
+
+Virt host should be loaded with either RHEL 7.7+ or RHEL 8.1+
 
 
+
+== Prerequisites
+
+  * RHEL 7.7+ or 8.0+ base installation
+  * Installed packages: git, ansible 2.9
+  * RHEL 7.9 or 8.2 DVD ISO saved in /home/iso
+  * log on to cloud.redhat.com and get your pull-secret.txt
+  * internet access (either direct or via proxy)
 
 === Register system
 
-However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.7 and RHEL 8.2.
+However you get it done, the primary virthost system will need access to additional RHEL repos.  At this time, I'm testing on RHEL 7.9 and RHEL 8.2.
+
+For RHEL 7.9
 
     - "rhel-7-server-rpms"
     - "rhel-7-server-optional-rpms"
     - "rhel-7-server-ansible-2.9-rpms"
 
-RHEL 8.1 also works.
+For RHEL 8.2:
 
     - "rhel-8-for-x86_64-baseos-rpms"
     - "rhel-8-for-x86_64-appstream-rpms"
     - "ansible-2.9-for-rhel-8-x86_64-rpms"
  
+ And yes, I test with CentOS 7 from time to time and it should work as both the virthost platform and for the bastion server.
+ 
 === Install additional packages
 
-NOTE: this process requires and is tested with ansible 2.9
+WARNING: this process requires and is tested with ansible 2.9.  Anything older that Ansible 2.9 *WILL NOT WORK!!!*
 
-Besides an @Base installation and you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
+Besides an @Base installation, you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
 ----
 yum -y install git,ansible
 ----
 
-=== Clone the project
+=== Git Clone Repo
+
+Still on your virt host:
 
 ----
 cd ~
@@ -54,51 +91,52 @@ cd ~
 git clone http://github.com/xtophd/OCP4-Workshop --recurse-submodules
 ----
 
-=== Determine Network Configuration
+=== Create the Config Files
 
-In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configure without conflict with what what's about tobe deployed.
+==== Determine Network Configuration
 
-So pick one, and start editing your config files.
+In both cases (NAT or Bridge), the libvirt 'default' network is left alone and unused.  This allows for the continued use of whatever you may already have configured on the virt host without conflict with what is about to be deployed.
 
-==== Copy sample NAT configurations to './config' directory
+In this example, we will use the NAT'd configuration.
+
+==== Copy NAT configurations to './config' directory
 
 Using the NAT'd network config will require the least amount of changes to the config.  You really only need to provide the provide proper info for IP address space.
 
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/libvirt-nat .
+copy ../config-samples/libvirt-nat/* .
 ----
 
-==== Copy sample BRIDGE configurations to './config' directory
-
-If you are planning to use a bridged network, all of the network information is vital.  Although the playbooks will create a bridge using virsh, you must provide accurate IPs and MACs for the planned VMs.  At this time, the playbooks do NOT generate MACs for the systems.
-
-----
-cd ~/OCP4-Workshop/config
-
-copy ../config-samples/libvirt-bridge .
-----
-
-=== Make Customizations
+=== Edit the Config Files
 
 NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
 
-The majority of configuration options are documented in the sample config files.
+MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
+
+Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
+in particular you need to:
+
+  * fix hostnames, mac addresses & ip addresses
+  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
+
+The majority of configuration options are documented in the config files themselves.
 
 It is paramount that you update the configs for your environment.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).
 
   + master-config.yml
-  + libvirt-cofig.yml
+  + xtoph-deploy-config.yml
+  + credentials.yml
 
-=== Retrieve RHEL 8.1 DVD
+=== Retrieve RHEL 8.2 DVD
 
 The utility server currently depends on a RHEL 8.1 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
 
 ----
 mkdir -p /home/iso/
 
-wget -O /home/iso/rhel-8.1-x86_64-dvd.iso '<URL>'
+wget -O /home/iso/rhel-8.2-x86_64-dvd.iso '<URL>'
 ----
 
 === Retrieve Openshift Pull Secret
@@ -124,17 +162,34 @@ The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost b
     - Did you install (upgrade) Ansible 2.9
 
 
-== Installation
+== Platform Setup
 
 ----
-bash prepare-kvm-host.sh all
+./xtoph-deploy.sh setup
+----
+
+== OCP Deployment
+
+----
+./xtoph-deploy.sh deploy
 ----
 
 == Post Installation
 
-----
-Coming soon...
-----
+If you elected to deploy the workshop materials in your configuartion, you will find a number of convenient scripts in /usr/local/bin.
+
+=== Extra Info
+
+Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
+
+Authority files will be on the bastion host in /root/ocp-<clustername>/auth
+
+[discrete]
+== Continue to the Workshop
+
+The workshop document and exercises can be found here:
+
+* link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
 
 [discrete]
 = The End

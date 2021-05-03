@@ -1,0 +1,138 @@
+:gitrepo: https://github.com/xtophd/RHEL7-Workshop
+:docsdir: documentation
+:includedir: _include
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: ./_include/_images/
+
+= Utility-Host-Only Setup
+
+Deploying Openshift in an automated way typically depends on traditional network services like dhcp-server, dns, http, etc...  One method to deploying OCP is to set up a utility server to run these services.  This simplfies configuration and control of the deployment.
+
+Alhtough the utility host can be preloaded with RHEL 7 or 8, at this time the majoirty of the testing is done with RHEL 8.
+
+=== Prequisits
+
+  * RHEL 7.9 or 8.0+
+  * installed packages: git, ansible 2.9
+  * configured (accessible) repos for base, optional/appstream and ansible
+  * log on to cloud.redhat.com and get your pull-secret.txt
+  * internet access (either direct or via proxy)
+
+=== RHEL 8 @Base Installation
+
+Starting with a simple deployment of RHEL 8
+
+  * Configure Repos (subscription-manager register)
+  * Install ansible-2.9
+  * Install git
+
+----
+yum install git ansible
+----
+
+=== Clone git Repo
+
+As the user 'root', change to you home directory and clone the source.
+
+----
+cd ~
+
+git clone http://github.com/xtophd/OCP4-Workshop
+----
+
+=== Review the Change History
+
+In the git project directory you just cloned, run the following to view the development activity and changes you need to be aware of.
+
+----
+cd ~/OCP4-Workshop
+
+git log --oneline --decorate
+----
+
+=== Create Config Files
+
+You can use a sample-config to start this process.  Please note that in this example we are using a "utility-host-only" template.
+
+----
+cd ./OCP4-Workshop/config
+
+cp ../sample-configs/utility-host-only/* .
+----
+
+=== Edit Config Files
+
+WARNING:  You must edit the config files for your deployment.  There is no magic installation.
+
+Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
+in particular you need to:
+
+  * fix hostnames, mac addresses & ip addresses
+  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
+
+Adjust the workshopuser_username and workshopuser_password in the credentials.yml file.
+
+Now, encrypt the file for security
+
+----
+ansible-vault encrypt credentials.yml
+----
+
+
+=== Place the Pull Secret
+
+The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
+
+----
+cp <PULL_SECRET> ./OCP4-Workshop/config/pull-secret.txt
+----
+
+=== Run the Playbooks
+
+Now it's time to run the playbooks which configure and enable the services in preparation for the Openshift cluster deployment.
+
+----
+cd ./OCP4-Workshop/
+bash ocp4-workshop.sh all
+----
+
+Once the playbooks have completed without error, you can run the playbooks again with a different flag ('usher') to help guide your manual deployment.
+
+----
+cd ./OCP4-Workshop/
+bash prepare-ocp4-workshop.sh usher
+----
+
+
+=== Boot the Bootstrap
+
+=== Boot the Masters
+
+=== Boot the Workers
+
+=== Extra Info
+
+Artifacts from the build will be in /root/ocp-<clustername>
+
+Authority files will be in /root/ocp-<clustername>/auth
+
+[discrete]
+= The End
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+
+////
+Always end files with a blank line to avoid include problems.
+////
+
