@@ -7,7 +7,7 @@
 ##   copy it to ./config/
 ##
 
-myInventory="./config/master-config.init"
+myInventory="./config/master-config.ini"
 
 if [[ ! -e "${myInventory}" || ! -e "./xtoph-deploy.yml" ]] ; then
     echo "ERROR: Are you in the right directory? Can not find ${myInventory} | xtoph-deploy.yml" ; exit
