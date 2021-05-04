@@ -11,7 +11,7 @@
 
 
   - name: "ocp4-workshop-group : workshop-user: create workshopuser-username GID"
-    user:
+    group:
       name: "{{ workshopuser_username }}"
       state: present
 
