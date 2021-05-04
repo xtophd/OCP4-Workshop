@@ -151,15 +151,14 @@ ISO Images you need to download for selected OS on the bastion:
 
 === Retrieve Openshift Pull Secret
 
+WARNING: The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer host before you continue.
+
 NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-provisioned
 
-Using a browser, go to redhat.com and copy link to the pull-secret.
-You can either:
+Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
 
-    - download the pull-secret.txt and copy it to the config directory, OR
-    - copy the pull-secret.txt to the paste buffer and edit the pull-secret.txt and paste the contents
-    
-The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer host before you continue.
+    - download the pull-secret.txt and transfer it to the config directory, OR
+    - copy the pull-secret.txt to the paste buffer and then edit pull-secret.txt and paste the contents
 
 === Final Check List
 
