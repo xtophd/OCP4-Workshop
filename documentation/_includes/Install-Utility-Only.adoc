@@ -90,13 +90,14 @@ ansible-vault encrypt credentials.yml
 
 === Place the Pull Secret
 
+WARNING: The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer host before you continue.
+
 NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-provisioned
 
-The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
+Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
 
-----
-cp <PULL_SECRET> ./OCP4-Workshop/config/pull-secret.txt
-----
+    - download the pull-secret.txt and transfer it to the config directory, OR
+    - copy the pull-secret.txt to the paste buffer and then edit pull-secret.txt and paste the contents    
 
 === Run the Playbooks
 
