@@ -27,6 +27,8 @@
   - name: "ocp4-workshop : bastion-httpd : SELinux restore contexts on doc-root"
     shell: restorecon -R /var/www/html 
 
+
+
   # Use service_facts module to collect systemd info
   # We can then sanely test existence of units
   # Here are some sample debugs as well
@@ -35,6 +37,8 @@
   #      var: ansible_facts.services
   #      var: ansible_facts.services["httpd.service"]
 
+
+ 
   - name: "ocp4-workshop : bastion-httpd : populate system service facts"
     service_facts:
 
