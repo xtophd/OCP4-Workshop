@@ -141,13 +141,12 @@ wget -O /home/iso/rhel-8.2-x86_64-dvd.iso '<URL>'
 
 === Retrieve Openshift Pull Secret
 
-Using a browser, go to redhat.com and copy link to the pull-secret
 
-    - https://cloud.redhat.com/openshift/install/metal/user-provisioned
+NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-provisioned
 
 You can either:
 
-    - download the pull-secret.txt and copy it to the virthost system, or
+    - download the pull-secret.txt and copy it to the deployhost system, or
     - "copy" the pull secret and paste it into the file ./config/pull-secret.txt
     
 The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the virthost before you continue.
