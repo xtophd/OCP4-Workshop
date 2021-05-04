@@ -67,8 +67,6 @@
     group:
       name: "matchbox"
       state: present
-      system: yes
-      password: "*"
 
 
     
