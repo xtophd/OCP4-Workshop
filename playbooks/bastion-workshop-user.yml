@@ -14,6 +14,7 @@
     user:
       name: "{{ workshopuser_username }}"
       password: "{{ workshopuser_password | password_hash('sha512') }}"
+      group: "{{ workshopuser_username }}"
       state: present
 
 
