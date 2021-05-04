@@ -64,7 +64,7 @@
 
 
   - name: "ocp4-workshop : bastion-matchbox : create matchbox group"
-    user:
+    group:
       name: "matchbox"
       state: present
       system: yes
