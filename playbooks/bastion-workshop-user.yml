@@ -10,7 +10,14 @@
 
 
 
-  - name: "ocp4-workshop-user : workshop-user: create workshopuser-username"
+  - name: "ocp4-workshop-group : workshop-user: create workshopuser-username GID"
+    user:
+      name: "{{ workshopuser_username }}"
+      state: present
+
+
+
+  - name: "ocp4-workshop-user : workshop-user: create workshopuser-username UID"
     user:
       name: "{{ workshopuser_username }}"
       password: "{{ workshopuser_password | password_hash('sha512') }}"
