@@ -90,6 +90,8 @@ ansible-vault encrypt credentials.yml
 
 === Place the Pull Secret
 
+NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-provisioned
+
 The pull-secret needs to be placed in the config directory.  This is a text file you hopefully downloaded from cloud.redhat.com.
 
 ----
