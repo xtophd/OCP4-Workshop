@@ -15,6 +15,11 @@
 
 
 
+  - name: "ocp4-workshop : bastion-haproxy : populate service facts"
+    service_facts:
+
+
+
   ##
   ##    Install haproxy packages
   ##
@@ -298,6 +303,7 @@
     with_items:
       - "http"
       - "https"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
 
 
   ##
@@ -317,3 +323,6 @@
       - "6443/udp"
       - "22623/tcp"
       - "22623/udp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+
+

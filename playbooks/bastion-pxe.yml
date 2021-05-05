@@ -21,6 +21,8 @@
   tasks:
 
 
+  - name: "ocp4-workshop : bastion-pxe : populate service facts"
+    service_facts:
 
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
@@ -157,3 +159,5 @@
       - "http"
       - "https"
       - "tftp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+

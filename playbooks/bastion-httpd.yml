@@ -11,6 +11,9 @@
 - hosts: myBastion
   tasks:
 
+  - name: "ocp4-workshop : bastion-httpd : populate service facts"
+    service_facts:
+
   - name: "ocp4-workshop : bastion-httpd : install additional packages"
     yum: name=httpd state=installed
 
@@ -63,4 +66,5 @@
       state: enabled
     with_items:
       - "8080/tcp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
 

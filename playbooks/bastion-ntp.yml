@@ -17,6 +17,13 @@
 - hosts: myBastion
   tasks:
 
+
+
+  - name: "ocp4-workshop : bastion-ntp : populate service facts"
+    service_facts:
+
+
+
   - name: "ocp4-workshop : bastion-ntp : package installation"
     yum: name=chrony state=installed
 
@@ -51,4 +58,6 @@
       immediate: yes
       permanent: yes
       state: enabled
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+
 

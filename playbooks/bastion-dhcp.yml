@@ -15,6 +15,9 @@
 - hosts: myBastion
   tasks:
 
+  - name: "ocp4-workshop : bastion-dhcp : populate service facts"
+    service_facts:
+
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
 
@@ -154,3 +157,4 @@
       state: enabled
     with_items:
       - "dhcp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'

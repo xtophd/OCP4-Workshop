@@ -35,6 +35,10 @@
 - import_playbook: bastion-basics.yml
   tags: basics
 
+- import_playbook: bastion-firewalld.yml
+  when: g_useFIREWALLD|default(true) == true
+  tags: firewall
+
 - import_playbook: bastion-cockpit.yml
   when: g_useCOCKPIT|default(true) == true
   tags: cockpit

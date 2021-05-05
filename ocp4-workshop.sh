@@ -42,6 +42,7 @@ case "$1" in
     "cockpit"     | \
     "dns"         | \
     "dhcp"        | \
+    "firewall"    | \
     "gui"         | \
     "pxe"         | \
     "iso"         | \
@@ -71,7 +72,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | usher ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | usher ]"
         ;;
 
 esac         

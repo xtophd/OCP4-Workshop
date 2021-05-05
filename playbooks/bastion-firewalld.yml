@@ -1,0 +1,44 @@
+## Authors:
+##   Christoph Doerbeck
+##
+## Summary:
+##   This playbook installs and enables the firewalld service
+##
+
+---
+- hosts: myBastion
+  tasks:
+
+
+
+  - name: "ocp4-workshop : bastion-firewalld : yum install packages"
+    yum: name=firewalld state=installed
+    register: result
+    retries: 10
+    until: result is succeeded
+    delay: 5
+
+
+
+  - name: "ocp4-workshop : bastion-firewalld : add minimum firewalld service rules before service start"
+    firewalld:
+      service: "{{ item }}"
+      immediate: yes
+      permanent: yes
+      state: enabled
+      offline: yes
+    with_items:
+      - "ssh"
+
+
+
+  - name: "ocp4-workshop : bastion-cockpit : service start"
+    service: 
+      name="firewalld" 
+      state=started 
+      enabled=yes 
+      masked=no 
+      daemon-reload=no
+
+
+
