@@ -11,34 +11,51 @@
 
 
 
-  - name: "ocp4-workshop : bastion-firewalld : yum install packages"
-    yum: name=firewalld state=installed
-    register: result
-    retries: 10
-    until: result is succeeded
-    delay: 5
+  - name: "ocp4-workshop : bastion-firewalld : populate service facts"
+    service_facts:
 
 
 
-  - name: "ocp4-workshop : bastion-firewalld : add minimum firewalld service rules before service start"
-    firewalld:
-      service: "{{ item }}"
-      immediate: yes
-      permanent: yes
-      state: enabled
-      offline: yes
-    with_items:
-      - "ssh"
+  - block:
 
 
 
-  - name: "ocp4-workshop : bastion-cockpit : service start"
-    service: 
-      name="firewalld" 
-      state=started 
-      enabled=yes 
-      masked=no 
-      daemon-reload=no
+        - name: "ocp4-workshop : bastion-firewalld : yum install packages"
+          yum: name=firewalld state=installed
+          register: result
+          retries: 10
+          until: result is succeeded
+          delay: 5
+      
+      
+      
+        ##
+        ##    We have to use a shell command as the ansible module
+        ##    requires the firewalld service to be active.
+        ##
+      
+      
+      
+        - name: "ocp4-workshop : bastion-firewalld : add minimum firewalld service rules before service start"
+          shell:
+            cmd: firewall-offline-cmd --add-service="{{ item }}"
+          with_items:
+            - "ssh"
+      
+      
+      
+        - name: "ocp4-workshop : bastion-cockpit : service start"
+          service: 
+            name="firewalld" 
+            state=started 
+            enabled=yes 
+            masked=no 
+            daemon-reload=no
+
+
+
+    when: ansible_facts['services']['firewalld.service']['state'] != 'running'
+
 
 
 
