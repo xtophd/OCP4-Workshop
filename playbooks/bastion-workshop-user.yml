@@ -55,11 +55,14 @@
     vars:
       - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     template:
-      src: "workshopuser-console-link-rhel7.j2"
-      dest: "~{{ workshopuser_username }}/Desktop/OCP-Console.desktop"
+      src:   "workshopuser-console-link-rhel7.j2"
+      dest:  "~{{ workshopuser_username }}/Desktop/{{ item.dst }}"
       owner: "{{ workshopuser_username }}"
       group: "{{ workshopuser_username }}"
       mode: 0744
+    with_items:
+      - { src: "workshopuser-console-link-rhel7.j2",  dst: "OCP-Console.desktop" }
+      - { src: "workshopuser-terminal-link-rhel7.j2", dst: "Terminal.desktop" }
     when:
       - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
       - ansible_distribution_major_version == "7"
@@ -70,11 +73,14 @@
     vars:
       - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
     template:
-      src: "workshopuser-console-link-rhel8.j2"
-      dest: "~{{ workshopuser_username }}/Desktop/OCP-Console.desktop"
+      src:   "{{ item.src }}"
+      dest:  "~{{ workshopuser_username }}/Desktop/{{ item.dst }}"
       owner: "{{ workshopuser_username }}"
       group: "{{ workshopuser_username }}"
       mode: 0744
+    with_items:
+      - { src: "workshopuser-console-link-rhel8.j2",  dst: "OCP-Console.desktop" }
+      - { src: "workshopuser-terminal-link-rhel8.j2", dst: "Terminal.desktop" }
     when:
       - ansible_distribution == "RedHat"
       - ansible_distribution_major_version == "8"

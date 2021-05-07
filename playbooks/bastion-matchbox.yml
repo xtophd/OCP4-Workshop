@@ -15,6 +15,21 @@
 
 
 
+  # Use service_facts module to collect systemd info
+  # We can then sanely test existence of units
+  # Here are some sample debugs as well
+  #   
+  #  - debug:
+  #      var: ansible_facts.services
+  #      var: ansible_facts.services["httpd.service"]
+
+
+
+  - name: "ocp4-workshop : bastion-matchbox : populate service facts"
+    service_facts:
+
+
+
   - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
     set_fact: 
       f_bastionName:   "{{ hostvars[item]['inventory_hostname_short']}}"
@@ -314,17 +329,6 @@
 
 
 
-  # Use service_facts module to collect systemd info
-  # We can then sanely test existence of units
-  # Here are some sample debugs as well
-  #   
-  #  - debug:
-  #      var: ansible_facts.services
-  #      var: ansible_facts.services["httpd.service"]
-
-  - name: "ocp4-workshop : bastion-matchbox : populate system service facts"
-    service_facts:
-  
   - name: "ocp4-workshop : bastion-matchbox : stop, disable and mask possible conflicting service (httpd)"
     service: name="httpd" state=stopped enabled=no masked=yes daemon_reload=yes
     when: ansible_facts.services["httpd.service"] is defined
@@ -347,4 +351,5 @@
     with_items:
       - "{{ matchbox.port }}/tcp"
       - "{{ matchbox.port }}/udp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
 

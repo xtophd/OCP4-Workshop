@@ -15,6 +15,9 @@
 - hosts: myBastion
   tasks:
 
+  - name: "ocp4-workshop : bastion-dhcp : populate service facts"
+    service_facts:
+
   - debug:
       msg: "Ansible Facts: {{ ansible_distribution }} {{ ansible_distribution_major_version  }}"
 
@@ -62,7 +65,7 @@
       - p_netmask:   "{{ g_pubNM }}"
       - p_broadcast: "{{ g_pubBC }}"
       - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ f_bastionIP }}"
+      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
       - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
       - p_domain:    "{{ g_publicDomain }}"
       - p_cluster:   "{{ g_clusterName }}"
@@ -93,7 +96,8 @@
       - p_netmask:   "{{ g_pubNM }}"
       - p_broadcast: "{{ g_pubBC }}"
       - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ g_pubDNS }}"
+      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
+      - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
       - p_domain:    "{{ g_publicDomain }}"
       - p_cluster:   "{{ g_clusterName }}"
       - p_http_port: "{{ matchbox.port }}"
@@ -121,8 +125,8 @@
       - p_netmask:   "{{ g_pubNM }}"
       - p_broadcast: "{{ g_pubBC }}"
       - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ f_bastionIP }}"
-      - p_ntp:       "{{ g_pubNTP }}"
+      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
+      - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
       - p_domain:    "{{ g_publicDomain }}"
       - p_cluster:   "{{ g_clusterName }}"
     template:
@@ -154,3 +158,4 @@
       state: enabled
     with_items:
       - "dhcp"
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'

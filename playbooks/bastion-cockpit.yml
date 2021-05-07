@@ -11,8 +11,13 @@
 
 
 
+    - name: "ocp4-workshop : bastion-cockpit : populate service facts"
+      service_facts:
+
+
+
     - name: "ocp4-workshop : bastion-cockpit : yum install packages"
-      yum: name=cockpit,firewalld,sos state=installed
+      yum: name=cockpit,sos state=installed
       register: result
       retries: 10
       until: result is succeeded
@@ -35,11 +40,9 @@
 
 
 
-    - name: "ocp4-workshop : bastion-cockpit : firewalld service restart"
-      service: name="firewalld" state=restarted enabled=yes
-
-
-
     - name: "ocp4-workshop : bastion-cockpit : firewall configuration"
       firewalld: service="cockpit" permanent=yes immediate=yes state=enabled
+      when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+
+
 

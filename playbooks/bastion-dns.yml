@@ -8,6 +8,10 @@
 - hosts: myBastion
   tasks:
 
+  - name: "ocp4-workshop : bastion-dns : populate service facts"
+    service_facts:
+
+
 
   ##
   ##    Create a list of hosts in the cluster
@@ -212,6 +216,7 @@
       immediate: yes
       permanent: yes
       state: enabled
+    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
 
   - name: "ocp4-workshop : bastion-dns : create systemd override directory"
     file:
