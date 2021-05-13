@@ -70,7 +70,6 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
-      - p_rdlvm:     "{{ hostvars[item]['h_rhcosRDLVM'] | default ('1') }}"
       - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
     replace:
@@ -78,7 +77,6 @@
       regexp: '(\s+)append(\s+.*)?$'
       replace: >
           \1append\2 rd.neednet=1 
-          rd.lvm={{ p_rdlvm }}
           usb-storage.delay_use={{p_usbdelay}} 
           ip={{ p_network }} 
           "coreos.inst=yes" 
@@ -95,7 +93,6 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
-      - p_rdlvm:     "{{ hostvars[item]['h_rhcosRDLVM'] | default ('1') }}"
       - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
     replace:
@@ -103,7 +100,6 @@
       regexp: '(\s+)linux(\s+.*)?$'
       replace: >
           \1linux\2 rd.neednet=1 
-          rd.lvm={{ p_rdlvm }}
           usb-storage.delay_use={{p_usbdelay}} 
           ip={{ p_network }} 
           "coreos.inst=yes" 
