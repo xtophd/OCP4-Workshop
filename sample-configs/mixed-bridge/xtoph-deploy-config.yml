@@ -99,7 +99,6 @@ xtoph_deploy_config:
         description:     "Primary interface"
 
         enabled:         ""
-        has_internet:    ""
 
         ip:              "{{ h_pubIP        }}"
         basedomain:      "{{ g_publicDomain }}"

@@ -113,7 +113,6 @@ xtoph_deploy_config:
         ovirt_network:   "ovirtmgmt"
 
         enabled:         ""
-        has_internet:    ""
 
         ip:                "{{ h_pubIP        }}"
         basedomain:        "{{ g_publicDomain }}"
