@@ -101,3 +101,22 @@ read -p "Press ENTER to continue [ctrl-c to abort]"
 
 echo "Running CoreOS installer"
 coreos-installer install ${MY_BLKDEV} --ignition-url=http://{{ p_addr}}:{{ p_port }}/ignition?mac=${MY_MAC} --insecure-ignition
+
+
+
+## ----------
+
+
+
+echo ""
+echo "About to reboot"
+
+echo ""
+echo "  !!! DON'T FORGET TO UNMOUNT VIRTUAL MEDIA !!!"
+echo ""
+
+
+echo ""
+read -p "Press ENTER to continue [ctrl-c to abort]"
+
+reboot
