@@ -54,7 +54,8 @@
 
 
 
-    when: ansible_facts['services']['firewalld.service']['state'] != 'running'
+    when: ansible_facts['services']['firewalld.service']['state'] is undefined or
+          ansible_facts['services']['firewalld.service']['state'] != 'running'
 
 
 

@@ -351,5 +351,7 @@
     with_items:
       - "{{ matchbox.port }}/tcp"
       - "{{ matchbox.port }}/udp"
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
 

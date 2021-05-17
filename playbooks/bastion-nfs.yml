@@ -63,6 +63,8 @@
       - 'nfs'
       - 'mountd'
       - 'rpc-bind'
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
 
 

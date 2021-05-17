@@ -203,10 +203,26 @@
 
   ##
   ##    Last couple of items:
-  ##      firewall rules
-  ##      systemd overrides
-  ##      service restart
   ##
+  ##      disable nscd       dnsmasq already performs caching
+  ##      firewall rules     add 'dns' to firewalld if firewalld is enabled
+  ##      systemd overrides  add restart=always to dnsmasq service
+  ##      service restart    
+  ##
+
+
+
+  - name: "ocp4-workshop : bastion-dns : disable nscd socket and service"
+    service:
+      name: "{{ item }}"
+      enabled: no
+      state: stopped
+      masked: no
+    when: 
+      - ansible_facts['services']['nscd.service']['state'] is defined
+    with_items:
+      - 'nscd.socket'
+      - 'nscd.service'
 
 
 
@@ -216,7 +232,12 @@
       immediate: yes
       permanent: yes
       state: enabled
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
+
+
+
 
   - name: "ocp4-workshop : bastion-dns : create systemd override directory"
     file:
@@ -233,5 +254,12 @@
       mode: 644
 
   - name: "ocp4-workshop : bastion-dns : restart service"
-    service: name=dnsmasq state=restarted enabled=yes daemon_reload=yes
+    service: 
+       name: dnsmasq 
+       state: restarted 
+       enabled: yes 
+       daemon_reload: yes
+
+
+
 

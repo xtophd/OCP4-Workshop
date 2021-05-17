@@ -303,7 +303,9 @@
     with_items:
       - "http"
       - "https"
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
 
 
   ##
@@ -323,6 +325,8 @@
       - "6443/udp"
       - "22623/tcp"
       - "22623/udp"
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
 
 

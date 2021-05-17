@@ -66,5 +66,7 @@
       state: enabled
     with_items:
       - "8080/tcp"
-    when: ansible_facts['services']['firewalld.service']['state'] == 'running'
+    when: 
+      - ansible_facts['services']['firewalld.service']['state'] is defined
+      - ansible_facts['services']['firewalld.service']['state'] == 'running'
 
