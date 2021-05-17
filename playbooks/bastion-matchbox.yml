@@ -312,6 +312,18 @@
 
 
 
+  - name: "ocp4-workshop : bastion-matchbox : deploy installhelper script"
+    vars:
+      - p_addr:     "{{ f_bastionIP }}"
+      - p_port:     "{{ matchbox.port }}"
+    template:
+      src:   "matchbox-installhelper.j2"
+      dest:  "/var/lib/matchbox/assets/installhelper.sh"
+      mode:  "644"
+      owner: matchbox
+      group: matchbox
+
+
   - name: "ocp4-workshop : bastion-matchbox : SELinux restore contexts on doc-root"
     shell: restorecon -R /var/lib/matchbox 
 
