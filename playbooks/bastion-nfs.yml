@@ -40,8 +40,8 @@
   - name: 'ocp4-workshop : bastion-nfs : update entry in /etc/exports'
     lineinfile:
       dest: '/etc/exports'
-#      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
-      line: '{{ g_nfsExport }}   *(rw,sync,no_wdelay,root_squash,insecure,fsid=0)'
+      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
+#      line: '{{ g_nfsExport }}   *(rw,sync,no_wdelay,root_squash,insecure,fsid=0)'
       state: present
       owner: root
       group: root
