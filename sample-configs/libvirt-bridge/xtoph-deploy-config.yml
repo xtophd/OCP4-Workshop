@@ -25,6 +25,13 @@ xtoph_deploy_config:
     ip: "192.168.1.28"
 
     ##
+    ##    firewalld_enable:  ensures firewalld is installed
+    ##                       and enabled on the deployhost
+    ##
+
+    firewalld_enable: true
+
+    ##
     ##    dnsmasq_enable: ensures dnsmasq is installed
     ##                    and enabled on the deployhost
     ##
