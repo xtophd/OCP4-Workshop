@@ -32,10 +32,15 @@
 
   - block:
 
+      - name: "ocp4-workshop : bastion-vnc : populate service facts"
+        service_facts:
+
 
 
       - name: "ocp4-workshop : bastion-vnc : additional common packages installation"
         yum: name=tigervnc-server,xorg-x11-fonts-Type1 state=installed
+
+
 
       - name: "ocp4-workshop : bastion-vnc : create users .vnc directory"
         file:
@@ -70,14 +75,12 @@
 
     
 
-      - block:
     
-          - name: "ocp4-workshop : bastion-vnc : adjust vncusers config (RHEL 8)"
-            lineinfile:
-              dest:   "/etc/tigervnc/vncusers"
-              line: ":3={{ workshopuser_username }}"
-              state:  present
-
+      - name: "ocp4-workshop : bastion-vnc : adjust vncusers config (RHEL 8)"
+        lineinfile:
+          dest:   "/etc/tigervnc/vncusers"
+          line: ":3={{ workshopuser_username }}"
+          state:  present
         when:
           - ansible_distribution == "RedHat"
           - ansible_distribution_major_version == "8"
@@ -92,6 +95,8 @@
           group: "{{ workshopuser_username }}"
           state: touch
 
+
+
       - name: "ocp4-workshop : bastion-vnc: set .vnc credentials"
         shell:
           cmd: |
@@ -105,6 +110,8 @@
         service: name="{{ item }}" state=restarted enabled=yes masked=no daemon_reload=yes
         with_items:
           - "vncserver@:3"
+
+
     
       - name: "ocp4-workshop : bastion-vnc : add firewalld ports"
         firewalld:
@@ -114,6 +121,9 @@
           state: enabled
         with_items:
           - "5903/tcp"
+        when:
+          - ansible_facts['services']['firewalld.service']['state'] is defined
+          - ansible_facts['services']['firewalld.service']['state'] == 'running'
 
 
 
