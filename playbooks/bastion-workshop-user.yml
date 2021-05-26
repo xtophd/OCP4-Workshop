@@ -70,7 +70,7 @@
           vars:
             - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
           template:
-            src:   "workshopuser-console-link-rhel7.j2"
+            src:   "{{ item.src }}"
             dest:  "~{{ workshopuser_username }}/Desktop/{{ item.dst }}"
             owner: "{{ workshopuser_username }}"
             group: "{{ workshopuser_username }}"

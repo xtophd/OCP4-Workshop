@@ -58,7 +58,8 @@ case "$1" in
     "openshift"   | \
     "workshop"    | \
     "user"        | \
-    "refresh")
+    "usher"       | \
+    "vnc")
 
         time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
         ;;
@@ -72,7 +73,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | usher ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | user | usher | vnc ]"
         ;;
 
 esac         

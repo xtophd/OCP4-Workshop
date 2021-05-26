@@ -61,6 +61,13 @@
   when: g_useWORKSHOP_USER|default(false) == true
   tags: user
 
+- import_playbook: bastion-vnc.yml
+  when: 
+    - g_useVNCSERVER|default(false) == true
+    - g_useWORKSHOP_USER|default(false) == true
+    - g_useDESKTOP_GUI|default(false) == true
+  tags: vnc
+
 - import_playbook: bastion-dns.yml
   when: g_useDNS|default(true) == true 
   tags: dns
