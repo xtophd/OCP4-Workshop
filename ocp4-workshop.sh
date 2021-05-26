@@ -58,7 +58,6 @@ case "$1" in
     "openshift"   | \
     "workshop"    | \
     "user"        | \
-    "usher"       | \
     "vnc")
 
         time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
