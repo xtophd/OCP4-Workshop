@@ -37,8 +37,27 @@
 
 
 
-      - name: "ocp4-workshop : bastion-vnc : additional common packages installation"
-        yum: name=tigervnc-server,xorg-x11-fonts-Type1 state=installed
+      - name: "ocp4-workshop : bastion-vnc : install vnc packages"
+        yum: name=tigervnc-server state=installed
+
+
+
+      - name: "ocp4-workshop : bastion-vnc : install additional minimum packages"
+        yum: 
+          name:
+            - dejavu-sans-mono-fonts
+            - dejavu-serif-fonts
+            - firefox
+            - gnome-classic-session
+            - gnome-common
+            - gnome-session-xsession
+            - gnome-shell
+            - gnome-shell-extension-common
+            - gnome-terminal
+            - gnome-terminal-nautilus
+            - xorg-x11-server-Xorg
+            - xorg-x11-fonts-Type1 
+          state: installed
 
 
 

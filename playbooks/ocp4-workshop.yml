@@ -65,7 +65,6 @@
   when: 
     - g_useVNCSERVER|default(false) == true
     - g_useWORKSHOP_USER|default(false) == true
-    - g_useDESKTOP_GUI|default(false) == true
   tags: vnc
 
 - import_playbook: bastion-dns.yml
