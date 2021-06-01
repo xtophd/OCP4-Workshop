@@ -19,6 +19,8 @@
 - hosts: myDeployhost
   tasks:
 
+    - debug: msg="**** BEGIN SETUP  ****"
+
     - include_role: 
         name: xtoph_deploy
       vars: 
@@ -26,10 +28,12 @@
       when: xtoph_deploy_cmd == "setup" or
             xtoph_deploy_cmd == "setup+"
 
+    - debug: msg="**** END SETUP  ****"
+
 
 
 ##
-##    Next, execute undeploy activities
+##    
 ##
 ##     NOTE: hosts may (or may not) exist, 
 ##           majority of tasks run as 'delegate_to'

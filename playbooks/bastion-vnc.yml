@@ -52,7 +52,6 @@
             - gnome-common
             - gnome-session-xsession
             - gnome-shell
-            - gnome-shell-extension-common
             - gnome-terminal
             - gnome-terminal-nautilus
             - xorg-x11-server-Xorg
