@@ -37,29 +37,6 @@
 
 
 
-      - name: "ocp4-workshop : bastion-vnc : install vnc packages"
-        yum: name=tigervnc-server state=installed
-
-
-
-      - name: "ocp4-workshop : bastion-vnc : install additional minimum packages"
-        yum: 
-          name:
-            - dejavu-sans-mono-fonts
-            - dejavu-serif-fonts
-            - firefox
-            - gnome-classic-session
-            - gnome-common
-            - gnome-session-xsession
-            - gnome-shell
-            - gnome-terminal
-            - gnome-terminal-nautilus
-            - xorg-x11-server-Xorg
-            - xorg-x11-fonts-Type1 
-          state: installed
-
-
-
       - name: "ocp4-workshop : bastion-vnc : create users .vnc directory"
         file:
           path:  "~{{ workshopuser_username }}/.vnc"
@@ -72,6 +49,23 @@
 
       - block:
     
+          - name: "ocp4-workshop : bastion-vnc : install vnc packages (RHEL 7)"
+            yum: 
+              name:
+                - tigervnc-server
+                - dejavu-sans-mono-fonts
+                - dejavu-serif-fonts
+                - firefox
+                - gnome-classic-session
+                - gnome-common
+                - gnome-session-xsession
+                - gnome-shell
+                - gnome-terminal
+                - gnome-terminal-nautilus
+                - xorg-x11-server-Xorg
+                - xorg-x11-fonts-Type1 
+              state: installed
+
           - name: "ocp4-workshop : bastion-vnc : copy systemd config (RHEL 7)"
             copy:
               src:   "/usr/lib/systemd/system/vncserver@.service"
@@ -92,13 +86,31 @@
           - ansible_distribution_major_version == "7"
 
     
+      - block:
 
+          - name: "ocp4-workshop : bastion-vnc : install vnc packages (RHEL 8)"
+            yum: 
+              name:
+                - tigervnc-server
+                - dejavu-sans-mono-fonts
+                - dejavu-serif-fonts
+                - firefox
+                - gnome-classic-session
+                #- gnome-common
+                - gnome-session-xsession
+                - gnome-shell
+                - gnome-terminal
+                - gnome-terminal-nautilus
+                - xorg-x11-server-Xorg
+                - xorg-x11-fonts-Type1 
+              state: installed
     
-      - name: "ocp4-workshop : bastion-vnc : adjust vncusers config (RHEL 8)"
-        lineinfile:
-          dest:   "/etc/tigervnc/vncusers"
-          line: ":3={{ workshopuser_username }}"
-          state:  present
+          - name: "ocp4-workshop : bastion-vnc : adjust vncusers config (RHEL 8)"
+            lineinfile:
+              dest:   "/etc/tigervnc/vncserver.users"
+              line: ":3={{ workshopuser_username }}"
+              state:  present
+
         when:
           - ansible_distribution == "RedHat"
           - ansible_distribution_major_version == "8"
