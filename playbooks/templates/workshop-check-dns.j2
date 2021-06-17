@@ -1,0 +1,59 @@
+#!/bin/bash
+
+export KUBECONFIG=/root/ocp-ocp4rhv/auth/kubeconfig
+
+##
+## Some solutions used here come from:
+##     https://access.redhat.com/solutions/3804501
+##
+
+
+
+echo "Check nodes: /etc/resolv.conf"
+echo "-----------------------------"
+
+for i in `oc get nodes -o custom-columns="Node Name:.metadata.name" --no-headers` ; do
+    echo "$i: "
+    ssh core@$i grep nameserver /etc/resolv.conf | awk '{print "    " $0}'
+done
+
+echo ""
+
+
+
+echo "Check dns operator health"
+echo "-------------------------"
+
+oc get clusteroperator dns
+
+echo ""
+
+
+
+echo "Check dns pod health"
+echo "--------------------"
+
+oc get all -n openshift-dns-operator  
+
+echo ""
+
+
+
+echo "List dns pod IPs and Node IPs"
+echo "-----------------------------"
+
+oc get pods -n openshift-dns -o custom-columns="Pod Name:.metadata.name,Pod IP:.status.podIP,Node IP:.status.hostIP,Status:.status.phase"
+
+
+
+
+
+echo "Check pod resolver"
+echo "------------------"
+
+export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver`
+for pod in $PODS; do 
+    oc exec $pod -n openshift-apiserver -- cat /etc/resolv.conf 
+done 
+
+echo ""

@@ -13,6 +13,7 @@
     with_items:
       - {src: 'workshop-approve-csr.j2',                dest: '/usr/local/bin/workshop-approve-csr.sh'}
       - {src: 'workshop-check-health.j2',               dest: '/usr/local/bin/workshop-check-health.sh'}
+      - {src: 'workshop-check-dns.j2',                  dest: '/usr/local/bin/workshop-check-dns.sh'}
       - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
       - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
       - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
