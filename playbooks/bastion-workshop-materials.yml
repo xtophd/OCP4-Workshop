@@ -3,6 +3,12 @@
 - hosts: myBastion
   tasks:
 
+  - name: "ocp4-workshop : workshop : determine bastion IP address"
+    set_fact:
+      f_bastion_ip: "{{ hostvars[item]['h_pubIP'] }}"
+    loop: "{{ groups['myBastion'] }}"
+
+
   - name: "ocp4-workshop : workshop : install workshop-(scripts) in /usr/local/bin"
     template:
       src: "{{ item.src }}"

@@ -7,6 +7,15 @@ export KUBECONFIG=/root/ocp-ocp4rhv/auth/kubeconfig
 ##     https://access.redhat.com/solutions/3804501
 ##
 
+echo "Workshop configuration details"
+echo "------------------------------"
+
+echo "Bastion IP address ....................... {{ f_bastion_ip }}"
+echo "Upstream DNS provider (g_pubDNS) ......... {{ g_pubDNS }}"
+echo "Bastion DNS service enabled (g_useDNS) ... {{ g_useDNS }}"
+
+echo ""
+
 
 
 echo "Check nodes: /etc/resolv.conf"
@@ -39,12 +48,22 @@ echo ""
 
 
 
+echo "Check dns service health"
+echo "------------------------"
+
+oc get service -n openshift-dns --no-headers
+
+echo ""
+
+
+
+
 echo "List dns pod IPs and Node IPs"
 echo "-----------------------------"
 
 oc get pods -n openshift-dns -o custom-columns="Pod Name:.metadata.name,Pod IP:.status.podIP,Node IP:.status.hostIP,Status:.status.phase"
 
-
+echo ""
 
 
 
