@@ -10,49 +10,49 @@ export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
 
 echo "Workshop configuration details"
 echo "------------------------------"
-
 echo "Bastion IP address ....................... {{ f_bastion_ip }}"
 echo "Upstream DNS provider (g_pubDNS) ......... {{ g_pubDNS }}"
 echo "Bastion DNS service enabled (g_useDNS) ... {{ g_useDNS }}"
-
 echo ""
 
 
 
 echo "Check nodes: /etc/resolv.conf"
 echo "-----------------------------"
-
 for i in `oc get nodes -o custom-columns="Node Name:.metadata.name" --no-headers` ; do
-    echo "$i: "
-    ssh core@$i grep nameserver /etc/resolv.conf | awk '{print "    " $0}'
+    echo -n "$i: "
+    ssh core@$i grep nameserver /etc/resolv.conf | awk '{ printf "%s ", $2 }'
+    echo ""
 done
-
 echo ""
 
 
 
 echo "Check dns operator health"
 echo "-------------------------"
-
 oc get clusteroperator dns
-
 echo ""
 
 
 
 echo "Check dns pod health"
 echo "--------------------"
-
-oc get all -n openshift-dns-operator  
-
+oc get pod -n openshift-dns-operator  
 echo ""
+
+
+##    Alternative, but too much info for now
+#echo "Check dns pod health"
+#echo "--------------------"
+#oc get all -n openshift-dns-operator  
+
 
 
 
 echo "Check dns service health"
 echo "------------------------"
 
-oc get service -n openshift-dns --no-headers
+oc get service -n openshift-dns
 
 echo ""
 
@@ -68,12 +68,24 @@ echo ""
 
 
 
-echo "Check pod resolver"
-echo "------------------"
+echo "Check pods: /etc/resolv.conf"
+echo "----------------------------"
 
 export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver`
 for pod in $PODS; do 
-    oc exec $pod -n openshift-apiserver -- cat /etc/resolv.conf 
+    #oc exec $pod -n openshift-apiserver -- cat /etc/resolv.conf 
+    echo -n "$pod: "
+    oc exec $pod -n openshift-apiserver -- grep nameserver /etc/resolv.conf 2>/dev/null | awk '{ printf "%s ", $2 }'
+    echo ""
 done 
+
+echo ""
+
+
+
+echo "Display dns operator configmap"
+echo "------------------------------"
+
+oc get configmap/dns-default -n openshift-dns -o yaml
 
 echo ""
