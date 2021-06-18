@@ -41,6 +41,7 @@ oc get pod -n openshift-dns-operator
 echo ""
 
 
+
 ##    Alternative, but too much info for now
 #echo "Check dns pod health"
 #echo "--------------------"
@@ -48,37 +49,28 @@ echo ""
 
 
 
-
 echo "Check dns service health"
 echo "------------------------"
-
 oc get service -n openshift-dns
-
 echo ""
-
 
 
 
 echo "List dns pod IPs and Node IPs"
 echo "-----------------------------"
-
 oc get pods -n openshift-dns -o custom-columns="Pod Name:.metadata.name,Pod IP:.status.podIP,Node IP:.status.hostIP,Status:.status.phase"
-
 echo ""
 
 
 
-echo "Check pods: /etc/resolv.conf"
-echo "----------------------------"
-
+echo "Check pods (apiserver): /etc/resolv.conf"
+echo "----------------------------------------"
 export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver`
 for pod in $PODS; do 
-    #oc exec $pod -n openshift-apiserver -- cat /etc/resolv.conf 
     echo -n "$pod: "
     oc exec $pod -n openshift-apiserver -- grep nameserver /etc/resolv.conf 2>/dev/null | awk '{ printf "%s ", $2 }'
     echo ""
 done 
-
 echo ""
 
 
