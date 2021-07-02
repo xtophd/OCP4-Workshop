@@ -1,0 +1,55 @@
+##
+## CUSTOM PLATFORM PROFILES
+##
+
+xtoph_config_platform:
+
+  ovirt:
+
+    platform_profile:
+
+      platform: "ovirt"
+  
+      cluster_name:  "Default"
+      engine_cafile: "/etc/pki/ovirt-engine/ca.pem"
+      insecure:      true
+  
+      api:
+
+        ip: "192.168.1.28"
+        fqdn: "rhvm.lab.linuxsoup.com"
+  
+        note: "api credentials are stored in the encrypted credentials.yml"
+
+      vm:
+        name: "{{ g_clusterName }}-{{ inventory_hostname }}"
+  
+      kickstart:
+        description: "hints to where installers can find devices"
+        netdev:  "{{ h_netDEV | default('ens3') }}"
+        blkdev:  "{{ h_blkDEV | default('sda') }}"
+
+      network:
+        default:
+          description: "default ovirt network parameters"
+          model: "virtio"
+          network_name: "ovirtmgmt"
+
+          ip:                "{{ h_pubIP        }}"
+          basedomain:        "{{ g_publicDomain }}"
+          network:           "{{ g_pubNET       }}"
+          netmask:           "{{ g_pubNM        }}"
+          broadcast:         "{{ g_pubBC        }}"
+          prefix:            "{{ g_pubPREFIX    }}"
+          gateway:           "{{ g_pubGW        }}"
+          nameserver:        "{{ g_pubDNS       }}"
+          timeserver:        "{{ g_pubNTP       }}"
+          fqdn:              "{{ g_pubFQDN      }}"
+          mac:               "{{ g_pubMAC | default('') }}"
+  
+      storage:
+        default:
+          description: "default ovirt storage parameters"
+          bus:         "virtio_scsi"
+          sparse:      "true"
+          domain_name: "rhv-data-hiperf"
