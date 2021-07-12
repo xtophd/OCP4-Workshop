@@ -29,7 +29,7 @@ xtoph_config_platform:
         default:
   
           description:     "default libvirt network parameters"
-          network_name:    "virbr_{{ g_clusterName }}"
+          network_name:    "br0"
           fwd_type:        "bridge"
           bridge_netdev:   "enp5s0"
 
