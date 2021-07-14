@@ -64,12 +64,26 @@
       mode="0755"
       state=directory
 
-  - name: "ocp4-workshop : bastion-pxe : download rpms (do not install) for efi artifacts"
-    yum: 
-      name: shim-x64,grub2-efi-x64
-      state: latest
-      download_dir: "/var/tmp/{{ g_clusterName }}/efi"
-      download_only: yes 
+
+  # 2021-07-14: Replaced with shell command below
+  #- name: "ocp4-workshop : bastion-pxe : download rpms (do not install) for efi artifacts"
+  #  yum: 
+  #    name: shim-x64,grub2-efi-x64
+  #    state: latest
+  #    download_dir: "/var/tmp/{{ g_clusterName }}/efi"
+  #    download_only: yes 
+
+  #    NOTE:  RHEL 8.4 installs shim & grub2 packages as part of @BASE
+  #           causing ansible yum module to fail downloading the rpms on a 
+  #           clean build, reverted to using shell
+
+  - name: "common-dhcp-setup : download rpms (do not install) for efi artifacts"
+    shell:
+      cmd: |
+        cd /var/tmp/{{ g_clusterName }}/efi;  yumdownloader {{ item }}
+    with_items:
+      - "shim-x64"
+      - "grub2-efi-x64"
 
   - name: "ocp4-workshop : bastion-pxe : unpack contents of rpms for efi artifacts"
     shell:
