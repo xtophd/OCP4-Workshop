@@ -55,7 +55,7 @@ xtoph_config:
     ##                    will ADD the specifed port.
     ##
 
-    cockpit_enable:  true
+    cockpit_enable:  false
     cockpit_port:    ""
 
     ##
