@@ -3,13 +3,14 @@
 - hosts: myBastion
   tasks:
 
-  - name: "ocp4-workshop : workshop : determine bastion IP address"
+  - name: "ocp4-workshop : workshop-materials : determine bastion IP address"
     set_fact:
       f_bastion_ip: "{{ hostvars[item]['h_pubIP'] }}"
     loop: "{{ groups['myBastion'] }}"
 
 
-  - name: "ocp4-workshop : workshop : install workshop-(scripts) in /usr/local/bin"
+
+  - name: "ocp4-workshop : workshop-materials : install workshop-(scripts) in /usr/local/bin"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -23,7 +24,6 @@
       - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
       - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
       - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
-      - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
       - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
@@ -33,7 +33,7 @@
 
 
 
-  - name: "ocp4-workshop : workshop : install workshop-(yaml's) in /usr/local/etc"
+  - name: "ocp4-workshop : workshop-materials : install workshop-(yaml's) in /usr/local/etc"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -48,7 +48,7 @@
     ## This YAML needs the name of the bastion host
     ##
 
-  - name: "ocp4-workshop : workshop :deploy workshop-registryPV.yaml in /usr/local/etc"
+  - name: "ocp4-workshop : workshop-materials :deploy workshop-registryPV.yaml in /usr/local/etc"
     vars:
       - p_server: "{{ item }}.{{ workshop_vars.clustername }}.{{ workshop_vars.network_nameserver }}"
       - p_path:   "{{ workshop_extras.nfs_export }}"

@@ -25,14 +25,14 @@
 
   - block:
 
-        - name: "ocp4-workshop-group : workshop-user: create workshopuser-username GID"
+        - name: "ocp4-workshop : workshop-user: create workshopuser-username GID"
           group:
             name: "{{ workshopuser_username }}"
             state: present
       
       
       
-        - name: "ocp4-workshop-user : workshop-user: create workshopuser-username UID"
+        - name: "ocp4-workshop : workshop-user: create workshopuser-username UID"
           user:
             name: "{{ workshopuser_username }}"
             password: "{{ workshopuser_password | password_hash('sha512') }}"
@@ -41,7 +41,7 @@
       
       
       
-        - name: "ocp4-workshop-user : workshop-user : add sudo configuration"
+        - name: "ocp4-workshop : workshop-user : add sudo configuration"
           vars:
             t_name: "{{ workshopuser_username }}"
           template:
@@ -53,10 +53,22 @@
           with_items:
             - {src: 'sudoers.j2', dest: '/etc/sudoers.d/ocp4-workshop'}
             - {src: 'sudoers-student.j2', dest: '/etc/sudoers.d/{{ t_name }}'}
+     
+ 
+
+        - name: "ocp4-workshop : workshop-user : install workshopuser related scripts in /usr/local/bin"
+          template:
+            src: "{{ item.src }}"
+            dest: "{{ item.dest }}"
+            owner: root
+            group: root
+            mode: 0744
+          with_items:
+            - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
+
       
       
-      
-        - name: "ocp4-workshop-user : workshop-user : create ~Desktop directory"
+        - name: "ocp4-workshop : workshop-user : create ~Desktop directory"
           file:
             path:  "~{{ workshopuser_username }}/Desktop"
             mode:  "0755"
@@ -66,7 +78,7 @@
       
       
       
-        - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 7)"
+        - name: "ocp4-workshop : workshop-user : create friendly openshift console shortcut on desktop (RHEL 7)"
           vars:
             - t_link: "console-openshift-console.{{ workshop_extras.ocp_wfqdn }}"
           template:
@@ -84,7 +96,7 @@
       
       
       
-        - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 8)"
+        - name: "ocp4-workshop : workshop-user : create friendly openshift console shortcut on desktop (RHEL 8)"
           vars:
             - t_link: "console-openshift-console.{{ workshop_extras.ocp_wfqdn }}"
           template:
@@ -102,7 +114,7 @@
       
       
         
-        - name: "ocp4-workshop-user : workshop-user : create AccountService directory (RHEL 8)"
+        - name: "ocp4-workshop : workshop-user : create AccountService directory (RHEL 8)"
           file:
             path:  "/var/lib/AccountsService/users/"
             mode:  "0755"
@@ -113,7 +125,7 @@
             - ansible_distribution == "RedHat"
             - ansible_distribution_major_version == "8"
       
-        - name: "ocp4-workshop-user : workshop-user : select classic gnome desktop for workshopuser (RHEL 8)"
+        - name: "ocp4-workshop : workshop-user : select classic gnome desktop for workshopuser (RHEL 8)"
           template:
             src: "workshopuser-classic-desktop.j2"
             dest: "/var/lib/AccountsService/users/{{ workshopuser_username }}"

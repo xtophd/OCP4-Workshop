@@ -63,11 +63,11 @@
   - name: "ocp4-workshop : bastion-openshift-finish : Cleanup ssh keys in knownhosts"
     vars:
       - p_item:      "{{ item }}"
-      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_name:      "{{ hostvars[item]['inventory_hostname_short'] }}"
+      - p_fqdn:      "{{ hostvars[item]['inventory_hostname_short'] }}.{{ workshop_extras.network_fqdn }}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ workshop_vars.network_basedomain }}"
       - p_cluster:   "{{ workshop_vars.clustername }}"
-      - p_fqdn:      "{{ workshop_extras.network_fqdn }}"
     shell:
       cmd: |
         ssh-keygen -R "{{ p_item }}" | true
@@ -75,7 +75,10 @@
         ssh-keygen -R "{{ p_fqdn }}" | true
         ssh-keygen -R "{{ p_addr }}" | true
     ignore_errors: yes
-    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+    with_items: 
+      - "{{ groups['myBootstrap'] }}"
+      - "{{ groups['myMasters']   }}"
+      - "{{ groups['myWorkers']   }}"
 
 
 
@@ -83,16 +86,19 @@
     vars:
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_fqdn:      "{{ hostvars[item]['inventory_hostname_short'] }}.{{ workshop_extras.network_fqdn }}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_domain:    "{{ workshop_vars.network_basedomain }}"
       - p_cluster:   "{{ workshop_vars.clustername }}"
-      - p_fqdn:      "{{ workshop_extras.network_fqdn }}"
     shell:
       cmd: |
         ssh-keyscan "{{ p_name }}" >> /root/.ssh/known_hosts
         ssh-keyscan "{{ p_fqdn }}" >> /root/.ssh/known_hosts
     ignore_errors: yes
-    loop: "{{ groups['myWorkers'] + groups['myMasters'] + groups['myBootstrap'] }}"
+    with_items: 
+      - "{{ groups['myBootstrap'] }}"
+      - "{{ groups['myMasters']   }}"
+      - "{{ groups['myWorkers']   }}"
 
 
 

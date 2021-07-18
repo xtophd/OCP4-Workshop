@@ -40,16 +40,6 @@
   when: workshop_vars.bastion.cockpit|default(false) == true
   tags: cockpit
 
-- import_playbook: bastion-desktop-gui.yml
-  when: workshop_vars.bastion.desktop_gui|default(false) == true
-  tags: gui
-
-- import_playbook: bastion-desktop-chrome.yml
-  when: 
-    - workshop_vars.bastion.desktop_chrome|default(false)  == true
-    - workshop_vars.bastion.desktop_gui == true or workshop_vars.bastion.desktop_vnc == true
-  tags: gui
-
 - import_playbook: bastion-workshop-materials.yml
   when: workshop_vars.bastion.workshop_materials|default(true) == true
   tags: workshop
@@ -58,11 +48,21 @@
   when: workshop_vars.bastion.workshop_user|default(false) == true
   tags: user
 
+- import_playbook: bastion-desktop-gui.yml
+  when: workshop_vars.bastion.desktop_gui|default(false) == true
+  tags: gui
+
 - import_playbook: bastion-vnc.yml
   when: 
     - workshop_vars.bastion.desktop_vnc|default(false) == true
     - workshop_vars.bastion.workshop_user|default(false) == true
   tags: vnc
+
+- import_playbook: bastion-desktop-chrome.yml
+  when: 
+    - workshop_vars.bastion.desktop_chrome|default(false)  == true
+    - workshop_vars.bastion.desktop_gui == true or workshop_vars.bastion.desktop_vnc == true
+  tags: gui
 
 - import_playbook: bastion-dns.yml
   when: workshop_vars.bastion.dns|default(true) == true 
