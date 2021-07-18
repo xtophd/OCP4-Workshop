@@ -1,12 +1,12 @@
 #!/bin/bash
 
-export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
 
 echo ""
-echo "Set password for {{ g_clusterUser }}"
+echo "Set password for {{ workshop_vars.ocp_user }}"
 echo "---------------------------"
 
-htpasswd /usr/local/etc/workshop-users.htpasswd {{ g_clusterUser }}
+htpasswd /usr/local/etc/workshop-users.htpasswd {{ workshop_vars.ocp_user }}
 
 echo ""
 echo "Creating/Updating openshift htpass-secret"
@@ -26,6 +26,6 @@ echo "----------------------------------------"
 oc apply -f /usr/local/etc/workshop-identity.yaml
 
 echo ""
-echo "Applying cluster-admin role to {{g_clusterUser }}"
+echo "Applying cluster-admin role to {{ workshop_vars.ocp_user }}"
 echo "-------------------------------------------------"
-oc adm policy add-cluster-role-to-user cluster-admin cloud-user
+oc adm policy add-cluster-role-to-user cluster-admin {{ workshop_vars.ocp_user }} 

@@ -26,22 +26,22 @@
   - name: "ocp4-workshop : bastion-iso : package installation"
     yum: name=genisoimage,xorriso state=installed
 
-  - name: "ocp4-workshop : bastion-iso : clean-up iso directory /var/tmp/{{ g_clusterName }}/iso"
+  - name: "ocp4-workshop : bastion-iso : clean-up iso directory /var/tmp/{{ workshop_vars.clustername }}/iso"
     shell:
       cmd: |
-        if [[ -d "/var/tmp/{{ g_clusterName }}/iso" ]] ; then rm -rf /var/tmp/{{ g_clusterName }}/iso ; fi
+        if [[ -d "/var/tmp/{{ workshop_vars.clustername }}/iso" ]] ; then rm -rf /var/tmp/{{ workshop_vars.clustername }}/iso ; fi
 
   - name: "ocp4-workshop : bastion-iso : create fresh iso work directory for each host"
     file: 
-      path="/var/tmp/{{ g_clusterName }}/iso/{{ item }}" 
+      path="/var/tmp/{{ workshop_vars.clustername }}/iso/{{ item }}" 
       mode="0755" 
       state=directory
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}" 
 
   - name: "ocp4-workshop : bastion-iso : clone ISO source to temp workspace"
     vars:
-      t_isofile:  "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
-      t_destdir: "/var/tmp/{{ g_clusterName }}/iso/{{ item }}"
+      t_isofile:  "/var/lib/matchbox/assets/{{ rhcos_assets[workshop_vars.ocp_version]['iso'] }}"
+      t_destdir: "/var/tmp/{{ workshop_vars.clustername }}/iso/{{ item }}"
     shell:
       cmd: |
         xorriso -osirrox on -indev "{{ t_isofile }}" -extract / "{{ t_destdir }}"
@@ -70,10 +70,10 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
-      - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
+      - p_bios_img:  "{{ rhcos_assets[workshop_vars.ocp_version]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
     replace:
-      path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/isolinux/isolinux.cfg
+      path: /var/tmp/{{ workshop_vars.clustername }}/iso/{{ p_name }}/isolinux/isolinux.cfg
       regexp: '(\s+)append(\s+.*)?$'
       replace: >
           \1append\2 rd.neednet=1 
@@ -93,10 +93,10 @@
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
-      - p_bios_img:  "{{ rhcos_assets[g_clusterVersion]['bios'] }}"
+      - p_bios_img:  "{{ rhcos_assets[workshop_vars.ocp_version]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
     replace:
-      path: /var/tmp/{{ g_clusterName }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
+      path: /var/tmp/{{ workshop_vars.clustername }}/iso/{{ p_name }}/EFI/redhat/grub.cfg
       regexp: '(\s+)linux(\s+.*)?$'
       replace: >
           \1linux\2 rd.neednet=1 
@@ -110,7 +110,7 @@
 
   - name: "ocp4-workshop : bastion-iso : preserve ISO volume id"
     vars:
-      t_isofile: "/var/lib/matchbox/assets/{{ rhcos_assets[g_clusterVersion]['iso'] }}"
+      t_isofile: "/var/lib/matchbox/assets/{{ rhcos_assets[workshop_vars.ocp_version]['iso'] }}"
     shell:
       cmd: |
         isoinfo -d -i {{ t_isofile }} | grep 'Volume id:' | sed -e 's/Volume id: //g'
@@ -124,7 +124,7 @@
       - p_volumeid:  "{{ isoinfo.stdout }}"
     shell:
       cmd: |
-        cd /var/tmp/{{ g_clusterName }}/iso/{{ item }}
+        cd /var/tmp/{{ workshop_vars.clustername }}/iso/{{ item }}
         genisoimage -U -r -v -T -J -joliet-long        \
                     -V      "{{ p_volumeid }}"         \
                     -volset "{{ p_volumeid }}"         \
@@ -137,7 +137,7 @@
                     -eltorito-alt-boot                 \
                     -e images/efiboot.img              \
                     -no-emul-boot                      \
-                    -o /var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso . 
+                    -o /var/lib/matchbox/assets/{{ workshop_vars.clustername }}-{{ p_name }}.iso . 
 
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
@@ -145,15 +145,15 @@
     vars:
       - p_name:      "{{ hostvars[item]['inventory_hostname_short'] }}"
     file: 
-      path: /var/lib/matchbox/assets/{{ g_clusterName }}-{{ p_name }}.iso
+      path: /var/lib/matchbox/assets/{{ workshop_vars.clustername }}-{{ p_name }}.iso
       mode: "0644" 
       owner: matchbox
       group: matchbox
       state: file 
     loop: "{{ groups['myBootstrap'] + groups['myMasters']  + groups['myWorkers'] }}"
 
-#  - name: "ocp4-workshop : bastion-iso : clean-up iso directory /var/tmp/{{ g_clusterName }}/iso"
+#  - name: "ocp4-workshop : bastion-iso : clean-up iso directory /var/tmp/{{ workshop_vars.clustername }}/iso"
 #    shell:
 #      cmd: |
-#        if [[ -d "/var/tmp/{{ g_clusterName }}/iso" ]] ; then rm -rf /var/tmp/{{ g_clusterName }}/iso ; fi
+#        if [[ -d "/var/tmp/{{ workshop_vars.clustername }}/iso" ]] ; then rm -rf /var/tmp/{{ workshop_vars.clustername }}/iso ; fi
 

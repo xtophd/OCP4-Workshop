@@ -7,7 +7,7 @@
 ##   copy it (or them) to ./config.
 ##
 
-myInventory="./config/master-config.ini"
+myInventory="./config/master-config.yml"
 
 ##    
 ##    NOTE: This script is intended to be run
@@ -51,7 +51,6 @@ case "$1" in
     "nfs"         | \
     "ntp"         | \
     "haproxy"     | \
-    "haproxy_vip" | \
     "matchbox"    | \
     "httpd"       | \
     "squid"       | \
@@ -72,7 +71,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | haproxy_vip | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | user | usher | vnc ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | user | usher | vnc ]"
         ;;
 
 esac         

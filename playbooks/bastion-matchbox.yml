@@ -33,24 +33,24 @@
   - name: "ocp4-workshop : bastion-matchbox : determine bastion pub IP"
     set_fact: 
       f_bastionName:   "{{ hostvars[item]['inventory_hostname_short']}}"
+      f_bastionFQDN:   "{{ hostvars[item]['inventory_hostname_short'] }}.{{ workshop_extras.network_fqdn }}"
       f_bastionIP:     "{{ hostvars[item]['h_pubIP'] }}"
-      f_bastionFQDN:   "{{ hostvars[item]['h_pubIP'] }}.{{ g_pubFQDN }}"
     loop: "{{ groups['myBastion'] }}"
 
 
 
   - name: "ocp4-workshop : bastion-matchbox : stat software"
     stat: 
-      path: "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
+      path: "/usr/local/src/{{ matchbox_assets[workshop_vars.ocp_version]['filename'] }}"
     register: test_matchbox_src
 
   - name: "ocp4-workshop : bastion-matchbox : software download"
     environment:
-      http_proxy:  "{{ g_http_proxy }}"
-      https_proxy: "{{ g_https_proxy }}"
+      http_proxy:  "{{ workshop_vars.http_proxy }}"
+      https_proxy: "{{ workshop_vars.https_proxy }}"
     get_url:
-      url:  "{{ matchbox_assets[g_clusterVersion]['url'] }}/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
-      dest: "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['filename'] }}"
+      url:  "{{ matchbox_assets[workshop_vars.ocp_version]['url'] }}/{{ matchbox_assets[workshop_vars.ocp_version]['filename'] }}"
+      dest: "/usr/local/src/{{ matchbox_assets[workshop_vars.ocp_version]['filename'] }}"
       mode: "0644"
       timeout: 60
     when: test_matchbox_src.stat.exists == false
@@ -64,7 +64,7 @@
     shell:
       cmd: |
         cd /usr/local/src
-        tar zxvf {{ matchbox_assets[g_clusterVersion]['filename'] }}
+        tar zxvf {{ matchbox_assets[workshop_vars.ocp_version]['filename'] }}
 
 
 
@@ -73,7 +73,7 @@
       SAN: "DNS.1:{{ f_bastionName }}.{{ f_bastionFQDN }},IP.1:{{ f_bastionIP }}"
     shell:
       cmd: |
-        cd "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/scripts/tls"
+        cd "/usr/local/src/{{ matchbox_assets[workshop_vars.ocp_version]['destdir'] }}/scripts/tls"
         ./cert-gen
 
 
@@ -125,7 +125,7 @@
 
   - name: "ocp4-workshop : bastion-matchbox : install matchbox binary"
     copy:
-      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/matchbox"
+      src:   "/usr/local/src/{{ matchbox_assets[workshop_vars.ocp_version]['destdir'] }}/matchbox"
       dest:  "/usr/local/bin"
       mode:  "0555"
       owner: "matchbox"
@@ -136,7 +136,7 @@
 
   - name: "ocp4-workshop : bastion-matchbox : install matchbox self-signed certs"
     copy:
-      src:   "/usr/local/src/{{ matchbox_assets[g_clusterVersion]['destdir'] }}/scripts/tls/{{ item }}"
+      src:   "/usr/local/src/{{ matchbox_assets[workshop_vars.ocp_version]['destdir'] }}/scripts/tls/{{ item }}"
       dest:  "/etc/matchbox/ssl"
       mode:  "0644"
       owner: "matchbox"
@@ -162,20 +162,20 @@
     stat:
       path: "/var/lib/matchbox/assets/{{ item }}"
     with_items:
-      - "{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
-      - "{{ rhcos_assets[g_clusterVersion]['kernel']    }}"
-      - "{{ rhcos_assets[g_clusterVersion]['bios']      }}"
-      - "{{ rhcos_assets[g_clusterVersion]['iso']       }}"
-      - "{{ rhcos_assets[g_clusterVersion]['rootfs'] | default([]) }}"
-      - "{{ rhcos_assets[g_clusterVersion]['bios4k'] | default([]) }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['initramfs'] }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['kernel']    }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['bios']      }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['iso']       }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['rootfs'] | default([]) }}"
+      - "{{ rhcos_assets[workshop_vars.ocp_version]['bios4k'] | default([]) }}"
     register: asset_stats
 
   - name: "ocp4-workshop : bastion-matchbox : Red Hat CoreOS image download"
     environment:
-      http_proxy: "{{ g_http_proxy }}"
-      https_proxy: "{{ g_https_proxy }}"
+      http_proxy:  "{{ workshop_vars.http_proxy }}"
+      https_proxy: "{{ workshop_vars.https_proxy }}"
     get_url:
-      url: "{{ rhcos_assets[g_clusterVersion]['url'] }}/{{ item }}"
+      url: "{{ rhcos_assets[workshop_vars.ocp_version]['url'] }}/{{ item }}"
       dest: "/var/lib/matchbox/assets/{{ item }}"
       owner: matchbox
       group: matchbox

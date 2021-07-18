@@ -18,7 +18,7 @@
 
   - name: "ocp4-workshop : bastion-nfs  create directory"
     file:
-      path: '{{ g_nfsExport }}'
+      path: '{{ workshop_extras.nfs_export }}'
       mode: '0755'
       owner: 65534
       group: 65534
@@ -27,7 +27,7 @@
   - name: "ocp4-workshop : bastion-nfs : cleanup conflicting entries in /etc/exports"
     lineinfile:
       dest:   '/etc/exports'
-      regexp: '{{ g_nfsExport }}(\s+).*$'
+      regexp: '{{ workshop_extras.nfs_export }}(\s+).*$'
       state:  absent
 
   ##
@@ -40,8 +40,7 @@
   - name: 'ocp4-workshop : bastion-nfs : update entry in /etc/exports'
     lineinfile:
       dest: '/etc/exports'
-      line: '{{ g_nfsExport }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
-#      line: '{{ g_nfsExport }}   *(rw,sync,no_wdelay,root_squash,insecure,fsid=0)'
+      line: '{{ workshop_extras.nfs_export }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
       state: present
       owner: root
       group: root

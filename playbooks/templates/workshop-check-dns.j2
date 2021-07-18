@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
 
 
 ##
@@ -10,9 +10,9 @@ export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
 
 echo "Workshop configuration details"
 echo "------------------------------"
-echo "Bastion IP address ....................... {{ f_bastion_ip }}"
-echo "Upstream DNS provider (g_pubDNS) ......... {{ g_pubDNS }}"
-echo "Bastion DNS service enabled (g_useDNS) ... {{ g_useDNS }}"
+echo "Bastion IP address ............... {{ f_bastion_ip }}"
+echo "Upstream DNS provider ............ {{ workshop_vars.network_nameserver }}"
+echo "Bastion DNS service enabled ...... {{ workshop_vars.bastion.dns }}"
 echo ""
 
 

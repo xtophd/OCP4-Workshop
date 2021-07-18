@@ -42,14 +42,14 @@
 
   - name: "ocp4-workshop : deployer-configure-bastion : Create ssh directory"
     file:
-      path: "{{ g_credsDir }}"
+      path: "{{ workshop_extras.ocp_creds_dir }}"
       mode: "0700"
       state: directory
 
   - name: "ocp4-workshop : deployer-configure-bastion : deploy pull secret"
     template:
       src: "../config/pull-secret.txt"
-      dest: "/root/{{ g_clusterName }}-pull-secret.txt"
+      dest: "/root/{{ workshop_vars.clustername }}-pull-secret.txt"
       owner: root
       group: root
       mode: 0644

@@ -12,15 +12,14 @@
   
   - set_fact: cluster_hosts="{{ [ groups['myBastion'], groups['myMasters'], groups['myWorkers'], groups['myBootstrap'] ] | flatten(1) }}"
 
-  - name: "ocp4-workshop : bastion-tests : test dns"
+  - name: "ocp4-workshop : bastion-tests : test fqdn lookup of all nodes"
     vars: 
       - p_server:  "localhost"
       - p_name:    "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:    "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_domain:  "{{ workshop_extras.network_fqdn }}"
     when:
-      - g_useDNS == true
-      - g_publicNet == true
+      - workshop_vars.bastion.dns == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
@@ -33,11 +32,10 @@
   - name: "ocp4-workshop : bastion-tests : test wildcard"
     vars: 
       - p_server:  "localhost"
-      - p_name:    "{{ g_wildcardName }}"
-      - p_domain:  "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_name:    "foo"
+      - p_domain:  "{{ workshop_extras.ocp_wfqdn }}"
     when:
-      - g_useDNS == true
-      - g_publicNet == true
+      - workshop_vars.bastion.dns == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }}.{{ p_domain }} +short
@@ -50,8 +48,7 @@
       - p_server:  "localhost"
       - p_name:    "quay.io"
     when:
-      - g_useDNS == true
-      - g_publicNet == true
+      - workshop_vars.bastion.dns == true
     shell: 
       cmd: |
         dig @{{ p_server }} {{ p_name }} +short

@@ -61,14 +61,14 @@
   - name: "ocp4-workshop : bastion-dhcp : deploy PUBLIC SUBNET config frament"
     vars:
       - p_nextsvr:   "{{ f_bastionIP }}"
-      - p_network:   "{{ g_pubNET }}"
-      - p_netmask:   "{{ g_pubNM }}"
-      - p_broadcast: "{{ g_pubBC }}"
-      - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
-      - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cluster:   "{{ g_clusterName }}"
+      - p_network:   "{{ workshop_vars.network_network }}"
+      - p_netmask:   "{{ workshop_vars.network_netmask }}"
+      - p_broadcast: "{{ workshop_vars.network_broadcast }}"
+      - p_gateway:   "{{ workshop_vars.network_gateway }}"
+      - p_dns:       "{{ f_bastionIP if workshop_vars.bastion.dns == true else workshop_vars.network_nameserver }}"
+      - p_ntp:       "{{ f_bastionIP if workshop_vars.bastion.ntp == true else workshop_vars.network_timeserver }}"
+      - p_domain:    "{{ workshop_vars.network_basedomain }}"
+      - p_cluster:   "{{ workshop_vars.clustername }}"
       - p_http_port: "{{ matchbox.port }}"
     template:
       src: "dhcp-subnet-start.j2"
@@ -79,7 +79,7 @@
 
   - name: "ocp4-workshop : bastion-dhcp : deploy dhcp group start"
     vars:
-      - p_dhcpgroup: "{{ g_clusterName }}"
+      - p_dhcpgroup: "{{ workshop_vars.clustername }}"
     template:
       src: "dhcp-group-start.j2"
       dest: "/etc/dhcp/cfg-fragments/30-group-start.conf"
@@ -92,14 +92,14 @@
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
-      - p_network:   "{{ g_pubNet }}"
-      - p_netmask:   "{{ g_pubNM }}"
-      - p_broadcast: "{{ g_pubBC }}"
-      - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
-      - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cluster:   "{{ g_clusterName }}"
+      - p_network:   "{{ workshop_vars.network_network }}"
+      - p_netmask:   "{{ workshop_vars.network_netmask }}"
+      - p_broadcast: "{{ workshop_vars.network_broadcast }}"
+      - p_gateway:   "{{ workshop_vars.network_gateway }}"
+      - p_dns:       "{{ f_bastionIP if workshop_vars.bastion.dns == true else workshop_vars.network_nameserver }}"
+      - p_ntp:       "{{ f_bastionIP if workshop_vars.bastion.ntp == true else workshop_vars.network_timeserver }}"
+      - p_domain:    "{{ workshop_vars.network_basedomain }}"
+      - p_cluster:   "{{ workshop_vars.clustername }}"
       - p_http_port: "{{ matchbox.port }}"
     template:
       src: "dhcp-host-entry.j2"
@@ -111,7 +111,7 @@
 
   - name: "ocp4-workshop : bastion-dhcp : deploy dhcp group finish"
     vars:
-      - p_dhcpgroup: "{{ g_clusterName }}"
+      - p_dhcpgroup: "{{ workshop_vars.clustername }}"
     template:
       src: "dhcp-group-finish.j2"
       dest: "/etc/dhcp/cfg-fragments/50-group-finish.conf"
@@ -121,14 +121,14 @@
     vars:
       - p_item:      "{{ item }}"
       - p_nextsvr:   "{{ f_bastionIP }}"
-      - p_network:   "{{ g_pubNET }}"
-      - p_netmask:   "{{ g_pubNM }}"
-      - p_broadcast: "{{ g_pubBC }}"
-      - p_gateway:   "{{ g_pubGW }}"
-      - p_dns:       "{{ f_bastionIP if g_useDNS == true else g_pubDNS }}"
-      - p_ntp:       "{{ f_bastionIP if g_useNTP == true else g_pubNTP }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cluster:   "{{ g_clusterName }}"
+      - p_network:   "{{ workshop_vars.network_network }}"
+      - p_netmask:   "{{ workshop_vars.network_netmask }}"
+      - p_broadcast: "{{ workshop_vars.network_broadcast }}"
+      - p_gateway:   "{{ workshop_vars.network_gateway }}"
+      - p_dns:       "{{ f_bastionIP if workshop_vars.bastion.dns == true else workshop_vars.network_nameserver }}"
+      - p_ntp:       "{{ f_bastionIP if workshop_vars.bastion.ntp == true else workshop_vars.network_timeserver }}"
+      - p_domain:    "{{ workshop_vars.network_basedomain }}"
+      - p_cluster:   "{{ workshop_vars.clustername }}"
     template:
       src: "dhcp-subnet-finish.j2"
       dest: "/etc/dhcp/cfg-fragments/60-subnet-finish.conf"
@@ -146,7 +146,6 @@
 
   - name: "ocp4-workshop : bastion-dhcp : restart services"
     service: name={{ item }} state=restarted enabled=yes masked=no
-    when: g_usePXE == true
     with_items:
       - "dhcpd"
 

@@ -17,8 +17,8 @@
 - hosts: myBastion
   tasks:
 
-  - name: "ocp4-workshop : main : determine if deployment is locked '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
-    stat: path="{{ g_credsDir }}/ocp-workshop-deployment.lock"
+  - name: "ocp4-workshop : main : determine if deployment is locked '({{ workshop_extras.ocp_creds_dir }}/ocp-workshop-deployment.lock }})"
+    stat: path="{{ workshop_extras.ocp_creds_dir }}/ocp-workshop-deployment.lock"
     register: deployment_lock
     tags: always
 
@@ -29,78 +29,79 @@
   - debug: var=workshop_lock
     tags: always
 
-  - debug: var=g_useDESKTOP_GUI
-    tags: always
-
 - import_playbook: bastion-basics.yml
   tags: basics
 
 - import_playbook: bastion-firewalld.yml
-  when: g_useFIREWALLD|default(true) == true
+  when: workshop_vars.bastion.firewalld|default(true) == true
   tags: firewall
 
 - import_playbook: bastion-cockpit.yml
-  when: g_useCOCKPIT|default(true) == true
+  when: workshop_vars.bastion.cockpit|default(false) == true
   tags: cockpit
 
 - import_playbook: bastion-desktop-gui.yml
-  when: g_useDESKTOP_GUI|default(false) == true
+  when: workshop_vars.bastion.desktop_gui|default(false) == true
   tags: gui
 
 - import_playbook: bastion-desktop-chrome.yml
   when: 
-    - g_useDESKTOP_GUI|default(false)  == true
-    - g_useCHROME|default(false)  == true
+    - workshop_vars.bastion.desktop_chrome|default(false)  == true
+    - workshop_vars.bastion.desktop_gui == true or workshop_vars.bastion.desktop_vnc == true
   tags: gui
 
 - import_playbook: bastion-workshop-materials.yml
-  when: g_useWORKSHOP|default(true) == true
+  when: workshop_vars.bastion.workshop_materials|default(true) == true
   tags: workshop
 
 - import_playbook: bastion-workshop-user.yml
-  when: g_useWORKSHOP_USER|default(false) == true
+  when: workshop_vars.bastion.workshop_user|default(false) == true
   tags: user
 
 - import_playbook: bastion-vnc.yml
   when: 
-    - g_useVNCSERVER|default(false) == true
-    - g_useWORKSHOP_USER|default(false) == true
+    - workshop_vars.bastion.desktop_vnc|default(false) == true
+    - workshop_vars.bastion.workshop_user|default(false) == true
   tags: vnc
 
 - import_playbook: bastion-dns.yml
-  when: g_useDNS|default(true) == true 
+  when: workshop_vars.bastion.dns|default(true) == true 
   tags: dns
 
 - import_playbook: bastion-matchbox.yml
-  when: g_useMATCHBOX|default(true) == true
+  when: workshop_vars.bastion.matchbox|default(true) == true
   tags: matchbox
 
 - import_playbook: bastion-pxe.yml
-  when: g_usePXE|default(true) == true
+  when: workshop_vars.bastion.dhcp_pxe|default(true) == true
   tags: pxe
 
 - import_playbook: bastion-iso.yml
-  when: g_useISO|default(true) == true
+  when: workshop_vars.bastion.dhcp_uefi_http|default(true) == true
   tags: iso
 
 - import_playbook: bastion-dhcp.yml
-  when: g_useDHCP|default(true) == true 
+  when: workshop_vars.bastion.dhcp|default(true) == true 
   tags: dhcp
 
 - import_playbook: bastion-haproxy.yml
-  when: g_useHAPROXY|default(true) == true 
+  when: workshop_vars.bastion.haproxy|default(true) == true 
   tags: haproxy
 
-- import_playbook: bastion-haproxy-vip.yml
-  when: g_useHAPROXY_VIP|default(true) == true
-  tags: haproxy_vip
+#DEPRECATE 2021-07-15 - special case for libvirt NAT,
+#                       not necessary since GUI and
+#                       VNC now available on bastion
+#
+#- import_playbook: bastion-haproxy-vip.yml
+#  when: g_useHAPROXY_VIP|default(true) == true
+#  tags: haproxy_vip
 
 - import_playbook: bastion-nfs.yml
-  when: g_useNFS|default(true) == true
+  when: workshop_vars.bastion.nfs|default(true) == true
   tags: nfs
 
 - import_playbook: bastion-httpd.yml
-  when: g_useMATCHBOX|default(true) == false
+  when: workshop_vars.bastion.matchbox|default(true) == false
   tags: httpd
 
 ##

@@ -28,8 +28,8 @@
   - name: "ocp4-workshop : bastion-openshift-finish : Approve CSR requests until all nodes 'Ready'"
     shell:
       cmd: |
-        export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
-        if [[ `{{ oc_cmd }} get node --no-headers {{ item }}.{{ g_pubFQDN }} | awk '{print $2}'` == "Ready" ]] ; then
+        export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
+        if [[ `{{ oc_cmd }} get node --no-headers {{ item }}.{{ workshop_extras.network_fqdn }} | awk '{print $2}'` == "Ready" ]] ; then
           exit 0
         else
           for i in `{{ oc_cmd }} get csr | grep -i pending | awk '{print $1}'`; do 
@@ -65,9 +65,9 @@
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cluster:   "{{ g_clusterName }}"
-      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+      - p_domain:    "{{ workshop_vars.network_basedomain }}"
+      - p_cluster:   "{{ workshop_vars.clustername }}"
+      - p_fqdn:      "{{ workshop_extras.network_fqdn }}"
     shell:
       cmd: |
         ssh-keygen -R "{{ p_item }}" | true
@@ -84,9 +84,9 @@
       - p_item:      "{{ item }}"
       - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:    "{{ g_publicDomain }}"
-      - p_cluster:   "{{ g_clusterName }}"
-      - p_fqdn:      "{{ p_name }}.{{ p_cluster }}.{{ p_domain }}"
+      - p_domain:    "{{ workshop_vars.network_basedomain }}"
+      - p_cluster:   "{{ workshop_vars.clustername }}"
+      - p_fqdn:      "{{ workshop_extras.network_fqdn }}"
     shell:
       cmd: |
         ssh-keyscan "{{ p_name }}" >> /root/.ssh/known_hosts
@@ -109,7 +109,7 @@
   - name: "ocp4-workshop : bastion-openshift-finish : Watch until all clusteroperators availability is 'True'"
     shell:
       cmd: |
-        export KUBECONFIG={{ g_credsDir }}/auth/kubeconfig
+        export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
         {{ oc_cmd }} get clusteroperators --no-headers | awk '{print $3}' | grep -i false 
         if [[ $? == 0 ]]; then exit 1; else exit 0; fi
     register: result

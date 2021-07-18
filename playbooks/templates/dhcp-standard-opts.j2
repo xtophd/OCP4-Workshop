@@ -7,7 +7,7 @@
 default-lease-time 7200;
 max-lease-time 21600;
 
-{% if g_usePXE == true %}
+{% if workshop_vars.bastion.dhcp_pxe == true %}
 option client-system-arch code 93 = unsigned integer 16;
 {% endif %}
 

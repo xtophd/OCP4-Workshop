@@ -3,9 +3,9 @@
  "name": "{{ p_profile}}-{{ p_name }} server",
  "ignition_id": "{{ p_profile }}.ign",
  "boot": {
-  "kernel": "/assets/{{ rhcos_assets[g_clusterVersion]['kernel'] }}",
+  "kernel": "/assets/{{ rhcos_assets[workshop_vars.ocp_version]['kernel'] }}",
   "initrd": [
-   "/assets/{{ rhcos_assets[g_clusterVersion]['initramfs'] }}"
+   "/assets/{{ rhcos_assets[workshop_vars.ocp_version]['initramfs'] }}"
    ],
    "args": [
     "ip={{ p_network }}",
@@ -14,10 +14,10 @@
     "usb-storage.delay_use={{ p_usbdelay }}",
     "coreos.inst=yes",
     "coreos.inst.install_dev={{ p_storage }}",
-    "coreos.inst.image_url=http://{{ p_addr }}:{{ p_port }}/assets/{{ rhcos_assets[g_clusterVersion]['bios'] }}",
-{% if rhcos_assets[g_clusterVersion]['rootfs'] is defined %}
+    "coreos.inst.image_url=http://{{ p_addr }}:{{ p_port }}/assets/{{ rhcos_assets[workshop_vars.ocp_version]['bios'] }}",
+{% if rhcos_assets[workshop_vars.ocp_version]['rootfs'] is defined %}
     "coreos.inst.insecure=yes",
-    "coreos.live.rootfs_url=http://{{ p_addr}}:{{ p_port }}/assets/{{ rhcos_assets[g_clusterVersion]['rootfs'] }}",
+    "coreos.live.rootfs_url=http://{{ p_addr}}:{{ p_port }}/assets/{{ rhcos_assets[workshop_vars.ocp_version]['rootfs'] }}",
 {% endif %}
 {% if p_loader is defined and p_loader == "efi" %}
     "coreos.inst.ignition_url=http://{{ p_addr}}:{{ p_port }}/ignition?mac=$net_default_mac"

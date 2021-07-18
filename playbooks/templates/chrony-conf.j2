@@ -23,7 +23,7 @@ rtcsync
 # the system clock.
 #minsources 2
 
-{%if g_useNTP == true %}
+{%if workshop_vars.bastion.ntp == true %}
 # Allow NTP client access from local network.
 allow {{ p_network }}/{{ p_prefix }}
 

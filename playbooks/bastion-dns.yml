@@ -58,7 +58,7 @@
   - name: "ocp4-workshop : bastion-dns : cleanup conflicting names in /etc/hosts"
     lineinfile:
       dest:   "/etc/hosts"
-      regexp: ".*{{ item }}.{{ g_pubFQDN }}.*"
+      regexp: ".*{{ item }}.{{ workshop_extras.network_fqdn }}.*"
       state:  absent
     loop: "{{ cluster_hosts }}"
 
@@ -72,7 +72,7 @@
 
   - name: "ocp4-workshop : bastion-dns : deploy STANDARD options"
     vars: 
-      - p_nameServer:  "{{ g_pubDNS }}"
+      - p_nameServer:  "{{ workshop_vars.network_nameserver }}"
     template:
       src: "dnsmasq-standard-opts.j2"
       dest: "/etc/dnsmasq.d/30-standard-opts.conf"
@@ -86,10 +86,10 @@
       - p_mac:      "{{ hostvars[item]['h_pubMAC'] }}"
       - p_etcdName: "{{ hostvars[item]['h_etcdName'] | default('') }}"
       - p_revAddr:  "{{ (p_addr.split('.'))[::-1]|join('.') }}"
-      - p_netmask:  "{{ g_pubNM }}"
-      - p_gateway:  "{{ g_pubGW'] }}"
-      - p_domain:   "{{ g_clusterName }}.{{ g_publicDomain }}"
-    when: g_publicNet == true
+      - p_netmask:  "{{ workshop_vars.network_netmask }}"
+      - p_gateway:  "{{ workshop_vars.network_gateway }}"
+      - p_domain:   "{{ workshop_extras.network_fqdn }}"
+    #when: g_publicNet == true
     template:
       src: "dnsmasq-host-entry.j2"
       dest: "/etc/dnsmasq.d/50-dns-{{ p_domain }}-{{ p_name }}.conf"
@@ -100,12 +100,12 @@
 
   - name: "ocp4-workshop : bastion-dns : deploy ETCD entries"
     vars: 
-      - p_item:      "{{ item }}"
-      - p_name:      "{{ hostvars[item]['inventory_hostname_short']}}"
-      - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
-      - p_etcdName:  "{{ hostvars[item]['h_etcdName'] | default('') }}"
-      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
-      - p_clusterName: "{{ g_clusterName }}"
+      - p_item:        "{{ item }}"
+      - p_name:        "{{ hostvars[item]['inventory_hostname_short']}}"
+      - p_addr:        "{{ hostvars[item]['h_pubIP'] }}"
+      - p_etcdName:    "{{ hostvars[item]['h_etcdName'] | default('') }}"
+      - p_domain:      "{{ workshop_extras.network_fqdn }}"
+      - p_clusterName: "{{ workshop_vars.clustername }}"
     when:
       - p_etcdName != ""
     template:
@@ -119,25 +119,21 @@
   - name: "ocp4-workshop : bastion-dns : deploy API config"
     vars: 
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:    "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_domain:    "{{ workshop_extras.network_fqdn }}"
       - p_revAddr:   "{{ (p_addr.split('.'))[::-1]|join('.') }}"
-    when:
-      - g_useDNS == true
     template:
       src: "dnsmasq-api-entry.j2"
-      dest: "/etc/dnsmasq.d/55-api-{{ g_clusterName }}.conf"
+      dest: "/etc/dnsmasq.d/55-api-{{ workshop_vars.clustername }}.conf"
       owner: root
     loop: "{{ groups['myBastion'] }}"
 
   - name: "ocp4-workshop : bastion-dns : deploy PUBLIC wildcard"
     vars: 
       - p_addr:      "{{ hostvars[item]['h_pubIP'] }}"
-      - p_domain:    "{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
-    when:
-      - g_useDNSwildcard == true
+      - p_domain:    "{{ workshop_extras.ocp_wfqdn }}"
     template:
       src: "dnsmasq-wildcard-entry.j2"
-      dest: "/etc/dnsmasq.d/45-wildcard-{{ g_clusterName }}.conf"
+      dest: "/etc/dnsmasq.d/45-wildcard-{{ workshop_vars.clustername }}.conf"
       owner: root
     loop: "{{ groups['myBastion'] }}"
 
@@ -192,7 +188,7 @@
 
   - name: "ocp4-workshop : bastion-dns : template deploy resolv.conf to point to localhost"
     vars: 
-      - p_search:     "{{ g_clusterName }}.{{ g_publicDomain }}"
+      - p_search:     "{{ workshop_extras.network_fqdn }}"
       - p_nameserver: "127.0.0.1"
     template:
       src:   "dns-resolv-conf.j2"

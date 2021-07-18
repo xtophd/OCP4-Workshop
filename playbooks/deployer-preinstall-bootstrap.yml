@@ -21,7 +21,7 @@
     loop: "{{ groups['myBastion'] }}"
 
   - name: "deployer-preinstall-bootstrap: test DNS port on bastion {{ f_bastion_ip }}"
-    when: g_useDNS == true
+    when: workshop_vars.bastion.dns == true
     wait_for:
       host: "{{ f_bastion_ip }}"
       connect_timeout: 5
@@ -32,7 +32,7 @@
       timeout: 30
 
   - name: "ocp4-workshop : deployer-preinstall-bootstrap : test MATCHBOX port on bastion ({{ f_bastion_ip }})"
-    when: g_useMATCHBOX == true
+    when: workshop_vars.bastion.matchbox == true
     wait_for:
       host: "{{ f_bastion_ip }}"
       connect_timeout: 5

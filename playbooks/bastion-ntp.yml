@@ -39,9 +39,9 @@
 
   - name: "ocp4-workshop : bastion-ntp : deploy ntp/chrony config"
     vars:
-      - p_ntp:       "{{ g_pubNTP }}"
-      - p_network:   "{{ g_pubNET }}"
-      - p_prefix:    "{{ g_pubPREFIX }}"
+      - p_ntp:       "{{ workshop_vars.network_timeserver }}"
+      - p_network:   "{{ workshop_vars.network_network }}"
+      - p_prefix:    "{{ workshop_vars.network_prefix }}"
     template:
       src: "chrony-conf.j2"
       dest: "/etc/chrony.conf"

@@ -47,14 +47,14 @@
 
 
 
-  - name: "ocp4-workshop : bastion-pxe : clean-up efi directory /var/tmp/{{ g_clusterName }}/efi"
+  - name: "ocp4-workshop : bastion-pxe : clean-up efi directory /var/tmp/{{ workshop_vars.clustername }}/efi"
     shell:
       cmd: |
-        if [[ -d "/var/tmp/{{ g_clusterName }}/efi" ]] ; then rm -rf /var/tmp/{{ g_clusterName }}/efi ; fi
+        if [[ -d "/var/tmp/{{ workshop_vars.clustername }}/efi" ]] ; then rm -rf /var/tmp/{{ workshop_vars.clustername }}/efi ; fi
 
   - name: "ocp4-workshop : bastion-pxe : create fresh efi work directory"
     file:
-      path="/var/tmp/{{ g_clusterName }}/efi"
+      path="/var/tmp/{{ workshop_vars.clustername }}/efi"
       mode="0755"
       state=directory
 
@@ -70,7 +70,7 @@
   #  yum: 
   #    name: shim-x64,grub2-efi-x64
   #    state: latest
-  #    download_dir: "/var/tmp/{{ g_clusterName }}/efi"
+  #    download_dir: "/var/tmp/{{ workshop_vars.clustername }}/efi"
   #    download_only: yes 
 
   #    NOTE:  RHEL 8.4 installs shim & grub2 packages as part of @BASE
@@ -80,7 +80,7 @@
   - name: "common-dhcp-setup : download rpms (do not install) for efi artifacts"
     shell:
       cmd: |
-        cd /var/tmp/{{ g_clusterName }}/efi;  yumdownloader {{ item }}
+        cd /var/tmp/{{ workshop_vars.clustername }}/efi;  yumdownloader {{ item }}
     with_items:
       - "shim-x64"
       - "grub2-efi-x64"
@@ -88,7 +88,7 @@
   - name: "ocp4-workshop : bastion-pxe : unpack contents of rpms for efi artifacts"
     shell:
       cmd: |
-        cd /var/tmp/{{ g_clusterName }}/efi; rpm2cpio {{ item }}*.rpm | cpio -dimv
+        cd /var/tmp/{{ workshop_vars.clustername }}/efi; rpm2cpio {{ item }}*.rpm | cpio -dimv
     with_items:
       - "shim-x64"
       - "grub2-efi"
@@ -102,8 +102,8 @@
       group: root
       remote_src: yes
     with_items:
-      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/shimx64.efi"
-      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/redhat/grubx64.efi"
+      - "/var/tmp/{{ workshop_vars.clustername }}/efi/boot/efi/EFI/redhat/shimx64.efi"
+      - "/var/tmp/{{ workshop_vars.clustername }}/efi/boot/efi/EFI/redhat/grubx64.efi"
     when:
       - ansible_distribution == "RedHat"
 
@@ -116,8 +116,8 @@
       group: root
       remote_src: yes
     with_items:
-      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/centos/shimx64.efi"
-      - "/var/tmp/{{ g_clusterName }}/efi/boot/efi/EFI/centos/grubx64.efi"
+      - "/var/tmp/{{ workshop_vars.clustername }}/efi/boot/efi/EFI/centos/shimx64.efi"
+      - "/var/tmp/{{ workshop_vars.clustername }}/efi/boot/efi/EFI/centos/grubx64.efi"
     when:
       - ansible_distribution == "CentOS"
 

@@ -9,8 +9,8 @@
 - hosts: myBastion
   tasks:
 
-  - name: "ocp-workshop : bastion-unlock : remove '({{ g_credsDir }}/ocp-workshop-deployment.lock }})"
+  - name: "ocp-workshop : bastion-unlock : remove '({{ workshop_extras.ocp_creds_dir }}/ocp-workshop-deployment.lock }})"
     file:
-      path:  "{{ g_credsDir }}/ocp-workshop-deployment.lock"
+      path:  "{{ workshop_extras.ocp_creds_dir }}/ocp-workshop-deployment.lock"
       state: absent
 

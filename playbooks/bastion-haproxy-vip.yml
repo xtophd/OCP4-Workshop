@@ -38,7 +38,7 @@
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "8404"
       - p_order:    "15"
-      - p_name:     "{{ g_clusterName }}"
+      - p_name:     "{{ workshop_vars.clustername }}"
     template:
       src: "haproxy-stats.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-stats.cfg"
@@ -50,7 +50,7 @@
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "6443"
       - p_order:    "20"
-      - p_cname:    "{{ g_clusterName }}"
+      - p_cname:    "{{ workshop_vars.clustername }}"
     template:
       src: "haproxy-frontend-backend.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
@@ -79,7 +79,7 @@
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "22623"
       - p_order:    "30"
-      - p_cname:    "{{ g_clusterName }}"
+      - p_cname:    "{{ workshop_vars.clustername }}"
     template:
       src: "haproxy-frontend-backend.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
@@ -108,7 +108,7 @@
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "80"
       - p_order:    "40"
-      - p_cname:    "{{ g_clusterName }}"
+      - p_cname:    "{{ workshop_vars.clustername }}"
     template:
       src: "haproxy-frontend-backend.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"
@@ -137,7 +137,7 @@
       - p_ip:       "{{ g_clusterVIP }}"
       - p_port:     "443"
       - p_order:    "50"
-      - p_cname:    "{{ g_clusterName }}"
+      - p_cname:    "{{ workshop_vars.clustername }}"
     template:
       src: "haproxy-frontend-backend.j2"
       dest: "/etc/haproxy/cfg-fragments-vip/{{ p_order }}-{{ p_type }}.cfg"

@@ -68,7 +68,7 @@
       
         - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 7)"
           vars:
-            - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+            - t_link: "console-openshift-console.{{ workshop_extras.ocp_wfqdn }}"
           template:
             src:   "{{ item.src }}"
             dest:  "~{{ workshopuser_username }}/Desktop/{{ item.dst }}"
@@ -86,7 +86,7 @@
       
         - name: "ocp4-workshop-user : workshop-user : create friendly openshift console shortcut on desktop (RHEL 8)"
           vars:
-            - t_link: "console-openshift-console.{{ g_wildcardName }}.{{ g_clusterName }}.{{ g_publicDomain }}"
+            - t_link: "console-openshift-console.{{ workshop_extras.ocp_wfqdn }}"
           template:
             src:   "{{ item.src }}"
             dest:  "~{{ workshopuser_username }}/Desktop/{{ item.dst }}"
