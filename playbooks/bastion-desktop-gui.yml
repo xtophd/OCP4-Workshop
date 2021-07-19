@@ -39,6 +39,8 @@
       exclude: 
         - "libvirt*"
         - "PackageKit"
+        - "PackageKit-command-not-found"
+        - "cockpit-packagekit"
         - "gnome-packagekit*"
         - "yelp*"
         - "gnome-boxes"

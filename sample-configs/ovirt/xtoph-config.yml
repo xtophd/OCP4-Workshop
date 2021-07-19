@@ -29,15 +29,16 @@ xtoph_config:
     ip: "{{ xtoph_vars.deployhost_ip }}"
 
     ##
-    ##    dnsmasq_enable:    ensures dnsmasq is installed 
+    ##    dnsmasq_enable:    ensures dnsmasq is installed
     ##                       and enabled on the deployhost
     ##
-    ##                       host/vm resolves to -> 
-    ##                         deployhost which forwards to -> 
-    ##                           real-dns          
-    ##                    
+    ##    dnsmasq_asprimary  host/vm resolves to ->
+    ##                         deployhost which forwards to ->
+    ##                           real-dns
+    ##
 
-    dnsmasq_enable:  true
+    dnsmasq_enable:     true
+    dnsmasq_asprimary:  true
 
     ##
     ##    http_port:      port to provide kickstart and
