@@ -1,0 +1,187 @@
+##
+##    !! WARNING !!  Ansible only interprets 'True' and 'False'
+##                   as booleans when reading ini files.  Other
+##                   values such as 'true' or 'false' would be 
+##                   interpreted as strings and would break various
+##                   logic tests.  
+##
+##                   When reading YML files, booleans can take on
+##                   many forms and be interpreted correctly.
+##
+##                   For consistency, only use unquoted booleans: True & False
+
+all: 
+
+  vars:
+
+    ## ----------------------------------------
+    ##    Globals that will be phased out
+
+    g_clusterAdmin:       "cloud-admin"
+    g_clusterUser:        "cloud-user"
+
+
+    ## ----------------------------------------
+    ##    Workshop Variables
+
+    workshop_vars:
+
+      clustername:          "ocp4lvbr"
+
+      ocp_version:          "4.7"
+      ocp_dns_wildcard:     "apps"
+
+      network_basedomain:   "example.com"
+      network_network:      "192.168.1.0"
+      network_netmask:      "255.255.255.0"
+      network_broadcast:    "192.168.1.255"
+      network_prefix:       "24"
+      network_gateway:      "192.168.1.1"
+      network_nameserver:   "192.168.1.30"
+      network_timeserver:   "192.168.1.30"
+
+      http_proxy:           ""
+      https_proxy:          ""
+
+      bastion:
+
+        firewalld:          True
+        dns:                True
+        dhcp:               True
+        dhcp_pxe:           True
+        dhcp_uefi_http:     True
+        haproxy:            True
+        matchbox:           True
+        nfs:                True
+        ntp:                True
+        workshop_user:      True
+        workshop_materials: True
+        desktop_gui:        True
+        desktop_chrome:     True
+        desktop_vnc:        True
+
+    workshop_extras:
+
+      network_fqdn:         "{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}"
+
+      ocp_creds_dir:        "/root/ocp-{{ workshop_vars.clustername }}"
+      ocp_wfqdn:            "{{ workshop_vars.ocp_dns_wildcard }}.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}"
+
+      nfs_export:           "/home/nfs-{{ workshop_vars.clustername }}"
+
+
+    ## ----------------------------------------
+    ##    Xtoph Deploy Variables
+
+    xtoph_vars:
+
+      deployhost_ip:       "192.168.1.23" 
+      clustername:         "{{ workshop_vars.clustername }}"
+
+    ## ----------------------------------------
+    ##    Override default ansible host with
+    ##    one that includes fqdn.  This saves us
+    ##    from having to specify FQDN in host 
+    ##    vars section below.  This assumes all
+    ##    hosts are in the same domain. DUH!
+
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+
+
+
+## ----------------------------------------
+## HOSTGROUPS & VARS
+## ----------------------------------------
+
+
+
+myDeployhost:
+  hosts:
+    deployer:
+      h_pubIP: "{{ xtoph_vars.deployhost_ip }}"
+  vars:
+    ansible_connection: local
+
+
+
+## -----------------
+
+
+
+myBastion:
+  hosts:
+    bastion:
+      h_pubIP: "192.168.1.160"
+  vars:
+    h_hwPROF: "kvm_vda"
+    h_rsPROF: "bastion"
+    h_ksPROF: "rhel84-bootiso"
+    h_netDEV: "enp1s0"
+    h_blkDEV: "vda"
+
+
+
+## -----------------
+
+
+
+myBootstrap:
+  hosts:
+    node1:
+      h_pubIP:       "192.168.1.61"
+  vars: 
+    h_hwPROF:        "kvm_vda"
+    h_rsPROF:        "med"
+    h_ksPROF:        "pxe_wait"
+
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
+
+
+## -----------------
+
+
+
+myMasters:
+  hosts:
+    node2:
+      h_pubIP:       "192.168.1.62" 
+    node3:
+      h_pubIP:       "192.168.1.63" 
+    node4:
+      h_pubIP:       "192.168.1.64"
+  vars: 
+    h_hwPROF:        "kvm_vda"
+    h_rsPROF:        "med"
+    h_ksPROF:        "pxe_wait"
+
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
+
+
+## -----------------
+
+
+
+myWorkers:
+  hosts:
+    node5:
+      h_pubIP:       "192.168.1.65" 
+    node6:
+      h_pubIP:       "192.168.1.66" 
+  vars: 
+    h_hwPROF:        "kvm_vda"
+    h_rsPROF:        "sml"
+    h_ksPROF:        "pxe_wait"
+
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+

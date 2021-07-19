@@ -130,12 +130,35 @@
       - name: "ocp4-workshop : bastion-vnc: set .vnc credentials"
         shell:
           cmd: |
-            echo '{{workshopuser_password }}' | vncpasswd -f  > ~/.vnc/passwd
+            echo '{{ workshopuser_password }}' | vncpasswd -f  > ~/.vnc/passwd
         become: yes
         become_user: "{{ workshopuser_username }}"
 
 
     
+      ##
+      ##    Set SELinux boolean to allow haproxy
+      ##    to work on any port
+      ##
+      
+      
+      
+      - name: "ocp4-workshop : bastion-vnc : test whether SELinux is enabled"
+        command: /usr/sbin/selinuxenabled
+        ignore_errors: yes
+        register: selinux_status
+      
+      - name: "ocp4-workshop : bastion-vnc : add persistant SELINUX boolean"
+        shell: setsebool -P polyinstantiation_enabled 1
+        when: selinux_status.rc == 0
+
+      - name: "ocp4-workshop : bastion-vnc : restore SELINUX context on .vnc"
+        shell: /sbin/restorecon -vR /home/{{ workshopuser_username }}/.vnc
+        when: selinux_status.rc == 0
+
+
+
+ 
       - name: "ocp4-workshop : bastion-vnc : enable and restart services"
         service: name="{{ item }}" state=restarted enabled=yes masked=no daemon_reload=yes
         with_items:

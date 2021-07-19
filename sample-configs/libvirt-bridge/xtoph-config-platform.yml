@@ -11,7 +11,7 @@ xtoph_config_platform:
       platform: "libvirt"
 
       vm:
-        name: "{{ g_clusterName }}_{{ inventory_hostname }}"
+        name: "{{ xtoph_vars.clustername }}_{{ inventory_hostname }}"
   
       ##
       ##    nested_virt_enable:   add flags to the OS kernel
@@ -33,18 +33,18 @@ xtoph_config_platform:
           fwd_type:        "bridge"
           bridge_netdev:   "enp5s0"
 
-          ip:                "{{ h_pubIP        }}"
-          basedomain:        "{{ g_publicDomain }}"
-          network:           "{{ g_pubNET       }}"
-          netmask:           "{{ g_pubNM        }}"
-          broadcast:         "{{ g_pubBC        }}"
-          prefix:            "{{ g_pubPREFIX    }}"
-          gateway:           "{{ g_pubGW        }}"
-          nameserver:        "{{ g_pubDNS       }}"
-          timeserver:        "{{ g_pubNTP       }}"
-          fqdn:              "{{ g_pubFQDN      }}"
-          mac:               "{{ g_pubMAC | default('') }}"
-  
+          ip:                "{{ h_pubIP  }}"
+          mac:               "{{ h_pubMAC| default('') }}"
+          basedomain:        "{{ workshop_vars.network_basedomain }}"
+          network:           "{{ workshop_vars.network_network    }}"
+          netmask:           "{{ workshop_vars.network_netmask    }}"
+          broadcast:         "{{ workshop_vars.network_broadcast  }}"
+          prefix:            "{{ workshop_vars.network_prefix     }}"
+          gateway:           "{{ workshop_vars.network_gateway    }}"
+          nameserver:        "{{ workshop_vars.network_nameserver }}"
+          timeserver:        "{{ workshop_vars.network_timeserver }}"
+          fqdn:              "{{ workshop_extras.network_fqdn     }}"
+
       storage:
         default:
 
