@@ -1,8 +1,8 @@
 xtoph_config:
 
-  debug: true
+  debug: false
 
-  cleanup: true
+  cleanup: false
 
   hostname: "{{ inventory_hostname }}"
 
@@ -22,26 +22,38 @@ xtoph_config:
     ##       - "baremetal"
     ##
 
-    platform_enable:
-      - "ovirt"
+    platform_enable: 
+     - "ovirt"
+     - "baremetal"
     
     ##
     ##    deployhost hostname OR ip that will
     ##    accessible to the deployed VMs
     ##
 
-    ip: "{{ xtoph_vars.deployhost_ip }}"
+    ip: "192.168.1.170"
 
     ##
-    ##    dnsmasq_enable:    ensures dnsmasq is installed
+    ##    firewalld_enable:  ensures firewalld is installed 
     ##                       and enabled on the deployhost
     ##
-    ##    dnsmasq_asprimary  host/vm resolves to ->
-    ##                         deployhost which forwards to ->
-    ##                           real-dns
-    ##
 
-    dnsmasq_enable:     true
+    firewalld_enable: true
+
+    ##
+    ##    dnsmasq_enable:    ensures dnsmasq is installed 
+    ##                       and enabled on the deployhost
+    ##
+    ##    dnsmasq_asprimary: deployed hosts/vms will be
+    ##                       configured to use deployhost's
+    ##                       dns as primary resolver
+    ##                    
+    ##                       host/vm resolves to -> 
+    ##                         deployhost which forwards to -> 
+    ##                           real-dns          
+    ##                    
+
+    dnsmasq_enable:  true
     dnsmasq_asprimary:  true
 
     ##
@@ -95,4 +107,13 @@ xtoph_config:
 
     iso:
       dir: "/home/iso"
+    
+    ## 
+    ##    Enable the creation of the ephemeral dhcp service
+    ##
+
+    dhcp: 
+      enable:   true
+      efi_http: true
+      tmp_dir:  "/home/tmp/{{ xtoph_vars.clustername }}/dhcp"
 

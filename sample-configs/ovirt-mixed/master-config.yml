@@ -26,7 +26,7 @@ all:
 
     workshop_vars:
 
-      clustername:          "ocp4ovirt"
+      clustername:          "ocp4ovmix"
 
       ocp_version:          "4.7"
       ocp_admin_user:       "cloud-admin"
@@ -113,13 +113,17 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP: "192.168.1.180"
-  vars:
-    h_hwPROF: "ovirt_ocs4workshop"
-    h_rsPROF: "ocp_bastion"
-    h_ksPROF: "rhel84-bootiso"
-    h_netDEV: "ens3"
-    h_blkDEV: "sda"
+      h_pubIP:  "192.168.1.160"
+      h_pubMAC: "3c:7c:3f:1c:9a:74"
+
+      h_hwPROF: "pc_nvme"
+      h_rsPROF: "ocp_bastion"
+      h_ksPROF: "rhel84-pxe"
+
+      h_netDEV: "enp4s0"
+      h_blkDEV: "nvme0n1"
+
+      h_pwrOFF: "False"
 
 
 
@@ -130,9 +134,9 @@ myBastion:
 myBootstrap:
   hosts:
     node1:
-      h_pubIP:       "192.168.1.181"
+      h_pubIP:       "192.168.1.161"
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
+    h_hwPROF:        "ovirt_ocp4custom"
     h_rsPROF:        "ocp_bootstrap"
     h_ksPROF:        "pxe_nowait"
 
@@ -149,13 +153,13 @@ myBootstrap:
 myMasters:
   hosts:
     node2:
-      h_pubIP:       "192.168.1.182" 
+      h_pubIP:       "192.168.1.162" 
     node3:
-      h_pubIP:       "192.168.1.183" 
+      h_pubIP:       "192.168.1.163" 
     node4:
-      h_pubIP:       "192.168.1.184"
+      h_pubIP:       "192.168.1.164"
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
+    h_hwPROF:        "ovirt_ocp4custom"
     h_rsPROF:        "ocp_master"
     h_ksPROF:        "pxe_nowait"
 
@@ -172,12 +176,14 @@ myMasters:
 myWorkers:
   hosts:
     node5:
-      h_pubIP:       "192.168.1.185" 
+      h_pubIP:       "192.168.1.165" 
     node6:
-      h_pubIP:       "192.168.1.186" 
+      h_pubIP:       "192.168.1.166" 
+    node7:
+      h_pubIP:       "192.168.1.167" 
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
-    h_rsPROF:        "ocp_worker"
+    h_hwPROF:        "ovirt_ocp4custom"
+    h_rsPROF:        "ocp_worker_odf"
     h_ksPROF:        "pxe_nowait"
 
     h_rhcosDEV:      "sda"
