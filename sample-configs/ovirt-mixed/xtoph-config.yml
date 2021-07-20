@@ -1,8 +1,8 @@
 xtoph_config:
 
-  debug: true
+  debug: false
 
-  cleanup: true
+  cleanup: false
 
   hostname: "{{ inventory_hostname }}"
 
@@ -17,31 +17,43 @@ xtoph_config:
 
     ##
     ##     platform_enable: one or more of the following
-    ##       - "ovirt" 
+    ##       - "ovirt"
     ##       - "libvirt"
     ##       - "baremetal"
     ##
 
     platform_enable: 
-      - "libvirt"
+     - "ovirt"
+     - "baremetal"
     
     ##
     ##    deployhost hostname OR ip that will
     ##    accessible to the deployed VMs
     ##
 
-    ip: "{{ g_deployhostIP}}"
+    ip: "192.168.1.170"
 
     ##
-    ##    dnsmasq_enable:    ensures dnsmasq is installed
+    ##    firewalld_enable:  ensures firewalld is installed 
     ##                       and enabled on the deployhost
     ##
-    ##    dnsmasq_asprimary  host/vm resolves to ->
-    ##                         deployhost which forwards to ->
-    ##                           real-dns
-    ##
 
-    dnsmasq_enable:     true
+    firewalld_enable: true
+
+    ##
+    ##    dnsmasq_enable:    ensures dnsmasq is installed 
+    ##                       and enabled on the deployhost
+    ##
+    ##    dnsmasq_asprimary: deployed hosts/vms will be
+    ##                       configured to use deployhost's
+    ##                       dns as primary resolver
+    ##                    
+    ##                       host/vm resolves to -> 
+    ##                         deployhost which forwards to -> 
+    ##                           real-dns          
+    ##                    
+
+    dnsmasq_enable:  true
     dnsmasq_asprimary:  true
 
     ##
@@ -60,7 +72,7 @@ xtoph_config:
     ##                    will ADD the specifed port.
     ##
 
-    cockpit_enable:  true
+    cockpit_enable:  false
     cockpit_port:    ""
 
     ##
@@ -69,7 +81,7 @@ xtoph_config:
     ##    NOTE: needs to be unique for every host
     ##
 
-    tmp_dir: "/home/tmp/{{ g_clusterName }}/{{ inventory_hostname }}"
+    tmp_dir: "/home/tmp/{{ xtoph_vars.clustername }}/{{ inventory_hostname }}"
 
     ##
     ##    Where with the kickstart configs are stored 
@@ -78,7 +90,7 @@ xtoph_config:
 
     kickstart:
       dir: "/var/www/html/ks"
-      url: "http://{{ g_deployhostIP}}:8008/ks"
+      url: "http://{{ xtoph_vars.deployhost_ip }}:8008/ks"
 
     ##
     ##    Where will the repos be mounted
@@ -87,7 +99,7 @@ xtoph_config:
 
     repos:
       dir: "/var/www/html/repos"
-      url: "http://{{ g_deployhostIP}}:8008/repos"
+      url: "http://{{ xtoph_vars.deployhost_ip }}:8008/repos"
 
     ##
     ##    Where are the ISOs stored
@@ -95,3 +107,13 @@ xtoph_config:
 
     iso:
       dir: "/home/iso"
+    
+    ## 
+    ##    Enable the creation of the ephemeral dhcp service
+    ##
+
+    dhcp: 
+      enable:   true
+      efi_http: true
+      tmp_dir:  "/home/tmp/{{ xtoph_vars.clustername }}/dhcp"
+

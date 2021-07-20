@@ -4,6 +4,10 @@ xtoph_config:
 
   cleanup: true
 
+  hostname: "{{ inventory_hostname }}"
+
+  clustername: "{{ xtoph_vars.clustername }}"
+
   selected_profile:
     kickstart: "{{ h_ksPROF | default ('') }}"
     resource:  "{{ h_rsPROF | default ('') }}"

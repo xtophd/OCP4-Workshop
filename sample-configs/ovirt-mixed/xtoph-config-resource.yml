@@ -1,0 +1,65 @@
+##
+## RESOURCE PROFILES
+##
+
+xtoph_config_resource:
+
+  ocp_bastion:
+    resource_profile:
+      name: "ocp_bastion"
+      description: "Custom Bastion Utility Server"
+      vcpus:    4
+      memsize:  8000
+      storage:
+        root:
+          size: 50 
+          hw_storage_profile: default
+  
+  ocp_bootstrap:
+    resource_profile:
+      name: "ocp_bootstrap"
+      description: "Custom Openshift Master [4cpu,16GB,120GB disk]"
+      vcpus:    4
+      memsize:  16000
+      storage:
+        root:
+          size: 120 
+          hw_storage_profile: default
+
+  ocp_master:
+    resource_profile:
+      name: "ocp_master"
+      description: "Custom Openshift Master [4cpu,16GB,120GB disk]"
+      vcpus:    4
+      memsize:  16000
+      storage:
+        root:
+          size: 120 
+          hw_storage_profile: default
+
+  ocp_worker:
+    resource_profile:
+      name: "ocp_worker"
+      description: "Custom Openshift Worker [2cpu,8GB,120GB disk]"
+      vcpus: 2
+      memsize: 8000
+      storage:
+        root:
+          size: 120
+          hw_storage_profile: default
+
+  ocp_worker_odf:
+    resource_profile:
+      name: "ocp_worker_odf"
+      description: "Custom Openshift Worker [4cpu,16GB,120GB + 200GB disk]"
+      vcpus: 4
+      memsize: 16000
+      storage:
+        root:
+          size: 120
+          hw_storage_profile: default
+        extra:
+          disk1:
+            size: 200
+            hw_storage_profile: ocp_odf
+
