@@ -28,7 +28,7 @@ all:
 
       clustername:          "ocp4ovmix"
 
-      ocp_version:          "4.7"
+      ocp_version:          "4.8"
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "apps"
