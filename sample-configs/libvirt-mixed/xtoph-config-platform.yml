@@ -18,7 +18,7 @@ xtoph_config_platform:
       ##                          to allow passtrough virt
       ##
   
-      nested_virt_enable: true
+      nested_virt_enable: false
 
       kickstart:
         description: "hints to where installers can find devices"

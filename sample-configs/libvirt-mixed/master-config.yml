@@ -112,14 +112,16 @@ myBastion:
   hosts:
     bastion:
       h_pubIP:  "192.168.1.190"
-      h_pubMAC: "3c:7c:3f:1c:9a:74"
+      h_pubMAC: "00:25:90:f0:80:e0"
 
-      h_hwPROF: "pc_nvme"
-      h_rsPROF: "ocp_bastion"
+      ipmi_fqdn: "esiso01_bmc.lab.linuxsoup.com"
+
+      h_hwPROF: "supermicro_x9drd_if"
+      h_rsPROF: "bastion"
       h_ksPROF: "rhel84-pxe"
 
-      h_netDEV: "enp4s0"
-      h_blkDEV: "nvme0n1"
+      h_netDEV: "enp5s0f0"
+      h_blkDEV: "sda"
 
       h_pwrOFF: "False"
 
