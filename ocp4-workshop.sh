@@ -66,12 +66,16 @@ case "$1" in
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-openshift-finish.yml
         ;;
 
+    "shutdown")
+        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-openshift-shutdown.yml
+        ;;
+
     "usher")
         time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | unlock | user | usher | vnc ]"
+        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | unlock | user | usher | vnc ]"
         ;;
 
 esac         

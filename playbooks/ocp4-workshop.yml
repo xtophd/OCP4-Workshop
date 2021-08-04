@@ -114,11 +114,10 @@
 - import_playbook: bastion-ntp.yml
   tags: ntp
 
-## Currently disabled and being developed
-#- import_playbook: bastion-squid.yml
-#  when: g_useSQUID == true
-#  tags:
-#    - squid
+- import_playbook: bastion-squid.yml
+  when: workshop_vars.bastion.squid|default(false) == true
+  tags:
+    - squid
 
 - import_playbook: bastion-tests.yml
   tags: tests

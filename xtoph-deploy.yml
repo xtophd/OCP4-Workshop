@@ -33,6 +33,22 @@
 
 
 ##
+##      If undeploy or redeploy, attempt gracefull
+##      shutdown of a running cluster.  Sometimes this
+##      reduces time to undeploy a cluster on platforms
+##      like ovirt where you cannot just destroy a VM
+##      via the API
+##
+
+
+
+- import_playbook: playbooks/bastion-openshift-shutdown.yml
+  when: xtoph_deploy_cmd == "undeploy" or
+        xtoph_deploy_cmd == "redeploy"
+
+
+
+##
 ##    
 ##
 ##     NOTE: hosts may (or may not) exist, 
@@ -46,7 +62,7 @@
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN UNDEPLOY  ****"
+    - debug: msg="**** BEGIN UNDEPLOY ****"
 
     - include_role: 
         name: xtoph_deploy
@@ -55,7 +71,8 @@
       when: xtoph_deploy_cmd == "undeploy" or
             xtoph_deploy_cmd == "redeploy"
 
-    - debug: msg="**** END UNDEPLOY  ****"
+    - debug: msg="**** END UNDEPLOY ****"
+
 
 
 ##
@@ -152,6 +169,8 @@
   when: xtoph_deploy_cmd == "deploy" or
         xtoph_deploy_cmd == "setup+" or
         xtoph_deploy_cmd == "redeploy"
+
+
 
 - hosts: myBootstrap
   gather_facts: no 
