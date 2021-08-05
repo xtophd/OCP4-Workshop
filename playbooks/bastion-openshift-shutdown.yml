@@ -19,7 +19,7 @@
   tasks:
   - block:
 
-      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of bastion host"
+      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of bastion host via ssh port"
         delegate_to: localhost
         wait_for:
           host: "{{ ansible_host }}"
@@ -39,19 +39,19 @@
 
 
 ##
-##      determine if cluster nodes are active,
-##      create new inventory named live_nodes
+##      determine if workers (and bootstrap) are active,
+##      create new inventory named live_workers
 ##
 
 
 
-- hosts: myBootstrap,myWorkers,myMasters
+- hosts: myBootstrap,myWorkers
   gather_facts: no
   tasks:
 
   - block:
 
-      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of cluster hosts"
+      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of worker nodes via ssh port"
         delegate_to: localhost
         wait_for:
           host: "{{ ansible_host }}"
@@ -61,9 +61,9 @@
           state: started
           timeout: 10
 
-      - name: "ocp4-workshop : bastion-openshift-shutdown : add active cluster hosts to hostgroup live_nodes"
+      - name: "ocp4-workshop : bastion-openshift-shutdown : add active worker nodes hosts to hostgroup live_workers"
         group_by:
-          key: "live_nodes"
+          key: "live_workers"
 
     rescue:
       - debug: msg="node {{inventory_hostname}} is already down"
@@ -71,22 +71,54 @@
 
 
 ##
-##      attempt gracefull shutdown of cluster nodes
+##      determine if masters nodes are active,
+##      create new inventory named live_masters
 ##
+
+
+
+- hosts: myMasters
+  gather_facts: no
+  tasks:
+
+  - block:
+
+      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of control plane nodes ssh port"
+        delegate_to: localhost
+        wait_for:
+          host: "{{ ansible_host }}"
+          connect_timeout: 5
+          port: 22
+          sleep: 1
+          state: started
+          timeout: 10
+
+      - name: "ocp4-workshop : bastion-openshift-shutdown : add active cluster hosts to hostgroup live_controlplane"
+        group_by:
+          key: "live_controlplane"
+
+    rescue:
+      - debug: msg="node {{inventory_hostname}} is already down"
+
+
+
+##
+##      attempt gracefull shutdown of worker nodes
+##
+
 
 
 - hosts: live_bastion
   gather_facts: no
   tasks:
 
-
-
-  - name: "ocp4-workshop : bastion-openshift-shutdown : issue gracefull shutdown on live_nodes"
+  - name: "ocp4-workshop : bastion-openshift-shutdown : issue gracefull shutdown on live_workers"
     shell:
       cmd: |
         ssh core@{{ item }} nohup 'sleep 3 && sudo shutdown -h now' &
 
-    with_items: "{{ groups['live_nodes'] }}"
+    with_items: "{{ groups['live_workers'] | default('') }}"
+
 
 
 ##
@@ -97,16 +129,17 @@
 
 
 
-- hosts: live_nodes
+- hosts: live_workers
   gather_facts: no
   tasks:
 
-  - name: "common-deploy-post : wait for ssh stopped"
+  - name: "common-deploy-post : wait for systemd port stopped"
     delegate_to: localhost
     wait_for:
       host: "{{ ansible_host }}"
-      connect_timeout: 5
-      port: 22
+      connect_timeout: 3
+      #port: 4789
+      port: 111
       sleep: 5
       state: stopped
       timeout: 180
@@ -114,3 +147,48 @@
     when:
       - groups['live_bastion']|length > 0
 
+
+
+##
+##      attempt gracefull shutdown of control plane
+##
+
+
+
+- hosts: live_bastion
+  gather_facts: no
+  tasks:
+
+  - name: "ocp4-workshop : bastion-openshift-shutdown : issue gracefull shutdown on live_controlplane"
+    shell:
+      cmd: |
+        ssh core@{{ item }} nohup 'sleep 3 && sudo shutdown -h now' &
+
+    with_items: "{{ groups['live_controlplane'] | default('') }}"
+
+
+
+##
+##      Try for 3 minutes to wait for graceful shutdown, then exit
+##      This allows other tasks to continue (ie: force
+##      shutdown via ipmi, ovirt api or libvirt virsh).
+##
+
+
+
+- hosts: live_controlplane
+  gather_facts: no
+  tasks:
+
+  - name: "ocp4-workshop : bastion-openshift-shutdown : wait for systemd port stopped"
+    delegate_to: localhost
+    wait_for:
+      host: "{{ ansible_host }}"
+      connect_timeout: 3
+      port: 111
+      sleep: 5
+      state: stopped
+      timeout: 180
+    ignore_errors: yes
+    when:
+      - groups['live_bastion']|length > 0
