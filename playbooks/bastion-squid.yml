@@ -21,6 +21,14 @@
 
 
 
+  - name: "ocp4-workshop : bastion-squid : enable squid cache_dir"
+    replace:
+      path: '/etc/squid/squid.conf'
+      regexp: '^#cache_dir (.*)$'
+      replace: 'cache_dir \1'
+
+
+
   - name: "ocp4-workshop : bastion-squid : restart services"
     service: name=squid state=restarted enabled=yes masked=no
 

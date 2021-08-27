@@ -11,7 +11,7 @@ xtoph_config_machine:
 
       description: "Custom oVirt vm with virtio-scsi sparse disks in 2 storage domains"
 
-      platform: "ovirt"
+      platform_name: "ovirt_default"
 
       default_os_type: "rhel_8x64"
 

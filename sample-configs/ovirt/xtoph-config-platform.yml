@@ -4,11 +4,12 @@
 
 xtoph_config_platform:
 
-  ovirt:
+  ovirt_default:
 
     platform_profile:
 
-      platform: "ovirt"
+      name: "ovirt_default"
+      type: "ovirt"
   
       cluster_name:  "Default"
       engine_cafile: "/etc/pki/ovirt-engine/ca.pem"
