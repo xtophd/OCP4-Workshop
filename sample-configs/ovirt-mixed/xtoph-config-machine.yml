@@ -3,36 +3,33 @@
 ##   This example creates a new machine entry called 'ovirt_ocs4workshop'
 ##
 
-xtoph_config_machine:
 
-  ovirt_ocp4custom:
+ovirt_ocp4custom:
 
-    machine_profile:
+    name: "ovirt_ocp4custom"
 
-      name: "ovirt_ocp4custom"
+    description: "Custom oVirt vm with virtio-scsi sparse disks in 2 storage domains"
 
-      description: "Custom oVirt vm with virtio-scsi sparse disks in 2 storage domains"
+    platform: "ovirt"
 
-      platform: "ovirt"
+    default_os_type: "rhel_8x64"
 
-      default_os_type: "rhel_8x64"
-
-      kickstart:
+    kickstart:
         netdev:  "{{ h_netDEV | default('ens3') }}"
         blkdev:  "{{ h_blkDEV | default('sda') }}"
 
-      storage:
+    storage:
         default:
-          note: "Storage bus virtio-scsi, sparse=true"
-          bus: "virtio_scsi"
-          sparse: "true"
-          domain_name: "rhv-data-hiperf"
+            note: "Storage bus virtio-scsi, sparse=true"
+            bus: "virtio_scsi"
+            sparse: "true"
+            domain_name: "rhv-data-hiperf"
         ocp_odf:
-          description: "Storage for ODF in alternate ovirt data domain"
-          bus: "virtio_scsi"
-          sparse: "true"
-          domain_name: "rhv-data-extra"
+            description: "Storage for ODF in alternate ovirt data domain"
+            bus: "virtio_scsi"
+            sparse: "true"
+            domain_name: "rhv-data-extra"
 
-      network:
+    network:
         default:
-          note: "Default network entries copied from platform_profile"
+            note: "Default network entries copied from platform_profile"

@@ -113,17 +113,16 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP:  "192.168.1.160"
-      h_pubMAC: "3c:7c:3f:1c:9a:74"
-
-      h_hwPROF: "pc_nvme"
-      h_rsPROF: "ocp_bastion"
-      h_ksPROF: "rhel84-pxe"
-
-      h_netDEV: "enp4s0"
-      h_blkDEV: "nvme0n1"
-
-      h_pwrOFF: "False"
+      h_hwPROF:  "supermicro_x9drd_if"
+      h_plPROF:  "baremetal"
+      h_pubIP:   "192.168.1.160"
+      h_pubMAC:  "00:25:90:f0:80:e0"
+      h_rsPROF:  "ocp_bastion"
+      h_ksPROF:  "rhel84-pxe"
+      h_netDEV:  "enp5s0f0"
+      h_blkDEV:  "sda"
+      h_pwrOFF:  "False"
+      ipmi_fqdn: "esiso1_bmc.lab.linuxsoup.com"
 
 
 
@@ -137,6 +136,7 @@ myBootstrap:
       h_pubIP:       "192.168.1.161"
   vars: 
     h_hwPROF:        "ovirt_ocp4custom"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_bootstrap"
     h_ksPROF:        "pxe_nowait"
 
@@ -160,6 +160,7 @@ myMasters:
       h_pubIP:       "192.168.1.164"
   vars: 
     h_hwPROF:        "ovirt_ocp4custom"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_master"
     h_ksPROF:        "pxe_nowait"
 
@@ -183,6 +184,7 @@ myWorkers:
       h_pubIP:       "192.168.1.167" 
   vars: 
     h_hwPROF:        "ovirt_ocp4custom"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_worker_odf"
     h_ksPROF:        "pxe_nowait"
 
