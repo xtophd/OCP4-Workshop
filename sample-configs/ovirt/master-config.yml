@@ -56,7 +56,7 @@ all:
         matchbox:           True
         nfs:                True
         ntp:                True
-#        squid:              True
+        squid:              True
         workshop_user:      True
         workshop_materials: True
         desktop_gui:        True
@@ -72,8 +72,8 @@ all:
 
       nfs_export:           "/home/nfs-{{ workshop_vars.clustername }}"
 
-#      squid_http_url:       "http://bastion.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}:3128"
-#      squid_https_url:      ""
+      squid_http_url:       "http://bastion.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}:3128"
+      squid_https_url:      ""
 
 
     ## ----------------------------------------
