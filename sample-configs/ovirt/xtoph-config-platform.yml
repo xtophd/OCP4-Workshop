@@ -2,9 +2,10 @@
 ## CUSTOM PLATFORM PROFILES
 ##
 
-ovirt_default:
+ovirt:
 
     type: "ovirt"
+    name: "ovirt"
 
     cluster_name:  "Default"
     engine_cafile: "/etc/pki/ovirt-engine/ca.pem"
