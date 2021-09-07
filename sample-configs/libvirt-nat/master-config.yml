@@ -54,6 +54,7 @@ all:
         matchbox:           True
         nfs:                True
         ntp:                True
+        squid:              True
         workshop_user:      True
         workshop_materials: True
         desktop_gui:        True
@@ -68,6 +69,10 @@ all:
       ocp_wfqdn:            "{{ workshop_vars.ocp_dns_wildcard }}.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}"
 
       nfs_export:           "/home/nfs-{{ workshop_vars.clustername }}"
+
+      squid_http_url:       "http://bastion.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}:3128"
+      squid_https_url:      ""
+
 
 
     ## ----------------------------------------
@@ -114,6 +119,7 @@ myBastion:
       h_pubIP: "192.168.123.160"
   vars:
     h_hwPROF: "kvm_vda"
+    h_plPROF: "libvirt"
     h_rsPROF: "bastion"
     h_ksPROF: "rhel84-bootiso"
     h_netDEV: "enp1s0"
@@ -131,9 +137,9 @@ myBootstrap:
       h_pubIP:       "192.168.123.161"
   vars: 
     h_hwPROF:        "kvm_vda"
+    h_plPROF:        "libvirt"
     h_rsPROF:        "med"
     h_ksPROF:        "pxe_wait"
-
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -155,9 +161,9 @@ myMasters:
       h_pubIP:       "192.168.123.164"
   vars: 
     h_hwPROF:        "kvm_vda"
+    h_plPROF:        "libvirt"
     h_rsPROF:        "med"
     h_ksPROF:        "pxe_wait"
-
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -177,9 +183,9 @@ myWorkers:
       h_pubIP:       "192.168.123.166" 
   vars: 
     h_hwPROF:        "kvm_vda"
+    h_plPROF:        "libvirt"
     h_rsPROF:        "sml"
     h_ksPROF:        "pxe_wait"
-
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
