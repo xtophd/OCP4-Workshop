@@ -4,7 +4,8 @@
 
 libvirt:
 
-    platform: "libvirt"
+    type: "libvirt"
+    name: "libvirt"
 
     vm:
         name: "{{ xtoph_vars.clustername }}_{{ inventory_hostname }}"
