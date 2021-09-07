@@ -143,10 +143,8 @@
           - p_sshKey:       "{{ ssh_key.stdout |quote }}"
           - p_clusterName:  "{{ workshop_vars.clustername }}"
           - p_domain:       "{{ workshop_vars.network_basedomain }}"
-#          - p_http_proxy:   "{{ workshop_vars.http_proxy | default ('') }}"
-#          - p_https_proxy:  "{{ workshop_vars.https_proxy | default ('') }}"
-          - p_http_proxy:   "{{ workshop_extras.squid_http_url if workshop_vars.bastion.squid else workshop_vars.http_proxy | default ('') }}"
-          - p_https_proxy:  "{{ workshop_extras.squid_https_url if workshop_vars.bastion.squid else workshop_vars.https_proxy | default ('') }}"
+          - p_http_proxy:   "{{ workshop_extras.squid_http_url  if workshop_vars.bastion.squid|default(false) else workshop_vars.http_proxy|default('') }}"
+          - p_https_proxy:  "{{ workshop_extras.squid_https_url if workshop_vars.bastion.squid|default(false) else workshop_vars.https_proxy|default('') }}"
           - p_no_proxy:     "{{ g_no_proxy | default ('') }}"
         template:
           src: "ocp-install-config.j2"
