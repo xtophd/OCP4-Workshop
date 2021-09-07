@@ -1,0 +1,44 @@
+:gitrepo: https://github.com/xtophd/OCP4-Workshop
+:docsdir: documentation
+:includedir: _include
+:doctype: book
+:sectnums:
+:sectnumlevels: 3
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:imagesdir: ./_include/_images/
+
+
+This document in intended to provide some overview of major release changes/updates/gotchas.
+
+
+== (xtoph_deploy) Multi Platfrom Support (2021/09/07)
+
+It is now required that the platform type be specificed as part of the node configuration.  In the context of OCP4-Workshop, this is done in master-config.yml with h_plPROF and should be set to 'ovirt','libvirt' or 'baremetal' which are the 3 currently supported platforms.
+
+This now allows for the speficiation of multiple (different) platforms for deployment.  Meaning, if you have 2 RHV clusters for example, you can deploy a node to one cluster and different node to another cluster.  Testing to follow, but it should work.
+
+There's some work to do in order to support multiple libvirt platforms, but that is the next step.
+
+
+
+== (xtoph_deploy) Config File Format Changes (2021/09/07)
+
+All of the custom configs and default configs were stripped of their top-level variable names.  When the variables are loaded, the import_vars task now sets the top-level.
+
+Also, of the configs were stripped of the repetitive nested node/variable names were existed only becuase I had not figured out how to properly prune and graft a sub-element of one hash to a sub-element and another hash.  Now the variable files are simple and they can be safely copied from the role/vars directory in configs and modified.
+
+
+
+== (ocp4_workshop) Added Squid Service on Bastion (2021/09/07)
+
+Added configuration option for a squid (proxy) service on the bastion node.  There are three variables that are added to the master-config.yaml.  Please refer to the sample configs for examples.
+
+
+
+
