@@ -120,7 +120,7 @@ myBastion:
       h_pubIP: "192.168.1.180"
   vars:
     h_hwPROF: "ovirt_ocs4workshop"
-    h_plPROF: "ovirt_default"
+    h_plPROF: "ovirt"
     h_rsPROF: "ocp_bastion"
     h_ksPROF: "rhel84-bootiso"
     h_netDEV: "ens3"
@@ -138,7 +138,7 @@ myBootstrap:
       h_pubIP:       "192.168.1.181"
   vars: 
     h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt_default"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_bootstrap"
     h_ksPROF:        "pxe_nowait"
 
@@ -162,7 +162,7 @@ myMasters:
       h_pubIP:       "192.168.1.184"
   vars: 
     h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt_default"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_master"
     h_ksPROF:        "pxe_nowait"
 
@@ -184,7 +184,7 @@ myWorkers:
       h_pubIP:       "192.168.1.186" 
   vars: 
     h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt_default"
+    h_plPROF:        "ovirt"
     h_rsPROF:        "ocp_worker"
     h_ksPROF:        "pxe_nowait"
 
