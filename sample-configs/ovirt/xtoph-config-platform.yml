@@ -2,7 +2,7 @@
 ## CUSTOM PLATFORM PROFILES
 ##
 
-ovirt:
+ocp4_ovirt_platform:
 
     type: "ovirt"
     name: "ovirt"

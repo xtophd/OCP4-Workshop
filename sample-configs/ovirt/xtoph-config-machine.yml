@@ -4,7 +4,7 @@
 ##
 
 
-ovirt_ocs4workshop:
+ocp4_ovirt_machine:
 
     description: "Custom oVirt vm with virtio-scsi sparse disks in 2 storage domains"
 

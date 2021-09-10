@@ -2,7 +2,7 @@
 ## RESOURCE PROFILES
 ##
 
-ocp_bastion:
+ocp4_bastion:
     name: "custom openshift bastion"
     description: "Custom Bastion Utility Server"
     vcpus:    4
@@ -12,7 +12,7 @@ ocp_bastion:
         size: 50 
         hw_storage_profile: default
 
-ocp_bootstrap:
+ocp4_bootstrap:
     name: "ocp_master"
     description: "Custom Openshift Master [4cpu,16GB,120GB disk]"
     vcpus:    4
@@ -22,7 +22,7 @@ ocp_bootstrap:
         size: 120 
         hw_storage_profile: default
 
-ocp_master:
+ocp4_master:
     name: "ocp_master"
     description: "Custom Openshift Master [4cpu,16GB,120GB disk]"
     vcpus:    4
@@ -32,7 +32,7 @@ ocp_master:
         size: 120 
         hw_storage_profile: default
 
-ocp_worker:
+ocp4_worker:
     name: "custom openshift worker"
     description: "Custom Openshift Worker [2cpu,8GB,120GB disk]"
     vcpus: 2
@@ -42,7 +42,7 @@ ocp_worker:
         size: 120
         hw_storage_profile: default
 
-ocp_worker_odf:
+ocp4_worker_odf:
     name: "custom openshift master with extra storage for odf"
     description: "Custom Openshift Worker [4cpu,16GB,120GB + 200GB disk]"
     vcpus: 4

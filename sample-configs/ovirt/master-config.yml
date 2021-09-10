@@ -117,14 +117,14 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP: "192.168.1.180"
+      h_pubIP:       "192.168.1.180"
   vars:
-    h_hwPROF: "ovirt_ocs4workshop"
-    h_plPROF: "ovirt"
-    h_rsPROF: "ocp_bastion"
-    h_ksPROF: "rhel84-bootiso"
-    h_netDEV: "ens3"
-    h_blkDEV: "sda"
+    h_hwPROF:        "ocp4_ovirt_machine"
+    h_plPROF:        "ocp4_ovirt_platform"
+    h_rsPROF:        "ocp4_bastion"
+    h_ksPROF:        "rhel84-bootiso"
+    h_netDEV:        "ens3"
+    h_blkDEV:        "sda"
 
 
 
@@ -137,11 +137,10 @@ myBootstrap:
     node1:
       h_pubIP:       "192.168.1.181"
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt"
-    h_rsPROF:        "ocp_bootstrap"
+    h_hwPROF:        "ocp4_ovirt_machine"
+    h_plPROF:        "ocp4_ovirt_platform"
+    h_rsPROF:        "ocp4_bootstrap"
     h_ksPROF:        "pxe_nowait"
-
     h_rhcosDEV:      "sda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -161,11 +160,10 @@ myMasters:
     node4:
       h_pubIP:       "192.168.1.184"
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt"
-    h_rsPROF:        "ocp_master"
+    h_hwPROF:        "ocp4_ovirt_machine"
+    h_plPROF:        "ocp4_ovirt_platform"
+    h_rsPROF:        "ocp4_master"
     h_ksPROF:        "pxe_nowait"
-
     h_rhcosDEV:      "sda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -183,11 +181,10 @@ myWorkers:
     node6:
       h_pubIP:       "192.168.1.186" 
   vars: 
-    h_hwPROF:        "ovirt_ocs4workshop"
-    h_plPROF:        "ovirt"
-    h_rsPROF:        "ocp_worker"
+    h_hwPROF:        "ocp4_ovirt_machine"
+    h_plPROF:        "ocp4_ovirt_platform"
+    h_rsPROF:        "ocp4_worker"
     h_ksPROF:        "pxe_nowait"
-
     h_rhcosDEV:      "sda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
