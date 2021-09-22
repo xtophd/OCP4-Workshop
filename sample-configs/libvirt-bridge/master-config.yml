@@ -26,7 +26,7 @@ all:
 
     workshop_vars:
 
-      clustername:          "ocp4br"
+      clustername:          "ocp4lvbr"
 
       ocp_version:          "4.8"
       ocp_dns_wildcard:     "apps"
