@@ -32,6 +32,31 @@
 
 
 
+
+##
+##    Second, for libvirt based platform hosts 
+##    we need to install software, services and settings
+##    on the remote hosts (not on the deploy host)
+##
+
+
+
+- hosts: myLibvirtHosts
+  tasks:
+
+    - debug: msg="**** BEGIN SETUP LIBVIRT ****"
+
+    - include_role: 
+        name: xtoph_deploy
+      vars: 
+        xtoph_deploy_action: "setup-libvirt"
+      when: xtoph_deploy_cmd == "setup" or
+            xtoph_deploy_cmd == "setup+"
+
+    - debug: msg="**** END SETUP LIBVIRT ****"
+
+
+
 ##
 ##      If undeploy or redeploy, attempt gracefull
 ##      shutdown of a running cluster.  Sometimes this
