@@ -84,15 +84,6 @@ all:
       deployhost_ip:       "192.168.1.170" 
       clustername:         "{{ workshop_vars.clustername }}"
 
-    ## ----------------------------------------
-    ##    Override default ansible host with
-    ##    one that includes fqdn.  This saves us
-    ##    from having to specify FQDN in host 
-    ##    vars section below.  This assumes all
-    ##    hosts are in the same domain. DUH!
-
-    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-
 
 
 ## ----------------------------------------
@@ -119,6 +110,7 @@ myBastion:
     bastion:
       h_pubIP:       "192.168.1.180"
   vars:
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
     h_plPROF:        "ocp4_ovirt_platform"
     h_rsPROF:        "ocp4_bastion"
@@ -137,6 +129,7 @@ myBootstrap:
     node1:
       h_pubIP:       "192.168.1.181"
   vars: 
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
     h_plPROF:        "ocp4_ovirt_platform"
     h_rsPROF:        "ocp4_bootstrap"
@@ -160,6 +153,7 @@ myMasters:
     node4:
       h_pubIP:       "192.168.1.184"
   vars: 
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
     h_plPROF:        "ocp4_ovirt_platform"
     h_rsPROF:        "ocp4_master"
@@ -181,6 +175,7 @@ myWorkers:
     node6:
       h_pubIP:       "192.168.1.186" 
   vars: 
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
     h_plPROF:        "ocp4_ovirt_platform"
     h_rsPROF:        "ocp4_worker"

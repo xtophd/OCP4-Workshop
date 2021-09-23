@@ -5,7 +5,7 @@
 ocp4_ovirt_platform:
 
     type: "ovirt"
-    name: "ovirt"
+    description: "Custom platform ocp_ovirt_platform: virtio, virtio_scsi,sparse"
 
     cluster_name:  "Default"
     engine_cafile: "/etc/pki/ovirt-engine/ca.pem"
@@ -31,8 +31,8 @@ ocp4_ovirt_platform:
         description: "default ovirt network parameters"
         model: "virtio"
         network_name: "ovirtmgmt"
-        ip:                "{{ h_pubIP  }}"
-        mac:               "{{ h_pubMAC| default('') }}"
+#        ip:                "{{ h_pubIP  }}"
+#        mac:               "{{ h_pubMAC| default('') }}"
         basedomain:        "{{ workshop_vars.network_basedomain }}"
         network:           "{{ workshop_vars.network_network    }}"
         netmask:           "{{ workshop_vars.network_netmask    }}"

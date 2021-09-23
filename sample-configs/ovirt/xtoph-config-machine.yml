@@ -31,3 +31,6 @@ ocp4_ovirt_machine:
     network:
       default:
         note: "Default network entries copied from platform_profile"
+        ip:  "{{ h_pubIP | default('') }}"
+        mac: "{{ h_pubMAC| default('') }}"
+
