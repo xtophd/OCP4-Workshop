@@ -16,6 +16,11 @@ endif::[]
 
 This document in intended to provide some overview of major release changes/updates/gotchas.
 
+== (xtoph_deploy) Multi KVM/Libvirt Platfrom Support (2021/09/23)
+
+Recent updates to xtoph_deploy allow of the specification of multiple libvirt/kvm platform nodes.  Thus, you can deploy openshift across multiple hypervisors without needing to implement ovirt or redhat-virtualization (rhv).  This only works with bridged networking, if you want NAT based network then you are locked in to an all-in-one (single host) deployment.
+
+
 
 == (xtoph_deploy) Multi Platfrom Support (2021/09/07)
 
