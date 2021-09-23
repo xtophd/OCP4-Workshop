@@ -119,7 +119,7 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP: "192.168.1.160"
+      h_pubIP: "192.168.1.60"
   vars:
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF: "kvm_vda"
