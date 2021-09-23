@@ -83,15 +83,6 @@ all:
       deployhost_ip:       "192.168.123.1" 
       clustername:         "{{ workshop_vars.clustername }}"
 
-    ## ----------------------------------------
-    ##    Override default ansible host with
-    ##    one that includes fqdn.  This saves us
-    ##    from having to specify FQDN in host 
-    ##    vars section below.  This assumes all
-    ##    hosts are in the same domain. DUH!
-
-    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-
 
 
 ## ----------------------------------------
@@ -100,12 +91,25 @@ all:
 
 
 
+myLibvirtHosts:
+
+  hosts:
+    deployer:
+      ansible_connection: local
+      h_pubIP:  "{{ xtoph_vars.deployhost_ip }}"
+      h_plPROF: "libvirt_nat"
+
+
+
+## -----------------
+
+
+
 myDeployhost:
   hosts:
     deployer:
-      h_pubIP: "{{ xtoph_vars.deployhost_ip }}"
-  vars:
-    ansible_connection: local
+      ansible_connection: local
+      h_pubIP:  "{{ xtoph_vars.deployhost_ip }}"
 
 
 
@@ -116,14 +120,15 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP: "192.168.123.160"
+      h_pubIP:       "192.168.123.160"
   vars:
-    h_hwPROF: "kvm_vda"
-    h_plPROF: "libvirt"
-    h_rsPROF: "bastion"
-    h_ksPROF: "rhel84-bootiso"
-    h_netDEV: "enp1s0"
-    h_blkDEV: "vda"
+    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+    h_hwPROF:        "kvm_vda"
+    h_plPROF:        "libvirt_nat"
+    h_rsPROF:        "bastion"
+    h_ksPROF:        "rhel84-bootiso"
+    h_netDEV:        "enp1s0"
+    h_blkDEV:        "vda"
 
 
 
@@ -136,8 +141,9 @@ myBootstrap:
     node1:
       h_pubIP:       "192.168.123.161"
   vars: 
+    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt"
+    h_plPROF:        "libvirt_nat"
     h_rsPROF:        "med"
     h_ksPROF:        "pxe_wait"
     h_rhcosDEV:      "vda"
@@ -160,8 +166,9 @@ myMasters:
     node4:
       h_pubIP:       "192.168.123.164"
   vars: 
+    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt"
+    h_plPROF:        "libvirt_nat"
     h_rsPROF:        "med"
     h_ksPROF:        "pxe_wait"
     h_rhcosDEV:      "vda"
@@ -182,8 +189,9 @@ myWorkers:
     node6:
       h_pubIP:       "192.168.123.166" 
   vars: 
+    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt"
+    h_plPROF:        "libvirt_nat"
     h_rsPROF:        "sml"
     h_ksPROF:        "pxe_wait"
     h_rhcosDEV:      "vda"
