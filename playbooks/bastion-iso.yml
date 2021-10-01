@@ -69,6 +69,7 @@
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
+      - p_bond:      "{{ hostvars[item]['h_rhcosBOND'] | default ('') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
       - p_bios_img:  "{{ rhcos_assets[workshop_vars.ocp_version]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
@@ -79,6 +80,7 @@
           \1append\2 rd.neednet=1 
           usb-storage.delay_use={{p_usbdelay}} 
           ip={{ p_network }} 
+          {% if p_bond != "" %}bond={{ p_bond }}{% endif %}
           "coreos.inst=yes" 
           "coreos.inst.insecure=yes" 
           "coreos.inst.install_dev={{ p_storage }}" 
@@ -92,6 +94,7 @@
       - p_mac:       "{{ hostvars[item]['h_pubMAC'] }}"
       - p_storage:   "{{ hostvars[item]['h_rhcosDEV'] | default ('sda')  }}"
       - p_network:   "{{ hostvars[item]['h_rhcosNIC'] | default ('dhcp') }}"
+      - p_bond:      "{{ hostvars[item]['h_rhcosBOND'] | default ('') }}"
       - p_usbdelay:  "{{ hostvars[item]['h_rhcosUSBdelay'] | default ('0') }}"
       - p_bios_img:  "{{ rhcos_assets[workshop_vars.ocp_version]['bios'] }}"
       - p_port:      "{{ matchbox.port }}"
@@ -102,6 +105,7 @@
           \1linux\2 rd.neednet=1 
           usb-storage.delay_use={{p_usbdelay}} 
           ip={{ p_network }} 
+          {% if p_bond != "" %}bond={{ p_bond }}{% endif %}
           "coreos.inst=yes" 
           "coreos.inst.insecure=yes" 
           "coreos.inst.install_dev={{ p_storage }}" 

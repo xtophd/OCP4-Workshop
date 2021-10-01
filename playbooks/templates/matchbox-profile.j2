@@ -9,6 +9,9 @@
    ],
    "args": [
     "ip={{ p_network }}",
+{% if p_bond != "" %}
+    "bond={{ p_bond }}",
+{% endif %}
     "rd.neednet=1",
     "console=tty0",
     "usb-storage.delay_use={{ p_usbdelay }}",

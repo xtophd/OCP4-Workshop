@@ -58,9 +58,9 @@ all:
         ntp:                True
         workshop_user:      True
         workshop_materials: True
-        desktop_gui:        True
-        desktop_chrome:     True
-        desktop_vnc:        True
+        desktop_gui:        False
+        desktop_chrome:     False
+        desktop_vnc:        False
 
     workshop_extras:
 
@@ -104,17 +104,15 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-      h_hwPROF:  "supermicro_x9drd_if"
-      h_plPROF:  "baremetal"
-      h_pubIP:   "192.168.1.160"
-      h_pubMAC:  "00:25:90:f0:80:e0"
-      h_rsPROF:  "ocp_bastion"
-      h_ksPROF:  "rhel84-pxe"
-      h_netDEV:  "enp5s0f0"
-      h_blkDEV:  "sda"
-      h_pwrOFF:  "False"
-      ipmi_fqdn: "esiso1_bmc.lab.linuxsoup.com"
+      h_pubIP:         "192.168.1.160"
+  vars:
+    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+    h_hwPROF:        "ovirt_ocp4custom"
+    h_plPROF:        "ovirt"
+    h_rsPROF:        "ocp_bastion"
+    h_ksPROF:        "rhel84-bootiso"
+    h_netDEV:        "ens3"
+    h_blkDEV:        "sda"
 
 
 
@@ -125,18 +123,17 @@ myBastion:
 myBootstrap:
   hosts:
     node1:
-      h_pubIP:       "192.168.1.161"
-  vars: 
-    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      h_pubIP:         "192.168.1.161"
 
-    h_hwPROF:        "ovirt_ocp4custom"
-    h_plPROF:        "ovirt"
-    h_rsPROF:        "ocp_bootstrap"
-    h_ksPROF:        "pxe_nowait"
+      h_hwPROF:        "ovirt_ocp4custom"
+      h_plPROF:        "ovirt"
+      h_rsPROF:        "ocp_bootstrap"
+      h_ksPROF:        "pxe_nowait"
 
-    h_rhcosDEV:      "sda"
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
+      h_rhcosDEV:      "sda"
+      h_rhcosNIC:      "dhcp"
+      h_rhcosUSBdelay: "0"
 
 
 
@@ -152,6 +149,7 @@ myMasters:
       h_pubIP:       "192.168.1.163" 
     node4:
       h_pubIP:       "192.168.1.164"
+
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
 
@@ -173,20 +171,61 @@ myMasters:
 myWorkers:
   hosts:
     node5:
-      h_pubIP:       "192.168.1.165" 
+      ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      h_pubIP:         "192.168.1.165" 
+
+      h_hwPROF:        "ovirt_ocp4custom"
+      h_plPROF:        "ovirt"
+      h_rsPROF:        "ocp_worker_odf"
+      h_ksPROF:        "pxe_nowait"
+
+      h_rhcosDEV:      "sda"
+      h_rhcosNIC:      "dhcp"
+      h_rhcosUSBdelay: "0"
+
     node6:
-      h_pubIP:       "192.168.1.166" 
+      ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      h_pubIP:         "192.168.1.166" 
+
+      h_hwPROF:        "ovirt_ocp4custom"
+      h_plPROF:        "ovirt"
+      h_rsPROF:        "ocp_worker_odf"
+      h_ksPROF:        "pxe_nowait"
+
+      h_rhcosDEV:      "sda"
+      h_rhcosNIC:      "dhcp"
+      h_rhcosUSBdelay: "0"
+
+
+
     node7:
-      h_pubIP:       "192.168.1.167" 
-  vars: 
-    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
+      h_pubIP:         "192.168.1.167" 
+      h_pubMAC:        "00:25:90:f0:80:e0"
 
-    h_hwPROF:        "ovirt_ocp4custom"
-    h_plPROF:        "ovirt"
-    h_rsPROF:        "ocp_worker_odf"
-    h_ksPROF:        "pxe_nowait"
+      h_hwPROF:        "supermicro_x9drd_if"
+      h_plPROF:        "baremetal"
+      h_rsPROF:        "ocp_worker"
+      h_ksPROF:        "pxe_nowait"
+      h_pwrOFF:        "False"
+      h_rhcosUSBdelay: "0"
 
-    h_rhcosDEV:      "sda"
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
+      ipmi_fqdn:       "esiso1_bmc.lab.linuxsoup.com"
+
+      h_rhcosDEV:      "sda"
+
+      # Example of Bonded nics with DHCP or with STATIC setups
+      #    h_rhcosBOND:     "bond0:enp5s0f1,enp5s0f0:mode=active-backup"
+      #
+      #    h_rhcosNIC:      "bond0:dhcp"
+      #    h_rhcosNIC:      "192.168.1.167::192.168.1.1:255.255.255.0:node7.ocp4ovirt.example.com:bond0:none:192.168.1.160"
+
+      h_rhcosBOND:     "bond0:enp5s0f1,enp5s0f0:mode=active-backup"
+      h_rhcosNIC:      "192.168.1.167::192.168.1.1:255.255.255.0:node7.ocp4ovmix.example.com:bond0:none:192.168.1.160"
+
+
+
+#myShelter:
+#  hosts:
+#    bastion:
 
