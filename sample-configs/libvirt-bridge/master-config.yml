@@ -28,7 +28,7 @@ all:
 
       clustername:          "ocp4lvbr"
 
-      ocp_version:          "4.8"
+      ocp_version:          "4.9"
       ocp_dns_wildcard:     "apps"
 
       network_basedomain:   "example.com"

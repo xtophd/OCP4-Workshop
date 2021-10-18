@@ -1,16 +1,16 @@
 ##
 ##    !! WARNING !!  Ansible only interprets 'True' and 'False'
 ##                   as booleans when reading ini files.  Other
-##                   values such as 'true' or 'false' would be 
+##                   values such as 'true' or 'false' would be
 ##                   interpreted as strings and would break various
-##                   logic tests.  
+##                   logic tests.
 ##
 ##                   When reading YML files, booleans can take on
 ##                   many forms and be interpreted correctly.
 ##
 ##                   For consistency, only use unquoted booleans: True & False
 
-all: 
+all:
 
   vars:
 
@@ -26,17 +26,17 @@ all:
 
     workshop_vars:
 
-      clustername:          "ocp4lvnat"
+      clustername:          "ocp"
 
       ocp_version:          "4.9"
       ocp_dns_wildcard:     "apps"
 
       network_basedomain:   "example.com"
-      network_network:      "192.168.123.0"
+      network_network:      "192.168.1.0"
       network_netmask:      "255.255.255.0"
-      network_broadcast:    "192.168.123.255"
+      network_broadcast:    "192.168.1.255"
       network_prefix:       "24"
-      network_gateway:      "192.168.123.1"
+      network_gateway:      "192.168.1.1"
       network_nameserver:   "192.168.1.30"
       network_timeserver:   "192.168.1.30"
 
@@ -59,7 +59,7 @@ all:
         workshop_materials: True
         desktop_gui:        True
         desktop_chrome:     True
-        desktop_vnc:        False
+        desktop_vnc:        True
 
     workshop_extras:
 
@@ -77,11 +77,16 @@ all:
 
     ## ----------------------------------------
     ##    Xtoph Deploy Variables
+   
 
-    xtoph_vars:
+ 
+    ## THIS SAMPLE CONFIG DOES NOT USE XTOPH_DEPLOY,
+    ## SO THESE PARAMETERS ARE MUTE
 
-      deployhost_ip:       "192.168.123.1" 
-      clustername:         "{{ workshop_vars.clustername }}"
+    #xtoph_vars:
+    #
+    #  deployhost_ip:       "192.168.1.170"
+    #  clustername:         "{{ workshop_vars.clustername }}"
 
 
 
@@ -91,25 +96,17 @@ all:
 
 
 
-myLibvirtHosts:
+## THIS SAMPLE CONFIG DOES NOT HAVE A DEDICATED 
+## DEPLOYHOST, SO UNLIKE OTHER SAMPLE CONFIGS THAT
+## USE XTOPH_DEPLOY, THESE PARAMETERS ARE MUTE
 
-  hosts:
-    deployer:
-      ansible_connection: local
-      h_pubIP:  "{{ xtoph_vars.deployhost_ip }}"
-      h_plPROF: "libvirt_nat"
-
-
-
-## -----------------
-
-
-
-myDeployhost:
-  hosts:
-    deployer:
-      ansible_connection: local
-      h_pubIP:  "{{ xtoph_vars.deployhost_ip }}"
+#myDeployhost:
+#  hosts:
+#    bastion:
+#      h_pubIP: "192.168.1.150"
+#  vars:
+#    ansible_connection: local
+#    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
 
 
 
@@ -120,15 +117,10 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP:       "192.168.123.160"
+      h_pubIP: "192.168.1.150"
   vars:
-    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-    h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_nat"
-    h_rsPROF:        "bastion"
-    h_ksPROF:        "rhel84-bootiso"
-    h_netDEV:        "enp1s0"
-    h_blkDEV:        "vda"
+    ansible_connection: local
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
 
 
 
@@ -139,13 +131,9 @@ myBastion:
 myBootstrap:
   hosts:
     node1:
-      h_pubIP:       "192.168.123.161"
-  vars: 
-    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-    h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_nat"
-    h_rsPROF:        "med"
-    h_ksPROF:        "pxe_wait"
+      h_pubIP:       "192.168.1.151"
+  vars:
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -160,17 +148,16 @@ myBootstrap:
 myMasters:
   hosts:
     node2:
-      h_pubIP:       "192.168.123.162" 
+      h_pubIP:       "192.168.1.152"
+      h_etcdName:    "etcd-0"
     node3:
-      h_pubIP:       "192.168.123.163" 
+      h_pubIP:       "192.168.1.153"
+      h_etcdName:    "etcd-1"
     node4:
-      h_pubIP:       "192.168.123.164"
-  vars: 
-    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-    h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_nat"
-    h_rsPROF:        "med"
-    h_ksPROF:        "pxe_wait"
+      h_pubIP:       "192.168.1.154"
+      h_etcdName:    "etcd-2"
+  vars:
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -185,17 +172,15 @@ myMasters:
 myWorkers:
   hosts:
     node5:
-      h_pubIP:       "192.168.123.165" 
+      h_pubIP:       "192.168.1.155"
     node6:
-      h_pubIP:       "192.168.123.166" 
-  vars: 
-    ansible_host:    "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
-    h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_nat"
-    h_rsPROF:        "sml"
-    h_ksPROF:        "pxe_wait"
+      h_pubIP:       "192.168.1.156"
+  vars:
+    ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
     h_rhcosLOADER:   "bios"
+
+
 
