@@ -50,7 +50,7 @@
 
   - name: "ocp4-workshop : workshop-materials :deploy workshop-registryPV.yaml in /usr/local/etc"
     vars:
-      - p_server: "{{ item }}.{{ workshop_vars.clustername }}.{{ workshop_vars.network_nameserver }}"
+      - p_server: "{{ item }}.{{ workshop_extras.network_fqdn }}"
       - p_path:   "{{ workshop_extras.nfs_export }}"
     template:
       src: "workshop-yaml-registryPV.j2"
