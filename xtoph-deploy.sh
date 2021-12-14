@@ -18,6 +18,19 @@ fi
 ##
 ##
 
+if [[ $2 != "" ]]; then
+
+    echo "Ansible limit set to: $2"
+
+    myLimits="-l $2"
+
+else
+
+    myLimits=""
+
+fi
+
+
 case "$1" in
 
     "deploy"     | \
@@ -26,17 +39,20 @@ case "$1" in
     "setup+"     | \
     "setup")
 
-        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e xtoph_deploy_cmd=${1} xtoph-deploy.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e xtoph_deploy_cmd=${1} ${myLimits} xtoph-deploy.yml
         ;;
 
     *)
-        echo "USAGE: xtoph-deploy.sh [ setup | setup+ | deploy | undeploy | redeploy ]"
+        echo "USAGE: xtoph-deploy.sh [ setup | setup+ | deploy | undeploy | redeploy ] [ansible-limits]"
         echo ""
         echo "  setup     ... runs only 'setup' plays"
         echo "  setup+    ... runs both 'setup' and 'deploy' plays"
         echo "  deploy    ... runs only 'deploy' plays"
         echo "  undeploy  ... runs only 'undeploy' plays"
         echo "  redeploy  ... runs both 'undeploy' and 'deploy' plays"
+        echo ""
+        echo "  ansible-limits  ... specific hosts, comma separated list"
+        echo "                      of hosts or host groups (ie: node1,node2)"
         ;;
 
 esac         
