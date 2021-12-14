@@ -24,6 +24,8 @@ libvirt_amanda1:
   
             description:     "default libvirt network parameters"
             network_name:    "br0"
+            undeploy:        true
+
             fwd_type:        "bridge"
             bridge_netdev:   "enp5s0"
             model:           "virtio"
@@ -68,6 +70,8 @@ libvirt_amanda2:
   
             description:     "default libvirt network parameters"
             network_name:    "br0"
+            undeploy:        true
+
             fwd_type:        "bridge"
             bridge_netdev:   "enp4s0"
             model:           "virtio"
