@@ -30,6 +30,8 @@ libvirt_nat:
   
             description:     "standard libvirt nat network parameters"
             network_name:    "virbr_{{ xtoph_vars.clustername }}"
+            undeploy:        true
+
             fwd_type:        "nat"
             bridge_netdev:   ""
             model:           "virtio"
