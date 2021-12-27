@@ -31,8 +31,6 @@ ovirt:
             description:       "default ovirt network parameters"
             model:             "virtio"
             network_name:      "ovirtmgmt"
-#            ip:                "{{ h_pubIP  }}"
-#            mac:               "{{ h_pubMAC| default('') }}"
             basedomain:        "{{ workshop_vars.network_basedomain }}"
             network:           "{{ workshop_vars.network_network    }}"
             netmask:           "{{ workshop_vars.network_netmask    }}"
