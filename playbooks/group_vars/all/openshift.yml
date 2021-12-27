@@ -16,14 +16,14 @@ ocp_assets:
   "4.9":
     name:        "openshift"
     version:     "4.9"
-    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.9.0/"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.9.0"
     install_tar: "openshift-install-linux-4.9.0.tar.gz"
     client_tar:  "openshift-client-linux-4.9.0.tar.gz"
 
   "4.8":
     name:        "openshift"
     version:     "4.8"
-    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.8.2/"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.8.2"
     install_tar: "openshift-install-linux-4.8.2.tar.gz"
     client_tar:  "openshift-client-linux-4.8.2.tar.gz"
 
@@ -74,7 +74,7 @@ rhcos_assets:
   "4.9" :
     name:        "rhcos"
     version:     "4.9"
-    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/4.9.0/"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/4.9.0"
     initramfs:   "rhcos-4.9.0-x86_64-live-initramfs.x86_64.img"
     rootfs:      "rhcos-4.9.0-x86_64-live-rootfs.x86_64.img"
     kernel:      "rhcos-4.9.0-x86_64-live-kernel-x86_64"
@@ -85,7 +85,7 @@ rhcos_assets:
   "4.8" :
     name:        "rhcos"
     version:     "4.8"
-    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2"
     initramfs:   "rhcos-4.8.2-x86_64-live-initramfs.x86_64.img"
     rootfs:      "rhcos-4.8.2-x86_64-live-rootfs.x86_64.img"
     kernel:      "rhcos-4.8.2-x86_64-live-kernel-x86_64"
