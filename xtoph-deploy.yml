@@ -2,7 +2,7 @@
 ##    Using Ansbile tags are horrible when coupled with
 ##    import_playbooks.  Thus, we use a variable called
 ##    'xtoph_deploy_cmd' to determine what to execute.
-##    This variable should useually be passed from the 
+##    This variable should usually be passed from the 
 ##    commandline.
 ##    
 ##        -e xtoph_deploy_cmd="[deploy | undeploy | redeploy | setup]"
@@ -317,4 +317,4 @@
 #            xtoph_deploy_cmd == "setup+" or
 #            xtoph_deploy_cmd == "redeploy"
 #
-#    - debug: msg="**** BEGIN RECLAIM myBootstrap ****"
+#    - debug: msg="**** END RECLAIM myBootstrap ****"
