@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+
+echo "Create a new project..."
+oc new-project helloworld --description="Hello World using NFS storage" --display-name="Hello World"
+
+
+
+echo "Deploy an image..."
+oc new-app registry.access.redhat.com/httpd-24 --name=hello-world
+
+
+
+echo "Expose a route..."
+oc expose service hello-app 
+
+
+
+echo "Create the NFS pv..."
+oc create -f /var/tmp/cli-hello3-pv.yml
+
+
+
+echo "Create the NFS pv claim..."
+oc create -f /var/tmp/cli-hello3-claim.yml
+
+
+
+echo "Configure the app with new storage..."
+oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=cli-hello3-claim
+
+
+
+echo "Examine the rollout..."
+oc rollout status dc/hello-app3

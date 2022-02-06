@@ -1,3 +1,4 @@
 # Ignore any local customizations
 config/*
+files/*
 collections/*
