@@ -59,9 +59,9 @@ all:
         squid:              True
         workshop_user:      True
         workshop_materials: True
-        desktop_gui:        True
-        desktop_chrome:     True
-        desktop_vnc:        True
+        desktop_gui:        False
+        desktop_chrome:     False
+        desktop_vnc:        False
 
     workshop_extras:
 
@@ -81,7 +81,7 @@ all:
 
     xtoph_vars:
 
-      deployhost_ip:       "192.168.1.170" 
+      deployhost_ip:       "192.168.100.33" 
       clustername:         "{{ workshop_vars.clustername }}"
 
 

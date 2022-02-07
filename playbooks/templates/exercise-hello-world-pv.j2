@@ -9,6 +9,6 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /home/nfs-hello-world
-    server: bastion.mwtiger.dfw.ocp.run
+    server:   {{ p_server }}
+    path:     {{ p_path }}/hello-world
     readOnly: false

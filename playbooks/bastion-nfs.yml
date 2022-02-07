@@ -16,13 +16,17 @@
   - name: "ocp4-workshop : bastion-nfs : package installation"
     yum: name=nfs-utils,rpcbind state=installed
 
-  - name: "ocp4-workshop : bastion-nfs  create directory"
+  - name: "ocp4-workshop : bastion-nfs  create directories"
     file:
-      path: '{{ workshop_extras.nfs_export }}'
+      path: '{{ item }}'
       mode: '0755'
       owner: 65534
       group: 65534
       state: directory
+    with_items:
+      - '{{ workshop_extras.nfs_export }}'
+      - '{{ workshop_extras.nfs_export }}/registry'
+      - '{{ workshop_extras.nfs_export }}/hello-world'
 
   - name: "ocp4-workshop : bastion-nfs : cleanup conflicting entries in /etc/exports"
     lineinfile:
@@ -40,11 +44,14 @@
   - name: 'ocp4-workshop : bastion-nfs : update entry in /etc/exports'
     lineinfile:
       dest: '/etc/exports'
-      line: '{{ workshop_extras.nfs_export }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
+      line: '{{ item }}   *(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)'
       state: present
       owner: root
       group: root
       mode: 644
+    with_items:
+      - '{{ workshop_extras.nfs_export }}/registry'
+      - '{{ workshop_extras.nfs_export }}/hello-world'
 
   - name: 'ocp4-workshop : bastion-nfs : restart services'
     service: name={{ item }} state=restarted enabled=yes masked=no

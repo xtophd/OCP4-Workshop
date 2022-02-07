@@ -1,36 +1,39 @@
 #!/bin/bash
 
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
 
 
 echo "Create a new project..."
-oc new-project helloworld --description="Hello World using NFS storage" --display-name="Hello World"
-
-
+oc new-project hello-world --description="Hello World using NFS storage" --display-name="Hello World"
 
 echo "Deploy an image..."
-oc new-app registry.access.redhat.com/httpd-24 --name=hello-world
+oc new-app registry.redhat.io/ubi8/httpd-24 --name=hello-world
+
+echo "Wait for rollout..."
+oc rollout status deployment/hello-world
+
+
+
+echo "Copy exercise-hello-world.html to nfs export..."
+cp /usr/local/etc/exercise-hello-world.html {{ workshop_extras.nfs_export }}/hello-world/index.html
+
+echo "Create the NFS pv..."
+oc create -f /usr/local/etc/exercise-hello-world-pv.yaml
+
+echo "Create the NFS pv claim..."
+oc create -f /usr/local/etc/exercise-hello-world-pvc.yaml
+
+echo "Configure the app with new storage..."
+oc set volume deployment/hello-world --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=hello-world-claim
+
+echo "Wait for rollout..."
+oc rollout status deployment/hello-world
 
 
 
 echo "Expose a route..."
-oc expose service hello-app 
+oc expose service hello-world --hostname=hello-world.apps.{{ workshop_extras.network_fqdn }}
 
+echo "Examine the results..."
+curl -k http://hello-world.apps.{{ workshop_extras.network_fqdn }}
 
-
-echo "Create the NFS pv..."
-oc create -f /var/tmp/cli-hello3-pv.yml
-
-
-
-echo "Create the NFS pv claim..."
-oc create -f /var/tmp/cli-hello3-claim.yml
-
-
-
-echo "Configure the app with new storage..."
-oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=cli-hello3-claim
-
-
-
-echo "Examine the rollout..."
-oc rollout status dc/hello-app3
