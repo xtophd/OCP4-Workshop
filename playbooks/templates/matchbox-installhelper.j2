@@ -80,7 +80,7 @@ done
 echo ""
 read -p "Press ENTER to continue [ctrl-c to abort]"
 
-for i in `pcs --noheadings | awk '{ print $1 }'` ; do
+for i in `pvs --noheadings | awk '{ print $1 }'` ; do
   pvremove -f $i
 done
 
