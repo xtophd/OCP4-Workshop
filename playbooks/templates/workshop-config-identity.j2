@@ -31,6 +31,10 @@ echo "-------------------------------------------------"
 oc adm policy add-cluster-role-to-user cluster-admin {{ workshopuser_username }} 
 
 
+echo ""
+echo "Delete openshift-authentication pods (reload)"
+echo "-------------------------------------------------"
+oc delete --all pods -n openshift-authentication
 
 echo ""
 echo "##"
