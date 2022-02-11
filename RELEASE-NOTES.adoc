@@ -16,6 +16,22 @@ endif::[]
 
 This document in intended to provide some overview of major release changes/updates/gotchas.
 
+== (ocp4-workshop) Switching to OVNkubernetes as default CNI (2022/02/08)
+
+Switching the default CNI for deployed Openshift >= 4.9 to OVNKubernetes.  Versions of
+Openshift < 4.9 will continue to use OpenshiftSDN.
+
+
+
+== (xtoph_deploy) Support for Dell Redfish and RACADM (2022/02/03)
+
+BMC API support is improving.  This is implemented with a set of what I'm calling
+'shim' scripts.  The playbooks interface with these shim scripts for specific functions (ie:
+power-on power-off power-status) and then the shims interface with the bmc to perform the
+actual function.   Some scripts use RedFish, some RACADM, other IPMI.  There are shims
+for Dell now, HP is being developed.
+
+
 
 == (xtoph_deploy) Static Network Specification  (2021/09/30)
 

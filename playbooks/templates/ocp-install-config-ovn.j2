@@ -1,0 +1,29 @@
+apiVersion: v1
+baseDomain: {{ p_domain }}
+compute:
+- hyperthreading: Enabled   
+  name: worker
+  replicas: 0 
+controlPlane:
+  hyperthreading: Enabled   
+  name: master 
+  replicas: 3 
+metadata:
+  name: {{ p_clusterName }}
+{% if p_http_proxy != '' %}
+proxy:
+  httpProxy: {{ p_http_proxy }}
+  httpsProxy: {{ p_https_proxy }}
+  noProxy: {{ p_no_proxy }}
+{% endif %}
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14 
+    hostPrefix: 23 
+  networkType: OVNKubernetes
+  serviceNetwork: 
+  - 172.30.0.0/16
+platform:
+  none: {} 
+pullSecret: {{ p_pullSecret }}
+sshKey: {{ p_sshKey }}
