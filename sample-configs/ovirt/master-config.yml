@@ -108,7 +108,7 @@ myDeployhost:
 myBastion:
   hosts:
     bastion:
-      h_pubIP:       "192.168.1.180"
+      h_pubIP:       "192.168.1.80"
   vars:
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
@@ -126,8 +126,8 @@ myBastion:
 
 myBootstrap:
   hosts:
-    node1:
-      h_pubIP:       "192.168.1.181"
+    bootstrap:
+      h_pubIP:       "192.168.1.81"
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
@@ -146,12 +146,12 @@ myBootstrap:
 
 myMasters:
   hosts:
-    node2:
-      h_pubIP:       "192.168.1.182" 
-    node3:
-      h_pubIP:       "192.168.1.183" 
-    node4:
-      h_pubIP:       "192.168.1.184"
+    master1:
+      h_pubIP:       "192.168.1.82" 
+    master2:
+      h_pubIP:       "192.168.1.83" 
+    master3:
+      h_pubIP:       "192.168.1.84"
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
@@ -170,10 +170,10 @@ myMasters:
 
 myWorkers:
   hosts:
-    node5:
-      h_pubIP:       "192.168.1.185" 
-    node6:
-      h_pubIP:       "192.168.1.186" 
+    worker1:
+      h_pubIP:       "192.168.1.85" 
+    worker2:
+      h_pubIP:       "192.168.1.86" 
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "ocp4_ovirt_machine"
