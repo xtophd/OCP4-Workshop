@@ -29,3 +29,14 @@ echo ""
 echo "Applying cluster-admin role to {{ workshopuser_username }}"
 echo "-------------------------------------------------"
 oc adm policy add-cluster-role-to-user cluster-admin {{ workshopuser_username }} 
+
+
+
+echo ""
+echo "##"
+echo "## NOTE:  Users will not appear in Openshift until"
+echo "##        they log in for the first time!!! So if you"
+echo "##        added users, don't flip out that they are"
+echo "##        not listed under User-Management right away..."
+echo "##"
+echo ""
