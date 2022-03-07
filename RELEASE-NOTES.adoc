@@ -16,6 +16,13 @@ endif::[]
 
 This document in intended to provide some overview of major release changes/updates/gotchas.
 
+== (ocp4-workshop) Dropping python(2) for scripts in xtoph_deploy (2022/03/05)
+
+Due to the expanding capabilities of the redfish shim scripts and the lack of support
+in python2 to print without a linefeed (chomp), I'm being forced to dump python2 which
+means RHEL 7 / CentOS 7 will need python3 installed in order to continue using
+xtoph_deploy.
+
 == (ocp4-workshop) Switching to OVNkubernetes as default CNI (2022/02/08)
 
 Switching the default CNI for deployed Openshift >= 4.9 to OVNKubernetes.  Versions of
