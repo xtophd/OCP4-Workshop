@@ -32,7 +32,9 @@
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
       - {src: 'workshop-patch-namespace-helloworld.j2', dest: '/usr/local/bin/workshop-patch-namespace-helloworld.sh'}
       - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
+      - {src: 'workshop-get-console.j2',                dest: '/usr/local/bin/workshop-get-console.sh'}
       - {src: 'exercise-hello-world.j2',                dest: '/usr/local/bin/exercise-hello-world.sh'}
+      - {src: 'exercise-postgresql-server.j2',          dest: '/usr/local/bin/exercise-postgresql-server.sh'}
 
 
 
