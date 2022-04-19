@@ -34,7 +34,7 @@ function run_cmd() {
 
 
 run_cmd "Create a new project" \
-        "oc new-project hello-world --description='Hello World using NFS storage' --display-name='Hello World'"
+        "oc new-project exercise-hello-world --description='Hello World exercise using NFS storage' --display-name='Exercise: Hello-World'"
 
 run_cmd "Deploy application image" \
         "oc new-app registry.redhat.io/ubi8/httpd-24 --name=hello-world"
