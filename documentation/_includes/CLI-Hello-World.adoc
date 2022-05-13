@@ -759,9 +759,9 @@ Now that the storage prep work is complete, it is time to modify the deployment 
 
 .[root@master ~]#
 ----
-oc set volume dc/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=cli-hello3-claim
+oc set volume deployment/hello-app3 --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=cli-hello3-claim
 
-oc rollout status dc/hello-app3
+oc rollout status deployment/hello-app3
 ----
 
 NOTE: You will need to wait until the pod is deployed before you can validate the application.
