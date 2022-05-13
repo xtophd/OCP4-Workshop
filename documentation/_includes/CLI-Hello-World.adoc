@@ -800,9 +800,9 @@ oc new-project helloworld4 --description="My Fourth OCP App" --display-name="Hel
 
 .[root@master ~]#
 ----  
-oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app4
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7~https://github.com/xtophd/OCP-Workshop --context-dir=/src/helloworld --name=hello-app
     
-oc logs -f bc/hello-app4
+oc logs -f bc/hello-app
 ----
 
 .Your output should look like this
@@ -842,7 +842,7 @@ Now we can run a few more commands to increase our familiarity with deployment p
 
 .[root@master ~]#
 ----
-oc expose service hello-app4 --hostname=helloworld4.cloud.example.com
+oc expose service hello-app
 ----
 
 === Modify the Project, Build or Deployment
@@ -853,14 +853,14 @@ In this deployment model, there is no post-modifications we need to make to the 
 
 .[root@master ~]#
 ----
-cheat-validate-app.sh
+workshop-validate-app.sh
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-DETERMINED ROUTE: helloworld4.cloud.example.com
-EXEC: curl helloworld4.cloud.example.com
+DETERMINED ROUTE: hello-app-helloworld4.cloud.example.com
+EXEC: curl hello-app-helloworld4.cloud.example.com
 
 <html>
 <body>
@@ -904,9 +904,9 @@ oc new-project helloworld5 --description="My Fifth OCP App" --display-name="Hell
 
 .[root@master ~]#
 ----
-oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app5
+oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app
     
-oc logs -f bc/hello-app5
+oc logs -f bc/hello-app
 
 oc rollout status dc/hello-app5
 ----
@@ -915,7 +915,7 @@ oc rollout status dc/hello-app5
 
 .[root@master ~]#
 ----
-oc expose service hello-app5 --hostname=helloworld5.cloud.example.com
+oc expose service hello-app
 ----
 
 === Modify the Project, Build or Deployment
@@ -926,14 +926,14 @@ In this deployment model, there is no post-modifications we need to make to the 
 
 .[root@master ~]#
 ----
-cheat-validate-app.sh
+workshop-validate-app.sh
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-DETERMINED ROUTE: helloworld5.cloud.example.com
-EXEC: curl helloworld5.cloud.example.com
+DETERMINED ROUTE: hello-app-helloworld5.cloud.example.com
+EXEC: curl hello-app-helloworld5.cloud.example.com
 
 <html>
 <body>
@@ -958,7 +958,7 @@ Now it is time to clean everything up.
 ----
 oc project default
     
-oc delete project helloworld
+oc delete project helloworld1
     
 oc delete project helloworld2
     
@@ -968,7 +968,7 @@ oc delete project helloworld4
 
 oc delete project helloworld5
 
-oc delete pv cli-hello3
+oc delete pv hello-world
 
 oc get pods --all-namespaces -o wide
 ----
