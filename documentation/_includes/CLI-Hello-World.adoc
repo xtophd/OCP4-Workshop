@@ -206,7 +206,7 @@ Once the **hello-app-1-????** is in a 'Running' state, you can proceed with veri
 
 .[root@master ~]#
 ----
-cheat-validate-service.sh
+workshop-validate-service.sh
 ----
 
 [NOTE]
@@ -451,7 +451,7 @@ Next we will once again connect to the containers shell and explore the changes 
 
 .[root@master ~]#
 ----
-cheat-rsh-pod.sh
+workshop-rsh-pod.sh
 ----
 
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
@@ -616,7 +616,7 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 
 .[root@master ~]#
 ----
-cheat-install-helloworld.sh
+workshop-install-helloworld.sh
 ----
 
 .Your output should look like this
