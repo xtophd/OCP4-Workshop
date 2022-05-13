@@ -64,7 +64,7 @@ We begin by creating a *Project*.
 
 .[root@master ~]#
 ----
-oc new-project helloworld --description="My First OCP App" --display-name="Hello World"
+oc new-project exercise-helloi-world1 --description="Hello World exercise" --display-name="Exercise: Hello-World-1"
 
 oc get projects
 ----
@@ -119,7 +119,7 @@ We can gather some more information about our new *Project* using `oc describe p
 
 .[root@master ~]#
 ----    
-oc describe project helloworld
+oc describe project exercise-hello-world1
 ----  
 
 .Your output should look like this
@@ -148,10 +148,10 @@ We are not quite ready to start building our own container images from scratch, 
 
 .[root@master ~]#
 ----
-oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app
+oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app1
 ----
 
-You just instructed Openshift to create a new application called *hello-app*.  Without getting caught up in the details, basically what happens is:
+You just instructed Openshift to create a new application called *hello-app1*.  Without getting caught up in the details, basically what happens is:
 
   * Openshift checks the local catalog for an existing copy of the specified image *httpd-24-rhel7*
   * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Catalog and adds it to the local catalog
@@ -199,10 +199,10 @@ We can also monitor the deployment of the application by running `oc rollout sta
 
 .[root@master ~]#
 ----
-oc rollout status deployment hello-app
+oc rollout status deployment/hello-app1
 ----
 
-Once the **hello-app-1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
+Once the **hello-app1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
 
 .[root@master ~]#
 ----
@@ -229,7 +229,7 @@ Let's create a route for our new application.
 
 .[root@bastion ~]#
 ----
-oc expose service hello-app
+oc expose service hello-app1
 ----
 
 You can retrieve the current list of configured routes with the `oc get routes` command.
@@ -243,7 +243,7 @@ oc get routes
 [source,indent=4]
 ----
 NAME        HOST/PORT                                           PATH   SERVICES    PORT       TERMINATION   WILDCARD
-hello-app   hello-app-helloworld.apps.CLUSTERNAME.example.com          hello-app   8080-tcp                 None
+hello-app1   hello-app1.apps.CLUSTERNAME.example.com            hello-app1   8080-tcp                 None
 ----
 
 [discrete]
