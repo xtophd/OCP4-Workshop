@@ -590,14 +590,14 @@ oc expose service hello-app2 --hostname=helloworld2.cloud.example.com
 
 .[root@master ~]#
 ----
-oc set volume dc/hello-app2 --add --mount-path /var/www/html --type emptyDir
+oc set volume deployment/hello-app2 --add --mount-path /var/www/html --type emptyDir
 ----
 
 Use the following command to track the status of your deployment.
 
 .[root@master ~]#
 ----    
-oc rollout status dc/hello-app2
+oc rollout status deployment/hello-app2
 ----
 
 NOTE: You will need to wait until the pod is finished being deployed until you can inject a custom HTML file into the container image.
@@ -632,7 +632,7 @@ Copying /var/tmp/helloworld.html to hello-app2-2-92cwr:/var/www/html/index.html
 
 .[root@master ~]#
 ----
-cheat-validate-app.sh
+workshop-validate-app.sh
 ----
 
 .Your output should look like this
