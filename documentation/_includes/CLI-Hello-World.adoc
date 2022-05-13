@@ -223,7 +223,7 @@ Let's create a route for our new application.
 
 .[root@bastion ~]#
 ----
-oc expose service hello-app1 --hostname=hello-app1.apps.CLUSTERNAME.example.com
+oc expose service hello-app1
 ----
 
 You can retrieve the current list of configured routes with the `oc get routes` command.
@@ -236,8 +236,8 @@ oc get routes
 .Your output should look like this
 [source,indent=4]
 ----
-NAME        HOST/PORT                                           PATH   SERVICES    PORT       TERMINATION   WILDCARD
-hello-app1   hello-app1.apps.CLUSTERNAME.example.com            hello-app1   8080-tcp                 None
+NAME         HOST/PORT                                                PATH   SERVICES    PORT       TERMINATION   WILDCARD
+hello-app1   hello-app1-helloworld1.apps.CLUSTERNAME.example.com            hello-app1  8080-tcp                 None
 ----
 
 [discrete]
@@ -364,14 +364,14 @@ First let's have a look at the current settings.
     
 .[root@master ~]#
 ----
-oc describe namespace helloworld
+oc describe namespace helloworld1
 ----
 
 
 .Your output should look like this
 [source,indent=4]
 ----
-Name:         helloworld
+Name:         helloworld1
 Labels:       <none>
 Annotations:  openshift.io/description=My First OCP App
               openshift.io/display-name=Hello World
@@ -390,14 +390,14 @@ Now let us reconfigure the UID range openshift will use to deploy the container.
 
 .[root@master ~]#
 ----
-workshop-patch-namespace-helloworld.sh
+exercise1-patch-scc.sh
 ----
 
 [NOTE]
 ====
 _Native command(s) to patch namespace security annotation_
 ----
-oc patch namespace helloworld --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
+oc patch namespace helloworld1 --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
 ----
 ====
 
@@ -491,7 +491,7 @@ You can use the sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
-workshop-install-helloworld.sh
+exercise1-install-helloworld.sh
 ----
 
 .Your output should look like this
