@@ -583,7 +583,7 @@ oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app2
 
 .[root@master ~]#
 ----
-oc expose service hello-app2 --hostname=helloworld2.cloud.example.com
+oc expose service hello-app2
 ----
 
 === Modify the Project, Build or Deployment
@@ -683,26 +683,26 @@ oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app3
 
 .[root@master ~]#
 ----    
-oc expose service hello-app3 --hostname=helloworld3.cloud.example.com
+oc expose service hello-app3
 ----
 
 === Modify the Project, Build or Deployment
 
 Now it is time to define our persistent storage parameters for out application deployment.  The Workstation host in your OCP workshop has been configured with an NFS server that is already exporting helloworld HTML.  The only goal here is to mount that volume at /var/www/html within our POD.
 
-There is a more thourough explination of storage in the WebUI portion of this workshop, so for now let's avoid technical talk and just go through the motion.
+There is a more thorough explination of storage in the WebUI portion of this workshop, so for now let's avoid technical talk and just go through the motion.
 
 ==== Create a PV (Persistent Volume)
 
 .[root@master ~]#
 ----    
-oc create -f /var/tmp/cli-hello3-pv.yml
+oc create -f /usr/local/etc/exercise-hello-world-pv.yaml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolume "cli-hello3" created
+persistentvolume/hello-world created
 ----
 
 .[root@master ~]#
@@ -714,7 +714,7 @@ oc get pv
 [source,indent=4]
 ----
 NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS   REASON    AGE
-cli-hello3  5Gi        RWX            Retain           Available                                      7s
+hello-world 5Gi        RWX            Retain           Available                                      7s
 ----
 
 ==== Create a PVC (Persistent Volume Claim)
@@ -723,18 +723,18 @@ Now create the persistent volume claim.
 
 .[root@master ~]#
 ----
-oc create -f /var/tmp/cli-hello3-claim.yml
+oc create -f /usr/local/etc/exercise-hello-world-pvc.yaml
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-persistentvolumeclaim "cli-hello3-claim" created
+persistentvolumeclaim/hello-world-claim created
 ----
 
 ==== Check Storage Status
 
-Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/cli-hello3-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *cli-hello3*
+Next check the status of the pv and pvc.  You should see that the STATUS of the pv has changed to *Bound* and the CLAIM is held by *helloworld3/helloworld-claim*.  Likewise, the pvc will show a STATUS of *Bound* to the VOLUME *cli-hello3*
 
 .[root@master ~]#
 ----
