@@ -30,11 +30,26 @@
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
-      - {src: 'workshop-patch-namespace-helloworld.j2', dest: '/usr/local/bin/workshop-patch-namespace-helloworld.sh'}
+      - {src: 'workshop-install-helloworld.j2',         dest: '/usr/local/bin/workshop-exercise1-install-helloworld.sh'}
       - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
       - {src: 'workshop-get-console.j2',                dest: '/usr/local/bin/workshop-get-console.sh'}
-      - {src: 'exercise-hello-world.j2',                dest: '/usr/local/bin/exercise-hello-world.sh'}
-      - {src: 'exercise-postgresql-server.j2',          dest: '/usr/local/bin/exercise-postgresql-server.sh'}
+
+#      - {src: 'exercise-hello-world.j2',                dest: '/usr/local/bin/exercise-hello-world.sh'}
+
+      - {src: 'exercise1-deploy.j2',                    dest: '/usr/local/bin/exercise1-deploy.sh'}
+      - {src: 'exercise1-patch-scc.j2',                 dest: '/usr/local/bin/exercise1-patch-scc.sh'}
+      - {src: 'exercise1-install-helloworld.j2',        dest: '/usr/local/bin/exercise1-install-helloworld.sh'}
+
+      - {src: 'exercise2-deploy.j2',                    dest: '/usr/local/bin/exercise2-deploy.sh'}
+      - {src: 'exercise2-install-helloworld.j2',        dest: '/usr/local/bin/exercise2-install-helloworld.sh'}
+
+      - {src: 'exercise3-deploy.j2',                    dest: '/usr/local/bin/exercise3-deploy.sh'}
+      - {src: 'exercise4-deploy.j2',                    dest: '/usr/local/bin/exercise4-deploy.sh'}
+      - {src: 'exercise5-deploy.j2',                    dest: '/usr/local/bin/exercise5-deploy.sh'}
+
+      - {src: 'exercise6-cleanup.j2',                   dest: '/usr/local/bin/exercise6-cleanup.sh'}
+
+      - {src: 'exercise-db-server.j2',                  dest: '/usr/local/bin/exercise-db-server.sh'}
 
 
 

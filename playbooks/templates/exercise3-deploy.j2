@@ -1,0 +1,70 @@
+#!/bin/bash
+
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
+
+function run_cmd() {
+
+  msg=$1
+  cmd=$2
+
+  echo ""
+  echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+  echo "## Message: $msg"
+  echo "## Command: $cmd"
+  echo ""
+
+  eval $cmd
+
+  rc=$?
+
+  if [[ $rc != 0 ]] ; then
+      exit "FATAL: previous command returned non-zero ($rc)"
+      exit $rc
+  fi
+
+  echo ""
+}
+
+
+
+##
+##
+##
+
+
+
+run_cmd "Create a new project" \
+        "oc new-project helloworld3 --description='Hello World exercise using NFS storage' --display-name='Exercise: Hello-World 3'"
+
+run_cmd "Deploy application image" \
+        "oc new-app registry.redhat.io/ubi8/httpd-24 --name=hello-app"
+
+run_cmd "Wait for rollout" \
+        "oc rollout status deployment/hello-app"
+
+run_cmd "Copy exercise-hello-world.html to nfs export" \
+        "cp /usr/local/etc/exercise-hello-world.html {{ workshop_extras.nfs_export }}/hello-world/index.html"
+
+run_cmd "Create the NFS pv" \
+        "oc create -f /usr/local/etc/exercise-hello-world-pv.yaml"
+
+run_cmd "Create the NFS pv claim..." \
+        "oc create -f /usr/local/etc/exercise-hello-world-pvc.yaml"
+
+run_cmd "Configure the app with new storage..." \
+        "oc set volume deployment/hello-app --add --mount-path /var/www/html --type persistentVolumeClaim --claim-name=hello-world-claim"
+
+run_cmd "Wait for rollout..." \
+        "oc rollout status deployment/hello-app"
+
+run_cmd "Expose a route..." \
+        "oc expose service hello-app"
+
+
+echo ""
+echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+echo "## You can validate the results by running..."
+echo "##"
+echo "##    curl -k http://hello-app-helloworld3.apps.{{ workshop_extras.network_fqdn }}"
+echo "##"
+

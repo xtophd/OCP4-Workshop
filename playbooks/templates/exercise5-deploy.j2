@@ -1,0 +1,59 @@
+#!/bin/bash
+
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
+
+function run_cmd() {
+
+  msg=$1
+  cmd=$2
+
+  echo ""
+  echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+  echo "## Message: $msg"
+  echo "## Command: $cmd"
+  echo ""
+
+  eval $cmd
+
+  rc=$?
+
+  if [[ $rc != 0 ]] ; then
+      exit "FATAL: previous command returned non-zero ($rc)"
+      exit $rc
+  fi
+
+  echo ""
+}
+
+
+
+##
+##
+##
+
+
+
+run_cmd "Create a new project" \
+        "oc new-project helloworld5 --description='Hello World exercise using docker file' --display-name='Exercise: Hello-World 5'"
+
+run_cmd "Deploy application image" \
+        "oc new-app https://github.com/xtophd/OCP-Workshop --context-dir=/src/dockerfile --name=hello-app"
+
+sleep 3
+
+run_cmd "Watch build logs" \
+        "oc logs -f bc/hello-app"
+
+run_cmd "Wait for rollout" \
+        "oc rollout status deployment/hello-app"
+
+run_cmd "Expose a route..." \
+        "oc expose service hello-app" 
+
+echo ""
+echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+echo "## You can validate the results by running..."
+echo "##"
+echo "##    curl -k http://hello-app-helloworld5.apps.{{ workshop_extras.network_fqdn }}"
+echo "##"
+

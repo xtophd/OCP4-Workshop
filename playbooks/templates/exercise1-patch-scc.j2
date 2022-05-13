@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
+
+function run_cmd() {
+
+  msg=$1
+  cmd=$2
+
+  echo ""
+  echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+  echo "## Message: $msg"
+  echo "## Command: $cmd"
+  echo ""
+
+  eval $cmd
+
+  rc=$?
+
+  if [[ $rc != 0 ]] ; then
+      exit "FATAL: previous command returned non-zero ($rc)"
+      exit $rc
+  fi
+
+  echo ""
+}
+
+
+
+##
+##
+##
+
+
+
+run_cmd "Patch project SCC" \
+        "oc patch namespace helloworld1 --patch '{\"metadata\":{\"annotations\":{\"openshift.io/sa.scc.uid-range\":\"1001/10000\"}}}'"
+
+run_cmd "Delete all pods and force rollout of latest changes" \
+        "oc delete --all pods -n helloworld1"
+
+sleep 3
+
+run_cmd "Wait for rollout" \
+        "oc rollout status deployment/hello-app"
+
