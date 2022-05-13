@@ -37,18 +37,18 @@ NOTE: Arguably, in a production environment step-5 (making modifications) would 
 
 You may have already established a session in the "CLI: First Time Login".  Never the less, here are the condensed instructions again.
 
-Connect to the *bastion* and sign-in as user *kubeadmin*.
+Connect to the *bastion* as the *root* user.
 
 .[root@workstation ~]#
 ----
-ssh master.example.com
+ssh root@bastion.example.com
 ----
 
-Now sign-on to Openshift with username `admin` and password `redhat`.
+Now sign-on to Openshift with username `kubeadmin`.  This is easily accomplished by running the *workshop-kubeadmin.sh* script
 
 .[root@master ~]#
 ----
-oc login -u admin
+workshop-kubeadmin.sh
 ----
 
 Ensure that you are using the *default* project
