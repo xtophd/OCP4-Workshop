@@ -416,11 +416,11 @@ Adjust the following attribute: "openshift.io/sa.scc.uid-range: 1001/10000"
 Save and Exit
 ====        
 
-Now we will use 'oc rollout' to deploy a fresh instance of our hello-app pod.
+Now we will use 'oc delete' to redeploy a fresh instance of our hello-app pod.
 
 .[root@master ~]#
 ----
-oc rollout latest dc/hello-app
+oc delete --all pods -n helloworld
 
 watch oc get pods
 ----
