@@ -64,7 +64,7 @@ We begin by creating a *Project*.
 
 .[root@master ~]#
 ----
-oc new-project exercise-helloi-world1 --description="Hello World exercise" --display-name="Exercise: Hello-World-1"
+oc new-project exercise-hello-world1 --description="Hello World exercise" --display-name="Exercise: Hello-World-1"
 
 oc get projects
 ----
@@ -72,21 +72,15 @@ oc get projects
 .Your output should look like this
 [source,indent=4]
 ----
-NAME                                DISPLAY NAME   STATUS
-default                                            Active
-helloworld                          Hello World    Active
-kube-public                                        Active
-kube-service-catalog                               Active
-kube-system                                        Active
-logging                                            Active
-management-infra                                   Active
-openshift                                          Active
-openshift-ansible-service-broker                   Active
-openshift-infra                                    Active
-openshift-node                                     Active
-openshift-template-service-broker                  Active
-openshift-web-console                              Active
-
+NAME                                               DISPLAY NAME              STATUS
+default                                                                      Active
+exercise-hello-world1                              Exercise: Hello-World-1   Active
+kube-node-lease                                                              Active
+kube-public                                                                  Active
+kube-system                                                                  Active
+openshift                                                                    Active
+openshift-apiserver                                                          Active
+...<SNIP>...
 ----
 
 You can also use `oc projects` to get a list of projects along with a convenient asterisk indicating the current active project.
@@ -99,20 +93,19 @@ oc projects
 .Your output should look like this
 [source,indent=4]
 ----
-    default
-  * helloworld - Hello World
-    kube-public
-    kube-service-catalog
-    kube-system
-    logging
-    management-infra
-    openshift
-    openshift-infra
-    openshift-node
-    openshift-template-service-broker
-    openshift-web-console
+You have access to the following projects and can switch between them with ' project <proje
+ctname>':
 
-Using project "helloworld" on server "https://master.example.com:8443".
+    default
+  * exercise-hello-world1 - Exercise: Hello-World-1
+    kube-node-lease
+    kube-public
+    kube-system
+    openshift
+    openshift-apiserver
+...<SNIP>...
+
+Using project "exercise-hello-world1" on server "https://master.example.com:8443".
 ----
 
 We can gather some more information about our new *Project* using `oc describe project`
@@ -125,17 +118,17 @@ oc describe project exercise-hello-world1
 .Your output should look like this
 [source,indent=4]
 ----
-Name:                   helloworld
-Created:                8 seconds ago
-Labels:                 <none>
-Annotations:            openshift.io/description=My First OCP App
-                        openshift.io/display-name=Hello World
-                        openshift.io/requester=admin
-                        openshift.io/sa.scc.mcs=s0:c11,c5
-                        openshift.io/sa.scc.supplemental-groups=1000120000/10000
-                        openshift.io/sa.scc.uid-range=1000120000/10000
-Display Name:           Hello World
-Description:            My First OCP App
+Name:                   exercise-hello-world1
+Created:                2 minutes ago
+Labels:                 kubernetes.io/metadata.name=exercise-hello-world1
+Annotations:            openshift.io/description=Hello World exercise
+                        openshift.io/display-name=Exercise: Hello-World-1
+                        openshift.io/requester=system:admin
+                        openshift.io/sa.scc.mcs=s0:c29,c19
+                        openshift.io/sa.scc.supplemental-groups=1000850000/10000
+                        openshift.io/sa.scc.uid-range=1000850000/10000
+Display Name:           Exercise: Hello-World-1
+Description:            Hello World exercise
 Status:                 Active
 Node Selector:          <none>
 Quota:                  <none>
@@ -165,7 +158,7 @@ Now let's have a closer inspection with a couple different commands.
 ----
 oc status
 
-oc get dc
+oc get deployment
     
 oc get pods
     
@@ -179,20 +172,21 @@ Run `oc get pods` and `oc get services` several times to watch the changes as de
 .Your output should look like this
 [source,indent=4]
 ----
-In project Hello World (helloworld) on server https://master.example.com:8443                
-                                                                                             
-svc/hello-app - 172.30.253.4 ports 8080, 8443                                                
-  dc/hello-app deploys istag/hello-app:latest                                                
-    deployment #1 deployed 13 minutes ago - 1 pod 
+In project Exercise: Hello-World-1 (exercise-hello-world1) on server https://api.ocp4ov10g.example.com:6443
 
-NAME        REVISION   DESIRED   CURRENT   TRIGGERED BY                                      
-hello-app   1          1         1         config,image(hello-app:latest)
+svc/hello-app1 - 172.30.148.27 ports 8080, 8443
+  deployment/hello-app1 deploys istag/hello-app1:latest
+    deployment #2 running for 1 second - 1 pod
+    deployment #1 deployed 2 seconds ago
 
-NAME                READY     STATUS    RESTARTS   AGE
-hello-app-1-74v6s   1/1       Running   0          44s
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+hello-app1   1/1     1            1           72s
 
-NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-hello-app   ClusterIP   172.30.163.94   <none>        8080/TCP,8443/TCP   6m
+NAME                          READY   STATUS    RESTARTS   AGE
+hello-app1-5749464997-tfckj   1/1     Running   0          95s
+
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+hello-app1   ClusterIP   172.30.148.27   <none>        8080/TCP,8443/TCP   107s
 ----
 
 We can also monitor the deployment of the application by running `oc rollout status`.  This command will exit once the deployment has completed and the web application is ready.
@@ -202,7 +196,7 @@ We can also monitor the deployment of the application by running `oc rollout sta
 oc rollout status deployment/hello-app1
 ----
 
-Once the **hello-app1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
+Once **hello-app1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
 
 .[root@master ~]#
 ----
@@ -229,7 +223,7 @@ Let's create a route for our new application.
 
 .[root@bastion ~]#
 ----
-oc expose service hello-app1
+oc expose service hello-app1 --hostname=hello-app1.apps.CLUSTERNAME.example.com
 ----
 
 You can retrieve the current list of configured routes with the `oc get routes` command.
@@ -249,16 +243,18 @@ hello-app1   hello-app1.apps.CLUSTERNAME.example.com            hello-app1   808
 [discrete]
 === Interim Validation
 
+Again, there are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
+
 .[root@master ~]#
 ----
-curl http://hello-app-helloworld.apps.CLUSTERNAME.example.com
+workshop-validate-app.sh
 ----
 
 The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific so we can verify a functional httpd server.  
 
 .[root@master ~]#
 ----
-curl -s http://helloworld.cloud.example.com | grep "Test Page"
+workshop-validate-app.sh | grep "Test Page"
 ----
 
 .Your output should look like this
