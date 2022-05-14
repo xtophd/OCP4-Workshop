@@ -947,12 +947,14 @@ Hello, World!
 
 NOTE: We provide the commands needed for general cleanup as information only.  You can safely skip this section if you want to save some time.
 
+The speed things up, cleanup for all of the work done above is accomplished with a script.
+
 .[root@master ~]#
 ----
-oc get pods --all-namespaces -o wide
+exercise6-cleanup.sh
 ----
 
-Now it is time to clean everything up.
+If you want to explore all of the commands involed, you can use the examples below to cleanup the various namespaces and storage configs.
 
 .[root@master ~]#
 ----
