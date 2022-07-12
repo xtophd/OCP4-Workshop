@@ -114,6 +114,8 @@ cp ../sample-configs/libvirt-nat/* .
 
 NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
 
+WARN: Adjusting the default dns and timeserver for your home/lab is critical and is almost certainly mandatory.  You will find those parameters in master-config.yml (network_nameserver and network_timeserver)
+
 MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
 
 Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
