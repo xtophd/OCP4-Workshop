@@ -132,7 +132,7 @@ It is paramount that you update the configs for your environment.  Please pay cl
   + xtoph-deploy-config.yml
   + credentials.yml
 
-=== Retrieve RHEL 8.4 DVD
+=== Retrieve RHEL 8.4 DVD and BOOT ISOs
 
 The utility server currently depends on a RHEL 8.4 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
 
