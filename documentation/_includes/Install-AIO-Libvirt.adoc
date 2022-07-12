@@ -106,7 +106,7 @@ Using the NAT'd network config will require the least amount of changes to the c
 ----
 cd ~/OCP4-Workshop/config
 
-copy ../config-samples/libvirt-nat/* .
+copy ../sample-configs/libvirt-nat/* .
 ----
 
 === Edit the Config Files
