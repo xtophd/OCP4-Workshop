@@ -131,16 +131,16 @@ in particular you need to:
 
 ==== credentials.yml
 
-WARNING: ENCRYPT THIS FILE WHEN DONE EDITING!!!!!
+WARNING: ENCRYPT THIS FILE WHEN DONE EDITING!
 
 There are 2 variables that need to be defined in this file:
 
   * workshop_username
   * workshop_password
   
- The default workshop_username is `cloud-user` with an empty password.  Create a password for the user and then save save the file.
+The default workshop_username is `cloud-user` with an empty password.  Create a password for the user and then save save the file.
  
- Now you can use ansible-vault to encrypt the file for improved security:
+Now you can use ansible-vault to encrypt the file for improved security:
  
 ----
 ansible-vault encrypt config/credentials.yml
