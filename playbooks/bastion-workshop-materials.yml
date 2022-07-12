@@ -3,6 +3,24 @@
 - hosts: myBastion
   tasks:
 
+  ##
+  ##    Try loading the credentials.yml file
+  ##    if workshopuser_username is not defined
+  ##
+
+
+
+  - name: "ocp4-workshop : workshop-user : loading credentials"
+    include_vars:
+      file: "../config/credentials.yml"
+    when: workshopuser_username is undefined
+
+
+
+  ## 
+  ##
+  ##
+
 
 
   - name: "ocp4-workshop : workshop-materials : determine bastion IP address"
@@ -25,8 +43,8 @@
       - {src: 'workshop-check-dns.j2',                  dest: '/usr/local/bin/workshop-check-dns.sh'}
       - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
       - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
-      - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
       - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
+      - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
@@ -47,6 +65,19 @@
       - {src: 'exercise6-cleanup.j2',                   dest: '/usr/local/bin/exercise6-cleanup.sh'}
 
       - {src: 'exercise-db-server.j2',                  dest: '/usr/local/bin/exercise-db-server.sh'}
+
+
+
+  - name: "ocp4-workshop : workshop-materials : install workshop-(scripts) in /usr/local/bin"
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+      mode: 0744
+    with_items:
+      - {src: 'workshop-config-identity.j2', dest: '/usr/local/bin/workshop-config-identity.sh'}
+    when: workshopuser_username is defined
 
 
 
