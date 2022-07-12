@@ -111,7 +111,7 @@
 
 
 
-- hosts: myBastion,myWorkers,myMasters,myBootstrap
+- hosts: myBastion,myBootstrap,myWorkers,myMasters
   gather_facts: no 
   tasks:
 
