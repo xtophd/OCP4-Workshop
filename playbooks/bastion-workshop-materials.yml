@@ -30,11 +30,8 @@
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
-      - {src: 'workshop-install-helloworld.j2',         dest: '/usr/local/bin/workshop-exercise1-install-helloworld.sh'}
       - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
       - {src: 'workshop-get-console.j2',                dest: '/usr/local/bin/workshop-get-console.sh'}
-
-#      - {src: 'exercise-hello-world.j2',                dest: '/usr/local/bin/exercise-hello-world.sh'}
 
       - {src: 'exercise1-deploy.j2',                    dest: '/usr/local/bin/exercise1-deploy.sh'}
       - {src: 'exercise1-patch-scc.j2',                 dest: '/usr/local/bin/exercise1-patch-scc.sh'}
