@@ -75,7 +75,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: bastion-setup.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | unlock | user | usher | vnc ]"
         ;;
 
 esac         
