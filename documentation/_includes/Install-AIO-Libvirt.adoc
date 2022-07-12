@@ -116,7 +116,11 @@ NOTE: Any changes you make to the files in './config/' will be left untouched in
 
 WARNING: Adjusting the default dns and timeserver for your home/lab is critical and is almost certainly mandatory.  You will find those parameters in master-config.yml (network_nameserver and network_timeserver)
 
-MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
+It is paramount that you update the configs for your environment accurately.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).  In a libvirt (or ovirt) environment, the default behaviour is to allow the playbooks to generate MAC addresses.  The randomly generated MACs are stored and will persist in the configs until the config directory is deleted (../config/host_vars/*).
+
+==== master-config.yml
+
+NOTE: Again, MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
 
 Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
 in particular you need to:
@@ -125,13 +129,33 @@ in particular you need to:
   * fix hostnames, mac addresses & ip addresses
   * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
 
-The majority of configuration options are documented in the config files themselves.
+==== credentials.yml
 
-It is paramount that you update the configs for your environment accurately.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).  In a libvirt (or ovirt) environment, the default behaviour is to allow the playbooks to generate MAC addresses.  The randomly generated MACs are stored and will persist in the configs until the config direcotry is deleted (../config/host_vars/*).
+WARNING: ENCRYPT THIS FILE WHEN DONE EDITING!!!!!
 
-  + master-config.yml
-  + xtoph-deploy-config.yml
-  + credentials.yml  
+There are 2 variables that need to be defined in this file:
+
+  * workshop_username
+  * workshop_password
+  
+ The default workshop_username is `cloud-user` with an empty password.  Create a password for the user and then save save the file.
+ 
+ Now you can use ansible-vault to encrypt the file for improved security:
+ 
+----
+ansible-vault encrypt config/credentials.yml
+----
+
+If you need to make changes to the content of the file you can do the following:
+
+----
+ansible-vault edit config/credentials.yml
+----
+
+==== xtoph-deploy-config.yml
+
+For the purposes of this deployment with sample-configs/libvirt-nat, the options in xtoph-deploy-config.yml are left to defaults.  But you may be interested to
+review the parameters to understand what is available.
 
 === Retrieve RHEL 8.4 DVD and BOOT ISOs
 
