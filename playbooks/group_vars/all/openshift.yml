@@ -13,6 +13,13 @@
 
 ocp_assets:
 
+  "4.10":
+    name:        "openshift"
+    version:     "4.10"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.10.16"
+    install_tar: "openshift-install-linux-4.10.16.tar.gz"
+    client_tar:  "openshift-client-linux-4.10.16.tar.gz"
+
   "4.9":
     name:        "openshift"
     version:     "4.9"
@@ -70,6 +77,17 @@ ocp_assets:
     client_tar:  "openshift-client-linux-4.2.18.tar.gz"
 
 rhcos_assets:
+
+  "4.10" :
+    name:        "rhcos"
+    version:     "4.10"
+    url:         "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.10/4.10.16"
+    initramfs:   "rhcos-4.10.16-x86_64-live-initramfs.x86_64.img"
+    rootfs:      "rhcos-4.10.16-x86_64-live-rootfs.x86_64.img"
+    kernel:      "rhcos-4.10.16-x86_64-live-kernel-x86_64"
+    bios:        "rhcos-4.10.16-x86_64-metal.x86_64.raw.gz"
+    bios4k:      "rhcos-4.10.16-x86_64-metal4k.x86_64.raw.gz"
+    iso:         "rhcos-4.10.16-x86_64-live.x86_64.iso"
 
   "4.9" :
     name:        "rhcos"
@@ -152,6 +170,13 @@ rhcos_assets:
     iso:         "rhcos-4.2.18-x86_64-installer.iso"
 
 matchbox_assets:
+
+  "4.10":
+    name:        "matchbox"
+    version:     "0.9.0"
+    url:         "https://github.com/poseidon/matchbox/releases/download/v0.9.0"
+    filename:    "matchbox-v0.9.0-linux-amd64.tar.gz"
+    destdir:     "matchbox-v0.9.0-linux-amd64"
 
   "4.9":
     name:        "matchbox"
