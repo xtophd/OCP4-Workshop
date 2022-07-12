@@ -70,7 +70,7 @@ For RHEL 8.4:
     - "rhel-8-for-x86_64-appstream-rpms"
     - "ansible-2.9-for-rhel-8-x86_64-rpms"
  
- And yes, I test with CentOS 7 from time to time and it should work as both the virthost platform and for the bastion server.
+And yes, I test with CentOS 7 from time to time and it should work as both the virthost platform and for the bastion server.
  
 === Install additional packages
 
