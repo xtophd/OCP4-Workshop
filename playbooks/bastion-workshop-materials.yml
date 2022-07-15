@@ -17,7 +17,7 @@
 
 
 
-  ## 
+  ##
   ##
   ##
 
@@ -43,8 +43,8 @@
       - {src: 'workshop-check-dns.j2',                  dest: '/usr/local/bin/workshop-check-dns.sh'}
       - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
       - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
-      - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
       - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
+      - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
       - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
       - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
       - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
@@ -63,6 +63,8 @@
       - {src: 'exercise5-deploy.j2',                    dest: '/usr/local/bin/exercise5-deploy.sh'}
 
       - {src: 'exercise6-cleanup.j2',                   dest: '/usr/local/bin/exercise6-cleanup.sh'}
+
+      - {src: 'exercise10-install-ansible-ap.j2',       dest: '/usr/local/bin/exercise10-install-ansible-ap.sh'}
 
       - {src: 'exercise-db-server.j2',                  dest: '/usr/local/bin/exercise-db-server.sh'}
 
@@ -92,10 +94,13 @@
       group: root
       mode: 0744
     with_items:
-      - {src: 'workshop-yaml-identity.j2',      dest: '/usr/local/etc/workshop-identity.yaml'}
-      - {src: 'workshop-users-htpasswd.j2',     dest: '/usr/local/etc/workshop-users.htpasswd'}
-      - {src: 'exercise-hello-world-pv.j2',     dest: '/usr/local/etc/exercise-hello-world-pv.yaml'}
-      - {src: 'exercise-hello-world-pvc.j2',    dest: '/usr/local/etc/exercise-hello-world-pvc.yaml'}
-      - {src: 'exercise-hello-world-html.j2',   dest: '/usr/local/etc/exercise-hello-world.html'}
-      - {src: 'workshop-yaml-registryPV.j2',    dest: '/usr/local/etc/workshop-registryPV.yaml'}
+      - {src: 'workshop-yaml-identity.j2',              dest: '/usr/local/etc/workshop-identity.yaml'}
+      - {src: 'workshop-users-htpasswd.j2',             dest: '/usr/local/etc/workshop-users.htpasswd'}
+      - {src: 'exercise-hello-world-pv.j2',             dest: '/usr/local/etc/exercise-hello-world-pv.yaml'}
+      - {src: 'exercise-hello-world-pvc.j2',            dest: '/usr/local/etc/exercise-hello-world-pvc.yaml'}
+      - {src: 'exercise-hello-world-html.j2',           dest: '/usr/local/etc/exercise-hello-world.html'}
+      - {src: 'workshop-yaml-registryPV.j2',            dest: '/usr/local/etc/workshop-registryPV.yaml'}
+      - {src: 'exercise10-ansible-ap-pv.j2',            dest: '/usr/local/etc/exercise10-ansible-ap-pv.yaml'}
+      - {src: 'exercise10-ansible-ap-subscription.j2',  dest: '/usr/local/etc/exercise10-ansible-ap-subscription.yaml'}
+
 
