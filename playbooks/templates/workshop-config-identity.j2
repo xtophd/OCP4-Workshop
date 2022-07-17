@@ -6,7 +6,15 @@ echo ""
 echo "Set password for {{ workshopuser_username }}"
 echo "---------------------------"
 
-htpasswd /usr/local/etc/workshop-users.htpasswd {{ workshopuser_username }}
+attempts=3
+
+until htpasswd /usr/local/etc/workshop-users.htpasswd cloud-user ; do
+  ((--attempts))
+
+  [[ $attempts -lt 1 ]] && exit
+
+  echo "TRY AGAIN: ${attempts} attemps remainig"
+done
 
 echo ""
 echo "Creating/Updating openshift htpass-secret"
