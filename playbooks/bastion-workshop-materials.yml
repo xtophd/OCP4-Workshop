@@ -36,41 +36,42 @@
       dest: "{{ item.dest }}"
       owner: root
       group: root
-      mode: 0744
+      mode: "{{ item.mode }}"
     with_items:
-      - {src: 'workshop-approve-csr.j2',                dest: '/usr/local/bin/workshop-approve-csr.sh'}
-      - {src: 'workshop-check-health.j2',               dest: '/usr/local/bin/workshop-check-health.sh'}
-      - {src: 'workshop-check-dns.j2',                  dest: '/usr/local/bin/workshop-check-dns.sh'}
-      - {src: 'workshop-check-operators.j2',            dest: '/usr/local/bin/workshop-check-operators.sh'}
-      - {src: 'workshop-check-version.j2',              dest: '/usr/local/bin/workshop-check-version.sh'}
-      - {src: 'workshop-config-registry.j2',            dest: '/usr/local/bin/workshop-config-registry.sh'}
-      - {src: 'workshop-config-scheduler.j2',           dest: '/usr/local/bin/workshop-config-scheduler.sh'}
-      - {src: 'workshop-rsh.j2',                        dest: '/usr/local/bin/workshop-rsh.sh'}
-      - {src: 'workshop-validate-service.j2',           dest: '/usr/local/bin/workshop-validate-service.sh'}
-      - {src: 'workshop-validate-app.j2',               dest: '/usr/local/bin/workshop-validate-app.sh'}
-      - {src: 'workshop-kubeadmin.j2',                  dest: '/usr/local/bin/workshop-kubeadmin.sh'}
-      - {src: 'workshop-get-console.j2',                dest: '/usr/local/bin/workshop-get-console.sh'}
+      - {mode: '0744', src: 'workshop-approve-csr.j2',         dest: '/usr/local/bin/workshop-approve-csr.sh'}
+      - {mode: '0744', src: 'workshop-check-health.j2',        dest: '/usr/local/bin/workshop-check-health.sh'}
+      - {mode: '0744', src: 'workshop-check-dns.j2',           dest: '/usr/local/bin/workshop-check-dns.sh'}
+      - {mode: '0744', src: 'workshop-check-operators.j2',     dest: '/usr/local/bin/workshop-check-operators.sh'}
+      - {mode: '0744', src: 'workshop-check-version.j2',       dest: '/usr/local/bin/workshop-check-version.sh'}
+      - {mode: '0744', src: 'workshop-config-registry.j2',     dest: '/usr/local/bin/workshop-config-registry.sh'}
+      - {mode: '0744', src: 'workshop-config-scheduler.j2',    dest: '/usr/local/bin/workshop-config-scheduler.sh'}
+      - {mode: '0744', src: 'workshop-rsh.j2',                 dest: '/usr/local/bin/workshop-rsh.sh'}
+      - {mode: '0744', src: 'workshop-validate-service.j2',    dest: '/usr/local/bin/workshop-validate-service.sh'}
+      - {mode: '0744', src: 'workshop-validate-app.j2',        dest: '/usr/local/bin/workshop-validate-app.sh'}
+      - {mode: '0744', src: 'workshop-kubeadmin.j2',           dest: '/usr/local/bin/workshop-kubeadmin.sh'}
+      - {mode: '0744', src: 'workshop-get-console.j2',         dest: '/usr/local/bin/workshop-get-console.sh'}
 
-      - {src: 'exercise1-deploy.j2',                    dest: '/usr/local/bin/exercise1-deploy.sh'}
-      - {src: 'exercise1-patch-scc.j2',                 dest: '/usr/local/bin/exercise1-patch-scc.sh'}
-      - {src: 'exercise1-install-helloworld.j2',        dest: '/usr/local/bin/exercise1-install-helloworld.sh'}
+      - {mode: '0644', src: 'exercise-functions.j2',           dest: '/usr/local/bin/exercise-functions.sh'}
 
-      - {src: 'exercise2-deploy.j2',                    dest: '/usr/local/bin/exercise2-deploy.sh'}
-      - {src: 'exercise2-install-helloworld.j2',        dest: '/usr/local/bin/exercise2-install-helloworld.sh'}
+      - {mode: '0744', src: 'exercise1-deploy.j2',             dest: '/usr/local/bin/exercise1-deploy.sh'}
+      - {mode: '0744', src: 'exercise1-patch-scc.j2',          dest: '/usr/local/bin/exercise1-patch-scc.sh'}
+      - {mode: '0744', src: 'exercise1-install-helloworld.j2', dest: '/usr/local/bin/exercise1-install-helloworld.sh'}
+      - {mode: '0744', src: 'exercise2-deploy.j2',             dest: '/usr/local/bin/exercise2-deploy.sh'}
+      - {mode: '0744', src: 'exercise2-install-helloworld.j2', dest: '/usr/local/bin/exercise2-install-helloworld.sh'}
+      - {mode: '0744', src: 'exercise3-deploy.j2',             dest: '/usr/local/bin/exercise3-deploy.sh'}
+      - {mode: '0744', src: 'exercise4-deploy.j2',             dest: '/usr/local/bin/exercise4-deploy.sh'}
+      - {mode: '0744', src: 'exercise5-deploy.j2',             dest: '/usr/local/bin/exercise5-deploy.sh'}
+      - {mode: '0744', src: 'exercise6-cleanup.j2',            dest: '/usr/local/bin/exercise6-cleanup.sh'}
 
-      - {src: 'exercise3-deploy.j2',                    dest: '/usr/local/bin/exercise3-deploy.sh'}
-      - {src: 'exercise4-deploy.j2',                    dest: '/usr/local/bin/exercise4-deploy.sh'}
-      - {src: 'exercise5-deploy.j2',                    dest: '/usr/local/bin/exercise5-deploy.sh'}
+      - {mode: '0744', src: 'exercise10-install-aap.j2',       dest: '/usr/local/bin/exercise10-install-aap.sh'}
+      - {mode: '0744', src: 'exercise10-uninstall-aap.j2',     dest: '/usr/local/bin/exercise10-uninstall-aap.sh'}
 
-      - {src: 'exercise6-cleanup.j2',                   dest: '/usr/local/bin/exercise6-cleanup.sh'}
-
-      - {src: 'exercise10-install-ansible-ap.j2',       dest: '/usr/local/bin/exercise10-install-ansible-ap.sh'}
-
-      - {src: 'exercise-db-server.j2',                  dest: '/usr/local/bin/exercise-db-server.sh'}
+      - {mode: '0744', src: 'exercise-db-server.j2',           dest: '/usr/local/bin/exercise-db-server.sh'}
 
 
 
-  - name: "ocp4-workshop : workshop-materials : install workshop-(scripts) in /usr/local/bin"
+
+  - name: "ocp4-workshop : workshop-materials : install conditional workshop-(scripts) in /usr/local/bin"
     template:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -94,13 +95,13 @@
       group: root
       mode: 0744
     with_items:
-      - {src: 'workshop-yaml-identity.j2',              dest: '/usr/local/etc/workshop-identity.yaml'}
-      - {src: 'workshop-users-htpasswd.j2',             dest: '/usr/local/etc/workshop-users.htpasswd'}
-      - {src: 'exercise-hello-world-pv.j2',             dest: '/usr/local/etc/exercise-hello-world-pv.yaml'}
-      - {src: 'exercise-hello-world-pvc.j2',            dest: '/usr/local/etc/exercise-hello-world-pvc.yaml'}
-      - {src: 'exercise-hello-world-html.j2',           dest: '/usr/local/etc/exercise-hello-world.html'}
-      - {src: 'workshop-yaml-registryPV.j2',            dest: '/usr/local/etc/workshop-registryPV.yaml'}
-      - {src: 'exercise10-ansible-ap-pv.j2',            dest: '/usr/local/etc/exercise10-ansible-ap-pv.yaml'}
-      - {src: 'exercise10-ansible-ap-subscription.j2',  dest: '/usr/local/etc/exercise10-ansible-ap-subscription.yaml'}
-
+      - {src: 'workshop-yaml-identity.j2',    dest: '/usr/local/etc/workshop-identity.yaml'}
+      - {src: 'workshop-users-htpasswd.j2',   dest: '/usr/local/etc/workshop-users.htpasswd'}
+      - {src: 'exercise-hello-world-pv.j2',   dest: '/usr/local/etc/exercise-hello-world-pv.yaml'}
+      - {src: 'exercise-hello-world-pvc.j2',  dest: '/usr/local/etc/exercise-hello-world-pvc.yaml'}
+      - {src: 'exercise-hello-world-html.j2', dest: '/usr/local/etc/exercise-hello-world.html'}
+      - {src: 'workshop-yaml-registryPV.j2',  dest: '/usr/local/etc/workshop-registryPV.yaml'}
+      - {src: 'exercise10-aap-pv.j2',         dest: '/usr/local/etc/exercise10-aap-pv.yaml'}
+      - {src: 'exercise10-aap-sub1.j2',       dest: '/usr/local/etc/exercise10-aap-sub1.yaml'}
+      - {src: 'exercise10-aap-sub2.j2',       dest: '/usr/local/etc/exercise10-aap-sub2.yaml'}
 

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+##
+## Include the exercise-functions
+##
+
+. $(dirname "$0")/exercise-functions.sh
+
+
+
+##
+##
+##
+
+export KUBECONFIG=/root/ocp-ocp4lvnat/auth/kubeconfig
+
+
+
+exercise_cmd "Delete the AAP project" \
+        "oc delete project ansible-automation-platform"
+
+
+
+exercise_msg "Wait for PV to become unbound"
+
+retry=25
+pv_status=`oc get pv postgres-tower --no-headers | awk '{ print $5 }'`
+
+while [[ ($pv_status =~ "Bound") && ("$retry" -gt "0") ]] ; do
+  exercise_wait 3
+  pv_status=`oc get pv postgres-tower --no-headers | awk '{ print $5 }'`
+
+  (( --retry ))
+done
+
+exercise_cmd "Delete the storage pv" \
+        "oc delete pv postgres-tower"
+
+
+
+exercise_cmd "Delete ansible.automation CR" \
+        "oc delete crd automationcontrollers.automationcontroller.ansible.com"
+
+
+
+exercise_cmd "Cleanup the postgres NFS data store" \
+        "rm -rf {{ workshop_extras.nfs_export }}/postgres-tower/data/userdata"
+

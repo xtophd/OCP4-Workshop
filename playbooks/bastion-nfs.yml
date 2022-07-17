@@ -12,35 +12,36 @@
   - name: "ocp4-workshop : bastion-nfs : populate service facts"
     service_facts:
 
-  
   - name: "ocp4-workshop : bastion-nfs : package installation"
     yum: name=nfs-utils,rpcbind state=installed
 
   - name: "ocp4-workshop : bastion-nfs  create directories"
     file:
-      path: '{{ item }}'
-      mode: '0755'
-      owner: 65534
-      group: 65534
+      path:  '{{ item.path }}'
+      mode:  '{{ item.mode }}'
+      owner: '{{ item.owner }}'
+      group: '{{ item.group }}'
       state: directory
     with_items:
-      - '{{ workshop_extras.nfs_export }}'
-      - '{{ workshop_extras.nfs_export }}/registry'
-      - '{{ workshop_extras.nfs_export }}/hello-world'
-      - '{{ workshop_extras.nfs_export }}/postgres-tower'
+      - {mode: '0755', owner: '65534', group: '65534', path: '{{ workshop_extras.nfs_export }}/registry'}
+      - {mode: '0755', owner: '65534', group: '65534', path: '{{ workshop_extras.nfs_export }}/hello-world'}
+      - {mode: '0755', owner: '0', group: '0', path: '{{ workshop_extras.nfs_export }}/postgres-tower'}
+      - {mode: '0775', owner: '0', group: '0', path: '{{ workshop_extras.nfs_export }}/postgres-tower/data'}
+
+  ##
+  ## Create /etc/exports on bastion
+  ## 
+  ## Based on documentation:
+  ##   https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html
+  ##
+  ## If the storage type is NFS, you must enable the no_wdelay and root_squash mount options
+  ## 
 
   - name: "ocp4-workshop : bastion-nfs : cleanup conflicting entries in /etc/exports"
     lineinfile:
       dest:   '/etc/exports'
       regexp: '{{ workshop_extras.nfs_export }}(\s+).*$'
       state:  absent
-
-  ##
-  ## Based on documentation:
-  ##   https://docs.openshift.com/container-platform/4.5/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html
-  ##
-  ## If the storage type is NFS, you must enable the no_wdelay and root_squash mount options
-  ## 
 
   - name: 'ocp4-workshop : bastion-nfs : add squashed entries in /etc/exports'
     lineinfile:
