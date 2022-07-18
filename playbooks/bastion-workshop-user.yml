@@ -56,18 +56,6 @@
      
  
 
-        - name: "ocp4-workshop : workshop-user : install workshopuser related scripts in /usr/local/bin"
-          template:
-            src: "{{ item.src }}"
-            dest: "{{ item.dest }}"
-            owner: root
-            group: root
-            mode: 0744
-          with_items:
-            - {src: 'workshop-config-identity.j2',            dest: '/usr/local/bin/workshop-config-identity.sh'}
-
-      
-      
         - name: "ocp4-workshop : workshop-user : create ~Desktop directory"
           file:
             path:  "~{{ workshopuser_username }}/Desktop"
@@ -140,9 +128,13 @@
 
 
 
+        - name: "ocp4-workshop : workshop-user : adjust vncusers config (RHEL 8)"
+          lineinfile:
+            dest:  "~{{ workshopuser_username }}/.bash_profile"
+            line:  "export GNOME_SHELL_SESSION_MODE=classic"
+            state: present
+
+
+
     when: workshopuser_username is defined
-
-
-
-
 
