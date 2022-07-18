@@ -51,7 +51,8 @@
       - {mode: '0744', src: 'workshop-kubeadmin.j2',           dest: '/usr/local/bin/workshop-kubeadmin.sh'}
       - {mode: '0744', src: 'workshop-get-console.j2',         dest: '/usr/local/bin/workshop-get-console.sh'}
 
-      - {mode: '0644', src: 'exercise-functions.j2',           dest: '/usr/local/bin/exercise-functions.sh'}
+      - {mode: '0644', src: 'lib-exercise.j2',                 dest: '/usr/local/bin/lib-exercise.sh'}
+      - {mode: '0744', src: 'lib-exercise-test.j2',            dest: '/usr/local/bin/lib-exercise-test.sh'}
 
       - {mode: '0744', src: 'exercise1-deploy.j2',             dest: '/usr/local/bin/exercise1-deploy.sh'}
       - {mode: '0744', src: 'exercise1-patch-scc.j2',          dest: '/usr/local/bin/exercise1-patch-scc.sh'}
