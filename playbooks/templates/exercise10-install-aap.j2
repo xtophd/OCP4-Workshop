@@ -1,19 +1,14 @@
 #!/bin/bash
 
 ##
-## Include the exercise-functions
+## Include the lib-exercise functions
 ##
 
-. $(dirname "$0")/exercise-functions.sh
+. $(dirname "$0")/lib-exercise.sh
+
+
 
 export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
-
-
-##
-##
-##
-
-
 
 exercise_cmd "Create a new project" \
              "oc new-project ansible-automation-platform --description='Ansible Application Platform' --display-name='Exercise: Ansible AP'"
