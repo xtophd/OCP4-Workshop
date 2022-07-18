@@ -212,6 +212,20 @@ Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
 
 Authority files will be on the bastion host in /root/ocp-<clustername>/auth
 
+=== VNC Connection to the bastion host
+
+If enabled in master-config.yml, a VNC server is configured on the bastion host.
+
+You could then use an ssh tunnel to setup up a port on the virt host which will connect to the bastion vm.
+
+----
+firewall-cmd --add-port=5903/tcp
+firewall-cmd --permanent --add-port=5903/tcp
+ssh -L <your-host-ipaddr>:5903:192.168.123.160:5903 root@192.168.123.160 -N
+----
+
+Now you should be able to use VNC client to connect to <your-host-ipaddr>:3
+
 [discrete]
 == Continue to the Workshop
 
