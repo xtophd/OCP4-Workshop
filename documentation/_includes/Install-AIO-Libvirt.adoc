@@ -226,6 +226,8 @@ ssh -L <your-host-ipaddr>:5903:192.168.123.160:5903 root@192.168.123.160 -N
 
 Now you should be able to use VNC client to connect to <your-host-ipaddr>:3
 
+Don't forget to set the deisplay quality to "High" in the connection properties.
+
 [discrete]
 == Continue to the Workshop
 
