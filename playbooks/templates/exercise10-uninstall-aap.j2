@@ -6,20 +6,18 @@
 
 . $(dirname "$0")/exercise-functions.sh
 
-
-
-##
-##
-##
-
 export KUBECONFIG=/root/ocp-ocp4lvnat/auth/kubeconfig
 
 
 
+##
+##
+##
+
+
+
 exercise_cmd "Delete the AAP project" \
-        "oc delete project ansible-automation-platform"
-
-
+             "oc delete project ansible-automation-platform"
 
 exercise_msg "Wait for PV to become unbound"
 
@@ -34,15 +32,13 @@ while [[ ($pv_status =~ "Bound") && ("$retry" -gt "0") ]] ; do
 done
 
 exercise_cmd "Delete the storage pv" \
-        "oc delete pv postgres-tower"
-
-
+             "oc delete pv postgres-tower"
 
 exercise_cmd "Delete ansible.automation CR" \
-        "oc delete crd automationcontrollers.automationcontroller.ansible.com"
-
-
+             "oc delete crd automationcontrollers.automationcontroller.ansible.com"
 
 exercise_cmd "Cleanup the postgres NFS data store" \
-        "rm -rf {{ workshop_extras.nfs_export }}/postgres-tower/data/userdata"
+             "rm -rf {{ workshop_extras.nfs_export }}/postgres-tower/data/userdata"
 
+exercise_msg "For more extensive CRD cleanup..." \
+             "for i in \`oc get crd -o=custom-columns=NAME:.metadata.name | grep ansible\` ; do oc delete crd \$i  ; done"

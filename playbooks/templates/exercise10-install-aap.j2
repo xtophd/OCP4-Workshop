@@ -6,28 +6,23 @@
 
 . $(dirname "$0")/exercise-functions.sh
 
-
-
-##
-##
-##
-
-
-
 export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
+
+
+##
+##
+##
 
 
 
 exercise_cmd "Create a new project" \
-        "oc new-project ansible-automation-platform --description='Ansible Application Platform' --display-name='Exercise: Ansible AP'"
+             "oc new-project ansible-automation-platform --description='Ansible Application Platform' --display-name='Exercise: Ansible AP'"
 
 exercise_cmd "Create the NFS pv" \
-        "oc create -f /usr/local/etc/exercise10-aap-pv.yaml"
+             "oc create -f /usr/local/etc/exercise10-aap-pv.yaml"
 
 exercise_cmd "Apply config YAML to install Ansible AP Operator Part-1/2" \
-        "oc apply -f /usr/local/etc/exercise10-aap-sub1.yaml"
-
-
+             "oc apply -f /usr/local/etc/exercise10-aap-sub1.yaml"
 
 exercise_msg "Waiting for CR AutomationController"
 
@@ -35,22 +30,11 @@ until oc get AutomationController 2>/dev/null ; do
   exercise_wait 3
 done
 
-
-
 exercise_cmd "Apply config YAML to install Ansible AP Operator Part-2/2" \
-        "oc apply -f /usr/local/etc/exercise10-aap-sub2.yaml"
+             "oc apply -f /usr/local/etc/exercise10-aap-sub2.yaml"
 
-echo ""
-echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-echo "## You can retrieve the admin password with the following..."
-echo "##"
-echo "##    oc get secret/tower-admin-password -o yaml -n ansible-automation-platform"
-echo "##"
+exercise_msg "Get the AAP admin password with the following..." \
+             "oc get secret/tower-admin-password -o json -n ansible-automation-platform | jq '.data.password'"
 
-#echo ""
-#echo "## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-#echo "## You can retrieve the URL for Ansible Controller GUI via:"
-#echo "##"
-#echo "##    oc get routes -n ansible-automation-platform"
-#echo "##"
-
+exercise_msg "Get the AAP route (URL) with the following..." \
+             "oc get routes -n ansible-automation-platform"
