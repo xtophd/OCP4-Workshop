@@ -23,7 +23,7 @@ At some point, xtoph_deploy problems and mitigations will be moved to the xtoph_
 
 libgcrypt in 8.2 (GA) has a bug that creates a symptom of not being able to deploy a vm into libvirt with virt-install.  Error reports as "Host does not support any virtualization options".
 
-NOTE: resolved by updating libgcrypt with `yum update libgcrypt`
+NOTE: resolved by updating libgcrypt with `yum update libgcrypt` AND don't use RHEL 8.2
 
 
 
