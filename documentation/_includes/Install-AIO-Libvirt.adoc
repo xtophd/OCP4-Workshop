@@ -204,9 +204,9 @@ Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
 
 == Post Installation
 
-If you elected to deploy the workshop materials in your configuartion, you will find a number of convenient scripts in /usr/local/bin.
+If you elected to deploy the workshop materials (which is the default) in your configuartion, you will find a number of convenient scripts in /usr/local/bin on the bastion host.
 
-=== Extra Info
+=== Extra Info (WHERE ARE MY CREDENTIALS?)
 
 Artifacts from the build will be on the bastion host in /root/ocp-<clustername>
 
@@ -214,9 +214,9 @@ Authority files will be on the bastion host in /root/ocp-<clustername>/auth
 
 === VNC Connection to the bastion host
 
-If enabled in master-config.yml, a VNC server is configured on the bastion host.
+If enabled in master-config.yml (now the default for the libvirt-nat.yml), a VNC server is configured on the bastion host.
 
-You could then use an ssh tunnel to setup up a port on the virt host which will connect to the bastion vm.
+You could then use an ssh tunnel to setup up a port on the virt host which will connect to the bastion vm.  If you left all of the default parameters and substituting your-host-ipaddr, run the following on the libvirt host.
 
 ----
 firewall-cmd --add-port=5903/tcp
@@ -226,7 +226,7 @@ ssh -L <your-host-ipaddr>:5903:192.168.123.160:5903 root@192.168.123.160 -N
 
 Now you should be able to use VNC client to connect to <your-host-ipaddr>:3
 
-Don't forget to set the deisplay quality to "High" in the connection properties.
+Don't forget to set the display quality to "High" in the VNC connection properties, and increase the display resolution on the bastion's desktop GUI settings.
 
 [discrete]
 == Continue to the Workshop
