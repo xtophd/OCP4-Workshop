@@ -231,9 +231,11 @@ Don't forget to set the display quality to "High" in the VNC connection properti
 [discrete]
 == Continue to the Workshop
 
+ifdef::env-github[]
 The workshop document and exercises can be found here:
 
-* link:{docsdir}/OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
+* link:../OCP-Workshop.adoc[OCP-Workshop Hands-on Lab]
+endif::[]
 
 [discrete]
 = The End
