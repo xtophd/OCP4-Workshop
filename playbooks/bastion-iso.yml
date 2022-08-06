@@ -7,9 +7,9 @@
 ##   Current dhcp model should follow:
 ##
 ##   (A) If class is UEFI
-##         If iUEFI based, we boot from matchbox 
+##         If UEFI based, we boot from matchbox 
 ##         If UEFI based, we chain load with ipxe.efi and try again as iUEFI
-##         If  UEFI based, we chain load with undionly and try again as iUEFI
+##         If UEFI based, we chain load with undionly and try again as iUEFI
 ##
 ##   (B) If class is HTTP
 ##         Send URL to customized ISO
