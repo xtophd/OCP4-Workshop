@@ -28,8 +28,5 @@ done
 exercise_cmd "Apply config YAML to install Ansible AP Operator Part-2/2" \
              "oc apply -f /usr/local/etc/exercise10-aap-sub2.yaml"
 
-exercise_msg "Get the AAP admin password with the following..." \
-             "oc get secret/tower-admin-password -o json -n ansible-automation-platform | jq '.data.password'"
-
-exercise_msg "Get the AAP route (URL) with the following..." \
-             "oc get routes -n ansible-automation-platform"
+exercise_msg "Tower will probably go through an update for a few minutes"
+exercise_msg "You may need to restart the tower pod"

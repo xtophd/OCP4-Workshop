@@ -66,6 +66,8 @@
 
       - {mode: '0744', src: 'exercise10-install-aap.j2',       dest: '/usr/local/bin/exercise10-install-aap.sh'}
       - {mode: '0744', src: 'exercise10-uninstall-aap.j2',     dest: '/usr/local/bin/exercise10-uninstall-aap.sh'}
+      - {mode: '0744', src: 'exercise10-restart-aap.j2',       dest: '/usr/local/bin/exercise10-restart-aap.sh'}
+      - {mode: '0744', src: 'exercise10-get-info.j2',             dest: '/usr/local/bin/exercise10-get-info.sh'}
 
       - {mode: '0744', src: 'exercise-db-server.j2',           dest: '/usr/local/bin/exercise-db-server.sh'}
 

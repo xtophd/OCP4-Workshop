@@ -18,5 +18,5 @@
   tasks:
 
   - name: "ocp4-workshop : bastion-basics : install additional packages"
-    yum: name=tree,wget,bind-utils,tar,net-tools,httpd state=installed
+    yum: name=tree,wget,bind-utils,tar,net-tools,httpd,jq state=installed
 

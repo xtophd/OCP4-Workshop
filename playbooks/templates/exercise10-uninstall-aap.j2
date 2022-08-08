@@ -8,7 +8,7 @@
 
 
 
-export KUBECONFIG=/root/ocp-ocp4lvnat/auth/kubeconfig
+export KUBECONFIG={{ workshop_extras.ocp_creds_dir }}/auth/kubeconfig
 
 exercise_cmd "Delete the AAP project" \
              "oc delete project ansible-automation-platform"
