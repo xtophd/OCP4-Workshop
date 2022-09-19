@@ -152,7 +152,7 @@
           owner: root
           group: root
           mode: 644
-        when: workshop_vars.ocp_version|float  < 4.9
+        when: workshop_vars.ocp_version is version('4.9',operator='<')
     
       - name: "ocp4-workshop : bastion-openshift : deploy install-config.yml using OVN"
         vars:
@@ -169,7 +169,7 @@
           owner: root
           group: root
           mode: 644
-        when: workshop_vars.ocp_version|float >= 4.9
+        when: workshop_vars.ocp_version is version('4.9',operator='>=')
     
       - name: "ocp4-workshop : bastion-openshift : Create a backup of the install-config.yaml"
         shell:
