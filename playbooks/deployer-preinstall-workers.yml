@@ -20,5 +20,5 @@
       sleep: 5
       state: started
       timeout: 1800
-    loop: "{{ groups['myMasters'] }}"
+    loop: "{{ groups['myMasters'] | difference(['myBootstrap']) }}"
 

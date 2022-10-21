@@ -8,44 +8,15 @@
 ---
 
 
-##
-##      determine if bastion is active,
-##      create new inventory named live_bastion
-
-
-
-- hosts: myBastion
-  gather_facts: no
-  tasks:
-  - block:
-
-      - name: "ocp4-workshop : bastion-openshift-shutdown : test existence of bastion host via ssh port"
-        delegate_to: localhost
-        wait_for:
-          host: "{{ ansible_host }}"
-          connect_timeout: 5
-          port: 22
-          sleep: 1
-          state: started
-          timeout: 10
-
-      - name: "ocp4-workshop : bastion-openshift-shutdown : add active host to hostgroup live_bastion"
-        group_by:
-          key: "live_bastion"
-
-    rescue:
-      - debug: msg="node {{inventory_hostname}} is already down"
-
-
 
 ##
-##      determine if workers (and bootstrap) are active,
+##      determine if workers are active,
 ##      create new inventory named live_workers
 ##
 
 
 
-- hosts: myBootstrap,myWorkers
+- hosts: myWorkers
   gather_facts: no
   tasks:
 
@@ -72,7 +43,7 @@
 
 ##
 ##      determine if masters nodes are active,
-##      create new inventory named live_masters
+##      create new inventory named live_controlplane
 ##
 
 
@@ -108,7 +79,7 @@
 
 
 
-- hosts: live_bastion
+- hosts: live_workers
   gather_facts: no
   tasks:
 
@@ -118,20 +89,6 @@
         ssh core@{{ item }} nohup 'sleep 3 && sudo shutdown -h now' &
 
     with_items: "{{ groups['live_workers'] | default('') }}"
-
-
-
-##
-##      Try for 3 minutes to wait for graceful shutdown, then exit
-##      This allows other tasks to continue (ie: force
-##      shutdown via ipmi, ovirt api or libvirt virsh).
-##
-
-
-
-- hosts: live_workers
-  gather_facts: no
-  tasks:
 
   - name: "common-deploy-post : wait for systemd port stopped"
     delegate_to: localhost
@@ -144,8 +101,6 @@
       state: stopped
       timeout: 180
     ignore_errors: yes
-    when:
-      - groups['live_bastion']|length > 0
 
 
 
@@ -155,7 +110,7 @@
 
 
 
-- hosts: live_bastion
+- hosts: live_controlplane
   gather_facts: no
   tasks:
 
@@ -165,20 +120,6 @@
         ssh core@{{ item }} nohup 'sleep 3 && sudo shutdown -h now' &
 
     with_items: "{{ groups['live_controlplane'] | default('') }}"
-
-
-
-##
-##      Try for 3 minutes to wait for graceful shutdown, then exit
-##      This allows other tasks to continue (ie: force
-##      shutdown via ipmi, ovirt api or libvirt virsh).
-##
-
-
-
-- hosts: live_controlplane
-  gather_facts: no
-  tasks:
 
   - name: "ocp4-workshop : bastion-openshift-shutdown : wait for systemd port stopped"
     delegate_to: localhost
@@ -190,5 +131,4 @@
       state: stopped
       timeout: 180
     ignore_errors: yes
-    when:
-      - groups['live_bastion']|length > 0
+

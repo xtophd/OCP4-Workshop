@@ -46,6 +46,7 @@ case "$1" in
 
         git pull
         cd roles/xtoph_deploy; git pull
+        cd roles/xtoph_ocp4; git pull
         ;;
 
     *)
