@@ -19,13 +19,9 @@ myInventory="./config/master-config.yml"
 ##          to run this
 ##
 
-if [ ! -e "${myInventory}" ] ; then
-    echo "ERROR: Are you in the right directory? Can not find ${myInventory}" ; exit
-    exit
-fi
+if [[ ! -e "${myInventory}" || ! -e "./ocp4-workshop.yml" ]] ; then
 
-if [ ! -e "./playbooks" ] ; then
-    echo "ERROR: Are you in the right directory? Can not find ./playbooks" ; exit
+    echo "ERROR: Are you in the right directory? Can not find ${myInventory} | ocp4-workshop.yml" ; exit
     exit
 fi
 
@@ -35,7 +31,7 @@ fi
 
 case "$1" in
     "all")
-        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10  ./playbooks/ocp4-workshop.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure" ./ocp4-workshop.yml
         ;;
          
     "basics"      | \
@@ -54,28 +50,29 @@ case "$1" in
     "matchbox"    | \
     "httpd"       | \
     "squid"       | \
+    "tests"       | \
     "openshift"   | \
     "workshop"    | \
     "user"        | \
     "vnc")
 
-        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 --tags $1 ./playbooks/ocp4-workshop.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure" -e ocp4_workshop_subcmd="$1" ./ocp4-workshop.yml
         ;;
 
     "finish")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-openshift-finish.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="finish"    ./ocp4-workshop.yml 
         ;;
 
     "shutdown")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/bastion-openshift-shutdown.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="shutdown" ./ocp4-workshop.yml 
         ;;
 
     "usher")
-        time  ansible-playbook -i ${myInventory} -f 10  ./playbooks/deployment-usher.yml
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="usher"    ./ocp4-workshop.yml 
         ;;
 
     *)
-        echo "USAGE: ocp4-workshop.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | tests | unlock | user | usher | vnc ]"
         ;;
 
 esac         
