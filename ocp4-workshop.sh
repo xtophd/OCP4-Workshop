@@ -34,6 +34,7 @@ case "$1" in
         time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure" ./ocp4-workshop.yml
         ;;
          
+    "ai"          | \
     "basics"      | \
     "cockpit"     | \
     "dns"         | \
@@ -51,7 +52,7 @@ case "$1" in
     "httpd"       | \
     "squid"       | \
     "tests"       | \
-    "openshift"   | \
+    "upi"         | \
     "workshop"    | \
     "user"        | \
     "vnc")
@@ -72,7 +73,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: ocp4-workshop.sh [ all | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | openshift | workshop | user | finish | lock | shutdown | tests | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | ai | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | shutdown | tests | unlock | user | usher | vnc ]"
         ;;
 
 esac         

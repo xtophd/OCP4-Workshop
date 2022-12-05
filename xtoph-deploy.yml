@@ -114,6 +114,21 @@
 
     - debug: msg="**** END PREUNINSTALL ****"
 
+- hosts: myBastion,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN PREUNINSTALL ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END PREUNINSTALL ****"
+
 
 - hosts: myBastion,myBootstrap,myWorkers,myMasters,!myShelter
   gather_facts: no
@@ -241,7 +256,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-bastion"
+              xtoph_ocp4_action: "preinstall-node"
+#              xtoph_ocp4_action: "preinstall-bastion"
 
           - include_role: 
               name: xtoph_deploy
@@ -277,7 +293,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-masters"
+              xtoph_ocp4_action: "preinstall-node"
+#              xtoph_ocp4_action: "preinstall-masters"
       
           - include_role: 
               name: xtoph_deploy
@@ -313,7 +330,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-workers"
+              xtoph_ocp4_action: "preinstall-node"
+#              xtoph_ocp4_action: "preinstall-workers"
       
           - include_role: 
               name: xtoph_deploy
