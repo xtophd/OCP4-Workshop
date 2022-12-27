@@ -26,26 +26,33 @@ all:
 
     workshop_vars:
 
-      clustername:          "ocp4lvbr"
+      clustername:          "$CLUSTER_NAME"
 
-      ocp_version:          "4.9"
-      ocp_dns_wildcard:     "apps"
+      ocp_version:          "4.11"
+      ocp_admin_user:       "cloud-admin"
+      ocp_user:             "cloud-user"
+      ocp_dns_wildcard:     "$CLUSTER_WILDCARD"
+      ocp_vip_cluster:      "$CLUSTER_LOADBALANCER_IP"
+      ocp_vip_api:          "$CLUSTER_API_IP"
+      ocp_provisioner:      "$CLUSTER_PROVISIONER"
 
-      network_basedomain:   "example.com"
-      network_network:      "192.168.1.0"
-      network_netmask:      "255.255.255.0"
-      network_broadcast:    "192.168.1.255"
-      network_prefix:       "24"
-      network_gateway:      "192.168.1.1"
-      network_nameserver:   "192.168.1.30"
-      network_timeserver:   "192.168.1.30"
+      network_basedomain:   "$NETWORK_BASEDOMAIN"
+      network_network:      "$NETWORK_ID"
+      network_netmask:      "$NETWORK_NETMASK"
+      network_broadcast:    "$NETWORK_BROADCAST"
+      network_prefix:       "$NETWORK_PREFIX"
+      network_gateway:      "$NETWORK_GATEWAY"
+      network_nameserver:   "$NETWORK_DNS_SERVER"
+      network_timeserver:   "$NETWORK_TIME_SERVER"
 
       http_proxy:           ""
       https_proxy:          ""
 
       bastion:
 
+        assisted_installer: True
         firewalld:          True
+        cockpit:            False
         dns:                True
         dhcp:               True
         dhcp_pxe:           True
@@ -54,12 +61,12 @@ all:
         matchbox:           True
         nfs:                True
         ntp:                True
-        squid:              True
+        squid:              False
         workshop_user:      True
         workshop_materials: True
-        desktop_gui:        True
-        desktop_chrome:     True
-        desktop_vnc:        True
+        desktop_gui:        False
+        desktop_chrome:     False
+        desktop_vnc:        False
 
     workshop_extras:
 
@@ -80,8 +87,9 @@ all:
 
     xtoph_vars:
 
-      deployhost_ip:       "192.168.1.170" 
+      deployhost_ip:       "$ANSIBLE_IP" 
       clustername:         "{{ workshop_vars.clustername }}"
+      tmp_dir:             "/home/tmp/{{ workshop_vars.clustername }}/{{ inventory_hostname_short }}"
 
 
 
@@ -94,11 +102,11 @@ myLibvirtHosts:
   hosts:
     amanda1.lab.linuxsoup.com:
       h_pubIP:       "192.168.1.23"
-      h_plPROF:      "libvirt_amanda1"
+      h_plPROF:      "custom_kvmhost"
 
 #    amanda2.lab.linuxsoup.com:
 #      h_pubIP:       "192.168.1.24"
-#      h_plPROF:      "libvirt_amanda2"
+#      h_plPROF:      "libvirt_custom02"
 
 
 ## -----------------
@@ -123,8 +131,8 @@ myBastion:
   vars:
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF: "kvm_vda"
-    h_plPROF: "libvirt_amanda1"
-    h_rsPROF: "bastion"
+    h_plPROF: "custom_kvmhost"
+    h_rsPROF: "custom_bastion"
     h_ksPROF: "rhel84-bootiso"
     h_netDEV: "enp1s0"
     h_blkDEV: "vda"
@@ -142,9 +150,9 @@ myBootstrap:
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_amanda1"
+    h_plPROF:        "custom_kvmhost"
     h_rsPROF:        "med"
-    h_ksPROF:        "pxe_wait"
+    h_ksPROF:        "custom_kickstart"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -167,9 +175,10 @@ myMasters:
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_amanda1"
-    h_rsPROF:        "med"
-    h_ksPROF:        "pxe_wait"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "custom_master"
+    h_ksPROF:        "custom_kickstart"
+    h_isoURL:        "http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -190,9 +199,10 @@ myWorkers:
   vars: 
     ansible_host: "{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"
     h_hwPROF:        "kvm_vda"
-    h_plPROF:        "libvirt_amanda1"
-    h_rsPROF:        "sml"
-    h_ksPROF:        "pxe_wait"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "custom_worker"
+    h_ksPROF:        "custom_kickstart"
+    h_isoURL:        "http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"

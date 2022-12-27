@@ -1,0 +1,14 @@
+_debug:               True
+_cleanup:             True
+
+_bastion_profile:     "workshop-vars"
+_network_profile:     "workshop-vars"
+_ocp_profile:         "workshop-vars"
+_rhcos_profile:       "workshop-vars"
+  
+
+_cluster_bastion:     "{{ groups['myBastion']   }}"
+_cluster_bootstrap:   "{{ groups['myBootstrap'] }}"
+_cluster_masters:     "{{ groups['myMasters']   }}"
+_cluster_workers:     "{{ groups['myWorkers']   }}"
+

@@ -40,8 +40,8 @@ deployhost:
   ##                           real-dns
   ##
 
-  dnsmasq_enable:     true
-  dnsmasq_asprimary:  true
+  dnsmasq_enable:     false
+  dnsmasq_asprimary:  false
 
   ##
   ##    http_port:      port to provide kickstart and
