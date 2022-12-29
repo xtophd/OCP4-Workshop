@@ -44,9 +44,10 @@ case "$1" in
 
     "git-updates")
 
+        myPWD=${PWD}
         git pull
-        cd roles/xtoph_deploy; git pull
-        cd roles/xtoph_ocp4; git pull
+        cd ${myPWD}/roles/xtoph_deploy; git pull
+        cd ${myPWD}/roles/xtoph_ocp4; git pull
         ;;
 
     *)
