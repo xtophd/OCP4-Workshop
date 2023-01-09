@@ -106,7 +106,7 @@ all:
 myLibvirtHosts:
 
   hosts:
-    amanda1.lab.linuxsoup.com:
+    {{ t_libvirt_host_fqdn }}:
       h_pubIP:       "{{ t_libvirt_host_ip }}"
       h_plPROF:      "custom_kvmhost"
 
@@ -162,6 +162,8 @@ myBootstrap:
     h_plPROF:        "custom_kvmhost"
     h_rsPROF:        "med"
     h_ksPROF:        "custom_kickstart"
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
+
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
@@ -188,7 +190,7 @@ myMasters:
     h_plPROF:        "custom_kvmhost"
     h_rsPROF:        "custom_master"
     h_ksPROF:        "custom_kickstart"
-    h_isoURL:        {% raw %}"http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"{% endraw %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
@@ -218,7 +220,7 @@ myWorkers:
     h_plPROF:        "custom_kvmhost"
     h_rsPROF:        "custom_worker"
     h_ksPROF:        "custom_kickstart"
-    h_isoURL:        {% raw %}"http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"{% endraw %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 
     h_rhcosDEV:      "vda"
     h_rhcosNIC:      "dhcp"
