@@ -5,19 +5,21 @@
 custom_kvmhost:
 
     type:        "libvirt"
-    host_fqdn:   "$LIBVIRT_HOST_FQDN"
-    host_ip:     "$LIBVIRT_HOST_IP"
+    host_fqdn:   "{{ t_libvirt_host_fqdn }}"
+    host_ip:     "{{ t_libvirt_host_ip   }}"
     description: "Custom kvm platform host: bridged net, nested_virt"
 
     vm:
-        name: "{{ xtoph_vars.clustername }}_{{ inventory_hostname }}"
+        name: {% raw %}"{{ xtoph_vars.clustername }}_{{ inventory_hostname }}"{% endraw %}
   
     nested_virt_enable: true
 
     kickstart:
         description: "hints to where installers can find devices"
+{% raw %}  
         netdev:  "{{ h_netDEV | default('eno1') }}"
         blkdev:  "{{ h_blkDEV | default('sda') }}"
+{% endraw %}
   
     network:
         default:
@@ -27,9 +29,10 @@ custom_kvmhost:
             undeploy:        true
 
             fwd_type:        "bridge"
-            bridge_netdev:   "$LIBVIRT_HOST_BRDEV"
+            bridge_netdev:   "{{ t_libvirt_host_brdev }}"
             model:           "virtio"
-  
+
+{% raw %}  
             basedomain:        "{{ workshop_vars.network_basedomain }}"
             network:           "{{ workshop_vars.network_network    }}"
             netmask:           "{{ workshop_vars.network_netmask    }}"
@@ -39,6 +42,7 @@ custom_kvmhost:
             nameserver:        "{{ workshop_vars.network_nameserver }}"
             timeserver:        "{{ workshop_vars.network_timeserver }}"
             fqdn:              "{{ workshop_extras.network_fqdn     }}"
+{% endraw %}
 
     storage:
         default:

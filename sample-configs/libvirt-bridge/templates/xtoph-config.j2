@@ -2,6 +2,7 @@ debug: true
 
 cleanup: true
 
+{% raw %}
 hostname: "{{ inventory_hostname }}"
 
 clustername: "{{ xtoph_vars.clustername }}"
@@ -11,6 +12,7 @@ selected_profile:
     platform:  "{{ h_plPROF | default ('') }}"
     resource:  "{{ h_rsPROF | default ('') }}"
     machine:   "{{ h_hwPROF | default ('') }}"
+{% endraw %}
 
 deployhost:
 
@@ -29,7 +31,9 @@ deployhost:
   ##    accessible to the deployed VMs
   ##
 
+{% raw %}
   ip: "{{ xtoph_vars.deployhost_ip }}"
+{% endraw %}
 
   ##
   ##    dnsmasq_enable:    ensures dnsmasq is installed
@@ -68,6 +72,8 @@ deployhost:
   ##    NOTE: needs to be unique for every host
   ##
 
+
+{% raw %}
   tmp_dir: "/home/tmp/{{ xtoph_vars.clustername }}/{{ inventory_hostname }}"
 
   ##
@@ -87,6 +93,7 @@ deployhost:
   repos:
       dir: "/var/www/html/repos"
       url: "http://{{ xtoph_vars.deployhost_ip }}:8008/repos"
+{% endraw %}
 
   ##
   ##    Where are the ISOs stored

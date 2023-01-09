@@ -20,7 +20,13 @@ export LIBVIRT_HOST_IP=""
 export LIBVIRT_HOST_PW=""
 export LIBVIRT_HOST_FQDN=""
 export LIBVIRT_HOST_BRDEV=""
-
+export ADDR_BASTION=""
+export ADDR_BOOTSTRAP=""
+export ADDR_MASTER1=""
+export ADDR_MASTER2=""
+export ADDR_MASTER3=""
+export ADDR_WORKER1=""
+export ADDR_WORKER2=""
 
 ##
 ##    Load current answer file
@@ -54,12 +60,21 @@ CLUSTER_API_IP="${CLUSTER_API_IP}"
 NETWORK_ID="${NETWORK_ID}"
 NETWORK_GATEWAY="${NETWORK_GATEWAY}"
 NETWORK_PREFIX="${NETWORK_PREFIX}"
+NETWORK_BROADCAST="${NETWORK_BROADCAST}"
+NETWORK_NETMASK="${NETWORK_NETMASK}"
 NETWORK_BASEDOMAIN="${NETWORK_BASEDOMAIN}"
 NETWORK_DNS_SERVER="${NETWORK_DNS_SERVER}"
 NETWORK_TIME_SERVER="${NETWORK_TIME_SERVER}" 
 LIBVIRT_HOST_IP="${LIBVIRT_HOST_IP}"
 LIBVIRT_HOST_FQDN="${LIBVIRT_HOST_FQDN}"
 LIBVIRT_HOST_BRDEV="${LIBVIRT_HOST_BRDEV}"
+ADDR_BASTION="${ADDR_BASTION}"
+ADDR_BOOTSTRAP="${ADDR_BOOTSTRAP}"
+ADDR_MASTER1="${ADDR_MASTER1}"
+ADDR_MASTER2="${ADDR_MASTER2}"
+ADDR_MASTER3="${ADDR_MASTER3}"
+ADDR_WORKER1="${ADDR_WORKER1}"
+ADDR_WORKER2="${ADDR_WORKER2}"
 EO_ANSWERS
 
 }
@@ -96,6 +111,10 @@ current_settings () {
     echo "Network Base Domain     ... [${NETWORK_BASEDOMAIN}]"
     echo "Network DNS Server      ... [${NETWORK_DNS_SERVER}]"
     echo "Network TIME Server     ... [${NETWORK_TIME_SERVER}]" 
+    echo "IP Address Bastion      ... [${ADDR_BASTION}]"
+    echo "IP Address Bootstrap    ... [${ADDR_BOOTSTRAP}]"
+    echo "IP Address(es) Master   ... [${ADDR_MASTER1} / ${ADDR_MASTER2} / ${ADDR_MASTER3}]"
+    echo "IP Address(es) Worker   ... [${ADDR_WORKER1} / ${ADDR_WORKER2}]"
     echo "Libvirt Host IP         ... [${LIBVIRT_HOST_IP}]" 
     echo "Libvirt Host Password   ... [${LIBVIRT_HOST_PW:+"**********"}]" 
     echo "Libvirt Host FQDN       ... [${LIBVIRT_HOST_FQDN}]" 
@@ -169,19 +188,21 @@ prepare_deployment () {
 
     echo -n "## Parsing sample-configs"
 
-    #cp ./sample-configs/libvirt-bridge/*.yml ./config
+#    cp ./sample-configs/libvirt-bridge/*.yml ./config
 
-    for i in ./sample-configs/libvirt-bridge/*.yml ; do
-        envsubst < $i > ./config/`basename $i`
+#    for i in ./sample-configs/libvirt-bridge/*.yml ; do
+#        envsubst < $i > ./config/`basename $i`
+#
+#        if [[ $? ]] ; then
+#          echo " $i - success" 
+#        else
+#          echo " $i - FAILED" 
+#          return 1
+#        fi
+#    done
 
-        if [[ $? ]] ; then
-          echo " $i - success" 
-        else
-          echo " $i - FAILED" 
-          return 1
-        fi
-    done
-
+    echo -n "## Templating configuration files"
+    ansible-playbook sample-configs/libvirt-bridge/_setup.yml
 
     echo -n "## Encrypt the credentials.yml"
 
@@ -208,6 +229,82 @@ prepare_deployment () {
 
 # ---
 
+ipaddress_menu () {
+
+    PS3="Select Node to Assign IP: "
+
+    current_settings
+
+    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "Back to Main Menu"
+    do
+      case ${action}  in
+        "Bastion")
+          read -p "Enter Bastion IP [${ADDR_BASTION}]: " input
+          ADDR_BASTION=${input:-$ADDR_BASTION}
+          ;;
+
+        "Bootstrap")
+          read -p "Enter Bastion IP [${ADDR_BOOTSTRAP}]: " input
+          ADDR_BOOTSTRAP=${input:-$ADDR_BOOTSTRAP}
+          ;;
+
+        "Master1")
+          read -p "Enter Master1 IP [${ADDR_MASTER1}]: " input
+          ADDR_MASTER1=${input:-$ADDR_MASTER1}
+          ;;
+
+        "Master2")
+          read -p "Enter Master2 IP [${ADDR_MASTER2}]: " input
+          ADDR_MASTER2=${input:-$ADDR_MASTER2}
+          ;;
+
+        "Master3")
+          read -p "Enter Master3 IP [${ADDR_MASTER3}]: " input
+          ADDR_MASTER3=${input:-$ADDR_MASTER3}
+          ;;
+
+        "Worker1")
+          read -p "Enter Worker1 IP [${ADDR_WORKER1}]: " input
+          ADDR_WORKER1=${input:-$ADDR_WORKER1}
+          ;;
+
+        "Worker2")
+          read -p "Enter Worker2 IP [${ADDR_WORKER2}]: " input
+          ADDR_WORKER2=${input:-$ADDR_WORKER2}
+          ;;
+
+        "Back to Main Menu")
+          break
+          ;;
+
+        "*")
+          echo "That's NOT an option, try again..."
+          ;;
+
+      esac
+
+      ##
+      ##    Reprint the current settings
+      ##
+
+      current_settings
+
+      ##
+      ##    The following causes the select
+      ##    statement to reprint the menu
+      ##
+
+      REPLY=
+
+    done
+
+}
+
+
+
+
+# ---
+
 libvirt_menu () {
 
     PS3="Select Action: "
@@ -218,7 +315,7 @@ libvirt_menu () {
     do
       case ${action}  in
         "Set Host IP")
-          read -p "Enter network id [${LIBVIRT_HOST_IP}]: " input
+          read -p "Enter libvirt host IP [${LIBVIRT_HOST_IP}]: " input
           LIBVIRT_HOST_IP=${input:-$LIBVIRT_HOST_IP}
           ;;
 
@@ -238,12 +335,12 @@ libvirt_menu () {
           ;;
 
         "Set Host FQDN")
-          read -p "Enter prefix [${LIBVIRT_HOST_FQDN}]: " input
+          read -p "Enter libvirt host FQDN [${LIBVIRT_HOST_FQDN}]: " input
           LIBVIRT_HOST_FQDN=${input:-$LIBVIRT_HOST_FQDN}
           ;;
 
         "Set Bridge Device")
-          read -p "Enter gateway[${LIBVIRT_HOST_BRDEV}]: " input
+          read -p "Enter libvirt host bridge device[${LIBVIRT_HOST_BRDEV}]: " input
           LIBVIRT_HOST_BRDEV=${input:-$LIBVIRT_HOST_BRDEV}
           ;;
 
@@ -426,7 +523,7 @@ main_menu () {
 
     current_settings
 
-    select action in "Set Ansible Source" "Set Vault Password" "Set Control Host IP" "Cluster Settings" "Network Settings" "Libvirt Settings" "Prepare Deployment" "Save & Quit" "Quit"
+    select action in "Set Ansible Source" "Set Vault Password" "Set Control Host IP" "Cluster Settings" "Network Settings" "Node IP Settings" "Libvirt Settings" "Prepare Deployment" "Save & Quit" "Quit"
     do
       case ${action}  in
         "Set Ansible Source")
@@ -475,6 +572,10 @@ main_menu () {
 
         "Network Settings")
           network_menu
+          ;;
+
+        "Node IP Settings")
+          ipaddress_menu
           ;;
 
         "Libvirt Settings")

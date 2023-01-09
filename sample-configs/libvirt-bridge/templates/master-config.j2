@@ -1,0 +1,227 @@
+##
+##    !! WARNING !!  Ansible only interprets 'True' and 'False'
+##                   as booleans when reading ini files.  Other
+##                   values such as 'true' or 'false' would be 
+##                   interpreted as strings and would break various
+##                   logic tests.  
+##
+##                   When reading YML files, booleans can take on
+##                   many forms and be interpreted correctly.
+##
+##                   For consistency, only use unquoted booleans: True & False
+
+all: 
+
+  vars:
+
+    ## ----------------------------------------
+    ##    Globals that will be phased out
+
+    g_clusterAdmin:       "cloud-admin"
+    g_clusterUser:        "cloud-user"
+
+
+    ## ----------------------------------------
+    ##    Workshop Variables
+
+    workshop_vars:
+
+      clustername:          "{{ t_cluster_name }}"
+
+      ocp_version:          "4.11"
+      ocp_admin_user:       "cloud-admin"
+      ocp_user:             "cloud-user"
+      ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
+      ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
+      ocp_vip_api:          "{{ t_cluster_api_ip }}"
+      ocp_provisioner:      "{{ t_cluster_provisioner }}"
+
+      network_basedomain:   "{{ t_network_basedomain }}"
+      network_network:      "{{ t_network_id }}"
+      network_netmask:      "{{ t_network_netmask }}"
+      network_broadcast:    "{{ t_network_broadcast }}"
+      network_prefix:       "{{ t_network_prefix }}"
+      network_gateway:      "{{ t_network_gateway }}"
+      network_nameserver:   "{{ t_network_dns_server }}"
+      network_timeserver:   "{{ t_network_time_server }}"
+
+      http_proxy:           ""
+      https_proxy:          ""
+
+      bastion:
+
+        assisted_installer: True
+        firewalld:          True
+        cockpit:            False
+        dns:                True
+        dhcp:               True
+        dhcp_pxe:           True
+        dhcp_uefi_http:     True
+        haproxy:            True
+        matchbox:           True
+        nfs:                True
+        ntp:                True
+        squid:              False
+        workshop_user:      True
+        workshop_materials: True
+        desktop_gui:        False
+        desktop_chrome:     False
+        desktop_vnc:        False
+
+    workshop_extras:
+
+      network_fqdn:         {% raw %}"{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}"{% endraw %}
+
+
+      ocp_creds_dir:        {% raw %}"/root/ocp-{{ workshop_vars.clustername }}"{% endraw %}
+
+      ocp_wfqdn:            {% raw %}"{{ workshop_vars.ocp_dns_wildcard }}.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}"{% endraw %}
+
+
+      nfs_export:           {% raw %}"/home/nfs-{{ workshop_vars.clustername }}"{% endraw %}
+
+
+      squid_http_url:       {% raw %}"http://bastion.{{ workshop_vars.clustername }}.{{ workshop_vars.network_basedomain }}:3128"{% endraw %}
+
+      squid_https_url:      {% raw %}""{% endraw %}
+
+
+
+    ## ----------------------------------------
+    ##    Xtoph Deploy Variables
+
+    xtoph_vars:
+
+      deployhost_ip:       "{{ t_ansible_ip }}" 
+      clustername:         {% raw %}"{{ workshop_vars.clustername }}"{% endraw %}
+
+      tmp_dir:             {% raw %}"/home/tmp/{{ workshop_vars.clustername }}/{{ inventory_hostname_short }}"{% endraw %}
+
+
+
+## ----------------------------------------
+## HOSTGROUPS & VARS
+## ----------------------------------------
+
+myLibvirtHosts:
+
+  hosts:
+    amanda1.lab.linuxsoup.com:
+      h_pubIP:       "{{ t_libvirt_host_ip }}"
+      h_plPROF:      "custom_kvmhost"
+
+
+
+## -----------------
+
+myDeployhost:
+  hosts:
+    deployer:
+      h_pubIP:       {% raw %}"{{ xtoph_vars.deployhost_ip }}"{% endraw %}
+
+  vars:
+    ansible_connection: local
+
+
+
+## -----------------
+
+
+
+myBastion:
+  hosts:
+    bastion:
+      h_pubIP:       "{{ t_addr_bastion }}" 
+  vars:
+    ansible_host:    {% raw %}"{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"{% endraw %}
+
+    h_hwPROF:        "kvm_vda"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "custom_bastion"
+    h_ksPROF:        "rhel84-bootiso"
+    h_netDEV:        "enp1s0"
+    h_blkDEV:        "vda"
+
+
+
+
+## -----------------
+
+
+
+myBootstrap:
+  hosts:
+{% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
+    bootstrap:
+      h_pubIP:       "{{ t_addr_bootstrap }}" 
+{% endif %}
+  vars: 
+    ansible_host:    {% raw %}"{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"{% endraw %}
+
+    h_hwPROF:        "kvm_vda"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "med"
+    h_ksPROF:        "custom_kickstart"
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
+
+
+## -----------------
+
+
+
+myMasters:
+  hosts:
+    master1:
+      h_pubIP:       "{{ t_addr_master1 }}" 
+    master2:
+      h_pubIP:       "{{ t_addr_master2 }}" 
+    master3:
+      h_pubIP:       "{{ t_addr_master3 }}" 
+  vars: 
+    ansible_host:    {% raw %}"{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"{% endraw %}
+
+    h_hwPROF:        "kvm_vda"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "custom_master"
+    h_ksPROF:        "custom_kickstart"
+    h_isoURL:        {% raw %}"http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"{% endraw %}
+
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
+
+
+## -----------------
+
+
+
+myWorkers:
+  hosts:
+{% if t_addr_worker1 is defined and t_addr_worker1|length %}
+    worker1:
+      h_pubIP:       "{{ t_addr_worker1 }}" 
+{% endif %}
+{% if t_addr_worker2 is defined and t_addr_worker2|length %}
+    worker2:
+      h_pubIP:       "{{ t_addr_worker2 }}" 
+{% endif %}
+  vars: 
+    ansible_host:    {% raw %}"{{ inventory_hostname }}.{{ workshop_extras.network_fqdn }}"{% endraw %}
+
+    h_hwPROF:        "kvm_vda"
+    h_plPROF:        "custom_kvmhost"
+    h_rsPROF:        "custom_worker"
+    h_ksPROF:        "custom_kickstart"
+    h_isoURL:        {% raw %}"http://192.168.1.60:8008/assets/{{ workshop_vars.clustername }}.iso"{% endraw %}
+
+    h_rhcosDEV:      "vda"
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
