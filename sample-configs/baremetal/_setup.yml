@@ -1,0 +1,79 @@
+---
+
+- hosts: localhost
+  tasks:
+
+  - block:
+
+        - name: "baremetal-setup: deploy configs from templates"
+          template:
+            src: "{{ item.src }}"
+            dest: "{{ item.dest }}"
+            owner: root
+            group: root
+            mode: "{{ item.mode }}"
+          with_items:
+            - {mode: "0744", src: "master-config.j2",          dest: "{{ t_config_dir}}/config/master-config.yml"}
+            - {mode: "0744", src: "credentials.j2",            dest: "{{ t_config_dir}}/config/credentials.yml"}
+            - {mode: "0744", src: "xtoph-config.j2",           dest: "{{ t_config_dir}}/config/xtoph-config.yml"}
+            - {mode: "0744", src: "xtoph-config-kickstart.j2", dest: "{{ t_config_dir}}/config/xtoph-config-kickstart.yml"}
+            - {mode: "0744", src: "xtoph-config-platform.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-platform.yml"}
+            - {mode: "0744", src: "xtoph-config-resource.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-resource.yml"}
+            - {mode: "0744", src: "xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
+
+    vars:
+      - t_config_dir:              "{{ lookup('env','PWD') }}"
+      - t_ansible_ip:              "{{ lookup('env','ANSIBLE_IP') }}"
+      - t_cluster_name:            "{{ lookup('env','CLUSTER_NAME') }}"
+      - t_cluster_wildcard:        "{{ lookup('env','CLUSTER_WILDCARD') }}"
+      - t_cluster_provisioner:     "{{ lookup('env','CLUSTER_PROVISIONER') }}"
+      - t_cluster_loadbalancer_ip: "{{ lookup('env','CLUSTER_LOADBALANCER_IP') }}"
+      - t_cluster_api_ip:          "{{ lookup('env','CLUSTER_API_IP') }}"
+      - t_network_id:              "{{ lookup('env','NETWORK_ID') }}"
+      - t_network_gateway:         "{{ lookup('env','NETWORK_GATEWAY') }}"
+      - t_network_prefix:          "{{ lookup('env','NETWORK_PREFIX') }}"
+      - t_network_netmask:         "{{ lookup('env','NETWORK_NETMASK') }}"
+      - t_network_broadcast:       "{{ lookup('env','NETWORK_BROADCAST') }}"
+      - t_network_basedomain:      "{{ lookup('env','NETWORK_BASEDOMAIN') }}"
+      - t_network_dns_server:      "{{ lookup('env','NETWORK_DNS_SERVER') }}"
+      - t_network_time_server:     "{{ lookup('env','NETWORK_TIME_SERVER') }}"
+      - t_virthost_ip:             "{{ lookup('env','VIRTHOST_IP') }}"
+      - t_virthost_pw:             "{{ lookup('env','VIRTHOST_PW') }}"
+      - t_virthost_fqdn:           "{{ lookup('env','VIRTHOST_FQDN') }}"
+      - t_virthost_brdev:          "{{ lookup('env','VIRTHOST_BRDEV') }}"
+      - t_addr_bastion:            "{{ lookup('env','ADDR_BASTION') }}"
+      - t_addr_bootstrap:          "{{ lookup('env','ADDR_BOOTSTRAP') }}"
+      - t_addr_master1:            "{{ lookup('env','ADDR_MASTER1') }}"
+      - t_addr_master2:            "{{ lookup('env','ADDR_MASTER2') }}"
+      - t_addr_master3:            "{{ lookup('env','ADDR_MASTER3') }}"
+      - t_addr_worker1:            "{{ lookup('env','ADDR_WORKER1') }}"
+      - t_addr_worker2:            "{{ lookup('env','ADDR_WORKER2') }}"
+      - t_mac_bastion:             "{{ lookup('env','MAC_BASTION') }}"
+      - t_mac_bootstrap:           "{{ lookup('env','MAC_BOOTSTRAP') }}"
+      - t_mac_master1:             "{{ lookup('env','MAC_MASTER1') }}"
+      - t_mac_master2:             "{{ lookup('env','MAC_MASTER2') }}"
+      - t_mac_master3:             "{{ lookup('env','MAC_MASTER3') }}"
+      - t_mac_worker1:             "{{ lookup('env','MAC_WORKER1') }}"
+      - t_mac_worker2:             "{{ lookup('env','MAC_WORKER2') }}"
+      - t_bmc_bastion:             "{{ lookup('env','BMC_BASTION') }}"
+      - t_bmc_bootstrap:           "{{ lookup('env','BMC_BOOTSTRAP') }}"
+      - t_bmc_master1:             "{{ lookup('env','BMC_MASTER1') }}"
+      - t_bmc_master2:             "{{ lookup('env','BMC_MASTER2') }}"
+      - t_bmc_master3:             "{{ lookup('env','BMC_MASTER3') }}"
+      - t_bmc_worker1:             "{{ lookup('env','BMC_WORKER1') }}"
+      - t_bmc_worker2:             "{{ lookup('env','BMC_WORKER2') }}"
+      - t_bmc_pw_default:          "{{ lookup('env','BMC_PW_DEFAULT') }}"
+      - t_bmc_pw_bastion:          "{{ lookup('env','BMC_PW_BASTION') }}"
+      - t_bmc_pw_bootstrap:        "{{ lookup('env','BMC_PW_BOOTSTRAP') }}"
+      - t_bmc_pw_master1:          "{{ lookup('env','BMC_PW_MASTER1') }}"
+      - t_bmc_pw_master2:          "{{ lookup('env','BMC_PW_MASTER2') }}"
+      - t_bmc_pw_master3:          "{{ lookup('env','BMC_PW_MASTER3') }}"
+      - t_bmc_pw_worker1:          "{{ lookup('env','BMC_PW_WORKER1') }}"
+      - t_bmc_pw_worker2:          "{{ lookup('env','BMC_PW_WORKER2') }}"
+      - t_hw_bastion:              "{{ lookup('env','HW_BASTION') }}"
+      - t_hw_bootstrap:            "{{ lookup('env','HW_BOOTSTRAP') }}"
+      - t_hw_master1:              "{{ lookup('env','HW_MASTER1') }}"
+      - t_hw_master2:              "{{ lookup('env','HW_MASTER2') }}"
+      - t_hw_master3:              "{{ lookup('env','HW_MASTER3') }}"
+      - t_hw_worker1:              "{{ lookup('env','HW_WORKER1') }}"
+      - t_hw_worker2:              "{{ lookup('env','HW_WORKER2') }}"
