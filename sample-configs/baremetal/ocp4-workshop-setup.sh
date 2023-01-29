@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
 export ANSIBLE_IP=""
 export ANSIBLE_VAULT_PW=""
@@ -11,7 +12,9 @@ export CLUSTER_API_IP=""
 export VIRTHOST_IP=""
 export VIRTHOST_PW=""
 export VIRTHOST_FQDN=""
-export VIRTHOST_BRDEV=""
+export VIRTHOST_TYPE=""
+export VIRTHOST_BR_TYPE=""
+export VIRTHOST_BR_DEV=""
 export NETWORK_ID=""
 export NETWORK_GATEWAY=""
 export NETWORK_PREFIX=""
@@ -80,6 +83,7 @@ save_settings () {
 ##
 
 cat > ./config/ocp4-workshop-setup.ans <<EO_ANSWERS
+PROJECT_NAME="${PROJECT_NAME}"
 ANSIBLE_SOURCE="${ANSIBLE_SOURCE}"
 ANSIBLE_IP="${ANSIBLE_IP}"
 CLUSTER_NAME="${CLUSTER_NAME}"
@@ -97,7 +101,9 @@ NETWORK_DNS_SERVER="${NETWORK_DNS_SERVER}"
 NETWORK_TIME_SERVER="${NETWORK_TIME_SERVER}" 
 VIRTHOST_IP="${VIRTHOST_IP}"
 VIRTHOST_FQDN="${VIRTHOST_FQDN}"
-VIRTHOST_BRDEV="${VIRTHOST_BRDEV}"
+VIRTHOST_TYPE="${VIRTHOST_TYPE}"
+VIRTHOST_BR_DEV="${VIRTHOST_BR_DEV}"
+VIRTHOST_BR_TYPE="${VIRTHOST_BR_TYPE}"
 ADDR_BASTION="${ADDR_BASTION}"
 ADDR_BOOTSTRAP="${ADDR_BOOTSTRAP}"
 ADDR_MASTER1="${ADDR_MASTER1}"
@@ -148,6 +154,7 @@ current_settings () {
     echo ""
     echo "Current Settings"
     echo "----------------"
+    echo "Project Name            ... ${PROJECT_NAME}"
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
     echo "Password Ansible Vault  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
@@ -163,8 +170,9 @@ current_settings () {
     echo "Network DNS Server      ... ${NETWORK_DNS_SERVER}"
     echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
     echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
-    echo "Virt Host (ip/fqdn/dev) ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_BRDEV}" 
-    echo "NODES SETTINGS (hw/ip/mac/bmc)" 
+    echo "vHost (ip/fqdn/type)    ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_TYPE}" 
+    echo "vHost Bridge (type/dev) ... ${VIRTHOST_BR_TYPE} / ${VIRTHOST_BR_DEV}" 
+    echo "NODE SETTINGS (hw/ip/mac/bmc)" 
     echo "  Bastion   ... ${HW_BASTION} / ${ADDR_BASTION} / ${MAC_BASTION} / ${BMC_BASTION}"
     echo "  Bootstrap ... ${HW_BOOTSTRAP} / ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${BMC_BOOTSTRAP}"
     echo "  Master1   ... ${HW_MASTER1} / ${ADDR_MASTER1} / ${MAC_MASTER1} / ${BMC_MASTER1}"
@@ -172,7 +180,7 @@ current_settings () {
     echo "  Master3   ... ${HW_MASTER3} / ${ADDR_MASTER3} / ${MAC_MASTER3} / ${BMC_MASTER3}"
     echo "  Worker1   ... ${HW_WORKER1} / ${ADDR_WORKER1} / ${MAC_WORKER1} / ${BMC_WORKER1}"
     echo "  Worker2   ... ${HW_WORKER2} / ${ADDR_WORKER2} / ${MAC_WORKER2} / ${BMC_WORKER2}"
-    echo " "
+    echo ""
  }
 
 # ---
@@ -235,75 +243,6 @@ prepare_deployment () {
 
 }
 
-
-# ---
-
-ipaddress_menu () {
-
-    SAVED_PROMPT="$PS3"
-
-    PS3="Select Node to Assign IP: "
-
-    current_settings
-
-    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "Back to Main Menu"
-    do
-      case ${action}  in
-        "Bastion")
-          read -p "Enter Bastion IP [${ADDR_BASTION}]: " input
-          ADDR_BASTION=${input:-$ADDR_BASTION}
-          ;;
-        "Bootstrap")
-          read -p "Enter Bootstrap IP [${ADDR_BOOTSTRAP}]: " input
-          ADDR_BOOTSTRAP=${input:-$ADDR_BOOTSTRAP}
-          ;;
-        "Master1")
-          read -p "Enter Master1 IP [${ADDR_MASTER1}]: " input
-          ADDR_MASTER1=${input:-$ADDR_MASTER1}
-          ;;
-        "Master2")
-          read -p "Enter Master2 IP [${ADDR_MASTER2}]: " input
-          ADDR_MASTER2=${input:-$ADDR_MASTER2}
-          ;;
-        "Master3")
-          read -p "Enter Master3 IP [${ADDR_MASTER3}]: " input
-          ADDR_MASTER3=${input:-$ADDR_MASTER3}
-          ;;
-        "Worker1")
-          read -p "Enter Worker1 IP [${ADDR_WORKER1}]: " input
-          ADDR_WORKER1=${input:-$ADDR_WORKER1}
-          ;;
-        "Worker2")
-          read -p "Enter Worker2 IP [${ADDR_WORKER2}]: " input
-          ADDR_WORKER2=${input:-$ADDR_WORKER2}
-          ;;
-        "Back to Main Menu")
-          PS3=${SAVED_PROMPT}
-          break
-          ;;
-        "*")
-          echo "That's NOT an option, try again..."
-          ;;
-      esac
-
-      ##
-      ##    Reprint the current settings
-      ##
-
-      current_settings
-
-      ##
-      ##    The following causes the select
-      ##    statement to reprint the menu
-      ##
-
-      REPLY=
-
-    done
-
-}
-
-
 # ---
 
 node_submenu () {
@@ -317,7 +256,7 @@ node_submenu () {
 
     current_settings
 
-    select action in "Set Hardware" "Set IP Address" "Set MAC Address" "Set BMC Address" "Set BMC Password" "Delete Node" "Back to Node Settings"
+    select action in "Set BMC Password" "Set Hardware" "Set IP Address" "Set MAC Address" "Set BMC Address" "Delete Node" "Back to Node Settings"
     do
       case ${action}  in
         "Set Hardware")
@@ -474,7 +413,7 @@ virthost_menu () {
 
     current_settings
 
-    select action in "Set Host IP" "Set Host Password" "Set Host FQDN" "Set Bridge Device" "Back to Main Menu"
+    select action in "Set Host Password" "Set Host IP" "Set Host FQDN" "Set Host Type" "Set Bridge Device" "Set Bridge Type" "Back to Main Menu"
     do
       case ${action}  in
         "Set Host IP")
@@ -502,9 +441,39 @@ virthost_menu () {
           VIRTHOST_FQDN=${input:-$VIRTHOST_FQDN}
           ;;
 
+        "Set Host Type")
+           select VIRTHOST_TYPE in "libvirt" "ovirt"
+           do
+              case ${VIRTHOST_TYPE} in
+                "libvirt" )
+                  break ;;
+                "ovirt" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
         "Set Bridge Device")
-          read -p "Enter libvirt host bridge device[${VIRTHOST_BRDEV}]: " input
-          VIRTHOST_BRDEV=${input:-$VIRTHOST_BRDEV}
+          read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
+          VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
+          ;;
+
+        "Set Bridge Type")
+           select VIRTHOST_BR_TYPE in "bridge" "macvtap"
+           do
+              case ${VIRTHOST_BR_TYPE} in
+                "bridge" )
+                  break ;;
+                "macvtap" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
           ;;
 
         "Back to Main Menu")
@@ -627,10 +596,12 @@ cluster_menu () {
            ;;
 
         "Set Provisioner")
-           select CLUSTER_PROVISIONER in "upi" "ai"
+           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai"
            do
               case ${CLUSTER_PROVISIONER} in
-                "upi" )
+                "upi-pxe" )
+                  break ;;
+                "upi-vmedia" )
                   break ;;
                 "ai" )
                   break ;;
@@ -684,24 +655,17 @@ cluster_menu () {
 
 }
 
-
 # ---
 
-main_menu () {
+ansible_menu() {
 
-    PS3="MAIN MENU (select action): "
+    SAVED_PROMPT="$PS3"
+
+    PS3="NODE SETTINGS (select node): "
 
     current_settings
 
-    select action in "Set Ansible Source" \
-                     "Set Vault Password" \
-                     "Set Control Host IP" \
-                     "Cluster Settings" \
-                     "Network Settings" \
-                     "Virt Host Settings" \
-                     "Node Settings" \
-                     "Prepare Deployment" \
-                     "Save & Quit"
+    select action in "Set Vault Password" "Set Ansible Source" "Set Control Host IP" "Back to Main Menu"
     do
       case ${action}  in
         "Set Ansible Source")
@@ -744,6 +708,60 @@ main_menu () {
           fi
           ;;
 
+        "Back to Main Menu")
+          PS3=${SAVED_PROMPT}
+          break
+          ;;
+        "*")
+          echo "That's NOT an option, try again..."
+          ;;
+      esac
+
+      ##
+      ##    Reprint the current settings
+      ##
+
+      current_settings
+
+      ##
+      ##    The following causes the select
+      ##    statement to reprint the menu
+      ##
+
+      REPLY=
+
+    done
+
+
+
+}
+
+# ---
+
+main_menu () {
+
+    PS3="MAIN MENU (select action): "
+
+    current_settings
+
+    select action in "Set Project Name" \
+                     "Ansible Settings" \
+                     "Cluster Settings" \
+                     "Network Settings" \
+                     "Virt Host Settings" \
+                     "Node Settings" \
+                     "Prepare Deployment" \
+                     "Save & Quit"
+    do
+      case ${action}  in
+
+        "Set Project Name")
+          read -p "Enter Prooject Name [${PROJECT_NAME}]: " input
+          PROJECT_NAME=${input:-$PROJECT_NAME}
+          ;;
+        "Ansible Settings")
+          ansible_menu
+          ;;
         "Cluster Settings")
           cluster_menu
           ;;

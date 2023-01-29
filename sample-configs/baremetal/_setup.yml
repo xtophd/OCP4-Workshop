@@ -23,6 +23,7 @@
 
     vars:
       - t_config_dir:              "{{ lookup('env','PWD') }}"
+      - t_project_name:            "{{ lookup('env','PROJECT_NAME') }}"
       - t_ansible_ip:              "{{ lookup('env','ANSIBLE_IP') }}"
       - t_cluster_name:            "{{ lookup('env','CLUSTER_NAME') }}"
       - t_cluster_wildcard:        "{{ lookup('env','CLUSTER_WILDCARD') }}"
@@ -40,7 +41,9 @@
       - t_virthost_ip:             "{{ lookup('env','VIRTHOST_IP') }}"
       - t_virthost_pw:             "{{ lookup('env','VIRTHOST_PW') }}"
       - t_virthost_fqdn:           "{{ lookup('env','VIRTHOST_FQDN') }}"
-      - t_virthost_brdev:          "{{ lookup('env','VIRTHOST_BRDEV') }}"
+      - t_virthost_type:           "{{ lookup('env','VIRTHOST_TYPE') }}"
+      - t_virthost_br_dev:         "{{ lookup('env','VIRTHOST_BR_DEV') }}"
+      - t_virthost_br_type:        "{{ lookup('env','VIRTHOST_BR_TYPE') }}"
       - t_addr_bastion:            "{{ lookup('env','ADDR_BASTION') }}"
       - t_addr_bootstrap:          "{{ lookup('env','ADDR_BOOTSTRAP') }}"
       - t_addr_master1:            "{{ lookup('env','ADDR_MASTER1') }}"

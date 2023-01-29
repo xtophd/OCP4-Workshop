@@ -97,28 +97,28 @@ current_settings () {
     echo ""
     echo "Current Settings"
     echo "----------------"
-    echo "Ansible Source          ... [${ANSIBLE_SOURCE}]"
-    echo "Ansible Vault Password  ... [${ANSIBLE_VAULT_PW:+"**********"}]" 
-    echo "Ansible Control Host IP ... [${ANSIBLE_IP}]"
-    echo "Cluster Name            ... [${CLUSTER_NAME}]"
-    echo "Cluster Wildcard        ... [${CLUSTER_WILDCARD}]"
-    echo "Cluster Provisioner     ... [${CLUSTER_PROVISIONER}]"
-    echo "Cluster Loadbalancer IP ... [${CLUSTER_LOADBALANCER_IP}]"
-    echo "Cluster API IP          ... [${CLUSTER_API_IP}]"
-    echo "Network ID              ... [${NETWORK_ID}]"
-    echo "Network Prefix          ... [${NETWORK_PREFIX}] / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
-    echo "Network Gateway         ... [${NETWORK_GATEWAY}]"
-    echo "Network Base Domain     ... [${NETWORK_BASEDOMAIN}]"
-    echo "Network DNS Server      ... [${NETWORK_DNS_SERVER}]"
-    echo "Network TIME Server     ... [${NETWORK_TIME_SERVER}]" 
-    echo "IP Address Bastion      ... [${ADDR_BASTION}]"
-    echo "IP Address Bootstrap    ... [${ADDR_BOOTSTRAP}]"
-    echo "IP Address(es) Master   ... [${ADDR_MASTER1} / ${ADDR_MASTER2} / ${ADDR_MASTER3}]"
-    echo "IP Address(es) Worker   ... [${ADDR_WORKER1} / ${ADDR_WORKER2}]"
-    echo "Libvirt Host IP         ... [${LIBVIRT_HOST_IP}]" 
-    echo "Libvirt Host Password   ... [${LIBVIRT_HOST_PW:+"**********"}]" 
-    echo "Libvirt Host FQDN       ... [${LIBVIRT_HOST_FQDN}]" 
-    echo "Libvirt Bridge Device   ... [${LIBVIRT_HOST_BRDEV}]" 
+    echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
+    echo "Ansible Vault Password  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
+    echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
+    echo "Cluster Name            ... ${CLUSTER_NAME}"
+    echo "Cluster Wildcard        ... ${CLUSTER_WILDCARD}"
+    echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER}"
+    echo "Cluster Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
+    echo "Cluster API IP          ... ${CLUSTER_API_IP}"
+    echo "Network ID              ... ${NETWORK_ID}"
+    echo "Network Prefix          ... ${NETWORK_PREFIX}] / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
+    echo "Network Gateway         ... ${NETWORK_GATEWAY}"
+    echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
+    echo "Network DNS Server      ... ${NETWORK_DNS_SERVER}"
+    echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
+    echo "IP Address Bastion      ... ${ADDR_BASTION}"
+    echo "IP Address Bootstrap    ... ${ADDR_BOOTSTRAP}"
+    echo "IP Address(es) Master   ... ${ADDR_MASTER1} / ${ADDR_MASTER2} / ${ADDR_MASTER3}"
+    echo "IP Address(es) Worker   ... ${ADDR_WORKER1} / ${ADDR_WORKER2}"
+    echo "Libvirt Host IP         ... ${LIBVIRT_HOST_IP}" 
+    echo "Libvirt Host Password   ... ${LIBVIRT_HOST_PW:+"**********"}" 
+    echo "Libvirt Host FQDN       ... ${LIBVIRT_HOST_FQDN}" 
+    echo "Libvirt Bridge Device   ... ${LIBVIRT_HOST_BRDEV}" 
     echo ""
 }
 
@@ -244,7 +244,7 @@ ipaddress_menu () {
           ;;
 
         "Bootstrap")
-          read -p "Enter Bastion IP [${ADDR_BOOTSTRAP}]: " input
+          read -p "Enter Bootstrap IP [${ADDR_BOOTSTRAP}]: " input
           ADDR_BOOTSTRAP=${input:-$ADDR_BOOTSTRAP}
           ;;
 

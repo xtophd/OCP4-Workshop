@@ -5,7 +5,9 @@ cleanup: true
 {% raw %}
 hostname: "{{ inventory_hostname }}"
 
-clustername: "{{ xtoph_vars.clustername }}"
+## clustername: "{{ xtoph_vars.clustername }}"
+
+projectname: "{{ xtoph_vars.projectname }}"
 
 selected_profile:
     kickstart: "{{ h_ksPROF | default ('') }}"
@@ -24,7 +26,10 @@ deployhost:
   ##
 
   platform_enable: 
-      - "libvirt"
+      - "baremetal"
+{% if t_virthost_type is defined and t_virthost_type|length %}
+      - "{{ t_virthost_type }}"
+{% endif %}
   
   ##
   ##    deployhost hostname OR ip that will
@@ -74,7 +79,7 @@ deployhost:
 
 
 {% raw %}
-  tmp_dir: "/home/tmp/{{ xtoph_vars.clustername }}/{{ inventory_hostname }}"
+  tmp_dir: "/home/tmp/{{ xtoph_vars.projectname }}/{{ inventory_hostname_short }}"
 
   ##
   ##    Where with the kickstart configs are stored 

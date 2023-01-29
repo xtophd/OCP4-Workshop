@@ -13,19 +13,14 @@ all:
   vars:
 
     ## ----------------------------------------
-    ##    Globals that will be phased out
-
-    g_clusterAdmin:       "cloud-admin"
-    g_clusterUser:        "cloud-user"
-
-
-    ## ----------------------------------------
     ##    Workshop Variables
 
     workshop_vars:
 
-      clustername:          "{{ t_cluster_name }}"
+      projectname:          "{{ t_project_name }}"
 
+      ocp_clustername:      "{{ t_cluster_name }}"
+      ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ t_network_basedomain }}"
       ocp_version:          "4.11"
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
@@ -68,15 +63,15 @@ all:
 
     workshop_extras:
 
-      network_fqdn:         "{{ t_cluster_name }}.{{ t_network_basedomain }}"
+      network_fqdn:         "{{ t_network_basedomain }}"
 
       ocp_creds_dir:        "/root/ocp-{{ t_cluster_name }}"
 
       ocp_wfqdn:            "{{ t_cluster_wildcard }}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
 
-      nfs_export:           "/home/nfs-{{ t_cluster_name }}"
+      nfs_export:           "/home/nfs-{{ t_project_name }}"
 
-      squid_http_url:       "http://bastion.{{ t_cluster_name }}.{{ t_network_basedomain }}:3128"
+      squid_http_url:       "http://bastion.{{ t_network_basedomain }}:3128"
 
       squid_https_url:      ""
 
@@ -88,9 +83,10 @@ all:
     xtoph_vars:
 
       deployhost_ip:       "{{ t_ansible_ip }}" 
-      clustername:         "{{ t_cluster_name }}"
+#      clustername:         "{{ t_cluster_name }}"
+      projectname:         "{{ t_project_name }}"
 
-      tmp_dir:             "/home/tmp/{{ t_cluster_name }}/{% raw %}{{ inventory_hostname_short }}{% endraw %}"
+      tmp_dir:             "/home/tmp/{{ t_project_name }}/{% raw %}{{ inventory_hostname_short }}{% endraw %}"
 
 
 
@@ -124,11 +120,10 @@ myDeployhost:
 myBastion:
   hosts:
 
-    bastion:
+    bastard.{{ t_network_basedomain }}:
       h_pubIP:       "{{ t_addr_bastion }}" 
 
   vars:
-    ansible_host:    "{% raw %}{{ inventory_hostname }}{% endraw %}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
 
     h_hwPROF:        "kvm_vda"
     h_plPROF:        "custom_kvmhost"
@@ -143,17 +138,17 @@ myBootstrap:
   hosts:
 
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
-    bootstrap:
+    bootstrap.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_bootstrap }}" 
 {% endif %}
 
   vars: 
-    ansible_host:    "{% raw %}{{ inventory_hostname }}{% endraw %}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
 
     h_hwPROF:        "kvm_vda"
     h_plPROF:        "custom_kvmhost"
     h_rsPROF:        "med"
-    h_ksPROF:        "custom_kickstart"
+    h_pwrOFF:        false
+    h_ksPROF:        "vmedia_wait"
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 
     h_rhcosDEV:      "vda"
@@ -166,26 +161,31 @@ myBootstrap:
 myMasters:
   hosts:
 
-    master1:
+    master1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_master1 }}" 
+      h_pubMAC:      "{{ t_mac_master1 }}"
       h_hwPROF:      "{{ t_hw_master1 }}"
+      bmc_fqdn:      "{{ t_bmc_master1 }}"
 
 {% if t_addr_master2 is defined and t_addr_master2|length %}
-    master2:
+    master2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_master2 }}" 
-      h_hwPROF:      "{{ t_hw_master3 }}"
+      h_pubMAC:      "{{ t_mac_master2 }}"
+      h_hwPROF:      "{{ t_hw_master2 }}"
+      bmc_fqdn:      "{{ t_bmc_master2 }}"
 {% endif %}
 
 {% if t_addr_master3 is defined and t_addr_master3|length %}
-    master3:
+    master3.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_master3 }}" 
+      h_pubMAC:      "{{ t_mac_master3 }}"
       h_hwPROF:      "{{ t_hw_master3 }}"
+      bmc_fqdn:      "{{ t_bmc_master3 }}"
 {% endif %}
 
   vars: 
-    ansible_host:    "{% raw %}{{ inventory_hostname }}{% endraw %}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
 
-    h_plPROF:        "baremetal"
+    h_plPROF:        "custom_baremetal"
     h_ksPROF:        "vmedia_nowait"
     h_rsPROF:        "custom_master"
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
@@ -201,21 +201,25 @@ myWorkers:
   hosts:
 
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
-    worker1:
+    worker1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_worker1 }}" 
+      h_pubMAC:      "{{ t_mac_worker1 }}"
       h_hwPROF:      "{{ t_hw_worker1 }}"
+      bmc_fqdn:      "{{ t_bmc_worker1 }}"
 {% endif %}
 
 {% if t_addr_worker2 is defined and t_addr_worker2|length %}
-    worker2:
+    worker2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_worker2 }}" 
+      h_pubMAC:      "{{ t_mac_worker2 }}"
       h_hwPROF:      "{{ t_hw_worker2 }}"
+      bmc_fqdn:      "{{ t_bmc_worker2 }}"
 {% endif %}
 
   vars: 
-    ansible_host:    "{% raw %}{{ inventory_hostname }}{% endraw %}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
 
-    h_plPROF:        "baremetal"
+    h_plPROF:        "custom_baremetal"
+    h_pwrOFF:        false
     h_ksPROF:        "vmedia_nowait"
     h_rsPROF:        "custom_worker"
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
@@ -224,3 +228,10 @@ myWorkers:
     h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
     h_rhcosLOADER:   "efi"
+
+### -----------------
+
+myShelter:
+  hosts:
+
+#    bastion.{{ t_network_basedomain }}:
