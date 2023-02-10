@@ -15,6 +15,9 @@ export VIRTHOST_FQDN=""
 export VIRTHOST_TYPE=""
 export VIRTHOST_BR_TYPE=""
 export VIRTHOST_BR_DEV=""
+export VIRTHOST_DATACENTER=""
+export VIRTHOST_STORAGE_DOMAIN=""
+export VIRTHOST_NETWORK_DOMAIN=""
 export NETWORK_ID=""
 export NETWORK_GATEWAY=""
 export NETWORK_PREFIX=""
@@ -104,6 +107,9 @@ VIRTHOST_FQDN="${VIRTHOST_FQDN}"
 VIRTHOST_TYPE="${VIRTHOST_TYPE}"
 VIRTHOST_BR_DEV="${VIRTHOST_BR_DEV}"
 VIRTHOST_BR_TYPE="${VIRTHOST_BR_TYPE}"
+VIRTHOST_DATACENTER="${VIRTHOST_DATACENTER}"
+VIRTHOST_STORAGE_DOMAIN="${VIRTHOST_STORAGE_DOMAIN}"
+VIRTHOST_NETWORK_DOMAIN="${VIRTHOST_NETWORK_DOMAIN}"
 ADDR_BASTION="${ADDR_BASTION}"
 ADDR_BOOTSTRAP="${ADDR_BOOTSTRAP}"
 ADDR_MASTER1="${ADDR_MASTER1}"
@@ -155,11 +161,11 @@ current_settings () {
     echo "Current Settings"
     echo "----------------"
     echo "Project Name            ... ${PROJECT_NAME}"
-    echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
-    echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
     echo "Password Ansible Vault  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
     echo "Password Virt Host      ... ${VIRTHOST_PW:+"**********"}" 
     echo "Password BMC Default    ... ${BMC_PW_DEFAULT:+"**********"}" 
+    echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
+    echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
     echo "Cluster Name            ... ${CLUSTER_NAME}"
     echo "Cluster Wildcard        ... ${CLUSTER_WILDCARD}"
     echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER}"
@@ -171,7 +177,13 @@ current_settings () {
     echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
     echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
     echo "vHost (ip/fqdn/type)    ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_TYPE}" 
-    echo "vHost Bridge (type/dev) ... ${VIRTHOST_BR_TYPE} / ${VIRTHOST_BR_DEV}" 
+
+    if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
+      echo "vHost (dc/blk/net)      ... ${VIRTHOST_DATACENTER} / ${VIRTHOST_STORAGE_DOMAIN} / ${VIRTHOST_NETWORK_DOMAIN}" 
+    elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
+      echo "vHost Bridge (dev/type) ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+    fi
+
     echo "NODE SETTINGS (hw/ip/mac/bmc)" 
     echo "  Bastion   ... ${HW_BASTION} / ${ADDR_BASTION} / ${MAC_BASTION} / ${BMC_BASTION}"
     echo "  Bootstrap ... ${HW_BOOTSTRAP} / ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${BMC_BOOTSTRAP}"
@@ -337,7 +349,7 @@ node_menu () {
 
     current_settings
 
-    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "Set Default BMC Password" "Back to Main Menu"
+    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "Back to Main Menu"
     do
       case ${action}  in
         "Bastion")
@@ -360,20 +372,6 @@ node_menu () {
           ;;
         "Worker2")
           node_submenu WORKER2
-          ;;
-        "Set Default BMC Password")
-          echo "Enter new password and press Enter"
-          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+"**********"}]: " input
-          echo ""
-          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+"**********"}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
           ;;
         "Back to Main Menu")
           PS3=${SAVED_PROMPT}
@@ -405,23 +403,34 @@ node_menu () {
 
 # ---
 
-virthost_menu () {
+password_menu () {
 
     SAVED_PROMPT="$PS3"
 
-    PS3="VIRT HOST MENU: "
+    PS3="PASSWORD MENU: "
 
     current_settings
 
-    select action in "Set Host Password" "Set Host IP" "Set Host FQDN" "Set Host Type" "Set Bridge Device" "Set Bridge Type" "Back to Main Menu"
+    select action in "Set Ansible Vault Password" "Set vHost Password" "Set Default BMC Password" "Back to Main Menu"
     do
       case ${action}  in
-        "Set Host IP")
-          read -p "Enter libvirt host IP [${VIRTHOST_IP}]: " input
-          VIRTHOST_IP=${input:-$VIRTHOST_IP}
+
+        "Set Ansible Vault Password")
+          echo "Enter new password and press Enter"
+          read -s -p "Enter ansible vault password [${ANSIBLE_VAULT_PW:+"**********"}]: " input
+          echo ""
+          read -s -p "Enter ansible vault password again [${ANSIBLLE_VAULT_PW:+"**********"}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            ANSIBLE_VAULT_PW=${input:-$ANSIBLE_VAULT_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
           ;;
 
-        "Set Host Password")
+        "Set vHost Password")
           echo "Enter new password and press Enter"
           read -s -p "Enter libvirt host password [${VIRTHOST_PW:+"**********"}]: " input
           echo ""
@@ -436,44 +445,19 @@ virthost_menu () {
           fi
           ;;
 
-        "Set Host FQDN")
-          read -p "Enter libvirt host FQDN [${VIRTHOST_FQDN}]: " input
-          VIRTHOST_FQDN=${input:-$VIRTHOST_FQDN}
-          ;;
+        "Set Default BMC Password")
+          echo "Enter new password and press Enter"
+          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+"**********"}]: " input
+          echo ""
+          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+"**********"}]: " input2
+          echo ""
+          echo ""
 
-        "Set Host Type")
-           select VIRTHOST_TYPE in "libvirt" "ovirt"
-           do
-              case ${VIRTHOST_TYPE} in
-                "libvirt" )
-                  break ;;
-                "ovirt" )
-                  break ;;
-                "*" )
-                  ;;
-              esac
-              REPLY=
-            done
-          ;;
-
-        "Set Bridge Device")
-          read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
-          VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
-          ;;
-
-        "Set Bridge Type")
-           select VIRTHOST_BR_TYPE in "bridge" "macvtap"
-           do
-              case ${VIRTHOST_BR_TYPE} in
-                "bridge" )
-                  break ;;
-                "macvtap" )
-                  break ;;
-                "*" )
-                  ;;
-              esac
-              REPLY=
-            done
+          if [[ "$input" == "$input2" ]]; then
+            BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
           ;;
 
         "Back to Main Menu")
@@ -499,6 +483,141 @@ virthost_menu () {
       ##
 
       REPLY=
+
+    done
+
+}
+# ---
+
+virthost_menu () {
+
+    SAVED_PROMPT="$PS3"
+
+    PS3="VIRT HOST MENU: "
+
+    current_settings
+
+    action=""
+
+    until [ "${action}" == "Back to Main Menu" ] 
+    do
+
+      if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
+        TYPE_ACTIONS=("Set Datacenter" "Set Storage Domain" "Set Network Domain")
+      elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
+        TYPE_ACTIONS=("Set Bridge Device" "Set Bridge Type")
+      fi
+
+
+      select action in "Set vHost Type" "Set vHost IP" "Set vHost FQDN" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
+      do
+        case ${action}  in
+          "Set vHost IP")
+            read -p "Enter libvirt host IP [${VIRTHOST_IP}]: " input
+            VIRTHOST_IP=${input:-$VIRTHOST_IP}
+            ;;
+  
+          "Set vHost FQDN")
+            read -p "Enter libvirt host FQDN [${VIRTHOST_FQDN}]: " input
+            VIRTHOST_FQDN=${input:-$VIRTHOST_FQDN}
+            ;;
+  
+          "Set vHost Type")
+            select VIRTHOST_TYPE in "libvirt" "ovirt"
+            do
+              case ${VIRTHOST_TYPE} in
+                "libvirt" )
+                  break ;;
+                "ovirt" )
+                  break ;;
+                "*" )
+                   ;;
+              esac
+              REPLY=
+            done
+
+            current_settings
+            REPLY=
+
+            break
+            ;;
+
+        "Set Bridge Device")
+          read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
+          VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
+          ;;
+  
+          "Set Bridge Type")
+             select VIRTHOST_BR_TYPE in "bridge" "macvtap"
+             do
+                case ${VIRTHOST_BR_TYPE} in
+                  "bridge" )
+                    break ;;
+                  "macvtap" )
+                    break ;;
+                  "*" )
+                    ;;
+                esac
+                REPLY=
+              done
+            ;;
+  
+          "Set Datacenter")
+            read -p "Enter oVirt Datacenter[${VIRTHOST_DATACENTER}]: " input
+            VIRTHOST_DATACENTER=${input:-$VIRTHOST_DATACENTER}
+            ;;
+  
+          "Set Network Domain")
+            read -p "Enter oVirt Network Domain[${VIRTHOST_NETWORK_DOMAIN}]: " input
+            VIRTHOST_NETWORK_DOMAIN=${input:-$VIRTHOST_NETWORK_DOMAIN}
+            ;;
+
+          "Set Storage Domain")
+            read -p "Enter oVirt Storage Domain[${VIRTHOST_STORAGE_DOMAIN}]: " input
+            VIRTHOST_STORAGE_DOMAIN=${input:-$VIRTHOST_STORAGE_DOMAIN}
+            ;;
+  
+          "Delete vHost")
+            read -p "DELETE $NODE ... ARE YOU SURE (Y/N): " input
+            if [[ "$input" == "Y" ]]; then
+              VIRTHOST_IP=""
+              VIRTHOST_PW=""
+              VIRTHOST_FQDN=""
+              VIRTHOST_TYPE=""
+              VIRTHOST_BR_TYPE=""
+              VIRTHOST_BR_DEV=""
+              VIRTHOST_DATACENTER=""
+              VIRTHOST_STORAGE_DOMAIN=""
+              VIRTHOST_NETWORK_DOMAIN=""
+            fi
+            ;;
+  
+  
+          "Back to Main Menu")
+            PS3=${SAVED_PROMPT}
+            break
+            ;;
+  
+          "*")
+            echo "That's NOT an option, try again..."
+            ;;
+  
+        esac
+  
+        ##
+        ##    Reprint the current settings
+        ##
+  
+        current_settings
+  
+        ##
+        ##    The following causes the select
+        ##    statement to reprint the menu
+        ##
+  
+        REPLY=
+  
+      done
 
     done
 
@@ -661,11 +780,11 @@ ansible_menu() {
 
     SAVED_PROMPT="$PS3"
 
-    PS3="NODE SETTINGS (select node): "
+    PS3="ANSIBLE SETTINGS (select node): "
 
     current_settings
 
-    select action in "Set Vault Password" "Set Ansible Source" "Set Control Host IP" "Back to Main Menu"
+    select action in "Set Ansible Source" "Set Control Host IP" "Back to Main Menu"
     do
       case ${action}  in
         "Set Ansible Source")
@@ -693,25 +812,11 @@ ansible_menu() {
           ANSIBLE_IP=${input:-$ANSIBLE_IP}
           ;;
 
-        "Set Vault Password")
-          echo "Enter new password and press Enter"
-          read -s -p "Enter ansible vault password [${ANSIBLE_VAULT_PW:+"**********"}]: " input
-          echo ""
-          read -s -p "Enter ansible vault password again [${ANSIBLLE_VAULT_PW:+"**********"}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            ANSIBLE_VAULT_PW=${input:-$ANSIBLE_VAULT_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
         "Back to Main Menu")
           PS3=${SAVED_PROMPT}
           break
           ;;
+
         "*")
           echo "That's NOT an option, try again..."
           ;;
@@ -745,6 +850,7 @@ main_menu () {
     current_settings
 
     select action in "Set Project Name" \
+                     "Password Settings" \
                      "Ansible Settings" \
                      "Cluster Settings" \
                      "Network Settings" \
@@ -758,6 +864,9 @@ main_menu () {
         "Set Project Name")
           read -p "Enter Prooject Name [${PROJECT_NAME}]: " input
           PROJECT_NAME=${input:-$PROJECT_NAME}
+          ;;
+        "Password Settings")
+          password_menu
           ;;
         "Ansible Settings")
           ansible_menu
