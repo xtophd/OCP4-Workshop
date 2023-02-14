@@ -1,0 +1,370 @@
+##
+##    !! WARNING !!  Ansible only interprets 'True' and 'False'
+##                   as booleans when reading ini files.  Other
+##                   values such as 'true' or 'false' would be 
+##                   interpreted as strings and would break various
+##                   logic tests.  
+##
+##                   When reading YML files, booleans can take on
+##                   many forms and be interpreted correctly.
+##
+##                   For consistency, only use unquoted booleans: True & False
+
+all: 
+
+  vars:
+
+    ## ----------------------------------------
+    ##    Globals that will be phased out
+
+    g_clusterAdmin:       "cloud-admin"
+    g_clusterUser:        "cloud-user"
+
+
+    ## ----------------------------------------
+    ##    Workshop Variables
+
+    workshop_vars:
+
+      projectname:          "{{ t_project_name }}"
+
+      ocp_clustername:      "{{ t_cluster_name }}"
+      ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ t_network_basedomain }}"
+      ocp_version:          "4.11"
+      ocp_admin_user:       "cloud-admin"
+      ocp_user:             "cloud-user"
+      ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
+{% if t_cluster_provisioner == "ai" %}
+      ocp_provisioner:      "ai"
+      ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
+      ocp_vip_api:          "{{ t_cluster_api_ip }}"
+{% else %}
+      ocp_provisioner:      "upi"
+      ocp_vip_cluster:      "{{ t_addr_bastion }}"
+      ocp_vip_api:          "{{ t_addr_bastion }}"
+{% endif %}
+
+      network_basedomain:   "{{ t_network_basedomain }}"
+      network_network:      "{{ t_network_id }}"
+      network_netmask:      "{{ t_network_netmask }}"
+      network_broadcast:    "{{ t_network_broadcast }}"
+      network_prefix:       "{{ t_network_prefix }}"
+      network_gateway:      "{{ t_network_gateway }}"
+      network_nameserver:   "{{ t_network_dns_server }}"
+      network_timeserver:   "{{ t_network_time_server }}"
+
+      http_proxy:           ""
+      https_proxy:          ""
+
+      bastion:
+
+        assisted_installer: True
+        firewalld:          True
+        cockpit:            False
+        dns:                True
+        dhcp:               True
+        dhcp_pxe:           True
+        dhcp_uefi_http:     True
+        haproxy:            True
+        matchbox:           True
+        nfs:                True
+        ntp:                True
+        squid:              False
+        workshop_user:      True
+        workshop_materials: True
+        desktop_gui:        False
+        desktop_chrome:     False
+        desktop_vnc:        False
+        {% if t_cluster_provisioner == "upi-vmedia" -%}
+        iso:                True
+        {% endif %}
+
+    workshop_extras:
+
+      network_fqdn:         "{{ t_network_basedomain }}"
+
+      ocp_creds_dir:        "/root/ocp-{{ t_cluster_name }}"
+
+      ocp_wfqdn:            "{{ t_cluster_wildcard }}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
+
+      nfs_export:           "/home/nfs-{{ t_project_name }}"
+
+      squid_http_url:       "http://bastion.{{ t_network_basedomain }}:3128"
+
+      squid_https_url:      ""
+
+
+
+
+    ## ----------------------------------------
+    ##    Xtoph Deploy Variables
+
+    xtoph_vars:
+
+      deployhost_ip:       "{{ t_ansible_ip }}" 
+      clustername:         "{{ t_cluster_name }}"
+      projectname:         "{{ t_project_name }}"
+
+      tmp_dir:             "/home/tmp/{{ t_project_name }}/{% raw %}{{ inventory_hostname_short }}{% endraw %}"
+
+
+
+
+## ----------------------------------------
+## HOSTGROUPS & VARS
+## ----------------------------------------
+
+myLibvirtHosts:
+
+  hosts:
+    {{ t_virthost_fqdn }}:
+      h_pubIP:       "{{ t_virthost_ip }}"
+      h_plPROF:      "custom_kvmhost"
+
+
+
+## -----------------
+
+myDeployhost:
+  hosts:
+    deployer:
+      h_pubIP:       {% raw %}"{{ xtoph_vars.deployhost_ip }}"{% endraw %}
+
+  vars:
+    ansible_connection: local
+
+
+
+## -----------------
+
+
+
+myBastion:
+  hosts:
+    bastion.{{ t_cluster_name }}.{{ t_network_basedomain }}:
+      h_pubIP:       "{{ t_addr_bastion }}" 
+
+  hosts:
+    bastion.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_bastion }}"
+{% if t_mac_bootstrap|length %}
+      h_pubMAC:      "{{ t_mac_bastion }}"
+{% endif -%}
+{% if t_hw_bastion|length  %}
+      h_hwPROF:      "{{ t_hw_bastion  }}"
+      h_plPROF:      "custom_baremetal"
+{% endif -%}
+{% if t_bmc_bootstrap|length %}
+      bmc_fqdn:      "{{ t_bmc_bootstrap }}"
+{% endif %}
+
+  vars:
+{% if t_virthost_type == "libvirt" %}
+    h_hwPROF:        "kvm_vda"
+{% elif t_virthost_type == "ovirt" %}
+    h_hwPROF:        "ovirt_sda"
+{% endif %}
+    h_plPROF:        "custom_platform"
+    h_rsPROF:        "custom_bastion"
+    h_ksPROF:        "rhel86-bootiso"
+
+
+
+
+## -----------------
+
+
+
+myBootstrap:
+  hosts:
+{% if t_cluster_provisioner != "ai" -%}
+{% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
+    bootstrap.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_bootstrap }}" 
+{% if t_mac_bootstrap|length %}
+      h_pubMAC:      "{{ t_mac_bootstrap }}"
+{% endif -%}
+{% if t_hw_bootstrap|length  %}
+      h_hwPROF:      "{{ t_hw_bootstrap  }}"
+      h_plPROF:      "custom_baremetal"
+{% endif -%}
+{% if t_bmc_bootstrap|length %}
+      bmc_fqdn:      "{{ t_bmc_bootstrap }}"
+{% endif %}
+{% endif %}
+{% endif %}
+
+  vars: 
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+{% if t_virthost_type == "libvirt" %}
+    h_rhcosDEV:      "/dev/vda"
+    h_hwPROF:        "kvm_vda"
+{% elif t_virthost_type == "ovirt" %}
+    h_rhcosDEV:      "/dev/sda"
+    h_hwPROF:        "ovirt_sda"
+{% endif %}
+    h_plPROF:        "custom_platform"
+    h_rsPROF:        "custom_bootstrap"
+{% if t_cluster_provisioner == "upi-pxe" %}
+    h_ksPROF:        "pxe_wait"
+{% if t_virthost_type == "ovirt" %}
+    h_pwrOFF:        "False"
+{% endif %}
+{% else %}
+    h_ksPROF:        "custom_kickstart"
+{% endif %}
+{% if t_cluster_provisioner == "ai" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
+{% elif t_cluster_provisioner == "upi-vmedia" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
+
+
+
+## -----------------
+
+
+
+myMasters:
+  hosts:
+
+    master1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_master1 }}"
+{% if t_mac_master1|length %}
+      h_pubMAC:      "{{ t_mac_master1 }}"
+{% endif -%}
+{% if t_hw_master1|length  %}
+      h_hwPROF:      "{{ t_hw_master1  }}"
+      h_plPROF:      "custom_baremetal"
+{% endif -%}
+{% if t_bmc_master1|length %}
+      bmc_fqdn:      "{{ t_bmc_master1 }}"
+{% endif %}
+
+{% if t_addr_master2 is defined and t_addr_master2|length %}
+    master2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_master2 }}"
+{% if t_mac_master2|length %}
+      h_pubMAC:      "{{ t_mac_master2 }}"
+{% endif %}
+{% if t_hw_master2|length %}
+      h_hwPROF:      "{{ t_hw_master2 }}"
+      h_plPROF:      "custom_baremetal"
+{% endif -%}
+{% if t_bmc_master2|length %}
+      bmc_fqdn:      "{{ t_bmc_master2 }}"
+{% endif %}
+{% endif %}
+
+{% if t_addr_master3 is defined and t_addr_master3|length %}
+    master3.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_master3 }}"
+{% if t_mac_master3|length -%}
+      h_pubMAC:      "{{ t_mac_master3 }}"
+{% endif %}
+{% if t_hw_master3|length %}
+      h_hwPROF:      "{{ t_hw_master3 }}"
+      h_plPROF:      "custom_baremetal"
+{% endif %}
+{% if t_bmc_master3|length %}
+      bmc_fqdn:      "{{ t_bmc_master3 }}"
+{% endif %}
+{% endif %}
+
+  vars: 
+
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+{% if t_virthost_type == "libvirt" %}
+    h_rhcosDEV:      "/dev/vda"
+    h_hwPROF:        "kvm_vda"
+{% elif t_virthost_type == "ovirt" %}
+    h_rhcosDEV:      "/dev/sda"
+    h_hwPROF:        "ovirt_sda"
+{% endif %}
+    h_plPROF:        "custom_platform"
+    h_rsPROF:        "custom_master"
+{% if t_cluster_provisioner == "upi-pxe" %}
+    h_ksPROF:        "pxe_wait"
+{% if t_virthost_type == "ovirt" %}
+    h_pwrOFF:        "False"
+{% endif %}
+{% else %}
+    h_ksPROF:        "custom_kickstart"
+{% endif %}
+{% if t_cluster_provisioner == "ai" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
+{% elif t_cluster_provisioner == "upi-vmedia" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
+
+
+
+## -----------------
+
+
+
+myWorkers:
+  hosts:
+
+{% if t_addr_worker1 is defined and t_addr_worker1|length %}
+    worker1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_worker1 }}" 
+{% if t_mac_worker1|length %}
+      h_pubMAC:      "{{ t_mac_worker1 }}"
+{% endif %}
+{% if t_hw_worker1|length  %}
+      h_hwPROF:      "{{ t_hw_worker1  }}"
+      h_plPROF:      "custom_baremetal"
+{% endif %}
+{% if t_bmc_worker1|length %}
+      bmc_fqdn:      "{{ t_bmc_worker1 }}"
+{% endif %}
+{% endif %}
+
+{% if t_addr_worker2 is defined and t_addr_worker2|length %}
+    worker2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:       "{{ t_addr_worker2 }}" 
+{% if t_mac_worker2|length %}
+      h_pubMAC:      "{{ t_mac_worker2 }}"
+{% endif -%}
+{% if t_hw_worker2|length  %}
+      h_hwPROF:      "{{ t_hw_worker2  }}"
+      h_plPROF:      "custom_baremetal"
+{% endif %}
+{% if t_bmc_worker2|length %}
+      bmc_fqdn:      "{{ t_bmc_worker2 }}"
+{% endif %}
+{% endif %}
+
+  vars: 
+
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+{% if t_virthost_type == "libvirt" %}
+    h_rhcosDEV:      "/dev/vda"
+    h_hwPROF:        "kvm_vda"
+{% elif t_virthost_type == "ovirt" %}
+    h_rhcosDEV:      "/dev/sda"
+    h_hwPROF:        "ovirt_sda"
+{% endif %}
+    h_plPROF:        "custom_platform"
+    h_rsPROF:        "custom_worker"
+{% if t_cluster_provisioner == "upi-pxe" %}
+    h_ksPROF:        "pxe_wait"
+{% if t_virthost_type == "ovirt" %}
+    h_pwrOFF:        "False"
+{% endif %}
+{% else %}
+    h_ksPROF:        "custom_kickstart"
+{% endif %}
+{% if t_cluster_provisioner == "ai" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
+{% elif t_cluster_provisioner == "upi-vmedia" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
+

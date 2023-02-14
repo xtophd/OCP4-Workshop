@@ -25,6 +25,8 @@ deployhost:
 
   platform_enable: 
       - "libvirt"
+      - "ovirt"
+      - "baremetal"
   
   ##
   ##    deployhost hostname OR ip that will
@@ -74,7 +76,7 @@ deployhost:
 
 
 {% raw %}
-  tmp_dir: "/home/tmp/{{ xtoph_vars.clustername }}/{{ inventory_hostname }}"
+  tmp_dir: "/home/tmp/{{ xtoph_vars.projectname }}/{{ inventory_hostname_short }}"
 
   ##
   ##    Where with the kickstart configs are stored 

@@ -21,6 +21,9 @@
             - {mode: "0744", src: "xtoph-config-resource.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-resource.yml"}
             - {mode: "0744", src: "xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
 
+## SAMPLE OF FORMER LOGIC
+#            - {mode: "0744", src: "{{ t_virthost_type }}.xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
+
     vars:
       - t_config_dir:              "{{ lookup('env','PWD') }}"
       - t_project_name:            "{{ lookup('env','PROJECT_NAME') }}"
@@ -38,12 +41,18 @@
       - t_network_basedomain:      "{{ lookup('env','NETWORK_BASEDOMAIN') }}"
       - t_network_dns_server:      "{{ lookup('env','NETWORK_DNS_SERVER') }}"
       - t_network_time_server:     "{{ lookup('env','NETWORK_TIME_SERVER') }}"
+      - t_virthost_type:           "{{ lookup('env','VIRTHOST_TYPE') }}"
       - t_virthost_ip:             "{{ lookup('env','VIRTHOST_IP') }}"
       - t_virthost_pw:             "{{ lookup('env','VIRTHOST_PW') }}"
       - t_virthost_fqdn:           "{{ lookup('env','VIRTHOST_FQDN') }}"
-      - t_virthost_type:           "{{ lookup('env','VIRTHOST_TYPE') }}"
       - t_virthost_br_dev:         "{{ lookup('env','VIRTHOST_BR_DEV') }}"
       - t_virthost_br_type:        "{{ lookup('env','VIRTHOST_BR_TYPE') }}"
+      - t_ovirt_manager_ip:        "{{ lookup('env','OVIRT_MANAGER_IP') }}"
+      - t_ovirt_manager_fqdn:      "{{ lookup('env','OVIRT_MANAGER_FQDN') }}"
+      - t_ovirt_manager_pw:        "{{ lookup('env','OVIRT_MANAGER_PW') }}"
+      - t_ovirt_datacenter:        "{{ lookup('env','OVIRT_DATACENTER') }}"
+      - t_ovirt_storage_domain:    "{{ lookup('env','OVIRT_STORAGE_DOMAIN') }}"
+      - t_ovirt_network_domain:    "{{ lookup('env','OVIRT_NETWORK_DOMAIN') }}"
       - t_addr_bastion:            "{{ lookup('env','ADDR_BASTION') }}"
       - t_addr_bootstrap:          "{{ lookup('env','ADDR_BOOTSTRAP') }}"
       - t_addr_master1:            "{{ lookup('env','ADDR_MASTER1') }}"

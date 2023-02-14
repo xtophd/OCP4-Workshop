@@ -12,6 +12,16 @@ custom_bastion:
         size: 50 
         hw_storage_profile: default
 
+custom_bootstrap:
+    name: "Custom Openshift Bootstrap"
+    description: "Custom Openshift Bootstrap [6cpu,20GB,120GB disk]"
+    vcpus:    6
+    memsize:  20000
+    storage:
+      root:
+        size: 120 
+        hw_storage_profile: default
+
 custom_master:
     name: "Custom Openshift Master"
     description: "Custom Openshift Master [6cpu,20GB,120GB disk]"

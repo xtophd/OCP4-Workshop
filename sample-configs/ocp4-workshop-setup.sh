@@ -15,9 +15,12 @@ export VIRTHOST_FQDN=""
 export VIRTHOST_TYPE=""
 export VIRTHOST_BR_TYPE=""
 export VIRTHOST_BR_DEV=""
-export VIRTHOST_DATACENTER=""
-export VIRTHOST_STORAGE_DOMAIN=""
-export VIRTHOST_NETWORK_DOMAIN=""
+export OVIRT_MANAGER_IP=""
+export OVIRT_MANAGER_FQDN=""
+export OVIRT_MANAGER_PW=""
+export OVIRT_DATACENTER=""
+export OVIRT_STORAGE_DOMAIN=""
+export OVIRT_NETWORK_DOMAIN=""
 export NETWORK_ID=""
 export NETWORK_GATEWAY=""
 export NETWORK_PREFIX=""
@@ -110,6 +113,11 @@ VIRTHOST_BR_TYPE="${VIRTHOST_BR_TYPE}"
 VIRTHOST_DATACENTER="${VIRTHOST_DATACENTER}"
 VIRTHOST_STORAGE_DOMAIN="${VIRTHOST_STORAGE_DOMAIN}"
 VIRTHOST_NETWORK_DOMAIN="${VIRTHOST_NETWORK_DOMAIN}"
+OVIRT_MANAGER_IP="${OVIRT_MANAGER_IP}"
+OVIRT_MANAGER_FQDN="${OVIRT_MANAGER_FQDN}"
+OVIRT_DATACENTER="${OVIRT_DATACENTER}"
+OVIRT_STORAGE_DOMAIN="${OVIRT_STORAGE_DOMAIN}"
+OVIRT_NETWORK_DOMAIN="${OVIRT_NETWORK_DOMAIN}"
 ADDR_BASTION="${ADDR_BASTION}"
 ADDR_BOOTSTRAP="${ADDR_BOOTSTRAP}"
 ADDR_MASTER1="${ADDR_MASTER1}"
@@ -124,6 +132,14 @@ BMC_MASTER2="${BMC_MASTER2}"
 BMC_MASTER3="${BMC_MASTER3}"
 BMC_WORKER1="${BMC_WORKER1}"
 BMC_WORKER2="${BMC_WORKER2}"
+BMC_PW_DEFAULT="${BMC_PW_DEFAULT}"
+BMC_PW_BASTION="${BMC_PW_BASTION}"
+BMC_PW_BOOTSTRAP="${BMC_PW_BOOTSTRAP}"
+BMC_PW_MASTER1="${BMC_PW_MASTER1}"
+BMC_PW_MASTER2="${BMC_PW_MASTER2}"
+BMC_PW_MASTER3="${BMC_PW_MASTER3}"
+BMC_PW_WORKER1="${BMC_PW_WORKER1}"
+BMC_PW_WORKER2="${BMC_PW_WORKER2}"
 MAC_BASTION="${MAC_BASTION}"
 MAC_BOOTSTRAP="${MAC_BOOTSTRAP}"
 MAC_MASTER1="${MAC_MASTER1}"
@@ -162,7 +178,9 @@ current_settings () {
     echo "----------------"
     echo "Project Name            ... ${PROJECT_NAME}"
     echo "Password Ansible Vault  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
-    echo "Password Virt Host      ... ${VIRTHOST_PW:+"**********"}" 
+    echo "Password LibVirt Host   ... ${VIRTHOST_PW:+"**********"}" 
+    echo "Password oVirt Host     ... ${OVIRT_MANAGER_PW:+"**********"}" 
+  
     echo "Password BMC Default    ... ${BMC_PW_DEFAULT:+"**********"}" 
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
@@ -176,22 +194,24 @@ current_settings () {
     echo "Network DNS Server      ... ${NETWORK_DNS_SERVER}"
     echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
     echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
-    echo "vHost (ip/fqdn/type)    ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_TYPE}" 
 
+    echo "vHost Type              ... ${VIRTHOST_TYPE}"
     if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-      echo "vHost (dc/blk/net)      ... ${VIRTHOST_DATACENTER} / ${VIRTHOST_STORAGE_DOMAIN} / ${VIRTHOST_NETWORK_DOMAIN}" 
+        echo "oVirt API (ip/fqdn)     ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
+        echo "oVirt (dc/blk/net)      ... ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-      echo "vHost Bridge (dev/type) ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+        echo "Libvirt Host (ip/fqdn)  ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN}" 
+        echo "Libvirt Net (dev/type)  ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
     fi
 
-    echo "NODE SETTINGS (hw/ip/mac/bmc)" 
-    echo "  Bastion   ... ${HW_BASTION} / ${ADDR_BASTION} / ${MAC_BASTION} / ${BMC_BASTION}"
-    echo "  Bootstrap ... ${HW_BOOTSTRAP} / ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${BMC_BOOTSTRAP}"
-    echo "  Master1   ... ${HW_MASTER1} / ${ADDR_MASTER1} / ${MAC_MASTER1} / ${BMC_MASTER1}"
-    echo "  Master2   ... ${HW_MASTER2} / ${ADDR_MASTER2} / ${MAC_MASTER2} / ${BMC_MASTER2}"
-    echo "  Master3   ... ${HW_MASTER3} / ${ADDR_MASTER3} / ${MAC_MASTER3} / ${BMC_MASTER3}"
-    echo "  Worker1   ... ${HW_WORKER1} / ${ADDR_WORKER1} / ${MAC_WORKER1} / ${BMC_WORKER1}"
-    echo "  Worker2   ... ${HW_WORKER2} / ${ADDR_WORKER2} / ${MAC_WORKER2} / ${BMC_WORKER2}"
+    echo "NODE SETTINGS (ip/mac/hw/bmc)" 
+    echo "  Bastion   ... ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${BMC_BASTION}"
+    echo "  Bootstrap ... ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${BMC_BOOTSTRAP}"
+    echo "  Master1   ... ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${BMC_MASTER1}"
+    echo "  Master2   ... ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${BMC_MASTER2}"
+    echo "  Master3   ... ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${BMC_MASTER3}"
+    echo "  Worker1   ... ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${BMC_WORKER1}"
+    echo "  Worker2   ... ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${BMC_WORKER2}"
     echo ""
  }
 
@@ -231,7 +251,7 @@ prepare_deployment () {
 
 
     echo -n "## Templating configuration files"
-    ansible-playbook sample-configs/baremetal/_setup.yml
+    ansible-playbook sample-configs/ocp4-workshop-setup.yml
 
     echo -n "## Encrypt the credentials.yml"
 
@@ -268,7 +288,7 @@ node_submenu () {
 
     current_settings
 
-    select action in "Set BMC Password" "Set Hardware" "Set IP Address" "Set MAC Address" "Set BMC Address" "Delete Node" "Back to Node Settings"
+    select action in "Set BMC Password" "Set IP Address" "Set MAC Address" "Set Hardware" "Set BMC Address" "Delete Node" "Back to Node Settings"
     do
       case ${action}  in
         "Set Hardware")
@@ -411,7 +431,7 @@ password_menu () {
 
     current_settings
 
-    select action in "Set Ansible Vault Password" "Set vHost Password" "Set Default BMC Password" "Back to Main Menu"
+    select action in "Set Ansible Vault Password" "Set vHost Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
     do
       case ${action}  in
 
@@ -440,6 +460,21 @@ password_menu () {
 
           if [[ "$input" == "$input2" ]]; then
             VIRTHOST_PW=${input:-$VIRTHOST_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
+        "Set oVirt Password")
+          echo "Enter new password and press Enter"
+          read -s -p "Enter ovirt manager password [${OVIRT_MANAGER_PW:+"**********"}]: " input
+          echo ""
+          read -s -p "Enter ovirt manager password again [${OVIRT_MANAGER_PW:+"**********"}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            OVIRT_MANAGER_PW=${input:-$OVIRT_MANAGER_PW}
           else
             echo "WARNING: Passwords do not match ... unchanged"
           fi
@@ -503,13 +538,13 @@ virthost_menu () {
     do
 
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        TYPE_ACTIONS=("Set Datacenter" "Set Storage Domain" "Set Network Domain")
+        TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set Bridge Device" "Set Bridge Type")
+        TYPE_ACTIONS=("Set VHost IP" "Set vHost FQDN" "Set Bridge Device" "Set Bridge Type")
       fi
 
 
-      select action in "Set vHost Type" "Set vHost IP" "Set vHost FQDN" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
+      select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
       do
         case ${action}  in
           "Set vHost IP")
@@ -562,36 +597,51 @@ virthost_menu () {
               done
             ;;
   
+          "Set Manager IP")
+            read -p "Enter oVirt Manager IP[${OVIRT_MANAGER_IP}]: " input
+            OVIRT_MANAGER_IP=${input:-$OVIRT_MANAGER_IP}
+            ;;
+  
+          "Set Manager FQDN")
+            read -p "Enter oVirt Manager FQDN[${OVIRT_MANAGER_FQDN}]: " input
+            OVIRT_MANAGER_FQDN=${input:-$OVIRT_MANAGER_FQDN}
+            ;;
+  
           "Set Datacenter")
-            read -p "Enter oVirt Datacenter[${VIRTHOST_DATACENTER}]: " input
-            VIRTHOST_DATACENTER=${input:-$VIRTHOST_DATACENTER}
+            read -p "Enter oVirt Datacenter[${OVIRT_DATACENTER}]: " input
+            OVIRT_DATACENTER=${input:-$OVIRT_DATACENTER}
             ;;
   
           "Set Network Domain")
             read -p "Enter oVirt Network Domain[${VIRTHOST_NETWORK_DOMAIN}]: " input
-            VIRTHOST_NETWORK_DOMAIN=${input:-$VIRTHOST_NETWORK_DOMAIN}
+            OVIRT_NETWORK_DOMAIN=${input:-$OVIRT_NETWORK_DOMAIN}
             ;;
 
           "Set Storage Domain")
-            read -p "Enter oVirt Storage Domain[${VIRTHOST_STORAGE_DOMAIN}]: " input
-            VIRTHOST_STORAGE_DOMAIN=${input:-$VIRTHOST_STORAGE_DOMAIN}
+            read -p "Enter oVirt Storage Domain[${OVIRT_STORAGE_DOMAIN}]: " input
+            OVIRT_STORAGE_DOMAIN=${input:-$OVIRT_STORAGE_DOMAIN}
             ;;
   
           "Delete vHost")
             read -p "DELETE $NODE ... ARE YOU SURE (Y/N): " input
             if [[ "$input" == "Y" ]]; then
-              VIRTHOST_IP=""
-              VIRTHOST_PW=""
-              VIRTHOST_FQDN=""
-              VIRTHOST_TYPE=""
-              VIRTHOST_BR_TYPE=""
-              VIRTHOST_BR_DEV=""
-              VIRTHOST_DATACENTER=""
-              VIRTHOST_STORAGE_DOMAIN=""
-              VIRTHOST_NETWORK_DOMAIN=""
+              if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
+                  VIRTHOST_IP=""
+                  VIRTHOST_PW=""
+                  VIRTHOST_FQDN=""
+                  VIRTHOST_TYPE=""
+                  VIRTHOST_BR_TYPE=""
+                  VIRTHOST_BR_DEV=""
+              elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
+                  OVIRT_IP=""
+                  OVIRT_API=""
+                  OVIRT_PW=""
+                  OVIRT_DATACENTER=""
+                  OVIRT_STORAGE_DOMAIN=""
+                  OVIRT_NETWORK_DOMAIN=""
+              fi
             fi
             ;;
-  
   
           "Back to Main Menu")
             PS3=${SAVED_PROMPT}
