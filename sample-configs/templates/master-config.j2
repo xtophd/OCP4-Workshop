@@ -141,10 +141,6 @@ myDeployhost:
 
 myBastion:
   hosts:
-    bastion.{{ t_cluster_name }}.{{ t_network_basedomain }}:
-      h_pubIP:       "{{ t_addr_bastion }}" 
-
-  hosts:
     bastion.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_bastion }}"
 {% if t_mac_bootstrap|length %}
