@@ -63,8 +63,13 @@ custom_platform:
         default:
   
             description:     "default libvirt network parameters"
-            network_name:    "br0"
             undeploy:        true
+{% if t_virthost_type == "bridge" %}
+            network_name:    "br0"
+{% if t_virthost_type == "macvtap" %}
+            network_name:    "{{ \"{{ t_project_name }}\"|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
+{% endif %}
+
 
             fwd_type:        "{{ t_virthost_br_type }}"
             bridge_netdev:   "{{ t_virthost_br_dev }}"
