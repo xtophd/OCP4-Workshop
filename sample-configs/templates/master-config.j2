@@ -261,7 +261,7 @@ myMasters:
 {% if t_addr_master3 is defined and t_addr_master3|length %}
     master3.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:       "{{ t_addr_master3 }}"
-{% if t_mac_master3|length -%}
+{% if t_mac_master3|length %}
       h_pubMAC:      "{{ t_mac_master3 }}"
 {% endif %}
 {% if t_hw_master3|length %}
