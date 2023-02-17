@@ -64,10 +64,12 @@ custom_platform:
   
             description:     "default libvirt network parameters"
             undeploy:        true
-{% if t_virthost_type == "bridge" %}
+{% if   t_virthost_br_type == "bridge" %}
             network_name:    "br0"
-{% if t_virthost_type == "macvtap" %}
-            network_name:    "{{ \"{{ t_project_name }}\"|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
+{% elif t_virthost_br_type == "macvtap" %}
+{% raw %}  
+            network_name:    "{{ \"{{ workshop_vars.projectname }}\"|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
+{% endraw %}
 {% endif %}
 
 

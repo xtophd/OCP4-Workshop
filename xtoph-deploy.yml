@@ -226,17 +226,17 @@
 
 
 
-- hosts: myBastion,myBootstrap,myMasters,myWorkers
-  gather_facts: no 
-  tasks:
-
-    - include_role: 
-        name: xtoph_ocp4
-      vars: 
-        xtoph_ocp4_action: "config-bastion"
-      when: xtoph_deploy_cmd == "deploy" or
-            xtoph_deploy_cmd == "setup+" or
-            xtoph_deploy_cmd == "redeploy"
+#- hosts: myBastion,myBootstrap,myMasters,myWorkers
+#  gather_facts: no 
+#  tasks:
+#
+#    - include_role: 
+#        name: xtoph_ocp4
+#      vars: 
+#        xtoph_ocp4_action: "config-bastion"
+#      when: xtoph_deploy_cmd == "deploy" or
+#            xtoph_deploy_cmd == "setup+" or
+#            xtoph_deploy_cmd == "redeploy"
 
 
 

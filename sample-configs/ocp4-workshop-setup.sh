@@ -65,6 +65,13 @@ export HW_MASTER2=""
 export HW_MASTER3=""
 export HW_WORKER1=""
 export HW_WORKER2=""
+export NAME_BASTION="bastion"
+export NAME_BOOTSTRAP="bootstrap"
+export NAME_MASTER1="master1"
+export NAME_MASTER2="master2"
+export NAME_MASTER3="master3"
+export NAME_WORKER1="worker1"
+export NAME_WORKER2="worker2"
 
 
 ##
@@ -132,14 +139,6 @@ BMC_MASTER2="${BMC_MASTER2}"
 BMC_MASTER3="${BMC_MASTER3}"
 BMC_WORKER1="${BMC_WORKER1}"
 BMC_WORKER2="${BMC_WORKER2}"
-BMC_PW_DEFAULT="${BMC_PW_DEFAULT}"
-BMC_PW_BASTION="${BMC_PW_BASTION}"
-BMC_PW_BOOTSTRAP="${BMC_PW_BOOTSTRAP}"
-BMC_PW_MASTER1="${BMC_PW_MASTER1}"
-BMC_PW_MASTER2="${BMC_PW_MASTER2}"
-BMC_PW_MASTER3="${BMC_PW_MASTER3}"
-BMC_PW_WORKER1="${BMC_PW_WORKER1}"
-BMC_PW_WORKER2="${BMC_PW_WORKER2}"
 MAC_BASTION="${MAC_BASTION}"
 MAC_BOOTSTRAP="${MAC_BOOTSTRAP}"
 MAC_MASTER1="${MAC_MASTER1}"
@@ -154,6 +153,13 @@ HW_MASTER2="${HW_MASTER2}"
 HW_MASTER3="${HW_MASTER3}"
 HW_WORKER1="${HW_WORKER1}"
 HW_WORKER2="${HW_WORKER2}"
+NAME_BASTION="${NAME_BASTION}"
+NAME_BOOTSTRAP="${NAME_BOOTSTRAP}"
+NAME_MASTER1="${NAME_MASTER1}"
+NAME_MASTER2="${NAME_MASTER2}"
+NAME_MASTER3="${NAME_MASTER3}"
+NAME_WORKER1="${NAME_WORKER1}"
+NAME_WORKER2="${NAME_WORKER2}"
 EO_ANSWERS
 
 }
@@ -204,14 +210,14 @@ current_settings () {
         echo "Libvirt Net (dev/type)  ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
     fi
 
-    echo "NODE SETTINGS (ip/mac/hw/bmc)" 
-    echo "  Bastion   ... ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${BMC_BASTION}"
-    echo "  Bootstrap ... ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${BMC_BOOTSTRAP}"
-    echo "  Master1   ... ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${BMC_MASTER1}"
-    echo "  Master2   ... ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${BMC_MASTER2}"
-    echo "  Master3   ... ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${BMC_MASTER3}"
-    echo "  Worker1   ... ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${BMC_WORKER1}"
-    echo "  Worker2   ... ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${BMC_WORKER2}"
+    echo "NODE SETTINGS (ip/mac/hw/bmc/name)" 
+    echo "Bastion  : ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${BMC_BASTION} / ${NAME_BASTION}"
+    echo "Bootstrap: ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${BMC_BOOTSTRAP} / ${NAME_BOOTSTRAP}"
+    echo "Master1  : ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${BMC_MASTER1} / ${NAME_MASTER1}"
+    echo "Master2  : ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${BMC_MASTER2} / ${NAME_MASTER2}"
+    echo "Master3  : ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${BMC_MASTER3} / ${NAME_MASTER3}"
+    echo "Worker1  : ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${BMC_WORKER1} / ${NAME_WORKER1}"
+    echo "Worker2  : ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${BMC_WORKER2} / ${NAME_WORKER2}"
     echo ""
  }
 
@@ -288,9 +294,14 @@ node_submenu () {
 
     current_settings
 
-    select action in "Set BMC Password" "Set IP Address" "Set MAC Address" "Set Hardware" "Set BMC Address" "Delete Node" "Back to Node Settings"
+    select action in "Set Name" "Set IP Address" "Set MAC Address" "Set Hardware" "Set BMC Address" "Set BMC Password" "Delete Node" "Back to Node Settings"
     do
       case ${action}  in
+        "Set Name")
+          MAGIC_VAR="NAME_$NODE"
+          read -p "Enter Node Name [${!MAGIC_VAR}]: " input
+          eval ${MAGIC_VAR}=${input:-${!MAGIC_VAR}}
+          ;;
         "Set Hardware")
           MAGIC_VAR="HW_$NODE"
           read -p "Enter Hardware Profile [${!MAGIC_VAR}]: " input

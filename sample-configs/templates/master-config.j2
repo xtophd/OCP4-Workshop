@@ -141,17 +141,24 @@ myDeployhost:
 
 myBastion:
   hosts:
-    bastion.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_bastion }}"
+    {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_bastion }}"
 {% if t_mac_bootstrap|length %}
-      h_pubMAC:      "{{ t_mac_bastion }}"
+      h_pubMAC:        "{{ t_mac_bastion }}"
 {% endif -%}
 {% if t_hw_bastion|length  %}
-      h_hwPROF:      "{{ t_hw_bastion  }}"
-      h_plPROF:      "custom_baremetal"
-{% endif -%}
+      h_hwPROF:        "{{ t_hw_bastion  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_bastion }}"
+      h_rhcosNIC:      "{{ t_netdev_bastion }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_bastion }}"
+{% endif %}
+
 {% if t_bmc_bootstrap|length %}
-      bmc_fqdn:      "{{ t_bmc_bootstrap }}"
+      bmc_fqdn:        "{{ t_bmc_bootstrap }}"
 {% endif %}
 
   vars:
@@ -173,19 +180,26 @@ myBastion:
 
 myBootstrap:
   hosts:
-{% if t_cluster_provisioner != "ai" -%}
+{% if t_cluster_provisioner != "ai" %}
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
-    bootstrap.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_bootstrap }}" 
+     {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_bootstrap }}" 
 {% if t_mac_bootstrap|length %}
-      h_pubMAC:      "{{ t_mac_bootstrap }}"
+      h_pubMAC:        "{{ t_mac_bootstrap }}"
 {% endif -%}
 {% if t_hw_bootstrap|length  %}
-      h_hwPROF:      "{{ t_hw_bootstrap  }}"
-      h_plPROF:      "custom_baremetal"
-{% endif -%}
+      h_hwPROF:        "{{ t_hw_bootstrap  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
+      h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
+{% endif %}
+
 {% if t_bmc_bootstrap|length %}
-      bmc_fqdn:      "{{ t_bmc_bootstrap }}"
+      bmc_fqdn:        "{{ t_bmc_bootstrap }}"
 {% endif %}
 {% endif %}
 {% endif %}
@@ -226,46 +240,67 @@ myBootstrap:
 myMasters:
   hosts:
 
-    master1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_master1 }}"
+    {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_master1 }}"
 {% if t_mac_master1|length %}
-      h_pubMAC:      "{{ t_mac_master1 }}"
+      h_pubMAC:        "{{ t_mac_master1 }}"
 {% endif -%}
 {% if t_hw_master1|length  %}
-      h_hwPROF:      "{{ t_hw_master1  }}"
-      h_plPROF:      "custom_baremetal"
-{% endif -%}
+      h_hwPROF:        "{{ t_hw_master1  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
+      h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
+{% endif %}
+
 {% if t_bmc_master1|length %}
-      bmc_fqdn:      "{{ t_bmc_master1 }}"
+      bmc_fqdn:        "{{ t_bmc_master1 }}"
 {% endif %}
 
 {% if t_addr_master2 is defined and t_addr_master2|length %}
-    master2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_master2 }}"
+    {{ t_name_master2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_master2 }}"
 {% if t_mac_master2|length %}
-      h_pubMAC:      "{{ t_mac_master2 }}"
+      h_pubMAC:        "{{ t_mac_master2 }}"
 {% endif %}
 {% if t_hw_master2|length %}
-      h_hwPROF:      "{{ t_hw_master2 }}"
-      h_plPROF:      "custom_baremetal"
-{% endif -%}
+      h_hwPROF:        "{{ t_hw_master2 }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_master2 }}"
+      h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_master2 }}"
+{% endif %}
+
 {% if t_bmc_master2|length %}
-      bmc_fqdn:      "{{ t_bmc_master2 }}"
+      bmc_fqdn:        "{{ t_bmc_master2 }}"
 {% endif %}
 {% endif %}
 
 {% if t_addr_master3 is defined and t_addr_master3|length %}
-    master3.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_master3 }}"
+    {{ t_name_master3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_master3 }}"
 {% if t_mac_master3|length %}
-      h_pubMAC:      "{{ t_mac_master3 }}"
+      h_pubMAC:        "{{ t_mac_master3 }}"
 {% endif %}
 {% if t_hw_master3|length %}
-      h_hwPROF:      "{{ t_hw_master3 }}"
-      h_plPROF:      "custom_baremetal"
+      h_hwPROF:        "{{ t_hw_master3 }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_master3 }}"
+      h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_master3 }}"
 {% endif %}
+
 {% if t_bmc_master3|length %}
-      bmc_fqdn:      "{{ t_bmc_master3 }}"
+      bmc_fqdn:        "{{ t_bmc_master3 }}"
 {% endif %}
 {% endif %}
 
@@ -307,32 +342,46 @@ myWorkers:
   hosts:
 
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
-    worker1.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_worker1 }}" 
+    {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_worker1 }}" 
 {% if t_mac_worker1|length %}
-      h_pubMAC:      "{{ t_mac_worker1 }}"
+      h_pubMAC:        "{{ t_mac_worker1 }}"
 {% endif %}
 {% if t_hw_worker1|length  %}
-      h_hwPROF:      "{{ t_hw_worker1  }}"
-      h_plPROF:      "custom_baremetal"
+      h_hwPROF:        "{{ t_hw_worker1  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
+      h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_worker1 }}"
 {% endif %}
+
 {% if t_bmc_worker1|length %}
-      bmc_fqdn:      "{{ t_bmc_worker1 }}"
+      bmc_fqdn:        "{{ t_bmc_worker1 }}"
 {% endif %}
 {% endif %}
 
 {% if t_addr_worker2 is defined and t_addr_worker2|length %}
-    worker2.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:       "{{ t_addr_worker2 }}" 
+    {{ t_name_worker2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_worker2 }}" 
 {% if t_mac_worker2|length %}
-      h_pubMAC:      "{{ t_mac_worker2 }}"
-{% endif -%}
-{% if t_hw_worker2|length  %}
-      h_hwPROF:      "{{ t_hw_worker2  }}"
-      h_plPROF:      "custom_baremetal"
+      h_pubMAC:        "{{ t_mac_worker2 }}"
 {% endif %}
+{% if t_hw_worker2|length  %}
+      h_hwPROF:        "{{ t_hw_worker2  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
+      h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_worker2 }}"
+{% endif %}
+
 {% if t_bmc_worker2|length %}
-      bmc_fqdn:      "{{ t_bmc_worker2 }}"
+      bmc_fqdn:        "{{ t_bmc_worker2 }}"
 {% endif %}
 {% endif %}
 

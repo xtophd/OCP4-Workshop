@@ -5,7 +5,15 @@
 
   - block:
 
-        - name: "baremetal-setup: deploy configs from templates"
+        - name: "ocp4_workshop setup: load default vars from xtoph_deploy"
+          include_vars:
+            name: '{{ item.varname }}'
+            file: '{{ item.filename }}'
+          when: item.filename|length > 0
+          loop:
+            - { varname: 'xtoph_default_machine',   filename: '../roles/xtoph_deploy/vars/xtoph-default-machine.yml' }
+
+        - name: "ocp4_workshop setup: deploy configs from templates"
           template:
             src: "{{ item.src }}"
             dest: "{{ item.dest }}"
@@ -21,8 +29,7 @@
             - {mode: "0744", src: "xtoph-config-resource.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-resource.yml"}
             - {mode: "0744", src: "xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
 
-## SAMPLE OF FORMER LOGIC
-#            - {mode: "0744", src: "{{ t_virthost_type }}.xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
+
 
     vars:
       - t_config_dir:              "{{ lookup('env','PWD') }}"
@@ -89,3 +96,42 @@
       - t_hw_master3:              "{{ lookup('env','HW_MASTER3') }}"
       - t_hw_worker1:              "{{ lookup('env','HW_WORKER1') }}"
       - t_hw_worker2:              "{{ lookup('env','HW_WORKER2') }}"
+      - t_name_bastion:            "{{ lookup('env','NAME_BASTION') }}"
+      - t_name_bootstrap:          "{{ lookup('env','NAME_BOOTSTRAP') }}"
+      - t_name_master1:            "{{ lookup('env','NAME_MASTER1') }}"
+      - t_name_master2:            "{{ lookup('env','NAME_MASTER2') }}"
+      - t_name_master3:            "{{ lookup('env','NAME_MASTER3') }}"
+      - t_name_worker1:            "{{ lookup('env','NAME_WORKER1') }}"
+      - t_name_worker2:            "{{ lookup('env','NAME_WORKER2') }}"
+      - t_blkdev_bastion:          "{{ xtoph_default_machine[t_hw_bastion].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_bootstrap:        "{{ xtoph_default_machine[t_hw_bootstrap].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_master1:          "{{ xtoph_default_machine[t_hw_master1].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_master2:          "{{ xtoph_default_machine[t_hw_master2].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_master3:          "{{ xtoph_default_machine[t_hw_master3].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_worker1:          "{{ xtoph_default_machine[t_hw_worker1].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_blkdev_worker2:          "{{ xtoph_default_machine[t_hw_worker2].kickstart.dev_hints['rhel8']['blkdev'] | default('--REQUIRED--') }}"
+      - t_netdev_bastion:          "{{ xtoph_default_machine[t_hw_bastion].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_bootstrap:        "{{ xtoph_default_machine[t_hw_bootstrap].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_master1:          "{{ xtoph_default_machine[t_hw_master1].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_master2:          "{{ xtoph_default_machine[t_hw_master2].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_master3:          "{{ xtoph_default_machine[t_hw_master3].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_worker1:          "{{ xtoph_default_machine[t_hw_worker1].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_netdev_worker2:          "{{ xtoph_default_machine[t_hw_worker2].kickstart.dev_hints['rhel8']['netdev'] | default('--REQUIRED--') }}"
+      - t_bootmode_bastion:        "{{ xtoph_default_machine[t_hw_bastion].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_bootstrap:      "{{ xtoph_default_machine[t_hw_bootstrap].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_master1:        "{{ xtoph_default_machine[t_hw_master1].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_master2:        "{{ xtoph_default_machine[t_hw_master2].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_master3:        "{{ xtoph_default_machine[t_hw_master3].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_worker1:        "{{ xtoph_default_machine[t_hw_worker1].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_worker2:        "{{ xtoph_default_machine[t_hw_worker2].boot_mode | default('--REQUIRED--') }}"
+
+      - name: "main.yml : special handling for kickstart netdev"
+        set_fact:
+          xtoph_deploy: "{{ xtoph_deploy | combine( {'machine_profile': {'kickstart': {'netdev': t_netdev}}}, recursive=True ) }}"
+        vars:
+          t_netdev:  "{{ xtoph_deploy.machine_profile.kickstart.dev_hints[xtoph_deploy.kickstart_profile.family]['netdev'] | default(xtoph_deploy.machine_profile.kickstart.dev_hints.default.netdev) }}"
+        when:
+          - xtoph_deploy.kickstart_profile.family is defined
+          - xtoph_deploy.machine_profile.kickstart.netdev is defined and xtoph_deploy.machine_profile.kickstart.netdev == ''
+          - xtoph_deploy.kickstart_profile.method != 'simple_cdrom'
+
