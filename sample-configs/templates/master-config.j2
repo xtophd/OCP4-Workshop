@@ -35,14 +35,17 @@ all:
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
 {% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
-      ocp_provisioner:      "ai"
 {% if t_cluster_provisioner == "ai-sno" %}
+      ocp_provisioner:      "ai"
       ocp_sno:              True
+      ocp_vip_cluster:      "{{ t_addr_sno }}"
+      ocp_vip_api:          "{{ t_addr_sno }}"
 {% else %}
+      ocp_provisioner:      "ai"
       ocp_sno:              False
-{% endif %}
       ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
       ocp_vip_api:          "{{ t_cluster_api_ip }}"
+{% endif %}
 {% else %}
       ocp_provisioner:      "upi"
       ocp_vip_cluster:      "{{ t_addr_bastion }}"
