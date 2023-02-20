@@ -390,7 +390,7 @@
 
 
 
-- hosts: myMasters,myWorkers
+- hosts: myMasters,myWorkers,mySNO
   gather_facts: no 
   tasks:
 
