@@ -9,6 +9,7 @@ export CLUSTER_PROVISIONER=""
 export CLUSTER_LOADBALANCER_IP=""
 export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
+export CLUSTER_VERSION="4.12"
 export VIRTHOST_IP=""
 export VIRTHOST_PW=""
 export VIRTHOST_FQDN=""
@@ -110,6 +111,7 @@ CLUSTER_WILDCARD="${CLUSTER_WILDCARD}"
 CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
 CLUSTER_LOADBALANCER_IP="${CLUSTER_LOADBALANCER_IP}"
 CLUSTER_API_IP="${CLUSTER_API_IP}"
+CLUSTER_VERSION="${CLUSTER_VERSION}"
 NETWORK_ID="${NETWORK_ID}"
 NETWORK_GATEWAY="${NETWORK_GATEWAY}"
 NETWORK_PREFIX="${NETWORK_PREFIX}"
@@ -201,7 +203,7 @@ current_settings () {
     echo "Password BMC Default    ... ${BMC_PW_DEFAULT:+"**********"}" 
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
-    echo "Cluster Name            ... ${CLUSTER_NAME}"
+    echo "Cluster Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
     echo "Cluster Wildcard        ... ${CLUSTER_WILDCARD}"
     echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER}"
     echo "Cluster Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
@@ -782,13 +784,34 @@ cluster_menu () {
 
     current_settings
 
-    select action in "Set Name" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Back to Main Menu"
+    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Back to Main Menu"
     do
       case ${action}  in
         "Set Name")
            read -p "Enter Cluster Name [${CLUSTER_NAME}]: " input
            CLUSTER_NAME=${input:-$CLUSTER_NAME}
            ;;
+
+        "Set Version")
+           select CLUSTER_VERSION in "4.12" "4.11" "4.10" "4.9" "4.8"
+           do
+              case ${CLUSTER_VERSION} in
+                "4.12" )
+                  break ;;
+                "4.11" )
+                  break ;;
+                "4.10" )
+                  break ;;
+                "4.9" )
+                  break ;;
+                "4.8" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
 
         "Set Provisioner")
            select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai" "ai-sno"

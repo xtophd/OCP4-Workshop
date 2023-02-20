@@ -41,6 +41,7 @@
       - t_cluster_loadbalancer_ip: "{{ lookup('env','CLUSTER_LOADBALANCER_IP') }}"
       - t_cluster_api_ip:          "{{ lookup('env','CLUSTER_API_IP') }}"
       - t_cluster_api_ip:          "{{ lookup('env','CLUSTER_API_IP') }}"
+      - t_cluster_version:         "{{ lookup('env','CLUSTER_VERSION') }}"
       - t_network_id:              "{{ lookup('env','NETWORK_ID') }}"
       - t_network_gateway:         "{{ lookup('env','NETWORK_GATEWAY') }}"
       - t_network_prefix:          "{{ lookup('env','NETWORK_PREFIX') }}"

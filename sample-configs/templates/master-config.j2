@@ -30,7 +30,7 @@ all:
 
       ocp_clustername:      "{{ t_cluster_name }}"
       ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ t_network_basedomain }}"
-      ocp_version:          "4.11"
+      ocp_version:          "{{ t_cluster_version }}"
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
@@ -158,6 +158,7 @@ myBastion:
       h_hwPROF:        "{{ t_hw_bastion  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_bastion }}"
       h_rhcosNIC:      "{{ t_netdev_bastion }}:dhcp"
@@ -199,6 +200,7 @@ myBootstrap:
       h_hwPROF:        "{{ t_hw_bootstrap  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
@@ -258,6 +260,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
@@ -279,6 +282,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master2 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master2 }}"
       h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
@@ -301,6 +305,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master3 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master3 }}"
       h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
@@ -362,6 +367,7 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
       h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
@@ -384,6 +390,7 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker2  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
       h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
@@ -438,12 +445,13 @@ mySNO:
 {% if t_addr_sno is defined and t_addr_sno|length %}
     {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_sno }}"
-{% if t_mac_worker1|length %}
+{% if t_mac_sno|length %}
       h_pubMAC:        "{{ t_mac_sno }}"
 {% endif %}
-{% if t_hw_worker1|length  %}
+{% if t_hw_sno|length  %}
       h_hwPROF:        "{{ t_hw_sno  }}"
       h_plPROF:        "custom_baremetal"
+      h_ksPROF:        "vmedia_nowait"
       h_pwrOFF:        false
 
       h_rhcosDEV:      "{{ t_blkdev_sno }}"
