@@ -34,8 +34,13 @@ all:
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
-{% if t_cluster_provisioner == "ai" %}
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
       ocp_provisioner:      "ai"
+{% if t_cluster_provisioner == "ai-sno" %}
+      ocp_sno:              True
+{% else %}
+      ocp_sno:              False
+{% endif %}
       ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
       ocp_vip_api:          "{{ t_cluster_api_ip }}"
 {% else %}
@@ -180,7 +185,7 @@ myBastion:
 
 myBootstrap:
   hosts:
-{% if t_cluster_provisioner != "ai" %}
+{% if t_cluster_provisioner != "ai-sno" and t_cluster_provisioner != "ai" %}
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
      {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bootstrap }}" 
@@ -240,6 +245,7 @@ myBootstrap:
 myMasters:
   hosts:
 
+{% if t_cluster_provisioner != "ai-sno" %}
     {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master1 }}"
 {% if t_mac_master1|length %}
@@ -303,6 +309,7 @@ myMasters:
       bmc_fqdn:        "{{ t_bmc_master3 }}"
 {% endif %}
 {% endif %}
+{% endif %}
 
   vars: 
 
@@ -341,6 +348,7 @@ myMasters:
 myWorkers:
   hosts:
 
+{% if t_cluster_provisioner != "ai-sno" %}
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
     {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker1 }}" 
@@ -384,6 +392,7 @@ myWorkers:
       bmc_fqdn:        "{{ t_bmc_worker2 }}"
 {% endif %}
 {% endif %}
+{% endif %}
 
   vars: 
 
@@ -412,4 +421,61 @@ myWorkers:
 {% elif t_cluster_provisioner == "upi-vmedia" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% endif %}
+
+
+
+## -----------------
+
+
+
+mySNO:
+  hosts:
+
+{% if t_cluster_provisioner == "ai-sno" %}
+{% if t_addr_sno is defined and t_addr_sno|length %}
+    {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_sno }}"
+{% if t_mac_worker1|length %}
+      h_pubMAC:        "{{ t_mac_sno }}"
+{% endif %}
+{% if t_hw_worker1|length  %}
+      h_hwPROF:        "{{ t_hw_sno  }}"
+      h_plPROF:        "custom_baremetal"
+      h_pwrOFF:        false
+
+      h_rhcosDEV:      "{{ t_blkdev_sno }}"
+      h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
+      h_rhcosUSBdelay: "0"
+      h_rhcosLOADER:   "{{ t_bootmode_sno }}"
+{% endif %}
+
+{% if t_bmc_sno|length %}
+      bmc_fqdn:        "{{ t_bmc_worker1 }}"
+{% endif %}
+{% endif %}
+{% endif %}
+
+  vars:
+
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+{% if t_virthost_type == "libvirt" %}
+    h_rhcosDEV:      "/dev/vda"
+    h_hwPROF:        "kvm_vda"
+{% elif t_virthost_type == "ovirt" %}
+    h_rhcosDEV:      "/dev/sda"
+    h_hwPROF:        "ovirt_sda"
+{% endif %}
+    h_plPROF:        "custom_platform"
+    h_rsPROF:        "custom_worker"
+{% if t_cluster_provisioner == "upi-pxe" %}
+    h_ksPROF:        "pxe_wait"
+{% if t_virthost_type == "ovirt" %}
+    h_pwrOFF:        "False"
+{% endif %}
+{% else %}
+    h_ksPROF:        "custom_kickstart"
+{% endif %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 

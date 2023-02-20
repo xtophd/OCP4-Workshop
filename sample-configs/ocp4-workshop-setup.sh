@@ -36,6 +36,7 @@ export ADDR_MASTER2=""
 export ADDR_MASTER3=""
 export ADDR_WORKER1=""
 export ADDR_WORKER2=""
+export ADDR_SNO=""
 export BMC_BASTION=""
 export BMC_BOOTSTRAP=""
 export BMC_MASTER1=""
@@ -43,6 +44,7 @@ export BMC_MASTER2=""
 export BMC_MASTER3=""
 export BMC_WORKER1=""
 export BMC_WORKER2=""
+export BMC_SNO=""
 export BMC_PW_DEFAULT=""
 export BMC_PW_BASTION=""
 export BMC_PW_BOOTSTRAP=""
@@ -51,6 +53,7 @@ export BMC_PW_MASTER2=""
 export BMC_PW_MASTER3=""
 export BMC_PW_WORKER1=""
 export BMC_PW_WORKER2=""
+export BMC_PW_SNO""
 export MAC_BASTION=""
 export MAC_BOOTSTRAP=""
 export MAC_MASTER1=""
@@ -58,6 +61,7 @@ export MAC_MASTER2=""
 export MAC_MASTER3=""
 export MAC_WORKER1=""
 export MAC_WORKER2=""
+export MAC_SNO=""
 export HW_BASTION=""
 export HW_BOOTSTRAP=""
 export HW_MASTER1=""
@@ -65,6 +69,7 @@ export HW_MASTER2=""
 export HW_MASTER3=""
 export HW_WORKER1=""
 export HW_WORKER2=""
+export HW_SNO=""
 export NAME_BASTION="bastion"
 export NAME_BOOTSTRAP="bootstrap"
 export NAME_MASTER1="master1"
@@ -72,6 +77,7 @@ export NAME_MASTER2="master2"
 export NAME_MASTER3="master3"
 export NAME_WORKER1="worker1"
 export NAME_WORKER2="worker2"
+export NAME_SNO="sno"
 
 
 ##
@@ -132,6 +138,7 @@ ADDR_MASTER2="${ADDR_MASTER2}"
 ADDR_MASTER3="${ADDR_MASTER3}"
 ADDR_WORKER1="${ADDR_WORKER1}"
 ADDR_WORKER2="${ADDR_WORKER2}"
+ADDR_SNO="${ADDR_SNO}"
 BMC_BASTION="${BMC_BASTION}"
 BMC_BOOTSTRAP="${BMC_BOOTSTRAP}"
 BMC_MASTER1="${BMC_MASTER1}"
@@ -139,6 +146,7 @@ BMC_MASTER2="${BMC_MASTER2}"
 BMC_MASTER3="${BMC_MASTER3}"
 BMC_WORKER1="${BMC_WORKER1}"
 BMC_WORKER2="${BMC_WORKER2}"
+BMC_SNO="${BMC_SNO}"
 MAC_BASTION="${MAC_BASTION}"
 MAC_BOOTSTRAP="${MAC_BOOTSTRAP}"
 MAC_MASTER1="${MAC_MASTER1}"
@@ -146,6 +154,7 @@ MAC_MASTER2="${MAC_MASTER2}"
 MAC_MASTER3="${MAC_MASTER3}"
 MAC_WORKER1="${MAC_WORKER1}"
 MAC_WORKER2="${MAC_WORKER2}"
+MAC_SNO="${MAC_SNO}"
 HW_BASTION="${HW_BASTION}"
 HW_BOOTSTRAP="${HW_BOOTSTRAP}"
 HW_MASTER1="${HW_MASTER1}"
@@ -153,6 +162,7 @@ HW_MASTER2="${HW_MASTER2}"
 HW_MASTER3="${HW_MASTER3}"
 HW_WORKER1="${HW_WORKER1}"
 HW_WORKER2="${HW_WORKER2}"
+HW_SNO="${HW_SNO}"
 NAME_BASTION="${NAME_BASTION}"
 NAME_BOOTSTRAP="${NAME_BOOTSTRAP}"
 NAME_MASTER1="${NAME_MASTER1}"
@@ -160,6 +170,7 @@ NAME_MASTER2="${NAME_MASTER2}"
 NAME_MASTER3="${NAME_MASTER3}"
 NAME_WORKER1="${NAME_WORKER1}"
 NAME_WORKER2="${NAME_WORKER2}"
+NAME_SNO="${NAME_SNO}"
 EO_ANSWERS
 
 }
@@ -218,6 +229,7 @@ current_settings () {
     echo "Master3  : ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${BMC_MASTER3} / ${NAME_MASTER3}"
     echo "Worker1  : ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${BMC_WORKER1} / ${NAME_WORKER1}"
     echo "Worker2  : ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${BMC_WORKER2} / ${NAME_WORKER2}"
+    echo "SNO      : ${ADDR_SNO} / ${MAC_SNO} / ${HW_SNO} / ${BMC_SNO} / ${NAME_SNO}"
     echo ""
  }
 
@@ -380,7 +392,7 @@ node_menu () {
 
     current_settings
 
-    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "Back to Main Menu"
+    select action in "Bastion" "Bootstrap" "Master1" "Master2" "Master3" "Worker1" "Worker2" "SNO" "Back to Main Menu"
     do
       case ${action}  in
         "Bastion")
@@ -403,6 +415,9 @@ node_menu () {
           ;;
         "Worker2")
           node_submenu WORKER2
+          ;;
+        "SNO")
+          node_submenu SNO
           ;;
         "Back to Main Menu")
           PS3=${SAVED_PROMPT}
@@ -767,7 +782,7 @@ cluster_menu () {
 
     current_settings
 
-    select action in "Set Name" "Set Wildcard" "Set Provisioner" "Set Loadbalancer IP" "Set API IP" "Back to Main Menu"
+    select action in "Set Name" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Back to Main Menu"
     do
       case ${action}  in
         "Set Name")
@@ -776,7 +791,7 @@ cluster_menu () {
            ;;
 
         "Set Provisioner")
-           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai"
+           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai" "ai-sno"
            do
               case ${CLUSTER_PROVISIONER} in
                 "upi-pxe" )
@@ -784,6 +799,8 @@ cluster_menu () {
                 "upi-vmedia" )
                   break ;;
                 "ai" )
+                  break ;;
+                "ai-sno" )
                   break ;;
                 "*" )
                   ;;
@@ -797,7 +814,7 @@ cluster_menu () {
            CLUSTER_WILDCARD=${input:-$CLUSTER_WILDCARD}
            ;;
 
-        "Set Loadbalancer IP")
+        "Set LB IP")
           read -p "Enter Cluster Loadbalancer  IP [${CLUSTER_LOADBALANCER_IP}]: " input
           CLUSTER_LOADBALANCER_IP=${input:-$CLUSTER_LOADBALANCER_IP}
           ;;

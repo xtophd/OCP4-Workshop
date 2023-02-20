@@ -157,7 +157,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters
+- hosts: myBastion,myBootstrap,myWorkers,myMasters,mySNO
   gather_facts: no 
   tasks:
 
@@ -226,7 +226,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myMasters,myWorkers
+- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO
   gather_facts: no 
   tasks:
 
@@ -257,7 +257,6 @@
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
-#              xtoph_ocp4_action: "preinstall-bastion"
 
           - include_role: 
               name: xtoph_deploy
@@ -287,14 +286,13 @@
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN myMasters  ****"
+    - debug: msg="**** BEGIN myMasters ****"
 
     - block:
           - include_role: 
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
-#              xtoph_ocp4_action: "preinstall-masters"
       
           - include_role: 
               name: xtoph_deploy
@@ -324,14 +322,13 @@
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN myWorkers  ****"
+    - debug: msg="**** BEGIN myWorkers ****"
 
     - block:
           - include_role: 
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
-#              xtoph_ocp4_action: "preinstall-workers"
       
           - include_role: 
               name: xtoph_deploy
@@ -348,6 +345,42 @@
             xtoph_deploy_cmd == "redeploy"
 
     - debug: msg="**** END myWorkers  ****"
+
+
+
+##
+##    SNO
+##    
+
+
+
+- hosts: mySNO
+  gather_facts: no
+  tasks:
+
+    - debug: msg="**** BEGIN mySNO ****"
+
+    - block:
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "preinstall-node"
+
+          - include_role:
+              name: xtoph_deploy
+            vars:
+              xtoph_deploy_action: "deploy"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END mySNO  ****"
 
 
 
