@@ -29,7 +29,7 @@
 
     - debug: msg="**** END SHUTDOWN - workers ****"
 
-- hosts: myMasters,!myShelter
+- hosts: myMasters,mySNO,!myShelter
   gather_facts: no 
   tasks:
 
@@ -74,7 +74,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myMasters,myWorkers
+- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO
   gather_facts: no 
   tasks:
 
@@ -110,7 +110,7 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-bastion"
+              xtoph_ocp4_action: "preinstall-bootstrap"
 
           - include_role:
               name: xtoph_ocp4
@@ -129,7 +129,7 @@
 
 
 
-- hosts: myMasters
+- hosts: myMasters,MySNO
   gather_facts: no 
   tasks:
 
@@ -187,7 +187,7 @@
 
 
 
-- hosts: myMasters,myWorkers
+- hosts: myMasters,myWorkers,mySNO
   gather_facts: no 
   tasks:
 
