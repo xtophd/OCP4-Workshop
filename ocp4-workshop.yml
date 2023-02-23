@@ -8,6 +8,28 @@
 ##
 
 
+##
+##    Bootstrap
+##
+
+
+
+- hosts: myDeployhost
+  tasks:
+
+    - debug: msg="**** BEGIN DEPLOYER SETUP ****"
+
+    - block:
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "setup"
+
+      when: ocp4_workshop_cmd == "setup"
+
+    - debug: msg="**** END DEPLOYER SETUP ****"
+
+
 
 ##
 ##    SHUTDOWN    
