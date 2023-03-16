@@ -125,10 +125,11 @@ all:
 myLibvirtHosts:
 
   hosts:
+{% if t_virthost_fqdn|length %}
     {{ t_virthost_fqdn }}:
       h_pubIP:       "{{ t_virthost_ip }}"
       h_plPROF:      "custom_kvmhost"
-
+{% endif %}
 
 
 ## -----------------
@@ -151,7 +152,7 @@ myBastion:
   hosts:
     {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bastion }}"
-{% if t_mac_bootstrap|length %}
+{% if t_mac_bastion|length %}
       h_pubMAC:        "{{ t_mac_bastion }}"
 {% endif -%}
 {% if t_hw_bastion|length  %}
@@ -166,8 +167,8 @@ myBastion:
       h_rhcosLOADER:   "{{ t_bootmode_bastion }}"
 {% endif %}
 
-{% if t_bmc_bootstrap|length %}
-      bmc_fqdn:        "{{ t_bmc_bootstrap }}"
+{% if t_bmc_bastion|length %}
+      bmc_fqdn:        "{{ t_bmc_bastion }}"
 {% endif %}
 
   vars:
