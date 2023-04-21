@@ -68,7 +68,7 @@ custom_platform:
             network_name:    "br0"
 {% elif t_virthost_br_type == "macvtap" %}
 {% raw %}  
-            network_name:    "{{ \"{{ workshop_vars.projectname }}\"|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
+            network_name:    "{{ workshop_vars.projectname|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
 {% endraw %}
 {% endif %}
 
