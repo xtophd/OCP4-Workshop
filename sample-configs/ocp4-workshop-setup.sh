@@ -568,13 +568,14 @@ virthost_menu () {
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
         TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set VHost IP" "Set vHost FQDN" "Set Bridge Device" "Set Bridge Type")
+        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set Bridge Device" "Set Bridge Type")
       fi
 
 
       select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
       do
         case ${action}  in
+
           "Set vHost IP")
             read -p "Enter libvirt host IP [${VIRTHOST_IP}]: " input
             VIRTHOST_IP=${input:-$VIRTHOST_IP}
