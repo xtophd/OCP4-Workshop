@@ -23,11 +23,11 @@
           with_items:
             - {mode: "0744", src: "master-config.j2",          dest: "{{ t_config_dir}}/config/master-config.yml"}
             - {mode: "0744", src: "credentials.j2",            dest: "{{ t_config_dir}}/config/credentials.yml"}
-            - {mode: "0744", src: "xtoph-config.j2",           dest: "{{ t_config_dir}}/config/xtoph-config.yml"}
-            - {mode: "0744", src: "xtoph-config-kickstart.j2", dest: "{{ t_config_dir}}/config/xtoph-config-kickstart.yml"}
-            - {mode: "0744", src: "xtoph-config-platform.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-platform.yml"}
-            - {mode: "0744", src: "xtoph-config-resource.j2",  dest: "{{ t_config_dir}}/config/xtoph-config-resource.yml"}
-            - {mode: "0744", src: "xtoph_ocp4.config.j2",      dest: "{{ t_config_dir}}/config/xtoph_ocp4.config.yml"}
+            - {mode: "0744", src: "xtoph-deploy.j2",           dest: "{{ t_config_dir}}/config/xtoph-deploy.yml"}
+            - {mode: "0744", src: "xtoph-deploy-kickstart.j2", dest: "{{ t_config_dir}}/config/xtoph-deploy-kickstart.yml"}
+            - {mode: "0744", src: "xtoph-deploy-platform.j2",  dest: "{{ t_config_dir}}/config/xtoph-deploy-platform.yml"}
+            - {mode: "0744", src: "xtoph-deploy-resource.j2",  dest: "{{ t_config_dir}}/config/xtoph-deploy-resource.yml"}
+            - {mode: "0744", src: "xtoph-ocp4.j2",             dest: "{{ t_config_dir}}/config/xtoph-ocp4.yml"}
 
 
 
