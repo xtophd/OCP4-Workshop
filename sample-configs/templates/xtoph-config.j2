@@ -24,9 +24,13 @@ deployhost:
   ##
 
   platform_enable: 
-      - "libvirt"
-      - "ovirt"
       - "baremetal"
+{% if t_virthost_type == "libvirt" %}
+      - "libvirt"
+{% elif t_virthost_type == "ovirt" %}
+      - "ovirt"
+{% endif %}
+
   
   ##
   ##    deployhost hostname OR ip that will
