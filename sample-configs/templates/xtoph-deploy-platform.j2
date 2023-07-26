@@ -70,6 +70,10 @@ custom_platform:
 {% raw %}  
             network_name:    "{{ workshop_vars.projectname|checksum|truncate(10,true,'') + \"{{ inventory_hostname }}\"|checksum|truncate(10,true,'') }}"
 {% endraw %}
+{% elif t_virthost_br_type == "nat" %}
+{% raw %}
+            network_name:    "virbr_{{ workshop_vars.projectname }}"
+{% endraw %}
 {% endif %}
 
 

@@ -66,7 +66,11 @@ all:
 
       bastion:
 
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
         assisted_installer: True
+{% else %}
+        assisted_installer: False
+{% endif %}
         firewalld:          True
         cockpit:            False
         dns:                True
@@ -129,6 +133,9 @@ myLibvirtHosts:
     {{ t_virthost_fqdn }}:
       h_pubIP:       "{{ t_virthost_ip }}"
       h_plPROF:      "custom_platform"
+{% endif %}
+{% if t_virthost_fqdn == "localhost.localdomain" %}
+      ansible_connection: local
 {% endif %}
 
 

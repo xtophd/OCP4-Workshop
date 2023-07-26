@@ -612,12 +612,14 @@ virthost_menu () {
           ;;
   
           "Set Bridge Type")
-             select VIRTHOST_BR_TYPE in "bridge" "macvtap"
+             select VIRTHOST_BR_TYPE in "bridge" "macvtap" "nat"
              do
                 case ${VIRTHOST_BR_TYPE} in
                   "bridge" )
                     break ;;
                   "macvtap" )
+                    break ;;
+                  "nat" )
                     break ;;
                   "*" )
                     ;;

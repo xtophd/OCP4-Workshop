@@ -42,16 +42,28 @@ deployhost:
 {% endraw %}
 
   ##
-  ##    dnsmasq_enable:    ensures dnsmasq is installed
-  ##                       and enabled on the deployhost
+  ##    dnsmasq_enable:      ensures dnsmasq is installed
+  ##                         and enabled on the deployhost
   ##
-  ##    dnsmasq_asprimary  host/vm resolves to ->
-  ##                         deployhost which forwards to ->
-  ##                           real-dns
+  ##    dnsmasq_asprimary    host/vm resolves to ->
+  ##                           deployhost which forwards to ->
+  ##                             real-dns
+  ##
+  ##    dnsmasq_override_nm  overrides whatever NetworkManager put
+  ##                         in resolv.conf with 127.0.0.1
+  ##
+  ##    dnsmasq_override_ip  writes this ip into dnsmasq.conf as
+  ##                         the forwarding NS to resolv lookups
   ##
 
-  dnsmasq_enable:     false
-  dnsmasq_asprimary:  false
+{% if   t_virthost_br_type == "nat" %}
+  dnsmasq_enable:      true
+{% else %}
+  dnsmasq_enable:      false
+{% endif %}
+  dnsmasq_asprimary:   false
+  dnsmasq_override_nm: false
+  dnsmasq_override_ip: ""
 
   ##
   ##    http_port:      port to provide kickstart and
