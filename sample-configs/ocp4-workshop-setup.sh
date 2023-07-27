@@ -4,6 +4,7 @@ export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
 export ANSIBLE_IP=""
 export ANSIBLE_VAULT_PW=""
+export WORKSHOP_USER_PW=""
 export CLUSTER_WILDCARD=""
 export CLUSTER_PROVISIONER=""
 export CLUSTER_LOADBALANCER_IP=""
@@ -199,6 +200,7 @@ current_settings () {
     echo "Password Ansible Vault  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
     echo "Password LibVirt Host   ... ${VIRTHOST_PW:+"**********"}" 
     echo "Password oVirt Host     ... ${OVIRT_MANAGER_PW:+"**********"}" 
+    echo "Password Workshop User  ... ${WORKSHOP_USER_PW:+"**********"}" 
   
     echo "Password BMC Default    ... ${BMC_PW_DEFAULT:+"**********"}" 
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
@@ -459,7 +461,7 @@ password_menu () {
 
     current_settings
 
-    select action in "Set Ansible Vault Password" "Set vHost Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
+    select action in "Set Ansible Vault Password" "Set Workshop User Password" "Set vHost Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
     do
       case ${action}  in
 
@@ -518,6 +520,21 @@ password_menu () {
 
           if [[ "$input" == "$input2" ]]; then
             BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
+        "Set Workshop User Password")
+          echo "Enter new password and press Enter"
+          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+"**********"}]: " input
+          echo ""
+          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+"**********"}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
           else
             echo "WARNING: Passwords do not match ... unchanged"
           fi

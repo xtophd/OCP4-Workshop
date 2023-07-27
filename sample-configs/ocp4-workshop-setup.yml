@@ -35,6 +35,7 @@
       - t_config_dir:              "{{ lookup('env','PWD') }}"
       - t_project_name:            "{{ lookup('env','PROJECT_NAME') }}"
       - t_ansible_ip:              "{{ lookup('env','ANSIBLE_IP') }}"
+      - t_workshop_user_pw:        "{{ lookup('env','WORKSHOP_USER_PW') }}"
       - t_cluster_name:            "{{ lookup('env','CLUSTER_NAME') }}"
       - t_cluster_wildcard:        "{{ lookup('env','CLUSTER_WILDCARD') }}"
       - t_cluster_provisioner:     "{{ lookup('env','CLUSTER_PROVISIONER') }}"

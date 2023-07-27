@@ -84,12 +84,21 @@ all:
         squid:              False
         workshop_user:      True
         workshop_materials: True
+{% if   t_virthost_br_type == "nat" %}
+        desktop_gui:        True
+        desktop_chrome:     True
+        desktop_vnc:        True
+{% else %}
         desktop_gui:        False
         desktop_chrome:     False
         desktop_vnc:        False
-        {% if t_cluster_provisioner == "upi-vmedia" -%}
+{% endif %}
+
+{% if t_cluster_provisioner == "upi-vmedia" -%}
         iso:                True
-        {% endif %}
+{% else %}
+        iso:                False
+{% endif %}
 
     workshop_extras:
 
