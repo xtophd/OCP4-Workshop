@@ -209,10 +209,10 @@ You could then use an ssh tunnel to setup up a port on the virt host which will 
 ----
 firewall-cmd --add-port=5903/tcp
 firewall-cmd --permanent --add-port=5903/tcp
-ssh -L <your-host-ipaddr>:5903:192.168.123.160:5903 root@192.168.123.160 -N
+ssh -L <your-host-ipaddr>:5903:192.168.123.10:5903 root@192.168.123.10 -N
 ----
 
-Now you should be able to use VNC client to connect to <your-host-ipaddr>:3
+Now you should be able to use VNC client to connect to <your-host-ipaddr>:5903
 
 Don't forget to set the display quality to "High" in the VNC connection properties, and increase the display resolution on the bastion's desktop GUI settings.
 
