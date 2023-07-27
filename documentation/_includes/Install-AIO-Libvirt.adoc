@@ -105,57 +105,28 @@ In this example, we will use the NAT'd configuration.
 Using the NAT'd network config will require the least amount of changes to the config.  You really only need to provide the provide proper info for IP address space.
 
 ----
-cd ~/OCP4-Workshop/config
+cd ./OCP4-Workshop
 
-cp ../sample-configs/libvirt-nat/* .
+cp ../sample-configs/libvirt-nat/ocp4-workshop-setup.ans ./config
 ----
 
-=== Edit the Config Files
+=== Run the setup tool
 
-NOTE: Any changes you make to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
+NOTE: Any changes you make directly to the files in './config/' will be left untouched in the event you update the project repo with `git pull`.  Git is configured to ignore files in ../config
 
-WARNING: Adjusting the default dns and timeserver for your home/lab is critical and is almost certainly mandatory.  You will find those parameters in master-config.yml (network_nameserver and network_timeserver)
-
-It is paramount that you update the configs for your environment accurately.  Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).  In a libvirt (or ovirt) environment, the default behaviour is to allow the playbooks to generate MAC addresses.  The randomly generated MACs are stored and will persist in the configs until the config directory is deleted (../config/host_vars/*).
-
-==== master-config.yml
-
-NOTE: Again, MAC addresses for a libvirt deployment are automatically generated.  You only need to create/edit MAC addresses if you want to assign them yourself.
-
-Just like the name implies 'master-config.yml' is the main configuration file.  Most parameters should be straight forward, but
-in particular you need to:
-
-  * adjust the dns and time servers (MANDATORY!!!)
-  * fix hostnames, mac addresses & ip addresses
-  * set or comment out h_rhcosDEV and r_rhcosNIC accordingly
-
-==== credentials.yml
-
-WARNING: ENCRYPT THIS FILE WHEN DONE EDITING!
-
-There are 2 variables that need to be defined in this file:
-
-  * workshop_username
-  * workshop_password
-  
-The default workshop_username is `cloud-user` with an empty password.  Create a password for the user and then save save the file.
- 
-Now you can use ansible-vault to encrypt the file for improved security:
- 
-----
-ansible-vault encrypt config/credentials.yml
-----
-
-If you need to make changes to the content of the file you can do the following:
+Launch the setup tool which reads the answer file you created in the previous step.
 
 ----
-ansible-vault edit config/credentials.yml
+./sample-configs/ocp4-workshop-setup.sh
 ----
 
-==== xtoph-deploy-config.yml
+Please pay close attention to the general network information, and of course the IP and MAC addresses for your systems (vms).  In a libvirt (or ovirt) environment, the default behaviour is to allow the playbooks to generate MAC addresses.  The randomly generated MACs are stored and will persist in the configs until the config directory is deleted (../config/host_vars/*).
 
-For the purposes of this deployment with sample-configs/libvirt-nat, the options in xtoph-deploy-config.yml are left to defaults.  But you may be interested to
-review the parameters to understand what is available.
+It is MANDATORY to set the various passwords each time the setup script is invoked.  Passwords are NEVER stored in the answer file.
+
+You should not need to make any additional adjustments to the settings, but the choice is yours.
+
+Once the passwords are set, select the option to `Prepare Deploymnet` and will convert your answers to the actual configuration files in ./config
 
 === Retrieve RHEL 8.4 DVD and BOOT ISOs
 
@@ -177,8 +148,18 @@ NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-pro
 
 Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
 
-    - download the pull-secret.txt and transfer it to the config directory, OR
+    - download the pull-secret.txt and transfer it to the ./config directory, OR
     - copy the pull-secret.txt to the paste buffer and then edit pull-secret.txt and paste the contents
+
+If you are planning an Assisted-Installer based deployment (ai or ai-sno), then you must also create the ocm-token.txt file.
+
+NOTE: OCM Token URL: https://cloud.redhat.com/openshift/token
+
+Using a browser, go to redhat.com and retrieve the ocm-token.  You can either:
+
+    - download the ocm-token.txt and transfer it to the ./config directory, OR
+    - copy the ocm-token to the paste buffer and then edit ocm-token.txt and paste the contents
+
 
 === Final Check List
 
@@ -187,6 +168,7 @@ Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
     - Is there enough disk space and is it in the right location?
     - Is the RHEL ISO downloaded and stored in the right place
     - Is the Openshift UPI Pull Secret downloaded and stored in the right place
+    - Is the OCM Token (only for AI installs) downloaded and stored in the right place
     - Did you install (upgrade) Ansible 2.9
 
 
