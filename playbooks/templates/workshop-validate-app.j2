@@ -1,9 +1,0 @@
-#!/bin/bash
-
-MYROUTE=`oc get routes --no-headers | awk '{ print $2 }'`
-
-echo "DETERMINED ROUTE: ${MYROUTE}"
-echo "EXEC: curl ${MYROUTE}"
-echo ""
-
-exec curl ${MYROUTE}

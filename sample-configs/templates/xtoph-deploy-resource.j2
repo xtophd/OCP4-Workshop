@@ -1,0 +1,54 @@
+##
+## RESOURCE PROFILES
+##
+
+custom_bastion:
+    name: "custom openshift bastion"
+    description: "Custom Bastion Utility Server"
+    vcpus:    4
+    memsize:  8000
+    storage:
+      root:
+        size: 50 
+        hw_storage_profile: default
+
+custom_bootstrap:
+    name: "Custom Openshift Bootstrap"
+    description: "Custom Openshift Bootstrap [6cpu,20GB,120GB disk]"
+    vcpus:    6
+    memsize:  20000
+    storage:
+      root:
+        size: 120 
+        hw_storage_profile: default
+
+custom_master:
+    name: "Custom Openshift Master"
+    description: "Custom Openshift Master [6cpu,20GB,120GB disk]"
+    vcpus:    6
+    memsize:  20000
+    storage:
+      root:
+        size: 120 
+        hw_storage_profile: default
+
+custom_worker:
+    name: "Custom Openshift Worker"
+    description: "Custom Openshift Worker [4cpu,10GB,120GB disk]"
+    vcpus: 4
+    memsize: 10000
+    storage:
+      root:
+        size: 120
+        hw_storage_profile: default
+
+custom_sno:
+    name: "Custom Single Node Openshift SNO"
+    description: "Custom Openshift Master [8cpu,20GB,120GB disk]"
+    vcpus:    8
+    memsize:  20000
+    storage:
+      root:
+        size: 120 
+        hw_storage_profile: default
+

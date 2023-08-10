@@ -1,3 +1,6 @@
 [submodule "roles/xtoph_deploy"]
 	path = roles/xtoph_deploy
 	url = http://github.com/xtophd/xtoph_deploy
+[submodule "roles/xtoph_ocp4"]
+	path = roles/xtoph_ocp4
+	url = https://github.com/xtophd/xtoph_ocp4

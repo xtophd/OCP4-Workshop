@@ -1,0 +1,227 @@
+
+##
+##  This playbook closely mirrors xtoph_deploy.yml 
+##  except it does NOT include any components of 
+##  the xtoph_deploy role.  Thus, it provides a manual
+##  approach to deployment and a means to test individual
+##  components of the ocp4_workshop role.
+##
+
+
+##
+##    Bootstrap
+##
+
+
+
+- hosts: myDeployhost
+  tasks:
+
+    - debug: msg="**** BEGIN DEPLOYER SETUP ****"
+
+    - block:
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "setup"
+
+      when: ocp4_workshop_cmd == "setup"
+
+    - debug: msg="**** END DEPLOYER SETUP ****"
+
+
+
+##
+##    SHUTDOWN    
+##    
+
+
+
+- hosts: myWorkers,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN SHUTDOWN - workers ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: ocp4_workshop_cmd == "shutdown"
+
+    - debug: msg="**** END SHUTDOWN - workers ****"
+
+- hosts: myMasters,mySNO,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN SHUTDOWN - masters ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: ocp4_workshop_cmd == "shutdown"
+
+    - debug: msg="**** END SHUTDOWN - masters ****"
+
+- hosts: myBootstrap,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN SHUTDOWN - bootstrap ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: ocp4_workshop_cmd == "shutdown"
+
+    - debug: msg="**** END SHUTDOWN - bootstrap ****"
+
+
+
+##
+##    Bastion host should be deployed,
+##    proceed with bastion configuration
+##
+##    NOTE:    at the completion of this
+##             step, the workshop playbook 'locks' the
+##             state of the configs on the bastion
+##             to prevent successive attempts
+##             to deploy from creating new certs.
+##
+##    NOTE:    we DO need to gather_facts
+##
+
+
+
+- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN CONFIGURATION - bastion ****"
+
+    - debug: var=ocp4_workshop_cmd
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "config-bastion"
+        xtoph_ocp4_subaction: "{{ ocp4_workshop_subcmd }}"
+      when: ocp4_workshop_cmd == "configure"
+
+    - debug: msg="**** END CONFIGURATION - bastion ****"
+
+  tags: always
+
+
+##
+##    Bootstrap
+##
+
+
+
+- hosts: myBootstrap
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN (MANUAL) DEPLOYMENT - Bootstrap  ****"
+
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-bootstrap"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: ocp4_workshop_cmd == "usher"
+
+    - debug: msg="**** END (MANUAL) DEPLOYMENT - Bootstrap  ****"
+
+
+
+##
+##    Masters   
+##    
+
+
+
+- hosts: myMasters,MySNO
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN (MANUAL) DEPLOYMENT - Masters  ****"
+
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-masters"
+      
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: ocp4_workshop_cmd == "usher"
+
+    - debug: msg="**** END (MANUAL) DEPLOYMENT - Masters  ****"
+
+      
+
+##
+##    Workers
+##    
+
+
+
+- hosts: myWorkers
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN (MANUAL) DEPLOYMENT - Workers  ****"
+
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-workers"
+      
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: ocp4_workshop_cmd == "usher"
+
+    - debug: msg="**** END (MANUAL) DEPLOYMENT - Workers  ****"
+
+
+
+## 
+##    Finish OCP Deployment
+##
+
+
+
+- hosts: myMasters,myWorkers,mySNO
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN Cluster Post-Install  ****"
+
+    - include_role:
+        name: xtoph_ocp4
+      vars:
+        xtoph_ocp4_action: "postinstall-cluster"
+      when: ocp4_workshop_cmd == "usher" or
+            ocp4_workshop_cmd == "finish"
+
+    - debug: msg="**** END Cluster Post-Install  ****"
+
+

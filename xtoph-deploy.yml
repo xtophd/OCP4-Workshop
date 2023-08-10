@@ -9,6 +9,8 @@
 ##
 ##
 
+
+
 ##
 ##    First, need to set up the deployhost with
 ##    needed software, services and settings
@@ -25,6 +27,13 @@
         name: xtoph_deploy
       vars: 
         xtoph_deploy_action: "setup"
+      when: xtoph_deploy_cmd == "setup" or
+            xtoph_deploy_cmd == "setup+"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "setup"
       when: xtoph_deploy_cmd == "setup" or
             xtoph_deploy_cmd == "setup+"
 
@@ -58,22 +67,6 @@
 
 
 ##
-##      If undeploy or redeploy, attempt gracefull
-##      shutdown of a running cluster.  Sometimes this
-##      reduces time to undeploy a cluster on platforms
-##      like ovirt where you cannot just destroy a VM
-##      via the API
-##
-
-
-
-- import_playbook: playbooks/bastion-openshift-shutdown.yml
-  when: xtoph_deploy_cmd == "undeploy" or
-        xtoph_deploy_cmd == "redeploy"
-
-
-
-##
 ##    
 ##
 ##     NOTE: hosts may (or may not) exist, 
@@ -83,21 +76,81 @@
 
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters,!myShelter
+- hosts: myWorkers,!myShelter
   gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN PREUNINSTALL ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END PREUNINSTALL ****"
+
+- hosts: myMasters,mySNO,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN PREUNINSTALL ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END PREUNINSTALL ****"
+
+- hosts: myBootstrap,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN PREUNINSTALL ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END PREUNINSTALL ****"
+
+- hosts: myBastion,!myShelter
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN PREUNINSTALL ****"
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "preuninstall-node-shutdown"
+      when: xtoph_deploy_cmd == "undeploy" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END PREUNINSTALL ****"
+
+
+- hosts: myBastion,myBootstrap,myWorkers,myMasters,mySNO,!myShelter
+  gather_facts: no
   tasks:
 
     - debug: msg="**** BEGIN UNDEPLOY ****"
 
-    - include_role: 
+    - include_role:
         name: xtoph_deploy
-      vars: 
+      vars:
         xtoph_deploy_action: "undeploy"
       when: xtoph_deploy_cmd == "undeploy" or
             xtoph_deploy_cmd == "redeploy"
 
     - debug: msg="**** END UNDEPLOY ****"
-
 
 
 ##
@@ -111,7 +164,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters
+- hosts: myBastion,myBootstrap,myWorkers,myMasters,mySNO
   gather_facts: no 
   tasks:
 
@@ -128,8 +181,9 @@
     - debug: msg="**** END PREPROCESS  ****"
 
 
+
 ##
-##     For the OCP4  Workshop, there are 
+##     For the xtoph_ocp4, there are 
 ##     concurrency considerations.  We need to 
 ##     deploy systems in specific order:
 ##
@@ -168,19 +222,28 @@
 ##    Bastion host should be deployed,
 ##    proceed with bastion configuration
 ##
-##    NOTE: that at the completion of this
-##          step, the workshop playbook 'locks' the
-##          state of the configs on the bastion
-##          to prevent successive attempts
-##          to deploy from creating new certs.
+##    NOTE:    at the completion of this
+##             step, the workshop playbook 'locks' the
+##             state of the configs on the bastion
+##             to prevent successive attempts
+##             to deploy from creating new certs.
+##
+##    NOTE:    we DO need to gather_facts
 ##
 
 
 
-- import_playbook: playbooks/deployer-configure-bastion.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy" 
+- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO
+  gather_facts: no 
+  tasks:
+
+    - include_role: 
+        name: xtoph_ocp4
+      vars: 
+        xtoph_ocp4_action: "config-bastion"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
 
 
 
@@ -190,23 +253,28 @@
 
 
 
-- import_playbook: playbooks/deployer-preinstall-bootstrap.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy"
-
-
-
 - hosts: myBootstrap
   gather_facts: no 
   tasks:
 
     - debug: msg="**** BEGIN myBootstrap  ****"
 
-    - include_role: 
-        name: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy"
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-node"
+
+          - include_role: 
+              name: xtoph_deploy
+            vars: 
+              xtoph_deploy_action: "deploy"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
@@ -221,29 +289,35 @@
 
 
 
-- import_playbook: playbooks/deployer-preinstall-masters.yml
-  when: xtoph_deploy_cmd == "deploy" or 
-        xtoph_deploy_cmd == "setup+" or 
-        xtoph_deploy_cmd == "redeploy"
-
-
-
 - hosts: myMasters
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** START myMasters  ****"
+    - debug: msg="**** BEGIN myMasters ****"
 
-    - include_role: 
-        name: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy"
-      when: xtoph_deploy_cmd == "deploy" or 
-            xtoph_deploy_cmd == "setup+" or 
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-node"
+      
+          - include_role: 
+              name: xtoph_deploy
+            vars: 
+              xtoph_deploy_action: "deploy"
+      
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
     - debug: msg="**** END myMasters  ****"
 
+      
 
 ##
 ##    Workers
@@ -251,28 +325,70 @@
 
 
 
-- import_playbook: playbooks/deployer-preinstall-workers.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy"
-
-
-
 - hosts: myWorkers
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN myWorkers  ****"
+    - debug: msg="**** BEGIN myWorkers ****"
 
-    - include_role: 
-        name: xtoph_deploy
-      vars: 
-        xtoph_deploy_action: "deploy"
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-node"
+      
+          - include_role: 
+              name: xtoph_deploy
+            vars: 
+              xtoph_deploy_action: "deploy"
+      
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
     - debug: msg="**** END myWorkers  ****"
+
+
+
+##
+##    SNO
+##    
+
+
+
+- hosts: mySNO
+  gather_facts: no
+  tasks:
+
+    - debug: msg="**** BEGIN mySNO ****"
+
+    - block:
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "preinstall-node"
+
+          - include_role:
+              name: xtoph_deploy
+            vars:
+              xtoph_deploy_action: "deploy"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END mySNO  ****"
+
 
 
 ## 
@@ -281,40 +397,20 @@
 
 
 
-- import_playbook: playbooks/bastion-openshift-finish.yml
-  when: xtoph_deploy_cmd == "deploy" or
-        xtoph_deploy_cmd == "setup+" or
-        xtoph_deploy_cmd == "redeploy"
+- hosts: myMasters,myWorkers,mySNO
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN Cluster Post-Install  ****"
+
+    - include_role:
+        name: xtoph_ocp4
+      vars:
+        xtoph_ocp4_action: "postinstall-cluster"
+      when: xtoph_deploy_cmd == "deploy" or
+            xtoph_deploy_cmd == "setup+" or
+            xtoph_deploy_cmd == "redeploy"
+
+    - debug: msg="**** END Cluster Post-Install  ****"
 
 
-
-##
-##    Bootstrap server has servered it's purpose.
-##    We can delete it.   
-##
-##    NOTE: I am leaving this step included BUT commented
-##          out.  Deleting a host that's part of a cluster
-##          affects the sanity of running "deploy" multiple
-##          times on an existing cluster.  
-##
-##          So if you DO NOT plan to run "deploy" again,
-##          it's safe to automate the removal of the bootstrap
-##
-
-
-
-#- hosts: myBootstrap
-#  gather_facts: no 
-#  tasks:
-#
-#    - debug: msg="**** BEGIN RECLAIM myBootstrap ****"
-#
-#    - include_role: 
-#        name: xtoph_deploy
-#      vars: 
-#        xtoph_deploy_action: "undeploy"
-#      when: xtoph_deploy_cmd == "deploy" or
-#            xtoph_deploy_cmd == "setup+" or
-#            xtoph_deploy_cmd == "redeploy"
-#
-#    - debug: msg="**** END RECLAIM myBootstrap ****"
