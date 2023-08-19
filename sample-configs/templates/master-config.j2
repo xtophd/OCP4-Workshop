@@ -168,6 +168,7 @@ myBastion:
   hosts:
     {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bastion }}"
+      h_rsPROF:        "{{ t_res_bastion  }}"
 {% if t_mac_bastion|length %}
       h_pubMAC:        "{{ t_mac_bastion }}"
 {% endif -%}
@@ -194,7 +195,6 @@ myBastion:
     h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_bastion"
     h_ksPROF:        "rhel86-bootiso"
 
 
@@ -208,8 +208,9 @@ myBootstrap:
   hosts:
 {% if t_cluster_provisioner != "ai-sno" and t_cluster_provisioner != "ai" %}
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
-     {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+    {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bootstrap }}" 
+      h_rsPROF:        "{{ t_res_bootstrap  }}"
 {% if t_mac_bootstrap|length %}
       h_pubMAC:        "{{ t_mac_bootstrap }}"
 {% endif -%}
@@ -270,6 +271,7 @@ myMasters:
 {% if t_cluster_provisioner != "ai-sno" %}
     {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master1 }}"
+      h_rsPROF:        "{{ t_res_master1  }}"
 {% if t_mac_master1|length %}
       h_pubMAC:        "{{ t_mac_master1 }}"
 {% endif -%}
@@ -292,6 +294,7 @@ myMasters:
 {% if t_addr_master2 is defined and t_addr_master2|length %}
     {{ t_name_master2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master2 }}"
+      h_rsPROF:        "{{ t_res_master2  }}"
 {% if t_mac_master2|length %}
       h_pubMAC:        "{{ t_mac_master2 }}"
 {% endif %}
@@ -315,6 +318,7 @@ myMasters:
 {% if t_addr_master3 is defined and t_addr_master3|length %}
     {{ t_name_master3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master3 }}"
+      h_rsPROF:        "{{ t_res_master3  }}"
 {% if t_mac_master3|length %}
       h_pubMAC:        "{{ t_mac_master3 }}"
 {% endif %}
@@ -349,7 +353,6 @@ myMasters:
     h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_master"
 {% if t_cluster_provisioner == "upi-pxe" %}
     h_ksPROF:        "pxe_wait"
 {% if t_virthost_type == "ovirt" %}
@@ -377,6 +380,7 @@ myWorkers:
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
     {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker1 }}" 
+      h_rsPROF:        "{{ t_res_worker1  }}"
 {% if t_mac_worker1|length %}
       h_pubMAC:        "{{ t_mac_worker1 }}"
 {% endif %}
@@ -402,6 +406,7 @@ myWorkers:
       h_pubIP:         "{{ t_addr_worker2 }}" 
 {% if t_mac_worker2|length %}
       h_pubMAC:        "{{ t_mac_worker2 }}"
+      h_rsPROF:        "{{ t_res_worker2  }}"
 {% endif %}
 {% if t_hw_worker2|length  %}
       h_hwPROF:        "{{ t_hw_worker2  }}"
@@ -434,7 +439,6 @@ myWorkers:
     h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_worker"
 {% if t_cluster_provisioner == "upi-pxe" %}
     h_ksPROF:        "pxe_wait"
 {% if t_virthost_type == "ovirt" %}
@@ -462,6 +466,7 @@ mySNO:
 {% if t_addr_sno is defined and t_addr_sno|length %}
     {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_sno }}"
+      h_rsPROF:        "{{ t_res_sno  }}"
 {% if t_mac_sno|length %}
       h_pubMAC:        "{{ t_mac_sno }}"
 {% endif %}
@@ -496,7 +501,6 @@ mySNO:
     h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_sno"
 {% if t_cluster_provisioner == "upi-pxe" %}
     h_ksPROF:        "pxe_wait"
 {% if t_virthost_type == "ovirt" %}

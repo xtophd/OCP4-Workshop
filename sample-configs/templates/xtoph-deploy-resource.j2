@@ -52,3 +52,18 @@ custom_sno:
         size: 120 
         hw_storage_profile: default
 
+custom_acm:
+    name: "Custom Openshift Master for ACM "
+    description: "Custom Openshift Master [32cpu,32GB,120+400GB disk]"
+    vcpus:    32
+    memsize:  32000
+    storage:
+      root:
+        size: 120 
+        hw_storage_profile: default
+      extra:
+        disk1:
+          size: 400
+          hw_storage_profile: default
+
+
