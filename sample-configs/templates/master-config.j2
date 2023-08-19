@@ -138,14 +138,15 @@ all:
 myLibvirtHosts:
 
   hosts:
-{% if t_virthost_fqdn|length %}
+{% if t_virthost_type == "libvirt" and t_virthost_fqdn|length %}
     {{ t_virthost_fqdn }}:
-      h_pubIP:       "{{ t_virthost_ip }}"
-      h_plPROF:      "custom_platform"
-{% endif %}
+      h_pubIP:  "{{ t_virthost_ip }}"
+      h_plPROF: "custom_platform"
 {% if t_virthost_fqdn == "localhost.localdomain" %}
       ansible_connection: local
 {% endif %}
+{% endif %}
+
 
 
 ## -----------------
@@ -195,7 +196,8 @@ myBastion:
     h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
-    h_ksPROF:        "rhel86-bootiso"
+    h_rsPROF:        "custom_bastion"
+    h_ksPROF:        "rhel88-bootiso"
 
 
 
