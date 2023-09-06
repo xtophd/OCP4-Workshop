@@ -1,4 +1,3 @@
-#!/bin/bash
 
 export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
@@ -12,13 +11,19 @@ export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
 export CLUSTER_VERSION="4.12"
 export VIRTHOST_IP=""
+export VIRTHOST_UID="root"
 export VIRTHOST_PW=""
 export VIRTHOST_FQDN=""
 export VIRTHOST_TYPE=""
 export VIRTHOST_BR_TYPE=""
 export VIRTHOST_BR_DEV=""
+export VIRTHOST_HW=""
+export VIRTHOST_BMC=""
+export VIRTHOST_BMC_UID=""
+export VIRTHOST_BMC_PW=""
 export OVIRT_MANAGER_IP=""
 export OVIRT_MANAGER_FQDN=""
+export OVIRT_MANAGER_UID="admin@internal"
 export OVIRT_MANAGER_PW=""
 export OVIRT_DATACENTER=""
 export OVIRT_STORAGE_DOMAIN=""
@@ -131,14 +136,20 @@ NETWORK_DNS_SERVER="${NETWORK_DNS_SERVER}"
 NETWORK_TIME_SERVER="${NETWORK_TIME_SERVER}" 
 VIRTHOST_IP="${VIRTHOST_IP}"
 VIRTHOST_FQDN="${VIRTHOST_FQDN}"
+VIRTHOST_UID="${VIRTHOST_UID}"
 VIRTHOST_TYPE="${VIRTHOST_TYPE}"
 VIRTHOST_BR_DEV="${VIRTHOST_BR_DEV}"
 VIRTHOST_BR_TYPE="${VIRTHOST_BR_TYPE}"
 VIRTHOST_DATACENTER="${VIRTHOST_DATACENTER}"
 VIRTHOST_STORAGE_DOMAIN="${VIRTHOST_STORAGE_DOMAIN}"
 VIRTHOST_NETWORK_DOMAIN="${VIRTHOST_NETWORK_DOMAIN}"
+VIRTHOST_HW="${VIRTHOST_HW}"
+VIRTHOST_BMC="${VIRTHOST_BMC}"
+VIRTHOST_BMC_UID="${VIRTHOST_BMC_UID}"
+VIRTHOST_BMC_PW="${VIRTHOST_BMC_PW}"
 OVIRT_MANAGER_IP="${OVIRT_MANAGER_IP}"
 OVIRT_MANAGER_FQDN="${OVIRT_MANAGER_FQDN}"
+OVIRT_MANAGER_UID="${OVIRT_MANAGER_UID}"
 OVIRT_DATACENTER="${OVIRT_DATACENTER}"
 OVIRT_STORAGE_DOMAIN="${OVIRT_STORAGE_DOMAIN}"
 OVIRT_NETWORK_DOMAIN="${OVIRT_NETWORK_DOMAIN}"
@@ -213,12 +224,17 @@ current_settings () {
     echo "Current Settings"
     echo "----------------"
     echo "Project Name            ... ${PROJECT_NAME}"
-    echo "Password Ansible Vault  ... ${ANSIBLE_VAULT_PW:+"**********"}" 
-    echo "Password LibVirt Host   ... ${VIRTHOST_PW:+"**********"}" 
-    echo "Password oVirt Host     ... ${OVIRT_MANAGER_PW:+"**********"}" 
-    echo "Password Workshop User  ... ${WORKSHOP_USER_PW:+"**********"}" 
-  
-    echo "Password BMC Default    ... ${BMC_PW_DEFAULT:+"**********"}" 
+    echo "Passwd Ansible Vault    ... ${ANSIBLE_VAULT_PW:+**********}" 
+
+    if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
+        echo "UID/PWD oVirt API       ... ${OVIRT_MANAGER_UID} / ${OVIRT_MANAGER_PW:+**********}" 
+    elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
+        echo "UID/PWD lVirt Host      ... ${VIRTHOST_UID} / ${VIRTHOST_PW:+**********}"
+        echo "UID/PWD lVirt BMC       ... ${VIRTHOST_BMC_UID} / ${VIRTHOST_BMC_PW:+**********}" 
+    fi
+
+    echo "UID/PWD Workshop Use    ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
+    echo "UID/PWD BMC Default     ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
     echo "Cluster Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
@@ -237,8 +253,9 @@ current_settings () {
         echo "oVirt API (ip/fqdn)     ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
         echo "oVirt (dc/blk/net)      ... ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "Libvirt Host (ip/fqdn)  ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN}" 
-        echo "Libvirt Net (dev/type)  ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+        echo "lVirt Host (ip/fqdn)    ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN}" 
+        echo "lVirt Net (dev/type)    ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+        echo "lVirt HW (type/bmc/uid) ... ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
     fi
 
     echo "NODE SETTINGS (ip/mac/hw/resource/bmc/name)" 
@@ -362,9 +379,9 @@ node_submenu () {
         "Set BMC Password")
           MAGIC_VAR="BMC_PW_$NODE"
           echo "Enter new password and press Enter"
-          read -s -p "Enter bmc password [${!MAGIC_VAR:+"**********"}]: " input
+          read -s -p "Enter bmc password [${!MAGIC_VAR:+**********}]: " input
           echo ""
-          read -s -p "Enter bmc password again [${!MAGIC_VAR:+"**********"}]: " input2
+          read -s -p "Enter bmc password again [${!MAGIC_VAR:+**********}]: " input2
           echo ""
 
           if [[ "$input" == "$input2" ]]; then
@@ -482,15 +499,15 @@ password_menu () {
 
     current_settings
 
-    select action in "Set Ansible Vault Password" "Set Workshop User Password" "Set vHost Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
+    select action in "Set Ansible Vault Password" "Set Workshop User Password" "Set vHost Password" "Set vHost BMC Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
     do
       case ${action}  in
 
         "Set Ansible Vault Password")
           echo "Enter new password and press Enter"
-          read -s -p "Enter ansible vault password [${ANSIBLE_VAULT_PW:+"**********"}]: " input
+          read -s -p "Enter ansible vault password [${ANSIBLE_VAULT_PW:+**********}]: " input
           echo ""
-          read -s -p "Enter ansible vault password again [${ANSIBLLE_VAULT_PW:+"**********"}]: " input2
+          read -s -p "Enter ansible vault password again [${ANSIBLLE_VAULT_PW:+**********}]: " input2
           echo ""
           echo ""
 
@@ -503,9 +520,9 @@ password_menu () {
 
         "Set vHost Password")
           echo "Enter new password and press Enter"
-          read -s -p "Enter libvirt host password [${VIRTHOST_PW:+"**********"}]: " input
+          read -s -p "Enter libvirt host password [${VIRTHOST_PW:+**********}]: " input
           echo ""
-          read -s -p "Enter libvirt host password again [${VIRTHOST_PW:+"**********"}]: " input2
+          read -s -p "Enter libvirt host password again [${VIRTHOST_PW:+**********}]: " input2
           echo ""
           echo ""
 
@@ -516,11 +533,26 @@ password_menu () {
           fi
           ;;
 
+        "Set vHost BMC Password")
+          echo "Enter new password and press Enter"
+          read -s -p "Enter libvirt host BMC password [${VIRTHOST_BMC_PW:+**********}]: " input
+          echo ""
+          read -s -p "Enter libvirt host BMC password again [${VIRTHOST_BMC_PW:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            VIRTHOST_BMC_PW=${input:-$VIRTHOST_BMC_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
         "Set oVirt Password")
           echo "Enter new password and press Enter"
-          read -s -p "Enter ovirt manager password [${OVIRT_MANAGER_PW:+"**********"}]: " input
+          read -s -p "Enter ovirt manager password [${OVIRT_MANAGER_PW:+**********}]: " input
           echo ""
-          read -s -p "Enter ovirt manager password again [${OVIRT_MANAGER_PW:+"**********"}]: " input2
+          read -s -p "Enter ovirt manager password again [${OVIRT_MANAGER_PW:+**********}]: " input2
           echo ""
           echo ""
 
@@ -531,11 +563,16 @@ password_menu () {
           fi
           ;;
 
+        "Set Default BMC User")
+          read -p "Enter Default BMC User [${BMC_UID_DEFAULT}]: " input 
+          BMC_UID_DEFAULT=${input:-$BMC_UID_DEFAULT}
+          ;;
+
         "Set Default BMC Password")
           echo "Enter new password and press Enter"
-          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+"**********"}]: " input
+          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+**********}]: " input
           echo ""
-          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+"**********"}]: " input2
+          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+**********}]: " input2
           echo ""
           echo ""
 
@@ -548,9 +585,9 @@ password_menu () {
 
         "Set Workshop User Password")
           echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+"**********"}]: " input
+          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
           echo ""
-          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+"**********"}]: " input2
+          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
           echo ""
           echo ""
 
@@ -606,13 +643,33 @@ virthost_menu () {
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
         TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set Bridge Device" "Set Bridge Type")
+        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User")
       fi
 
 
       select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
       do
         case ${action}  in
+
+          "Set vHost User")
+            read -p "Enter libvirt host hardware BMC User [${VIRTHOST_UID}]: " input
+            VIRTHOST_UID=${input:-$VIRTHOST_UID}
+            ;;
+
+          "Set BMC User")
+            read -p "Enter libvirt host hardware BMC User [${VIRTHOST_BMC_UID}]: " input
+            VIRTHOST_BMC_UID=${input:-$VIRTHOST_BMC_UID}
+            ;;
+
+          "Set BMC FQDN")
+            read -p "Enter libvirt host hardware BMC FQDN or IP [${VIRTHOST_BMC}]: " input
+            VIRTHOST_BMC=${input:-$VIRTHOST_BMC}
+            ;;
+
+          "Set HW Type")
+            read -p "Enter libvirt host hardware type [${VIRTHOST_HW}]: " input
+            VIRTHOST_HW=${input:-$VIRTHOST_HW}
+            ;;
 
           "Set vHost IP")
             read -p "Enter libvirt host IP [${VIRTHOST_IP}]: " input
@@ -644,10 +701,10 @@ virthost_menu () {
             break
             ;;
 
-        "Set Bridge Device")
-          read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
-          VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
-          ;;
+          "Set Bridge Device")
+            read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
+            VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
+            ;;
   
           "Set Bridge Type")
              select VIRTHOST_BR_TYPE in "bridge" "macvtap" "nat"
@@ -664,6 +721,11 @@ virthost_menu () {
                 esac
                 REPLY=
               done
+            ;;
+
+          "Set Manager User")
+            read -p "Enter oVirt Manager User [${OVIRT_MANAGER_UID}]: " input
+            OVIRT_MANAGER_UID=${input:-$OVIRT_MANAGER_UID}
             ;;
   
           "Set Manager IP")

@@ -94,7 +94,7 @@ all:
         desktop_vnc:        False
 {% endif %}
 
-{% if t_cluster_provisioner == "upi-vmedia" -%}
+{% if t_cluster_provisioner == "upi-vmedia" %}
         iso:                True
 {% else %}
         iso:                False
@@ -141,10 +141,23 @@ myLibvirtHosts:
 {% if t_virthost_type == "libvirt" and t_virthost_fqdn|length %}
     {{ t_virthost_fqdn }}:
       h_pubIP:  "{{ t_virthost_ip }}"
-      h_plPROF: "custom_platform"
 {% if t_virthost_fqdn == "localhost.localdomain" %}
       ansible_connection: local
 {% endif %}
+
+{% if t_virthost_hw|length  %}
+      h_hwPROF:  "{{ t_virthost_hw }}"
+      h_plPROF:  "custom_baremetal"
+      h_plSETUP: "custom_platform"
+      h_rsPROF:  "med"
+      h_pwrOFF:  false
+      h_ksPROF:  "rhel92-bootiso"
+{% endif %}
+
+{% if t_virthost_bmc|length  %}
+      bmc_fqdn:        "{{ t_virthost_bmc }}"
+{% endif %}
+
 {% endif %}
 
 
@@ -406,9 +419,9 @@ myWorkers:
 {% if t_addr_worker2 is defined and t_addr_worker2|length %}
     {{ t_name_worker2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker2 }}" 
+      h_rsPROF:        "{{ t_res_worker2  }}"
 {% if t_mac_worker2|length %}
       h_pubMAC:        "{{ t_mac_worker2 }}"
-      h_rsPROF:        "{{ t_res_worker2  }}"
 {% endif %}
 {% if t_hw_worker2|length  %}
       h_hwPROF:        "{{ t_hw_worker2  }}"
