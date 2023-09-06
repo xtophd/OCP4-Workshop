@@ -3,7 +3,10 @@ export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
 export ANSIBLE_IP=""
 export ANSIBLE_VAULT_PW=""
+export WORKSHOP_ADMIN_PW=""
+export WORKSHOP_ADMIN_UID="cloud-admin"
 export WORKSHOP_USER_PW=""
+export WORKSHOP_USER_UID="cloud-user"
 export CLUSTER_WILDCARD=""
 export CLUSTER_PROVISIONER=""
 export CLUSTER_LOADBALANCER_IP=""
@@ -52,6 +55,7 @@ export BMC_MASTER3=""
 export BMC_WORKER1=""
 export BMC_WORKER2=""
 export BMC_SNO=""
+export BMC_UID_DEFAULT="root"
 export BMC_PW_DEFAULT=""
 export BMC_PW_BASTION=""
 export BMC_PW_BOOTSTRAP=""
@@ -233,7 +237,8 @@ current_settings () {
         echo "UID/PWD lVirt BMC       ... ${VIRTHOST_BMC_UID} / ${VIRTHOST_BMC_PW:+**********}" 
     fi
 
-    echo "UID/PWD Workshop Use    ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
+    echo "UID/PWD Workshop Admin  ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
+    echo "UID/PWD Workshop User   ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
     echo "UID/PWD BMC Default     ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
     echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
@@ -499,7 +504,7 @@ password_menu () {
 
     current_settings
 
-    select action in "Set Ansible Vault Password" "Set Workshop User Password" "Set vHost Password" "Set vHost BMC Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
+    select action in "Set Ansible Vault Password" "Set Workshop Admin Password" "Set Workshop User Password" "Set vHost Password" "Set vHost BMC Password" "Set oVirt Password" "Set Default BMC Password" "Back to Main Menu"
     do
       case ${action}  in
 
@@ -518,7 +523,46 @@ password_menu () {
           fi
           ;;
 
+        "Set Workshop Admin Password")
+          read -p "Enter Workshop Admin Username [${WORKSHOP_ADMIN_UID}]: " input
+          WORKSHOP_ADMIN_UID=${input:-$WORKSHOP_ADMIN_UID}
+
+          echo "Enter new password and press Enter"
+          read -s -p "Enter Workshop Admin password [${WORKSHOP_ADMIN_PW:+**********}]: " input
+          echo ""
+          read -s -p "Enter Workshop Admin password again [${WORKSHOP_ADMIN_PW:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            WORKSHOP_ADMIN_PW=${input:-$WORKSHOP_ADMIN_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
+        "Set Workshop User Password")
+          read -p "Enter Workshop User Username [${WORKSHOP_USER_UID}]: " input
+          WORKSHOP_USER_UID=${input:-$WORKSHOP_USER_UID}
+
+          echo "Enter new password and press Enter"
+          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
+          echo ""
+          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
         "Set vHost Password")
+          read -p "Enter vHost User Username [${VIRTHOST_UID}]: " input
+          VIRTHOST_UID=${input:-$VIRTHOST_UID}
+
           echo "Enter new password and press Enter"
           read -s -p "Enter libvirt host password [${VIRTHOST_PW:+**********}]: " input
           echo ""
@@ -534,6 +578,9 @@ password_menu () {
           ;;
 
         "Set vHost BMC Password")
+          read -p "Enter vHost BMC Username [${VIRTHOST_BMC_UID}]: " input
+          VIRTHOST_BMC_UID=${input:-$VIRTHOST_BMC_UID}
+
           echo "Enter new password and press Enter"
           read -s -p "Enter libvirt host BMC password [${VIRTHOST_BMC_PW:+**********}]: " input
           echo ""
@@ -549,6 +596,9 @@ password_menu () {
           ;;
 
         "Set oVirt Password")
+          read -p "Enter vHost BMC Username [${OVIRT_MANAGER_UID}]: " input
+          OVIRT_MANAGER_UID=${input:-$OVIRT_MANAGER_UID}
+
           echo "Enter new password and press Enter"
           read -s -p "Enter ovirt manager password [${OVIRT_MANAGER_PW:+**********}]: " input
           echo ""
@@ -563,12 +613,10 @@ password_menu () {
           fi
           ;;
 
-        "Set Default BMC User")
+        "Set Default BMC Password")
           read -p "Enter Default BMC User [${BMC_UID_DEFAULT}]: " input 
           BMC_UID_DEFAULT=${input:-$BMC_UID_DEFAULT}
-          ;;
 
-        "Set Default BMC Password")
           echo "Enter new password and press Enter"
           read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+**********}]: " input
           echo ""
@@ -578,21 +626,6 @@ password_menu () {
 
           if [[ "$input" == "$input2" ]]; then
             BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set Workshop User Password")
-          echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
           else
             echo "WARNING: Passwords do not match ... unchanged"
           fi
