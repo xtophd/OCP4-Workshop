@@ -929,9 +929,11 @@ cluster_menu () {
            ;;
 
         "Set Version")
-           select CLUSTER_VERSION in "4.13" "4.12" "4.11" "4.10" "4.9" "4.8"
+           select CLUSTER_VERSION in "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8"
            do
               case ${CLUSTER_VERSION} in
+                "4.14" )
+                  break ;;
                 "4.13" )
                   break ;;
                 "4.12" )
