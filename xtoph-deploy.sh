@@ -33,6 +33,7 @@ fi
 
 case "$1" in
 
+    "finish"     | \
     "deploy"     | \
     "undeploy"   | \
     "redeploy"   | \
@@ -58,6 +59,7 @@ case "$1" in
         echo "  deploy    ... runs only 'deploy' plays"
         echo "  undeploy  ... runs only 'undeploy' plays"
         echo "  redeploy  ... runs both 'undeploy' and 'deploy' plays"
+        echo "  finish    ... runs only 'finish' plays"
         echo ""
         echo "  ansible-limits  ... specific hosts, comma separated list"
         echo "                      of hosts or host groups (ie: node1,node2)"
