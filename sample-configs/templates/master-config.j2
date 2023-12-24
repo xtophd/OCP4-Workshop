@@ -206,7 +206,7 @@ myBastion:
 {% if t_virthost_type == "libvirt" %}
     h_hwPROF:        "kvm_vda"
 {% elif t_virthost_type == "ovirt" %}
-    h_hwPROF:        "ovirt_sda_uefi"
+    h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
     h_rsPROF:        "custom_bastion"
@@ -256,7 +256,7 @@ myBootstrap:
     h_hwPROF:        "kvm_vda"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda_uefi"
+    h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
     h_rsPROF:        "custom_bootstrap"
@@ -365,7 +365,7 @@ myMasters:
     h_hwPROF:        "kvm_vda"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda_uefi"
+    h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
 {% if t_cluster_provisioner == "upi-pxe" %}
@@ -451,7 +451,7 @@ myWorkers:
     h_hwPROF:        "kvm_vda"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda_uefi"
+    h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
 {% if t_cluster_provisioner == "upi-pxe" %}
@@ -513,7 +513,7 @@ mySNO:
     h_hwPROF:        "kvm_vda"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda_uefi"
+    h_hwPROF:        "ovirt_sda"
 {% endif %}
     h_plPROF:        "custom_platform"
 {% if t_cluster_provisioner == "upi-pxe" %}
