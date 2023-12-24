@@ -26,7 +26,41 @@ Default architecture is 7 systems:
   * bootstrap - ocp installation provisioner
   * masters-{0,1,2}
   * workers-{0,1}
-  
+
+Deployment methods include PXE & virtual-Media for both BIOS and UEFI based systems.
+
+After reworking the UEFI-PXE setup, the matrix of tested deployments shown below.
+
+All of these methods should work on
+
+        Baremetal
+        RHV 4.4+ with compatability set to 4.7 (oVirt 4.7)
+        RHEL (8 or 9) + Libvirt
+
+                | BIOS                  | UEFI                          |
+        | Ver   | PXE   | MEDIA | AI    | PXE   | HTTP  | MEDIA | AI    |
+--------|-------|-------|-------|-------|-------|-------|-------|-------|
+OCP     | 4.2   | Y     | Y     | -     | -     | ?     | Y     | -     |
+OCP     | 4.3   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.4   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.5   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.6   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.7   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.8   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.9   | Y     | Y     | -     | Y     | Y     | Y     | -     |
+OCP     | 4.10  | Y     | Y     | Y     | Y     | Y     | Y     |       |
+OCP     | 4.11  | Y     | Y     | Y     | Y     | Y     | Y     |       |
+OCP     | 4.12  | Y     | Y     | Y     | Y     | Y     | Y     |       |
+OCP     | 4.13  | Y     | Y     | Y     | Y     | Y     | Y     |       |
+OCP     | 4.14  | Y     | Y     | Y     | Y     | Y     | Y     |       |
+
+- : does not work, no intent to enable|fix
+b : does not work (broken), hope to fix
+Y : verified
+? : untested
+
+You can can also deploy a SNO (Single Node Openshift) instance using the Assisted Installer (AI) provisioner.
+
 At the completion of the install, the bootstrap node has served it's purpose and can be safely shutdown (or deleted).
 
 == Deployment Guides
