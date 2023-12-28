@@ -165,6 +165,14 @@
       - t_bootmode_worker1:        "{{ xtoph_default_machine[t_hw_worker1].boot_mode | default('--REQUIRED--') }}"
       - t_bootmode_worker2:        "{{ xtoph_default_machine[t_hw_worker2].boot_mode | default('--REQUIRED--') }}"
       - t_bootmode_sno:            "{{ xtoph_default_machine[t_hw_sno].boot_mode | default('--REQUIRED--') }}"
+      - t_usbdelay_bastion:        "{{ xtoph_default_machine[t_hw_bastion].usb_storage_delay | default('0') }}"
+      - t_usbdelay_bootstrap:      "{{ xtoph_default_machine[t_hw_bootstrap].usb_storage_delay | default('0') }}"
+      - t_usbdelay_master1:        "{{ xtoph_default_machine[t_hw_master1].usb_storage_delay | default('0') }}"
+      - t_usbdelay_master2:        "{{ xtoph_default_machine[t_hw_master2].usb_storage_delay | default('0') }}"
+      - t_usbdelay_master3:        "{{ xtoph_default_machine[t_hw_master3].usb_storage_delay | default('0') }}"
+      - t_usbdelay_worker1:        "{{ xtoph_default_machine[t_hw_worker1].usb_storage_delay | default('0') }}"
+      - t_usbdelay_worker2:        "{{ xtoph_default_machine[t_hw_worker2].usb_storage_delay | default('0') }}"
+      - t_usbdelay_sno:            "{{ xtoph_default_machine[t_hw_sno].usb_storage_delay | default('0') }}"
 
       - name: "main.yml : special handling for kickstart netdev"
         set_fact:

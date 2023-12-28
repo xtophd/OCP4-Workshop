@@ -194,7 +194,7 @@ myBastion:
 
       h_rhcosDEV:      "{{ t_blkdev_bastion }}"
       h_rhcosNIC:      "{{ t_netdev_bastion }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_bastion }}0"
       h_rhcosLOADER:   "{{ t_bootmode_bastion }}"
 {% endif %}
 
@@ -208,6 +208,7 @@ myBastion:
 {% elif t_virthost_type == "ovirt" %}
     h_hwPROF:        "ovirt_sda"
 {% endif %}
+    h_rhcosUSBdelay: "0"
     h_plPROF:        "custom_platform"
     h_rsPROF:        "custom_bastion"
     h_ksPROF:        "rhel88-bootiso"
@@ -232,13 +233,11 @@ myBootstrap:
 {% if t_hw_bootstrap|length  %}
       h_hwPROF:        "{{ t_hw_bootstrap  }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
-      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
-      h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
-      h_rhcosUSBdelay: "0"
-      h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
+      h_rhcosDEV:      "{{ t_blkdev_bootstrap }}"
+      h_rhcosNIC:      "{{ t_netdev_bootstrap }}:dhcp"
+      h_rhcosUSBdelay: "{{ t_usbdelay_bootstrap }}"
+      h_rhcosLOADER:   "{{ t_bootmode_bootstrap }}"
 {% endif %}
 
 {% if t_bmc_bootstrap|length %}
@@ -293,12 +292,10 @@ myMasters:
 {% if t_hw_master1|length  %}
       h_hwPROF:        "{{ t_hw_master1  }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_master1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
 {% endif %}
 
@@ -316,12 +313,10 @@ myMasters:
 {% if t_hw_master2|length %}
       h_hwPROF:        "{{ t_hw_master2 }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master2 }}"
       h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_master2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master2 }}"
 {% endif %}
 
@@ -340,12 +335,10 @@ myMasters:
 {% if t_hw_master3|length %}
       h_hwPROF:        "{{ t_hw_master3 }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_master3 }}"
       h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_master3 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master3 }}"
 {% endif %}
 
@@ -402,12 +395,10 @@ myWorkers:
 {% if t_hw_worker1|length  %}
       h_hwPROF:        "{{ t_hw_worker1  }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
       h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_worker1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker1 }}"
 {% endif %}
 
@@ -426,12 +417,10 @@ myWorkers:
 {% if t_hw_worker2|length  %}
       h_hwPROF:        "{{ t_hw_worker2  }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-      h_ksPROF:        "vmedia_nowait"
 
       h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
       h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_worker2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker2 }}"
 {% endif %}
 
@@ -488,12 +477,10 @@ mySNO:
 {% if t_hw_sno|length  %}
       h_hwPROF:        "{{ t_hw_sno  }}"
       h_plPROF:        "custom_baremetal"
-      h_ksPROF:        "vmedia_nowait"
-      h_pwrOFF:        false
 
       h_rhcosDEV:      "{{ t_blkdev_sno }}"
       h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
-      h_rhcosUSBdelay: "0"
+      h_rhcosUSBdelay: "{{ t_usbdelay_sno }}"
       h_rhcosLOADER:   "{{ t_bootmode_sno }}"
 {% endif %}
 
