@@ -30,9 +30,6 @@ fi
 ##
 
 case "$1" in
-    "all")
-        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure" ./ocp4-workshop.yml
-        ;;
          
     "ai"          | \
     "basics"      | \
@@ -46,6 +43,7 @@ case "$1" in
     "lock"        | \
     "unlock"      | \
     "nfs"         | \
+    "noop"        | \
     "ntp"         | \
     "haproxy"     | \
     "matchbox"    | \
@@ -58,6 +56,10 @@ case "$1" in
     "vnc")
 
         time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure" -e ocp4_workshop_subcmd="$1" ./ocp4-workshop.yml
+        ;;
+
+    "all")
+        time  ansible-playbook --ask-vault-pass -i ${myInventory} -f 10 -e ocp4_workshop_cmd="configure"    ./ocp4-workshop.yml 
         ;;
 
     "setup")
@@ -77,7 +79,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: ocp4-workshop.sh [ all | ai | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | ai | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | nfs | noop | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
         ;;
 
 esac         

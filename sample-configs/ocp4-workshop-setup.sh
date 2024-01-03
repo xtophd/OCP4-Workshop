@@ -24,6 +24,7 @@ export VIRTHOST_HW=""
 export VIRTHOST_BMC=""
 export VIRTHOST_BMC_UID=""
 export VIRTHOST_BMC_PW=""
+export VIRTHOST_MACHINE="kvm_sda"
 export OVIRT_MANAGER_IP=""
 export OVIRT_MANAGER_FQDN=""
 export OVIRT_MANAGER_UID="admin@internal"
@@ -31,6 +32,7 @@ export OVIRT_MANAGER_PW=""
 export OVIRT_DATACENTER=""
 export OVIRT_STORAGE_DOMAIN=""
 export OVIRT_NETWORK_DOMAIN=""
+export OVIRT_MACHINE="ovirt_sda"
 export NETWORK_ID=""
 export NETWORK_GATEWAY=""
 export NETWORK_PREFIX=""
@@ -82,7 +84,7 @@ export HW_WORKER1=""
 export HW_WORKER2=""
 export HW_SNO=""
 export RES_BASTION="custom_bastion"
-export RES_BOOTSTRAP="custom_master"
+export RES_BOOTSTRAP="custom_bootstrap"
 export RES_MASTER1="custom_master"
 export RES_MASTER2="custom_master"
 export RES_MASTER3="custom_master"
@@ -151,12 +153,14 @@ VIRTHOST_HW="${VIRTHOST_HW}"
 VIRTHOST_BMC="${VIRTHOST_BMC}"
 VIRTHOST_BMC_UID="${VIRTHOST_BMC_UID}"
 VIRTHOST_BMC_PW="${VIRTHOST_BMC_PW}"
+VIRTHOST_MACHINE="${VIRTHOST_MACHINE}"
 OVIRT_MANAGER_IP="${OVIRT_MANAGER_IP}"
 OVIRT_MANAGER_FQDN="${OVIRT_MANAGER_FQDN}"
 OVIRT_MANAGER_UID="${OVIRT_MANAGER_UID}"
 OVIRT_DATACENTER="${OVIRT_DATACENTER}"
 OVIRT_STORAGE_DOMAIN="${OVIRT_STORAGE_DOMAIN}"
 OVIRT_NETWORK_DOMAIN="${OVIRT_NETWORK_DOMAIN}"
+OVIRT_MACHINE="${OVIRT_MACHINE}"
 ADDR_BASTION="${ADDR_BASTION}"
 ADDR_BOOTSTRAP="${ADDR_BOOTSTRAP}"
 ADDR_MASTER1="${ADDR_MASTER1}"
@@ -253,14 +257,14 @@ current_settings () {
     echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
     echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
 
-    echo "vHost Type              ... ${VIRTHOST_TYPE}"
+    echo "vHost Type                  ... ${VIRTHOST_TYPE}"
+
     if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        echo "oVirt API (ip/fqdn)     ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
-        echo "oVirt (dc/blk/net)      ... ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
+        echo "oVirt API (ip/fqdn)         ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
+        echo "oVirt (vm/dc/blkdom/netdom) ... ${OVIRT_MACHINE} / ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "lVirt Host (ip/fqdn)    ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN}" 
-        echo "lVirt Net (dev/type)    ... ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
-        echo "lVirt HW (type/bmc/uid) ... ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
+        echo "lVirt Host (ip/fqdn/hw/bmc/uid) ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
+        echo "lVirt (vm/netdev/brtype)        ... ${VIRTHOST_MACHINE} / ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
     fi
 
     echo "NODE SETTINGS (ip/mac/hw/resource/bmc/name)" 
@@ -674,9 +678,9 @@ virthost_menu () {
     do
 
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain")
+        TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain" "Set VM Type")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User")
+        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User" "Set VM Type")
       fi
 
 
@@ -807,6 +811,16 @@ virthost_menu () {
             fi
             ;;
   
+          "Set VM Type")
+            if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
+              read -p "Enter libVirt VM Type[${VIRTHOST_MACHINE}]: " input
+              VIRTHOST_MACHINE=${input:-$VIRTHOST_MACHINE}
+            elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
+              read -p "Enter oVirt VM Type[${OVIRT_MACHINE}]: " input
+              OVIRT_MACHINE=${input:-$OVIRT_MACHINE}
+            fi
+            ;;
+  
           "Back to Main Menu")
             PS3=${SAVED_PROMPT}
             break
@@ -929,22 +943,22 @@ cluster_menu () {
            ;;
 
         "Set Version")
-           select CLUSTER_VERSION in "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8"
+           select CLUSTER_VERSION in "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
            do
               case ${CLUSTER_VERSION} in
-                "4.14" )
-                  break ;;
-                "4.13" )
-                  break ;;
-                "4.12" )
-                  break ;;
-                "4.11" )
-                  break ;;
-                "4.10" )
-                  break ;;
-                "4.9" )
-                  break ;;
-                "4.8" )
+                "4.14" | \
+                "4.13" | \
+                "4.12" | \
+                "4.11" | \
+                "4.10" | \
+                "4.9"  | \
+                "4.8"  | \
+                "4.7"  | \
+                "4.6"  | \
+                "4.5"  | \
+                "4.4"  | \
+                "4.3"  | \
+                "4.2"  ) 
                   break ;;
                 "*" )
                   ;;

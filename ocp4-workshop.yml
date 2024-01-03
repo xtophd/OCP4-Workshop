@@ -108,7 +108,7 @@
         name: xtoph_ocp4
       vars: 
         xtoph_ocp4_action: "config-bastion"
-        xtoph_ocp4_subaction: "{{ ocp4_workshop_subcmd }}"
+        xtoph_ocp4_subaction: "{{ ocp4_workshop_subcmd | default('') }}"
       when: ocp4_workshop_cmd == "configure"
 
     - debug: msg="**** END CONFIGURATION - bastion ****"

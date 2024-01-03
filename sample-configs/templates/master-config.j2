@@ -15,7 +15,38 @@ all:
   vars:
 
     ## ----------------------------------------
-    ##    Globals that will be phased out
+    ##    Defaults for the Virt Platforms
+    ##    Baremetal hosts will override defaults in
+    ##      host group sections
+
+    h_rhcosNIC:      "dhcp"
+    h_rhcosUSBdelay: "0"
+    h_rhcosLOADER:   "bios"
+
+    h_plPROF:        "custom_platform"
+
+{% if t_virthost_type == "libvirt" %}
+    h_rhcosDEV:      "{{ t_blkdev_virthost }}"
+    h_hwPROF:        "{{ t_virthost_machine }}"
+{% elif t_virthost_type == "ovirt" %}
+    h_rhcosDEV:      "{{ t_blkdev_ovirt }}"
+    h_hwPROF:        "{{ t_ovirt_machine }}"
+{% endif %}
+
+{% if t_cluster_provisioner == "upi-pxe" %}
+    h_ksPROF:        "pxe_wait"
+{% if t_virthost_type == "ovirt" %}
+    h_pwrOFF:        "False"
+{% endif %}
+{% else %}
+    h_ksPROF:        "custom_kickstart"
+{% endif %}
+
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
+{% elif t_cluster_provisioner == "upi-vmedia" %}
+    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
 
     g_clusterAdmin:       "cloud-admin"
     g_clusterUser:        "cloud-user"
@@ -181,6 +212,7 @@ myDeployhost:
 myBastion:
   hosts:
     {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_ksPROF:        "rhel88-bootiso"
       h_pubIP:         "{{ t_addr_bastion }}"
       h_rsPROF:        "{{ t_res_bastion  }}"
 {% if t_mac_bastion|length %}
@@ -189,30 +221,15 @@ myBastion:
 {% if t_hw_bastion|length  %}
       h_hwPROF:        "{{ t_hw_bastion  }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
       h_ksPROF:        "vmedia_nowait"
-
-      h_rhcosDEV:      "{{ t_blkdev_bastion }}"
-      h_rhcosNIC:      "{{ t_netdev_bastion }}:dhcp"
-      h_rhcosUSBdelay: "{{ t_usbdelay_bastion }}0"
-      h_rhcosLOADER:   "{{ t_bootmode_bastion }}"
+      h_pwrOFF:        false
+{% else %}
+      h_pwrOFF:        true
 {% endif %}
 
 {% if t_bmc_bastion|length %}
       bmc_fqdn:        "{{ t_bmc_bastion }}"
 {% endif %}
-
-  vars:
-{% if t_virthost_type == "libvirt" %}
-    h_hwPROF:        "kvm_vda"
-{% elif t_virthost_type == "ovirt" %}
-    h_hwPROF:        "ovirt_sda"
-{% endif %}
-    h_rhcosUSBdelay: "0"
-    h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_bastion"
-    h_ksPROF:        "rhel88-bootiso"
-
 
 
 
@@ -223,6 +240,7 @@ myBastion:
 myBootstrap:
   hosts:
 {% if t_cluster_provisioner != "ai-sno" and t_cluster_provisioner != "ai" %}
+
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
     {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bootstrap }}" 
@@ -239,38 +257,11 @@ myBootstrap:
       h_rhcosUSBdelay: "{{ t_usbdelay_bootstrap }}"
       h_rhcosLOADER:   "{{ t_bootmode_bootstrap }}"
 {% endif %}
-
 {% if t_bmc_bootstrap|length %}
       bmc_fqdn:        "{{ t_bmc_bootstrap }}"
 {% endif %}
 {% endif %}
-{% endif %}
 
-  vars: 
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
-    h_rhcosLOADER:   "bios"
-{% if t_virthost_type == "libvirt" %}
-    h_rhcosDEV:      "/dev/vda"
-    h_hwPROF:        "kvm_vda"
-{% elif t_virthost_type == "ovirt" %}
-    h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda"
-{% endif %}
-    h_plPROF:        "custom_platform"
-    h_rsPROF:        "custom_bootstrap"
-{% if t_cluster_provisioner == "upi-pxe" %}
-    h_ksPROF:        "pxe_wait"
-{% if t_virthost_type == "ovirt" %}
-    h_pwrOFF:        "False"
-{% endif %}
-{% else %}
-    h_ksPROF:        "custom_kickstart"
-{% endif %}
-{% if t_cluster_provisioner == "ai" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
-{% elif t_cluster_provisioner == "upi-vmedia" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% endif %}
 
 
@@ -283,6 +274,8 @@ myMasters:
   hosts:
 
 {% if t_cluster_provisioner != "ai-sno" %}
+
+{% if t_addr_master1 is defined and t_addr_master1|length %}
     {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master1 }}"
       h_rsPROF:        "{{ t_res_master1  }}"
@@ -298,9 +291,9 @@ myMasters:
       h_rhcosUSBdelay: "{{ t_usbdelay_master1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
 {% endif %}
-
 {% if t_bmc_master1|length %}
       bmc_fqdn:        "{{ t_bmc_master1 }}"
+{% endif %}
 {% endif %}
 
 {% if t_addr_master2 is defined and t_addr_master2|length %}
@@ -319,7 +312,6 @@ myMasters:
       h_rhcosUSBdelay: "{{ t_usbdelay_master2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master2 }}"
 {% endif %}
-
 {% if t_bmc_master2|length %}
       bmc_fqdn:        "{{ t_bmc_master2 }}"
 {% endif %}
@@ -341,40 +333,12 @@ myMasters:
       h_rhcosUSBdelay: "{{ t_usbdelay_master3 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master3 }}"
 {% endif %}
-
 {% if t_bmc_master3|length %}
       bmc_fqdn:        "{{ t_bmc_master3 }}"
 {% endif %}
 {% endif %}
-{% endif %}
 
-  vars: 
-
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
-    h_rhcosLOADER:   "bios"
-{% if t_virthost_type == "libvirt" %}
-    h_rhcosDEV:      "/dev/vda"
-    h_hwPROF:        "kvm_vda"
-{% elif t_virthost_type == "ovirt" %}
-    h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda"
 {% endif %}
-    h_plPROF:        "custom_platform"
-{% if t_cluster_provisioner == "upi-pxe" %}
-    h_ksPROF:        "pxe_wait"
-{% if t_virthost_type == "ovirt" %}
-    h_pwrOFF:        "False"
-{% endif %}
-{% else %}
-    h_ksPROF:        "custom_kickstart"
-{% endif %}
-{% if t_cluster_provisioner == "ai" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
-{% elif t_cluster_provisioner == "upi-vmedia" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
-{% endif %}
-
 
 
 ## -----------------
@@ -385,6 +349,7 @@ myWorkers:
   hosts:
 
 {% if t_cluster_provisioner != "ai-sno" %}
+
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
     {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker1 }}" 
@@ -401,7 +366,6 @@ myWorkers:
       h_rhcosUSBdelay: "{{ t_usbdelay_worker1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker1 }}"
 {% endif %}
-
 {% if t_bmc_worker1|length %}
       bmc_fqdn:        "{{ t_bmc_worker1 }}"
 {% endif %}
@@ -423,38 +387,11 @@ myWorkers:
       h_rhcosUSBdelay: "{{ t_usbdelay_worker2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker2 }}"
 {% endif %}
-
 {% if t_bmc_worker2|length %}
       bmc_fqdn:        "{{ t_bmc_worker2 }}"
 {% endif %}
 {% endif %}
-{% endif %}
 
-  vars: 
-
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
-    h_rhcosLOADER:   "bios"
-{% if t_virthost_type == "libvirt" %}
-    h_rhcosDEV:      "/dev/vda"
-    h_hwPROF:        "kvm_vda"
-{% elif t_virthost_type == "ovirt" %}
-    h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda"
-{% endif %}
-    h_plPROF:        "custom_platform"
-{% if t_cluster_provisioner == "upi-pxe" %}
-    h_ksPROF:        "pxe_wait"
-{% if t_virthost_type == "ovirt" %}
-    h_pwrOFF:        "False"
-{% endif %}
-{% else %}
-    h_ksPROF:        "custom_kickstart"
-{% endif %}
-{% if t_cluster_provisioner == "ai" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
-{% elif t_cluster_provisioner == "upi-vmedia" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% endif %}
 
 
@@ -467,6 +404,7 @@ mySNO:
   hosts:
 
 {% if t_cluster_provisioner == "ai-sno" %}
+
 {% if t_addr_sno is defined and t_addr_sno|length %}
     {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_sno }}"
@@ -488,28 +426,5 @@ mySNO:
       bmc_fqdn:        "{{ t_bmc_sno }}"
 {% endif %}
 {% endif %}
-{% endif %}
 
-  vars:
-
-    h_rhcosNIC:      "dhcp"
-    h_rhcosUSBdelay: "0"
-    h_rhcosLOADER:   "bios"
-{% if t_virthost_type == "libvirt" %}
-    h_rhcosDEV:      "/dev/vda"
-    h_hwPROF:        "kvm_vda"
-{% elif t_virthost_type == "ovirt" %}
-    h_rhcosDEV:      "/dev/sda"
-    h_hwPROF:        "ovirt_sda"
 {% endif %}
-    h_plPROF:        "custom_platform"
-{% if t_cluster_provisioner == "upi-pxe" %}
-    h_ksPROF:        "pxe_wait"
-{% if t_virthost_type == "ovirt" %}
-    h_pwrOFF:        "False"
-{% endif %}
-{% else %}
-    h_ksPROF:        "custom_kickstart"
-{% endif %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
-

@@ -265,14 +265,18 @@
   gather_facts: no 
   tasks:
 
+    - debug: msg="**** BEGIN CONFIGURATION - bastion ****"
+
     - include_role: 
         name: xtoph_ocp4
       vars: 
         xtoph_ocp4_action: "config-bastion"
+        xtoph_ocp4_subaction: "{{ ocp4_workshop_subcmd | default('') }}"
       when: xtoph_deploy_cmd == "deploy" or
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
+    - debug: msg="**** END CONFIGURATION - bastion ****"
 
 
 ##
@@ -414,7 +418,7 @@
 
 
 
-- hosts: myMasters,myWorkers,mySNO
+- hosts: myBootstrap,myMasters,myWorkers,mySNO
   gather_facts: no
   tasks:
 
