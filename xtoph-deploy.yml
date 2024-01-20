@@ -285,7 +285,7 @@
 
 
 
-- hosts: myBootstrap
+- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
   gather_facts: no 
   tasks:
 
@@ -296,6 +296,7 @@
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-bootstrap"
 
           - include_role: 
               name: xtoph_deploy
@@ -321,7 +322,7 @@
 
 
 
-- hosts: myMasters,mySNO
+- hosts: "{{ (groups['myMasters'] + groups['mySNO']) | difference((groups['myBootstrap'] + groups['myMasters'])[0] | split) }}"
   gather_facts: no 
   tasks:
 
@@ -332,6 +333,7 @@
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-masters"
       
           - include_role: 
               name: xtoph_deploy
@@ -348,6 +350,60 @@
             xtoph_deploy_cmd == "redeploy"
 
     - debug: msg="**** END myMasters  ****"
+
+
+
+##
+##
+##    bootstrap-flip/flop
+##    1 of 3 masters "acts" as the bootstrap node initially
+##
+
+
+
+- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
+  gather_facts: no
+  tasks:
+
+    - debug: 
+        msg: "**** BEGIN myBootstrap flop ({{ inventory_hostname }}) ****"
+
+    - block:
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-bootstrap-flop"
+
+          - include_role:
+              name: xtoph_deploy
+            vars:
+              xtoph_deploy_action: "undeploy"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-master"
+
+          - include_role:
+              name: xtoph_deploy
+            vars:
+              xtoph_deploy_action: "deploy"
+
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: 
+        - xtoph_deploy_cmd == "deploy" or
+          xtoph_deploy_cmd == "setup+" or
+          xtoph_deploy_cmd == "redeploy"
+        - inventory_hostname in xtoph_ocp4._cluster_masters
+
+    - debug: msg="**** END myBootstrap flop ({{ inventory_hostname }}) ****"
 
       
 
@@ -368,6 +424,7 @@
               name: xtoph_ocp4
             vars: 
               xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-workers"
       
           - include_role: 
               name: xtoph_deploy

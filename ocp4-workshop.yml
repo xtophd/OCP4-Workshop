@@ -119,10 +119,21 @@
 ##
 ##    Bootstrap
 ##
+##
+##    NOTE:
+##
+##        myBootstrap hostgroup may be empty, in which case we try
+##        the method of using a master as the bootstrap and then
+##        flipping it into a master during worker deployment
+##
 
+- hosts: all
+  gather_facts: no 
+  tasks:
 
+  - debug: msg="**** I AM HERE!!!  ****"
 
-- hosts: myBootstrap
+- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
   gather_facts: no 
   tasks:
 
@@ -132,7 +143,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-bootstrap"
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-bootstrap"
 
           - include_role:
               name: xtoph_ocp4
@@ -161,7 +173,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-masters"
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-masters"
       
           - include_role:
               name: xtoph_ocp4
@@ -190,7 +203,8 @@
           - include_role: 
               name: xtoph_ocp4
             vars: 
-              xtoph_ocp4_action: "preinstall-workers"
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-workers"
       
           - include_role:
               name: xtoph_ocp4
