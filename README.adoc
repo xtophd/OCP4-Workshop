@@ -27,6 +27,8 @@ Default architecture is 7 systems:
   * masters-{0,1,2}
   * workers-{0,1}
 
+You can avoid a dedicated bootstrap node if you elect the "strapless" configuration.  In this case one of the workers (OCP < 4.11) or once of the masters (OCP >= 4.11) is used as a temporary bootstrap during the deployment.
+
 Deployment methods include PXE & virtual-Media for both BIOS and UEFI based systems.
 
 After reworking the UEFI-PXE setup, the matrix of tested deployments shown below.
