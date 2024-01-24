@@ -282,14 +282,18 @@
 ##
 ##    Bootstrap
 ##
+##    NOTE:   electedBootstrap is a hostgroup created by the
+##            xtoph_ocp4 role during it's first invocations.
+##            That would have been above during config-bastion
+##
 
 
 
-- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
+- hosts: electedBootstrap 
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN myBootstrap  ****"
+    - debug: msg="**** BEGIN electedBootstrap  ****"
 
     - block:
           - include_role: 
@@ -312,7 +316,7 @@
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
-    - debug: msg="**** END myBootstrap  ****"
+    - debug: msg="**** END electedBootstrap  ****"
 
 
 
@@ -322,7 +326,7 @@
 
 
 
-- hosts: "{{ (groups['myMasters'] + groups['mySNO']) | difference((groups['myBootstrap'] + groups['myMasters'])[0] | split) }}"
+- hosts: myMasters,mySNO,!electedBootstrap
   gather_facts: no 
   tasks:
 
@@ -354,19 +358,18 @@
 
 
 ##
-##
 ##    bootstrap-flip/flop
-##    1 of 3 masters "acts" as the bootstrap node initially
 ##
 
 
 
-- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
+- hosts: electedBootstrap
   gather_facts: no
   tasks:
 
     - debug: 
-        msg: "**** BEGIN myBootstrap flop ({{ inventory_hostname }}) ****"
+        msg: 
+          - "**** BEGIN electedBootstrap flop ****"
 
     - block:
 
@@ -380,6 +383,27 @@
               name: xtoph_deploy
             vars:
               xtoph_deploy_action: "undeploy"
+
+      when: 
+        - xtoph_deploy_cmd == "deploy" or
+          xtoph_deploy_cmd == "setup+" or
+          xtoph_deploy_cmd == "redeploy"
+
+    - debug: 
+        msg: 
+          - "**** END electedBootstrap flop ****"
+
+
+
+- hosts: electedBootstrap,&myMasters
+  gather_facts: no
+  tasks:
+
+    - debug: 
+        msg: 
+          - "**** BEGIN electedBootstrap master redeploy ****"
+
+    - block:
 
           - include_role:
               name: xtoph_ocp4
@@ -401,9 +425,8 @@
         - xtoph_deploy_cmd == "deploy" or
           xtoph_deploy_cmd == "setup+" or
           xtoph_deploy_cmd == "redeploy"
-        - inventory_hostname in xtoph_ocp4._cluster_masters
 
-    - debug: msg="**** END myBootstrap flop ({{ inventory_hostname }}) ****"
+    - debug: msg="**** END electedBootstrap master redeploy ****"
 
       
 
@@ -475,7 +498,7 @@
 
 
 
-- hosts: myBootstrap,myMasters,myWorkers,mySNO
+- hosts: electedBootstrap,myMasters,myWorkers,mySNO
   gather_facts: no
   tasks:
 

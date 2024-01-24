@@ -13,6 +13,7 @@ export CLUSTER_LOADBALANCER_IP=""
 export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
 export CLUSTER_VERSION="4.12"
+export CLUSTER_STRAPLESS="False"
 export VIRTHOST_IP=""
 export VIRTHOST_UID="root"
 export VIRTHOST_PW=""
@@ -132,6 +133,7 @@ CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
 CLUSTER_LOADBALANCER_IP="${CLUSTER_LOADBALANCER_IP}"
 CLUSTER_API_IP="${CLUSTER_API_IP}"
 CLUSTER_VERSION="${CLUSTER_VERSION}"
+CLUSTER_STRAPLESS="${CLUSTER_STRAPLESS}"
 NETWORK_ID="${NETWORK_ID}"
 NETWORK_GATEWAY="${NETWORK_GATEWAY}"
 NETWORK_PREFIX="${NETWORK_PREFIX}"
@@ -248,13 +250,11 @@ current_settings () {
     echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
     echo "Cluster Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
     echo "Cluster Wildcard        ... ${CLUSTER_WILDCARD}"
-    echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER}"
+    echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER} (strapless = ${CLUSTER_STRAPLESS})"
     echo "Cluster Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
     echo "Cluster API IP          ... ${CLUSTER_API_IP}"
     echo "Network (id/pre/nm/bc)  ... ${NETWORK_ID} / ${NETWORK_PREFIX} / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
-    echo "Network Gateway         ... ${NETWORK_GATEWAY}"
-    echo "Network DNS Server      ... ${NETWORK_DNS_SERVER}"
-    echo "Network TIME Server     ... ${NETWORK_TIME_SERVER}" 
+    echo "Network (gw/dns/time)   ... ${NETWORK_GATEWAY} / ${NETWORK_DNS_SERVER} / ${NETWORK_TIME_SERVER}"
     echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
 
     echo "vHost Type                  ... ${VIRTHOST_TYPE}"
@@ -934,7 +934,7 @@ cluster_menu () {
 
     current_settings
 
-    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Back to Main Menu"
+    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Set Strapless" "Back to Main Menu"
     do
       case ${action}  in
         "Set Name")
@@ -985,6 +985,21 @@ cluster_menu () {
               REPLY=
             done
           ;;
+
+        "Set Strapless")
+           select CLUSTER_STRAPLESS in "True" "False"
+           do
+              case ${CLUSTER_STRAPLESS} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+           ;;
 
         "Set Wildcard")
            read -p "Enter Cluster Wildcard [${CLUSTER_WILDCARD}]: " input

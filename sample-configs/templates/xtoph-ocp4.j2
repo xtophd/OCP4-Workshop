@@ -9,7 +9,7 @@ _rhcos_profile:       "workshop-vars"
 
 _cluster_bastion:     {% raw %}"{{ groups['myBastion']   }}"{% endraw %}
 
-_cluster_bootstrap:   {% raw %}"{{  (groups['myBootstrap'] + groups['myMasters']) | first }}"{% endraw %}
+_cluster_bootstrap:   {% raw %}"{{ groups['myBootstrap'] }}"{% endraw %}
 
 _cluster_masters:     {% raw %}"{{ groups['myMasters']   }}"{% endraw %}
 
