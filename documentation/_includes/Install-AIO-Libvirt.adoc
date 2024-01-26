@@ -113,7 +113,7 @@ Using the NAT'd network config will require the least amount of changes to the c
 ----
 cd ./OCP4-Workshop
 
-cp ../sample-configs/libvirt-nat/ocp4-workshop-setup.ans ./config
+cp ./sample-configs/libvirt-nat/ocp4-workshop-setup.ans ./config
 ----
 
 === Run the setup tool
