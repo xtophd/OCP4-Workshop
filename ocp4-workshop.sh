@@ -32,6 +32,7 @@ fi
 case "$1" in
          
     "ai"          | \
+    "assert"      | \
     "basics"      | \
     "cockpit"     | \
     "dns"         | \
@@ -79,7 +80,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: ocp4-workshop.sh [ all | ai | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | nfs | noop | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | ai | assert | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | nfs | noop | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
         ;;
 
 esac         
