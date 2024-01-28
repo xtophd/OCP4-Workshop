@@ -6,7 +6,17 @@ custom_bastion:
     name: "custom openshift bastion"
     description: "Custom Bastion Utility Server"
     vcpus:    4
-    memsize:  8000
+
+{% if   t_virthost_br_type == "nat" %}
+    ## Libvirt NAT deployment of bastion enables desktop GUI and VNC
+    ## Therefore memsize set to 16G 
+    memsize:  16000
+{% else %}
+    ## Normal bastion deployment does NOT enable desktop GUI and VNC
+    ## Therefore memsize reduced to 10G 
+    memsize:  10000
+{% endif %}
+
     storage:
       root:
         size: 50 

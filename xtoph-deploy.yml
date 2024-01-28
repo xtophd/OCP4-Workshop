@@ -282,18 +282,18 @@
 ##
 ##    Bootstrap
 ##
-##    NOTE:   electedBootstrap is a hostgroup created by the
-##            xtoph_ocp4 role during it's first invocations.
-##            That would have been above during config-bastion
+##    NOTE:   myBootstrapFlipFlop is an empty hostgroup to which
+##            xtoph_ocp4 role assigns either a worker or master
+##            as determined by the strapless flip flop
 ##
 
 
 
-- hosts: electedBootstrap 
+- hosts: myBootstrap,myBootstrapFlipFlop
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN electedBootstrap  ****"
+    - debug: msg="**** BEGIN Bootstrap  ****"
 
     - block:
           - include_role: 
@@ -316,7 +316,7 @@
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
-    - debug: msg="**** END electedBootstrap  ****"
+    - debug: msg="**** END Bootstrap  ****"
 
 
 
@@ -326,11 +326,11 @@
 
 
 
-- hosts: myMasters,mySNO,!electedBootstrap
+- hosts: myMasters,mySNO,!myBootstrapFlipFlop
   gather_facts: no 
   tasks:
 
-    - debug: msg="**** BEGIN myMasters ****"
+    - debug: msg="**** BEGIN myMasters,mySNO ****"
 
     - block:
           - include_role: 
@@ -353,7 +353,7 @@
             xtoph_deploy_cmd == "setup+" or
             xtoph_deploy_cmd == "redeploy"
 
-    - debug: msg="**** END myMasters  ****"
+    - debug: msg="**** END myMasters,mySNO  ****"
 
 
 
@@ -363,13 +363,13 @@
 
 
 
-- hosts: electedBootstrap
+- hosts: myBootstrapFlipFlop
   gather_facts: no
   tasks:
 
     - debug: 
         msg: 
-          - "**** BEGIN electedBootstrap flop ****"
+          - "**** BEGIN myBootstrapFlipFlop undeploy ****"
 
     - block:
 
@@ -391,42 +391,7 @@
 
     - debug: 
         msg: 
-          - "**** END electedBootstrap flop ****"
-
-
-
-- hosts: electedBootstrap,&myMasters
-  gather_facts: no
-  tasks:
-
-    - debug: 
-        msg: 
-          - "**** BEGIN electedBootstrap master redeploy ****"
-
-    - block:
-
-          - include_role:
-              name: xtoph_ocp4
-            vars:
-              xtoph_ocp4_action: "preinstall-node"
-              xtoph_ocp4_subaction: "preinstall-master"
-
-          - include_role:
-              name: xtoph_deploy
-            vars:
-              xtoph_deploy_action: "deploy"
-
-          - include_role:
-              name: xtoph_ocp4
-            vars:
-              xtoph_ocp4_action: "postinstall-node"
-
-      when: 
-        - xtoph_deploy_cmd == "deploy" or
-          xtoph_deploy_cmd == "setup+" or
-          xtoph_deploy_cmd == "redeploy"
-
-    - debug: msg="**** END electedBootstrap master redeploy ****"
+          - "**** END myBootstrapFlipFlop undeploy ****"
 
       
 
@@ -436,7 +401,7 @@
 
 
 
-- hosts: myWorkers
+- hosts: myWorkers,myBootstrapFlipFlip
   gather_facts: no 
   tasks:
 
@@ -498,7 +463,7 @@
 
 
 
-- hosts: electedBootstrap,myMasters,myWorkers,mySNO
+- hosts: myBootstrap,myMasters,myWorkers,mySNO
   gather_facts: no
   tasks:
 

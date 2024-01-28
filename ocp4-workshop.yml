@@ -119,21 +119,10 @@
 ##
 ##    Bootstrap
 ##
-##
-##    NOTE:
-##
-##        myBootstrap hostgroup may be empty, in which case we try
-##        the method of using a master as the bootstrap and then
-##        flipping it into a master during worker deployment
-##
 
-- hosts: all
-  gather_facts: no 
-  tasks:
 
-  - debug: msg="**** I AM HERE!!!  ****"
 
-- hosts: "{{ (groups['myBootstrap'] + groups['myMasters'])[0] | split }}"
+- hosts: myBootstrap,myBootstrapFlipFlop
   gather_facts: no 
   tasks:
 
@@ -163,7 +152,7 @@
 
 
 
-- hosts: myMasters,MySNO
+- hosts: myMasters,MySNO,!myBootStrapFlipFlop
   gather_facts: no 
   tasks:
 
@@ -185,6 +174,25 @@
 
     - debug: msg="**** END (MANUAL) DEPLOYMENT - Masters  ****"
 
+- hosts: myBootStrapFlipFlop
+  gather_facts: no 
+  tasks:
+
+    - debug: msg="**** BEGIN (MANUAL) DEPLOYMENT - Masters  ****"
+
+    - block:
+          - include_role: 
+              name: xtoph_ocp4
+            vars: 
+              xtoph_ocp4_action: "preinstall-node"
+              xtoph_ocp4_subaction: "preinstall-flop"
+      
+          - include_role:
+              name: xtoph_ocp4
+            vars:
+              xtoph_ocp4_action: "postinstall-node"
+
+      when: ocp4_workshop_cmd == "usher"
       
 
 ##
