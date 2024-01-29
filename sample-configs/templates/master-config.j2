@@ -184,6 +184,10 @@ myLibvirtHosts:
       h_rsPROF:  "med"
       h_pwrOFF:  false
       h_ksPROF:  "rhel92-bootiso"
+{% else %}
+      h_hwPROF:  "pc_sda"
+      h_plSETUP: "custom_platform"
+      h_rsPROF:  "med"
 {% endif %}
 
 {% if t_virthost_bmc|length  %}
