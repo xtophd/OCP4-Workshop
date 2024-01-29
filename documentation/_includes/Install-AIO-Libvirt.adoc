@@ -72,8 +72,8 @@ For RHEL 8.4:
 
 For RHEL 9.0:
 
-    - "rhel-8-for-x86_64-baseos-rpms"
-    - "rhel-8-for-x86_64-appstream-rpms"
+    - "rhel-9-for-x86_64-baseos-rpms"
+    - "rhel-9-for-x86_64-appstream-rpms"
     - added ansible collections from EPEL
 
 And yes, I test with CentOS 7 from time to time and it should work as both the virthost platform and for the bastion server.
@@ -85,7 +85,7 @@ WARNING: this process requires and is tested with ansible 2.9.  Anything older t
 Besides an @Base installation, you will need git and ansible installed before you begin.  Once installed, the playbooks will take care of the rest.
 
 ----
-yum -y install git,ansible
+yum -y install git
 ----
 
 === Git Clone Repo
