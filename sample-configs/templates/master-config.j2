@@ -243,7 +243,7 @@ myBastion:
 
 myBootstrap:
   hosts:
-{% if t_cluster_provisioner != "ai-sno" and t_cluster_provisioner != "ai" %}
+{% if (( t_cluster_provisioner == "upi-pxe" or t_cluster_provisioner == "upi-vmedia" ) and t_cluster_strapless == False ) %}
 
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
     {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:

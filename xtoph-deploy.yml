@@ -401,7 +401,7 @@
 
 
 
-- hosts: myWorkers,myBootstrapFlipFlip
+- hosts: myWorkers,myBootstrapFlipFlop
   gather_facts: no 
   tasks:
 
