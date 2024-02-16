@@ -152,7 +152,7 @@ wget -O /home/iso/rhel-8.8-x86_64-boot.iso '<URL>'
 
 WARNING: The file /root/OCP4-Workshop/config/pull-secret.txt must exist on the deployer host before you continue.
 
-NOTE: Pull secret URL: https://cloud.redhat.com/openshift/install/metal/user-provisioned
+NOTE: Pull secret URL: https://console.redhat.com/openshift/install/pull-secret
 
 Using a browser, go to redhat.com and retrieve the pull-secret.  You can either:
 
