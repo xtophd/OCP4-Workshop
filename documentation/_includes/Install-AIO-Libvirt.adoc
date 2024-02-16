@@ -49,9 +49,9 @@ Virt host should be loaded with either RHEL 7.7+, RHEL 8.1+ or RHEL 9.0+
 
   * RHEL 7.7+, 8.0+, 9.0+ base installation
   * Installed packages: git, ansible 2.9
-  * RHEL 7.9 or 8.4 DVD ISO saved in /home/iso
+  * RHEL images needed for the deployment are now automatically downloaded (see api-token.txt)
   * RHEL 7.9 or 8.4 BOOT ISO saved in /home/iso
-  * log on to cloud.redhat.com and get your pull-secret.txt and ocm-token.txt
+  * log on to cloud.redhat.com and get your pull-secret.txt, ocm-token.txt, api-token.txt
   * internet access (either direct or via proxy)
 
 === Register system
@@ -134,15 +134,17 @@ You should not need to make any additional adjustments to the settings, but the 
 
 Once the passwords are set, select the option to `Prepare Deploymnet` and will convert your answers to the actual configuration files in ./config
 
-=== Retrieve RHEL 8.4 DVD and BOOT ISOs
+=== Retrieve RHEL 8.8 DVD and BOOT ISOs
 
-The utility server currently depends on a RHEL 8.4 DVD image.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
+The utility server currently depends on a RHEL 8.8 images.  You can copy the URL from the access.redhat.com download page, and be sure to use single quotes to prevent bash from parsing the string.
+
+NOTE: As of the latest release (Feb 2024), xtoph_deploy will automatically pull the required RHEL Images if the api-token.txt file is set.
 
 ----
 mkdir -p /home/iso/
 
-wget -O /home/iso/rhel-8.4-x86_64-dvd.iso '<URL>'
-wget -O /home/iso/rhel-8.4-x86_64-boot.iso '<URL>'
+wget -O /home/iso/rhel-8.8-x86_64-dvd.iso '<URL>'
+wget -O /home/iso/rhel-8.8-x86_64-boot.iso '<URL>'
 
 ----
 
@@ -161,10 +163,17 @@ If you are planning an Assisted-Installer based deployment (ai or ai-sno), then 
 
 NOTE: OCM Token URL: https://cloud.redhat.com/openshift/token
 
-Using a browser, go to redhat.com and retrieve the ocm-token.  You can either:
+Using a browser, go to redhat.com and retrieve the ocm-token. 
 
-    - download the ocm-token.txt and transfer it to the ./config directory, OR
-    - copy the ocm-token to the paste buffer and then edit ocm-token.txt and paste the contents
+    - generate the token
+    - copy the token and paste it into ./config/ocm-token.txt
+
+NOTE: API Token URL: https://access.redhat.com/management/api
+
+Using a browser, go to redhat.com and retrieve the api-token.  
+
+    - generate the token
+    - copy the token and paste it into ./config/api-token.txt
 
 
 === Final Check List
