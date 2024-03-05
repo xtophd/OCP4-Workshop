@@ -141,7 +141,7 @@
 
     - debug: msg="**** END PREUNINSTALL ****"
 
-- hosts: myBastion,!myShelter
+- hosts: myBastion,myOther,!myShelter
   gather_facts: no 
   tasks:
 
@@ -157,7 +157,7 @@
     - debug: msg="**** END PREUNINSTALL ****"
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters,mySNO,!myShelter
+- hosts: myBastion,myOther,myBootstrap,myWorkers,myMasters,mySNO,!myShelter
   gather_facts: no
   tasks:
 
@@ -184,7 +184,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myWorkers,myMasters,mySNO
+- hosts: myBastion,myOther,myBootstrap,myWorkers,myMasters,mySNO
   gather_facts: no 
   tasks:
 
@@ -220,7 +220,7 @@
 
 
 
-- hosts: myBastion
+- hosts: myBastion,myOther
   gather_facts: no 
   tasks:
 
