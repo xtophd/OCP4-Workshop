@@ -256,6 +256,9 @@ myBootstrap:
       h_hwPROF:        "{{ t_hw_bootstrap  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_bootstrap }}"
       h_rhcosNIC:      "{{ t_netdev_bootstrap }}:dhcp"
@@ -291,6 +294,9 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
@@ -313,6 +319,9 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master2 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_master2 }}"
       h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
@@ -335,6 +344,9 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master3 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_master3 }}"
       h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
@@ -369,6 +381,9 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
       h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
@@ -391,6 +406,9 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker2  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
       h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
@@ -426,6 +444,9 @@ mySNO:
       h_hwPROF:        "{{ t_hw_sno  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
+{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+      h_ksPROF:        "vmedia_nowait"
+{% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_sno }}"
       h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
