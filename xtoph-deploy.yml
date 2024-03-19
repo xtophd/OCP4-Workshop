@@ -261,7 +261,7 @@
 
 
 
-- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO
+- hosts: myBastion,myBootstrap,myMasters,myWorkers,mySNO,myOther
   gather_facts: no 
   tasks:
 
