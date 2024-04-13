@@ -3,6 +3,7 @@ export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
 export ANSIBLE_IP=""
 export ANSIBLE_VAULT_PW=""
+export ANSIBLE_BASTION_IS_LOCALHOST="False"
 export WORKSHOP_ADMIN_PW=""
 export WORKSHOP_ADMIN_UID="cloud-admin"
 export WORKSHOP_USER_PW=""
@@ -14,11 +15,12 @@ export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
 export CLUSTER_VERSION="4.12"
 export CLUSTER_STRAPLESS="False"
+export CLUSTER_SNO="False"
 export VIRTHOST_IP=""
 export VIRTHOST_UID="root"
 export VIRTHOST_PW=""
 export VIRTHOST_FQDN=""
-export VIRTHOST_TYPE=""
+export VIRTHOST_TYPE="none"
 export VIRTHOST_BR_TYPE=""
 export VIRTHOST_BR_DEV=""
 export VIRTHOST_HW=""
@@ -127,6 +129,7 @@ cat > ./config/ocp4-workshop-setup.ans <<EO_ANSWERS
 PROJECT_NAME="${PROJECT_NAME}"
 ANSIBLE_SOURCE="${ANSIBLE_SOURCE}"
 ANSIBLE_IP="${ANSIBLE_IP}"
+ANSIBLE_BASTION_IS_LOCALHOST="${ANSIBLE_BASTION_IS_LOCALHOST}"
 CLUSTER_NAME="${CLUSTER_NAME}"
 CLUSTER_WILDCARD="${CLUSTER_WILDCARD}"
 CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
@@ -134,6 +137,7 @@ CLUSTER_LOADBALANCER_IP="${CLUSTER_LOADBALANCER_IP}"
 CLUSTER_API_IP="${CLUSTER_API_IP}"
 CLUSTER_VERSION="${CLUSTER_VERSION}"
 CLUSTER_STRAPLESS="${CLUSTER_STRAPLESS}"
+CLUSTER_SNO="${CLUSTER_SNO}"
 NETWORK_ID="${NETWORK_ID}"
 NETWORK_GATEWAY="${NETWORK_GATEWAY}"
 NETWORK_PREFIX="${NETWORK_PREFIX}"
@@ -231,51 +235,62 @@ current_settings () {
     ##
 
     echo ""
-    echo "Current Settings"
-    echo "----------------"
-    echo "Project Name            ... ${PROJECT_NAME}"
-    echo "Passwd Ansible Vault    ... ${ANSIBLE_VAULT_PW:+**********}" 
+    echo "Project Name ... ${PROJECT_NAME}"
+    echo ""
+
+    echo "[ SECURITY ]"
+    echo "    Ansible Vault  ... NA/${ANSIBLE_VAULT_PW:+**********}" 
 
     if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        echo "UID/PWD oVirt API       ... ${OVIRT_MANAGER_UID} / ${OVIRT_MANAGER_PW:+**********}" 
+        echo "    oVirt API      ... ${OVIRT_MANAGER_UID} / ${OVIRT_MANAGER_PW:+**********}" 
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "UID/PWD lVirt Host      ... ${VIRTHOST_UID} / ${VIRTHOST_PW:+**********}"
-        echo "UID/PWD lVirt BMC       ... ${VIRTHOST_BMC_UID} / ${VIRTHOST_BMC_PW:+**********}" 
+        echo "    lVirt Host     ... ${VIRTHOST_UID} / ${VIRTHOST_PW:+**********}"
+        echo "    lVirt BMC      ... ${VIRTHOST_BMC_UID} / ${VIRTHOST_BMC_PW:+**********}" 
     fi
 
-    echo "UID/PWD Workshop Admin  ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
-    echo "UID/PWD Workshop User   ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
-    echo "UID/PWD BMC Default     ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
-    echo "Ansible Source          ... ${ANSIBLE_SOURCE}"
-    echo "Ansible Control Host IP ... ${ANSIBLE_IP}"
-    echo "Cluster Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
-    echo "Cluster Wildcard        ... ${CLUSTER_WILDCARD}"
-    echo "Cluster Provisioner     ... ${CLUSTER_PROVISIONER} (strapless = ${CLUSTER_STRAPLESS})"
-    echo "Cluster Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
-    echo "Cluster API IP          ... ${CLUSTER_API_IP}"
-    echo "Network (id/pre/nm/bc)  ... ${NETWORK_ID} / ${NETWORK_PREFIX} / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
-    echo "Network (gw/dns/time)   ... ${NETWORK_GATEWAY} / ${NETWORK_DNS_SERVER} / ${NETWORK_TIME_SERVER}"
-    echo "Network Base Domain     ... ${NETWORK_BASEDOMAIN}"
+    echo "    Workshop Admin ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
+    echo "    Workshop User  ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
+    echo "    BMC Default    ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
 
-    echo "vHost Type                  ... ${VIRTHOST_TYPE}"
+    echo "[ ANSIBLE ]"
+    echo "    Source                ... ${ANSIBLE_SOURCE}"
+    echo "    Ctrl Host IP          ... ${ANSIBLE_IP}"
+    echo "    Ctrl Host is Bastion  ... ${ANSIBLE_BASTION_IS_LOCALHOST}"
 
+    echo "[ OCP CLUSTER ]"
+    echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
+    echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
+    echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (sno = ${CLUSTER_SNO}) (strapless = ${CLUSTER_STRAPLESS})"
+    echo "    Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
+    echo "    API IP          ... ${CLUSTER_API_IP}"
+
+    echo "[ NETWORK ]"
+    echo "    id/pre/nm/bc ... ${NETWORK_ID} / ${NETWORK_PREFIX} / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
+    echo "    gw/dns/time  ... ${NETWORK_GATEWAY} / ${NETWORK_DNS_SERVER} / ${NETWORK_TIME_SERVER}"
+    echo "    base domain  ... ${NETWORK_BASEDOMAIN}"
+
+    echo "[ VIRT HOST ]"
     if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        echo "oVirt API (ip/fqdn)         ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
-        echo "oVirt (vm/dc/blkdom/netdom) ... ${OVIRT_MACHINE} / ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
+        echo "    vHost Type                  ... ${VIRTHOST_TYPE}"
+        echo "    oVirt API (ip/fqdn)         ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
+        echo "    oVirt (vm/dc/blkdom/netdom) ... ${OVIRT_MACHINE} / ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "lVirt Host (ip/fqdn/hw/bmc/uid) ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
-        echo "lVirt (vm/netdev/brtype)        ... ${VIRTHOST_MACHINE} / ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+        echo "    vHost Type                      ... ${VIRTHOST_TYPE}"
+        echo "    lVirt Host (ip/fqdn/hw/bmc/uid) ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
+        echo "    lVirt (vm/netdev/brtype)        ... ${VIRTHOST_MACHINE} / ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+    else
+        echo "    vHost Type ... ${VIRTHOST_TYPE}"
     fi
 
-    echo "NODE SETTINGS (ip/mac/hw/resource/bmc/name)" 
-    echo "Bastion  : ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${RES_BASTION} / ${BMC_BASTION} / ${NAME_BASTION}"
-    echo "Bootstrap: ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${RES_BOOTSTRAP} / ${BMC_BOOTSTRAP} / ${NAME_BOOTSTRAP}"
-    echo "Master1  : ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${RES_MASTER1} / ${BMC_MASTER1} / ${NAME_MASTER1}"
-    echo "Master2  : ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${RES_MASTER2} / ${BMC_MASTER2} / ${NAME_MASTER2}"
-    echo "Master3  : ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${RES_MASTER3} / ${BMC_MASTER3} / ${NAME_MASTER3}"
-    echo "Worker1  : ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${RES_WORKER1} / ${BMC_WORKER1} / ${NAME_WORKER1}"
-    echo "Worker2  : ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${RES_WORKER2} / ${BMC_WORKER2} / ${NAME_WORKER2}"
-    echo "SNO      : ${ADDR_SNO} / ${MAC_SNO} / ${HW_SNO} / ${RES_SNO} / ${BMC_SNO} / ${NAME_SNO}"
+    echo "[NODE SETTINGS] (ip/mac/hw/resource/bmc/hostname)" 
+    echo "    Bastion  : ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${RES_BASTION} / ${BMC_BASTION} / ${NAME_BASTION}"
+    echo "    Bootstrap: ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${RES_BOOTSTRAP} / ${BMC_BOOTSTRAP} / ${NAME_BOOTSTRAP}"
+    echo "    Master1  : ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${RES_MASTER1} / ${BMC_MASTER1} / ${NAME_MASTER1}"
+    echo "    Master2  : ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${RES_MASTER2} / ${BMC_MASTER2} / ${NAME_MASTER2}"
+    echo "    Master3  : ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${RES_MASTER3} / ${BMC_MASTER3} / ${NAME_MASTER3}"
+    echo "    Worker1  : ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${RES_WORKER1} / ${BMC_WORKER1} / ${NAME_WORKER1}"
+    echo "    Worker2  : ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${RES_WORKER2} / ${BMC_WORKER2} / ${NAME_WORKER2}"
+    echo "    SNO      : ${ADDR_SNO} / ${MAC_SNO} / ${HW_SNO} / ${RES_SNO} / ${BMC_SNO} / ${NAME_SNO}"
     echo ""
  }
 
@@ -678,13 +693,13 @@ virthost_menu () {
     do
 
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain" "Set VM Type")
+        TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain" "Set VM Type" "Clear vHost Settings")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User" "Set VM Type")
+        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User" "Set VM Type" "Clear vHost Settings")
       fi
 
 
-      select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Delete vHost" "Back to Main Menu"
+      select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Back to Main Menu"
       do
         case ${action}  in
 
@@ -719,12 +734,14 @@ virthost_menu () {
             ;;
   
           "Set vHost Type")
-            select VIRTHOST_TYPE in "libvirt" "ovirt"
+            select VIRTHOST_TYPE in "libvirt" "ovirt" "none"
             do
               case ${VIRTHOST_TYPE} in
                 "libvirt" )
                   break ;;
                 "ovirt" )
+                  break ;;
+                "none" )
                   break ;;
                 "*" )
                    ;;
@@ -790,23 +807,31 @@ virthost_menu () {
             OVIRT_STORAGE_DOMAIN=${input:-$OVIRT_STORAGE_DOMAIN}
             ;;
   
-          "Delete vHost")
-            read -p "DELETE $NODE ... ARE YOU SURE (Y/N): " input
+          "Clear vHost Settings")
+            read -p "Clear vHost Settings ... ARE YOU SURE (Y/N): " input
             if [[ "$input" == "Y" ]]; then
               if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
                   VIRTHOST_IP=""
                   VIRTHOST_PW=""
                   VIRTHOST_FQDN=""
-                  VIRTHOST_TYPE=""
                   VIRTHOST_BR_TYPE=""
                   VIRTHOST_BR_DEV=""
+                  VIRTHOST_HW=""
+                  VIRTHOST_MACHINE=""
+                  VIRTHOST_BMC=""
+                  VIRTHOST_BMC_UID=""
+                  VIRTHOST_BMC_PW=""
+
               elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-                  OVIRT_IP=""
-                  OVIRT_API=""
-                  OVIRT_PW=""
+                  OVIRT_MANAGER_IP=""
+                  OVIRT_MANAGER_FQDN=""
+                  OVIRT_MANAGER_UID=""
+                  OVIRT_MANAGER_PW=""
                   OVIRT_DATACENTER=""
                   OVIRT_STORAGE_DOMAIN=""
                   OVIRT_NETWORK_DOMAIN=""
+                  OVIRT_MACHINE=""
+
               fi
             fi
             ;;
@@ -934,7 +959,7 @@ cluster_menu () {
 
     current_settings
 
-    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Set Strapless" "Back to Main Menu"
+    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Set SNO" "Set Strapless" "Back to Main Menu"
     do
       case ${action}  in
         "Set Name")
@@ -968,7 +993,7 @@ cluster_menu () {
           ;;
 
         "Set Provisioner")
-           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai" "ai-sno"
+           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai"
            do
               case ${CLUSTER_PROVISIONER} in
                 "upi-pxe" )
@@ -976,8 +1001,6 @@ cluster_menu () {
                 "upi-vmedia" )
                   break ;;
                 "ai" )
-                  break ;;
-                "ai-sno" )
                   break ;;
                 "*" )
                   ;;
@@ -990,6 +1013,21 @@ cluster_menu () {
            select CLUSTER_STRAPLESS in "True" "False"
            do
               case ${CLUSTER_STRAPLESS} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+           ;;
+
+        "Set SNO")
+           select CLUSTER_SNO in "True" "False"
+           do
+              case ${CLUSTER_SNO} in
                 "True" )
                   break ;;
                 "False" )

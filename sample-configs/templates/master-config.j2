@@ -42,7 +42,7 @@ all:
     h_ksPROF:        "custom_kickstart"
 {% endif %}
 
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 {% elif t_cluster_provisioner == "upi-vmedia" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
@@ -65,21 +65,24 @@ all:
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
-{% if t_cluster_provisioner == "ai-sno" %}
-      ocp_provisioner:      "ai"
+{% if t_cluster_sno == True %}
       ocp_sno:              True
+{% else %}
+      ocp_sno:              False
+{% endif %}
+{% if t_cluster_provisioner == "ai" %}
+      ocp_provisioner:      "ai"
+      ocp_strapless:        False
+{% if t_cluster_sno == True %}
       ocp_vip_cluster:      "{{ t_addr_sno }}"
       ocp_vip_api:          "{{ t_addr_sno }}"
 {% else %}
-      ocp_provisioner:      "ai"
-      ocp_sno:              False
       ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
       ocp_vip_api:          "{{ t_cluster_api_ip }}"
 {% endif %}
 {% else %}
       ocp_provisioner:      "upi"
-      ocp_strapless:        "{{ t_cluster_strapless }}"
+      ocp_strapless:        {{ t_cluster_strapless }}
       ocp_vip_cluster:      "{{ t_addr_bastion }}"
       ocp_vip_api:          "{{ t_addr_bastion }}"
 {% endif %}
@@ -98,7 +101,7 @@ all:
 
       bastion:
 
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
         assisted_installer: True
 {% else %}
         assisted_installer: False
@@ -216,6 +219,11 @@ myDeployhost:
 
 myBastion:
   hosts:
+{% if t_name_bastion == "localhost.localdomain" %}
+    {{t_name_bastion }}:
+      ansible_connection: local
+      h_pubIP:         "{{ t_addr_bastion }}"
+{% else %}
     {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_ksPROF:        "rhel88-bootiso"
       h_pubIP:         "{{ t_addr_bastion }}"
@@ -233,6 +241,7 @@ myBastion:
 
 {% if t_bmc_bastion|length %}
       bmc_fqdn:        "{{ t_bmc_bastion }}"
+{% endif %}
 {% endif %}
 
 
@@ -256,7 +265,7 @@ myBootstrap:
       h_hwPROF:        "{{ t_hw_bootstrap  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -281,7 +290,7 @@ myBootstrap:
 myMasters:
   hosts:
 
-{% if t_cluster_provisioner != "ai-sno" %}
+{% if t_cluster_sno == False %}
 
 {% if t_addr_master1 is defined and t_addr_master1|length %}
     {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
@@ -294,7 +303,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -319,7 +328,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master2 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -344,7 +353,7 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master3 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -368,7 +377,7 @@ myMasters:
 myWorkers:
   hosts:
 
-{% if t_cluster_provisioner != "ai-sno" %}
+{% if t_cluster_sno == False %}
 
 {% if t_addr_worker1 is defined and t_addr_worker1|length %}
     {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
@@ -381,7 +390,7 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -406,7 +415,7 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker2  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -431,7 +440,7 @@ myWorkers:
 mySNO:
   hosts:
 
-{% if t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_sno == True %}
 
 {% if t_addr_sno is defined and t_addr_sno|length %}
     {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
@@ -444,7 +453,7 @@ mySNO:
       h_hwPROF:        "{{ t_hw_sno  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" %}
+{% if t_cluster_provisioner == "ai" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
