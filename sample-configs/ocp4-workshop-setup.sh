@@ -61,6 +61,14 @@ export BMC_WORKER1=""
 export BMC_WORKER2=""
 export BMC_SNO=""
 export BMC_UID_DEFAULT="root"
+export BMC_UID_BASTION=""
+export BMC_UID_BOOTSTRAP=""
+export BMC_UID_MASTER1=""
+export BMC_UID_MASTER2=""
+export BMC_UID_MASTER3=""
+export BMC_UID_WORKER1=""
+export BMC_UID_WORKER2=""
+export BMC_UID_SNO=""
 export BMC_PW_DEFAULT=""
 export BMC_PW_BASTION=""
 export BMC_PW_BOOTSTRAP=""
@@ -69,7 +77,7 @@ export BMC_PW_MASTER2=""
 export BMC_PW_MASTER3=""
 export BMC_PW_WORKER1=""
 export BMC_PW_WORKER2=""
-export BMC_PW_SNO""
+export BMC_PW_SNO=""
 export MAC_BASTION=""
 export MAC_BOOTSTRAP=""
 export MAC_MASTER1=""
@@ -398,6 +406,11 @@ node_submenu () {
         "Set BMC Address")
           MAGIC_VAR="BMC_$NODE"
           read -p "Enter BMC Address [${!MAGIC_VAR}]: " input
+          eval ${MAGIC_VAR}=${input:-${!MAGIC_VAR}}
+          ;;
+        "Set BMC UID")
+          MAGIC_VAR="BMC_UID_$NODE"
+          read -p "Enter BMC User ID [${!MAGIC_VAR}]: " input
           eval ${MAGIC_VAR}=${input:-${!MAGIC_VAR}}
           ;;
         "Set BMC Password")
@@ -1158,7 +1171,7 @@ main_menu () {
     current_settings
 
     select action in "Set Project Name" \
-                     "Password Settings" \
+                     "Security Settings" \
                      "Ansible Settings" \
                      "Cluster Settings" \
                      "Network Settings" \
@@ -1173,7 +1186,7 @@ main_menu () {
           read -p "Enter Prooject Name [${PROJECT_NAME}]: " input
           PROJECT_NAME=${input:-$PROJECT_NAME}
           ;;
-        "Password Settings")
+        "Security Settings")
           password_menu
           ;;
         "Ansible Settings")

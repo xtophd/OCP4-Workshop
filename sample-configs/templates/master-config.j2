@@ -42,10 +42,18 @@ all:
     h_ksPROF:        "custom_kickstart"
 {% endif %}
 
+{% if t_name_bastion == "localhost.localdomain" %}
+{% if t_cluster_provisioner == "ai" %}
+    h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}.iso"
+{% elif t_cluster_provisioner == "upi-vmedia" %}
+    h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
+{% else %}
 {% if t_cluster_provisioner == "ai" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
 {% elif t_cluster_provisioner == "upi-vmedia" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+{% endif %}
 {% endif %}
 
     g_clusterAdmin:       "cloud-admin"
@@ -210,6 +218,13 @@ myDeployhost:
 
   vars:
     ansible_connection: local
+
+    ##  This is not a host we deploy, so ensure h_plPROF and h_ksPROF
+    ##  are empty otherwise it screws up building xtoph_deploy dictionary
+
+    h_plPROF:        ""
+    h_ksPROF:        ""
+
 
 
 

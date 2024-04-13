@@ -8,7 +8,7 @@ custom_kickstart:
 
     name:              "custom_kickstart"
 
-{% if ( t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" ) and t_virthost_type == "libvirt" %}
+{% if t_cluster_provisioner == "ai" and t_virthost_type == "libvirt" %}
     description:            "Custom kickstart: (AI + LIBVIRT) simple_cdrom + wait_for_ssh + async restart_monitor"
     method:                 "simple_cdrom"
     wait_for_powerup:       false
@@ -16,7 +16,7 @@ custom_kickstart:
     wait_for_ssh:           true
     launch_restart_monitor: true
 
-{% elif ( t_cluster_provisioner == "ai" or t_cluster_provisioner == "ai-sno" ) and t_virthost_type == "ovirt" %}
+{% elif t_cluster_provisioner == "ai" and t_virthost_type == "ovirt" %}
     description:            "Custom kickstart: (AI + OVIRT) simple_cdrom + wait_for_ssh"
     method:                 "simple_cdrom"
     wait_for_powerup:       false
