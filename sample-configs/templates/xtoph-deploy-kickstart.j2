@@ -6,11 +6,14 @@
 
 custom_kickstart:
 
-    name:              "custom_kickstart"
+    name:                   "custom_kickstart"
+    method:                 "simple_cdrom"
+{% raw %}
+    iso_url:                "{{ h_isoURL | default('') }}"
+{% endraw %}
 
 {% if t_cluster_provisioner == "ai" and t_virthost_type == "libvirt" %}
     description:            "Custom kickstart: (AI + LIBVIRT) simple_cdrom + wait_for_ssh + async restart_monitor"
-    method:                 "simple_cdrom"
     wait_for_powerup:       false
     wait_for_shutdown:      false
     wait_for_ssh:           true
@@ -18,7 +21,6 @@ custom_kickstart:
 
 {% elif t_cluster_provisioner == "ai" and t_virthost_type == "ovirt" %}
     description:            "Custom kickstart: (AI + OVIRT) simple_cdrom + wait_for_ssh"
-    method:                 "simple_cdrom"
     wait_for_powerup:       false
     wait_for_shutdown:      false
     wait_for_ssh:           true
@@ -26,7 +28,6 @@ custom_kickstart:
 
 {% elif t_cluster_provisioner == "upi-vmedia" and t_virthost_type == "libvirt" %}
     description:            "Custom kickstart: (UPI-vMEDIA + LIBVIRT) simple_cdrom + wait_for_ssh"
-    method:                 "simple_cdrom"
     wait_for_powerup:       false
     wait_for_shutdown:      true
     wait_for_ssh:           true
@@ -34,15 +35,26 @@ custom_kickstart:
 
 {% elif t_cluster_provisioner == "upi-vmedia" and t_virthost_type == "ovirt" %}
     description:            "Custom kickstart: (UPI-vMEDIA + OVIRT) simple_cdrom + wait_for_ssh"
-    method:                 "simple_cdrom"
     wait_for_powerup:       false
     wait_for_shutdown:      false
     wait_for_ssh:           true
     launch_restart_monitor: false
 
+{% elif t_cluster_provisioner == "upi-vmedia" and t_cluster_sno == true  %}
+    description:            "Custom kickstart: (UPI-vMEDIA + SNO) simple_cdrom + don't wait for anything"
+    wait_for_powerup:       false
+    wait_for_shutdown:      false
+    wait_for_ssh:           false
+    launch_restart_monitor: false
+
+{% else %}
+    description:            "Custom kickstart: (DEFAULT) baremetal with BMC"
+    wait_for_powerup:       false
+    wait_for_shutdown:      false
+    wait_for_ssh:           true
+    launch_restart_monitor: false
+
+
 {% endif %}
 
-{% raw %}
-    iso_url:           "{{ h_isoURL | default('') }}"
-{% endraw %}
 

@@ -267,6 +267,8 @@ myBastion:
 
 myBootstrap:
   hosts:
+
+{% if t_cluster_sno == False %}
 {% if (( t_cluster_provisioner == "upi-pxe" or t_cluster_provisioner == "upi-vmedia" ) and t_cluster_strapless == False ) %}
 
 {% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
@@ -295,7 +297,7 @@ myBootstrap:
 {% endif %}
 
 {% endif %}
-
+{% endif %}
 
 
 ## -----------------
