@@ -475,7 +475,12 @@ mySNO:
 {% endif %}
 
       h_rhcosDEV:      "{{ t_blkdev_sno }}"
+{% if t_nicmode_sno is defined and t_nicmode_sno == "static" %}
+      h_rhcosNIC:      "{{ t_addr_sno }}::{{ t_network_gateway }}:{{ t_network_netmask }}:{{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:{{ t_netdev_sno }}:none:{{ t_network_dns_server }}"
+      h_rhcosNICmode:  "{{ t_nicmode_sno }}"
+{% else %}
       h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
+{% endif %}
       h_rhcosUSBdelay: "{{ t_usbdelay_sno }}"
       h_rhcosLOADER:   "{{ t_bootmode_sno }}"
 {% endif %}

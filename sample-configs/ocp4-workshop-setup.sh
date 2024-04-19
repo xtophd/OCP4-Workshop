@@ -3,7 +3,6 @@ export PROJECT_NAME=""
 export ANSIBLE_SOURCE=""
 export ANSIBLE_IP=""
 export ANSIBLE_VAULT_PW=""
-export ANSIBLE_BASTION_IS_LOCALHOST="False"
 export WORKSHOP_ADMIN_PW=""
 export WORKSHOP_ADMIN_UID="cloud-admin"
 export WORKSHOP_USER_PW=""
@@ -85,7 +84,15 @@ export MAC_MASTER2=""
 export MAC_MASTER3=""
 export MAC_WORKER1=""
 export MAC_WORKER2=""
-export MAC_SNO=""
+export MAC_SNO="dhcp"
+export NICMODE_BASTION="dhcp"
+export NICMODE_BOOTSTRAP="dhcp"
+export NICMODE_MASTER1="dhcp"
+export NICMODE_MASTER2="dhcp"
+export NICMODE_MASTER3="dhcp"
+export NICMODE_WORKER1="dhcp"
+export NICMODE_WORKER2="dhcp"
+export NICMODE_SNO="dhcp"
 export HW_BASTION=""
 export HW_BOOTSTRAP=""
 export HW_MASTER1=""
@@ -137,7 +144,6 @@ cat > ./config/ocp4-workshop-setup.ans <<EO_ANSWERS
 PROJECT_NAME="${PROJECT_NAME}"
 ANSIBLE_SOURCE="${ANSIBLE_SOURCE}"
 ANSIBLE_IP="${ANSIBLE_IP}"
-ANSIBLE_BASTION_IS_LOCALHOST="${ANSIBLE_BASTION_IS_LOCALHOST}"
 CLUSTER_NAME="${CLUSTER_NAME}"
 CLUSTER_WILDCARD="${CLUSTER_WILDCARD}"
 CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
@@ -199,6 +205,14 @@ MAC_MASTER3="${MAC_MASTER3}"
 MAC_WORKER1="${MAC_WORKER1}"
 MAC_WORKER2="${MAC_WORKER2}"
 MAC_SNO="${MAC_SNO}"
+NICMODE_BASTION="${NICMODE_BASTION}"
+NICMODE_BOOTSTRAP="${NICMODE_BOOTSTRAP}"
+NICMODE_MASTER1="${NICMODE_MASTER1}"
+NICMODE_MASTER2="${NICMODE_MASTER2}"
+NICMODE_MASTER3="${NICMODE_MASTER3}"
+NICMODE_WORKER1="${NICMODE_WORKER1}"
+NICMODE_WORKER2="${NICMODE_WORKER2}"
+NICMODE_SNO="${NICMODE_SNO}"
 HW_BASTION="${HW_BASTION}"
 HW_BOOTSTRAP="${HW_BOOTSTRAP}"
 HW_MASTER1="${HW_MASTER1}"
@@ -263,7 +277,6 @@ current_settings () {
     echo "[ ANSIBLE ]"
     echo "    Source                ... ${ANSIBLE_SOURCE}"
     echo "    Ctrl Host IP          ... ${ANSIBLE_IP}"
-    echo "    Ctrl Host is Bastion  ... ${ANSIBLE_BASTION_IS_LOCALHOST}"
 
     echo "[ OCP CLUSTER ]"
     echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
@@ -290,15 +303,15 @@ current_settings () {
         echo "    vHost Type ... ${VIRTHOST_TYPE}"
     fi
 
-    echo "[NODE SETTINGS] (ip/mac/hw/resource/bmc/hostname)" 
-    echo "    Bastion  : ${ADDR_BASTION} / ${MAC_BASTION} / ${HW_BASTION} / ${RES_BASTION} / ${BMC_BASTION} / ${NAME_BASTION}"
-    echo "    Bootstrap: ${ADDR_BOOTSTRAP} / ${MAC_BOOTSTRAP} / ${HW_BOOTSTRAP} / ${RES_BOOTSTRAP} / ${BMC_BOOTSTRAP} / ${NAME_BOOTSTRAP}"
-    echo "    Master1  : ${ADDR_MASTER1} / ${MAC_MASTER1} / ${HW_MASTER1} / ${RES_MASTER1} / ${BMC_MASTER1} / ${NAME_MASTER1}"
-    echo "    Master2  : ${ADDR_MASTER2} / ${MAC_MASTER2} / ${HW_MASTER2} / ${RES_MASTER2} / ${BMC_MASTER2} / ${NAME_MASTER2}"
-    echo "    Master3  : ${ADDR_MASTER3} / ${MAC_MASTER3} / ${HW_MASTER3} / ${RES_MASTER3} / ${BMC_MASTER3} / ${NAME_MASTER3}"
-    echo "    Worker1  : ${ADDR_WORKER1} / ${MAC_WORKER1} / ${HW_WORKER1} / ${RES_WORKER1} / ${BMC_WORKER1} / ${NAME_WORKER1}"
-    echo "    Worker2  : ${ADDR_WORKER2} / ${MAC_WORKER2} / ${HW_WORKER2} / ${RES_WORKER2} / ${BMC_WORKER2} / ${NAME_WORKER2}"
-    echo "    SNO      : ${ADDR_SNO} / ${MAC_SNO} / ${HW_SNO} / ${RES_SNO} / ${BMC_SNO} / ${NAME_SNO}"
+    echo "[NODE SETTINGS] (ip/mode/mac/hw/resource/bmc/hostname)" 
+    echo "    Bastion  : ${NICMODE_BASTION}/${ADDR_BASTION}/${MAC_BASTION}/${HW_BASTION}/${RES_BASTION}/${BMC_BASTION}/${NAME_BASTION}"
+    echo "    Bootstrap: ${NICMODE_BOOTSTRAP}/${ADDR_BOOTSTRAP}/${MAC_BOOTSTRAP}/${HW_BOOTSTRAP}/${RES_BOOTSTRAP}/${BMC_BOOTSTRAP}/${NAME_BOOTSTRAP}"
+    echo "    Master1  : ${NICMODE_MASTER1}/${ADDR_MASTER1}/${MAC_MASTER1}/${HW_MASTER1}/${RES_MASTER1}/${BMC_MASTER1}/${NAME_MASTER1}"
+    echo "    Master2  : ${NICMODE_MASTER2}/${ADDR_MASTER2}/${MAC_MASTER2}/${HW_MASTER2}/${RES_MASTER2}/${BMC_MASTER2}/${NAME_MASTER2}"
+    echo "    Master3  : ${NICMODE_MASTER3}/${ADDR_MASTER3}/${MAC_MASTER3}/${HW_MASTER3}/${RES_MASTER3}/${BMC_MASTER3}/${NAME_MASTER3}"
+    echo "    Worker1  : ${NICMODE_WORKER1}/${ADDR_WORKER1}/${MAC_WORKER1}/${HW_WORKER1}/${RES_WORKER1}/${BMC_WORKER1}/${NAME_WORKER1}"
+    echo "    Worker2  : ${NICMODE_WORKER2}/${ADDR_WORKER2}/${MAC_WORKER2}/${HW_WORKER2}/${RES_WORKER2}/${BMC_WORKER2}/${NAME_WORKER2}"
+    echo "    SNO      : ${NICMODE_SNO}/${ADDR_SNO}/${MAC_SNO}/${HW_SNO}/${RES_SNO}/${BMC_SNO}/${NAME_SNO}"
     echo ""
  }
 
@@ -375,7 +388,7 @@ node_submenu () {
 
     current_settings
 
-    select action in "Set Name" "Set IP Address" "Set MAC Address" "Set Hardware" "Set Resources" "Set BMC Address" "Set BMC Password" "Delete Node" "Back to Node Settings"
+    select action in "Set Name" "Set NIC Mode" "Set IP Address" "Set MAC Address" "Set Hardware" "Set Resources" "Set BMC Address" "Set BMC Password" "Delete Node" "Back to Node Settings"
     do
       case ${action}  in
         "Set Name")
@@ -398,6 +411,20 @@ node_submenu () {
           read -p "Enter IP Address [${!MAGIC_VAR}]: " input
           eval ${MAGIC_VAR}=${input:-${!MAGIC_VAR}}
           ;;
+        "Set NIC Mode")
+          select NIC_MODE in "static" "dhcp" 
+          do
+            case ${NIC_MODE} in
+              "static" | "dhcp" )
+                MAGIC_VAR="NICMODE_$NODE"
+                eval ${MAGIC_VAR}=${NIC_MODE}
+                break ;;
+              "*" )
+                 ;;
+             esac
+             REPLY=
+           done
+           ;;
         "Set MAC Address")
           MAGIC_VAR="MAC_$NODE"
           read -p "Enter MAC Address [${!MAGIC_VAR}]: " input
