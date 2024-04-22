@@ -116,15 +116,15 @@ all:
 {% endif %}
         firewalld:          True
         cockpit:            False
-        dns:                True
-        dhcp:               True
-        dhcp_pxe:           True
-        dhcp_uefi_http:     True
-        haproxy:            True
+        dns:                {{ t_bastion_dns }}
+        dhcp:               {{ t_bastion_dhcp }}
+        dhcp_pxe:           {{ t_bastion_dhcp }}
+        dhcp_uefi_http:     {{ t_bastion_dhcp }}
+        haproxy:            {{ t_bastion_haproxy }}
         matchbox:           True
-        nfs:                True
-        ntp:                True
-        squid:              False
+        nfs:                {{ t_bastion_nfs }}
+        ntp:                {{ t_bastion_ntp }}
+        squid:              {{ t_bastion_squid }}
         workshop_user:      True
         workshop_materials: True
 {% if   t_virthost_br_type == "nat" %}

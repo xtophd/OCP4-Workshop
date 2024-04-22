@@ -14,4 +14,4 @@ echo ""
 echo "# Installing 'ansible'"
 echo ""
 
-yum install -y ansible-core ansible-collection-ansible-posix
+yum install -y ansible-core ansible-collection-ansible-posix ipcalc

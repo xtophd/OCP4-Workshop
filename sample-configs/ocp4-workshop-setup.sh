@@ -12,9 +12,15 @@ export CLUSTER_PROVISIONER=""
 export CLUSTER_LOADBALANCER_IP=""
 export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
-export CLUSTER_VERSION="4.12"
+export CLUSTER_VERSION="4.15"
 export CLUSTER_STRAPLESS="False"
 export CLUSTER_SNO="False"
+export BASTION_DNS="True"
+export BASTION_DHCP="True"
+export BASTION_HAPROXY="True"
+export BASTION_NTP="True"
+export BASTION_NFS="True"
+export BASTION_SQUID="False"
 export VIRTHOST_IP=""
 export VIRTHOST_UID="root"
 export VIRTHOST_PW=""
@@ -152,6 +158,12 @@ CLUSTER_API_IP="${CLUSTER_API_IP}"
 CLUSTER_VERSION="${CLUSTER_VERSION}"
 CLUSTER_STRAPLESS="${CLUSTER_STRAPLESS}"
 CLUSTER_SNO="${CLUSTER_SNO}"
+BASTION_DNS="${BASTION_DNS}"
+BASTION_DHCP="${BASTION_DHCP}"
+BASTION_HAPROXY="${BASTION_HAPROXY}"
+BASTION_NTP="${BASTION_NTP}"
+BASTION_NFS="${BASTION_NFS}"
+BASTION_SQUID="${BASTION_SQUID}"
 NETWORK_ID="${NETWORK_ID}"
 NETWORK_GATEWAY="${NETWORK_GATEWAY}"
 NETWORK_PREFIX="${NETWORK_PREFIX}"
@@ -278,6 +290,10 @@ current_settings () {
     echo "    Source                ... ${ANSIBLE_SOURCE}"
     echo "    Ctrl Host IP          ... ${ANSIBLE_IP}"
 
+    echo "[ BASTION ]"
+    printf "    %-7s / %-7s / %-7s / %-7s / %-7s / %-7s\n" dns dhcp haproxy ntp nfs squid
+    printf "    %-7s   %-7s   %-7s   %-7s   %-7s   %-7s\n" ${BASTION_DNS} ${BASTION_DHCP} ${BASTION_HAPROXY} ${BASTION_NTP} ${BASTION_NFS} ${BASTION_SQUID}
+
     echo "[ OCP CLUSTER ]"
     echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
     echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
@@ -303,7 +319,7 @@ current_settings () {
         echo "    vHost Type ... ${VIRTHOST_TYPE}"
     fi
 
-    echo "[NODE SETTINGS] (ip/mode/mac/hw/resource/bmc/hostname)" 
+    echo "[NODE SETTINGS] (mode/ip/mac/hw/resource/bmc/hostname)" 
     echo "    Bastion  : ${NICMODE_BASTION}/${ADDR_BASTION}/${MAC_BASTION}/${HW_BASTION}/${RES_BASTION}/${BMC_BASTION}/${NAME_BASTION}"
     echo "    Bootstrap: ${NICMODE_BOOTSTRAP}/${ADDR_BOOTSTRAP}/${MAC_BOOTSTRAP}/${HW_BOOTSTRAP}/${RES_BOOTSTRAP}/${BMC_BOOTSTRAP}/${NAME_BOOTSTRAP}"
     echo "    Master1  : ${NICMODE_MASTER1}/${ADDR_MASTER1}/${MAC_MASTER1}/${HW_MASTER1}/${RES_MASTER1}/${BMC_MASTER1}/${NAME_MASTER1}"
@@ -344,14 +360,23 @@ prepare_deployment () {
         ;;
     esac
 
+    ##
+    ##    Reprint the current settings & re-calculate any vars
+    ##      (ipcalc may have just gotten installed)
+    ##
 
+    echo -n "## Here are the current settings"
 
-    echo -n "## Parsing sample-configs"
+    current_settings
 
 
 
     echo -n "## Templating configuration files"
+
     ansible-playbook sample-configs/ocp4-workshop-setup.yml
+
+
+
 
     echo -n "## Encrypt the credentials.yml"
 
@@ -988,6 +1013,137 @@ network_menu () {
 
 }
 
+# ---
+
+bastion_menu () {
+
+    SAVED_PROMPT="$PS3"
+
+    PS3="BASTION MENU: "
+
+    current_settings
+
+    select action in "Set DNS" "Set DHCP" "Set HAPROXY" "Set NTP" "Set NFS" "Set SQUID" "Back to Main Menu"
+    do
+      case ${action}  in
+        "Set DNS")
+          select BASTION_DNS in "True" "False"
+            do
+              case ${BASTION_DNS} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set DHCP")
+          select BASTION_DHCP in "True" "False"
+            do
+              case ${BASTION_DHCP} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set HAPROXY")
+          select BASTION_HAPROXY in "True" "False"
+            do
+              case ${BASTION_HAPROXY} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set NTP")
+          select BASTION_NTP in "True" "False"
+            do
+              case ${BASTION_NTP} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set NFS")
+          select BASTION_NFS in "True" "False"
+            do
+              case ${BASTION_NFS} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set SQUID")
+          select BASTION_SQUID in "True" "False"
+            do
+              case ${BASTION_SQUID} in
+                "True" )
+                  break ;;
+                "False" )
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Back to Main Menu")
+          PS3=${SAVED_PROMPT}
+          break
+          ;;
+
+        "*")
+          echo "That's NOT an option, try again..."
+          ;;
+
+      esac
+
+      ##
+      ##    Reprint the current settings
+      ##
+
+      current_settings
+
+      ##
+      ##    The following causes the select
+      ##    statement to reprint the menu
+      ##
+
+      REPLY=
+
+    done
+
+}
+
 
 # ---
 
@@ -1008,9 +1164,10 @@ cluster_menu () {
            ;;
 
         "Set Version")
-           select CLUSTER_VERSION in "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
+           select CLUSTER_VERSION in "4.15" "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
            do
               case ${CLUSTER_VERSION} in
+                "4.15" | \
                 "4.14" | \
                 "4.13" | \
                 "4.12" | \
@@ -1200,6 +1357,7 @@ main_menu () {
     select action in "Set Project Name" \
                      "Security Settings" \
                      "Ansible Settings" \
+                     "Bastion Settings" \
                      "Cluster Settings" \
                      "Network Settings" \
                      "Virt Host Settings" \
@@ -1218,6 +1376,9 @@ main_menu () {
           ;;
         "Ansible Settings")
           ansible_menu
+          ;;
+        "Bastion Settings")
+          bastion_menu
           ;;
         "Cluster Settings")
           cluster_menu

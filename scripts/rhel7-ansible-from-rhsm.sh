@@ -12,4 +12,4 @@ subscription-manager repos --disable=*
 subscription-manager repos --enable=rhel-7-server-ansible-2.9-rpms \
                            --enable=rhel-7-server-rpms 
 
-yum install -y ansible
+yum install -y ansible ipcalc

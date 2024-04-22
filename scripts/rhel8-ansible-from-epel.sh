@@ -14,4 +14,4 @@ echo ""
 echo "# Installing 'ansible'"
 echo ""
 
-yum install -y ansible
+yum install -y ansible ipcalc
