@@ -275,6 +275,7 @@ myBootstrap:
     {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_bootstrap }}" 
       h_rsPROF:        "{{ t_res_bootstrap  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_bootstrap }}"
 {% if t_mac_bootstrap|length %}
       h_pubMAC:        "{{ t_mac_bootstrap }}"
 {% endif -%}
@@ -286,8 +287,8 @@ myBootstrap:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_bootstrap }}"
       h_rhcosNIC:      "{{ t_netdev_bootstrap }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_bootstrap }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_bootstrap }}"
       h_rhcosLOADER:   "{{ t_bootmode_bootstrap }}"
 {% endif %}
@@ -313,6 +314,7 @@ myMasters:
     {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master1 }}"
       h_rsPROF:        "{{ t_res_master1  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_master1 }}"
 {% if t_mac_master1|length %}
       h_pubMAC:        "{{ t_mac_master1 }}"
 {% endif -%}
@@ -324,8 +326,8 @@ myMasters:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_master1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
 {% endif %}
@@ -338,6 +340,7 @@ myMasters:
     {{ t_name_master2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master2 }}"
       h_rsPROF:        "{{ t_res_master2  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_master2 }}"
 {% if t_mac_master2|length %}
       h_pubMAC:        "{{ t_mac_master2 }}"
 {% endif %}
@@ -349,8 +352,8 @@ myMasters:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_master2 }}"
       h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_master2 }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_master2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master2 }}"
 {% endif %}
@@ -363,6 +366,7 @@ myMasters:
     {{ t_name_master3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_master3 }}"
       h_rsPROF:        "{{ t_res_master3  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_master3 }}"
 {% if t_mac_master3|length %}
       h_pubMAC:        "{{ t_mac_master3 }}"
 {% endif %}
@@ -374,8 +378,8 @@ myMasters:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_master3 }}"
       h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_master3 }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_master3 }}"
       h_rhcosLOADER:   "{{ t_bootmode_master3 }}"
 {% endif %}
@@ -400,6 +404,7 @@ myWorkers:
     {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker1 }}" 
       h_rsPROF:        "{{ t_res_worker1  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_worker1 }}"
 {% if t_mac_worker1|length %}
       h_pubMAC:        "{{ t_mac_worker1 }}"
 {% endif %}
@@ -411,8 +416,8 @@ myWorkers:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
       h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_worker1 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker1 }}"
 {% endif %}
@@ -425,6 +430,7 @@ myWorkers:
     {{ t_name_worker2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_worker2 }}" 
       h_rsPROF:        "{{ t_res_worker2  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_worker2 }}"
 {% if t_mac_worker2|length %}
       h_pubMAC:        "{{ t_mac_worker2 }}"
 {% endif %}
@@ -436,8 +442,8 @@ myWorkers:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
       h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_worker2 }}"
       h_rhcosLOADER:   "{{ t_bootmode_worker2 }}"
 {% endif %}
@@ -463,6 +469,7 @@ mySNO:
     {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_pubIP:         "{{ t_addr_sno }}"
       h_rsPROF:        "{{ t_res_sno  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_sno }}"
 {% if t_mac_sno|length %}
       h_pubMAC:        "{{ t_mac_sno }}"
 {% endif %}
@@ -474,9 +481,8 @@ mySNO:
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosDEV:      "{{ t_blkdev_sno }}"
       h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
-      h_rhcosNICmode:  "{{ t_nicmode_sno }}"
+      h_rhcosDEV:      "{{ t_blkdev_sno }}"
       h_rhcosUSBdelay: "{{ t_usbdelay_sno }}"
       h_rhcosLOADER:   "{{ t_bootmode_sno }}"
 {% endif %}
