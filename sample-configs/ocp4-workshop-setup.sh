@@ -12,7 +12,7 @@ export CLUSTER_PROVISIONER=""
 export CLUSTER_LOADBALANCER_IP=""
 export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
-export CLUSTER_VERSION="4.15"
+export CLUSTER_VERSION="4.16"
 export CLUSTER_STRAPLESS="False"
 export CLUSTER_SNO="False"
 export BASTION_DNS="True"
@@ -1164,9 +1164,10 @@ cluster_menu () {
            ;;
 
         "Set Version")
-           select CLUSTER_VERSION in "4.15" "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
+           select CLUSTER_VERSION in "4.16" "4.15" "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
            do
               case ${CLUSTER_VERSION} in
+                "4.16" | \
                 "4.15" | \
                 "4.14" | \
                 "4.13" | \
