@@ -19,7 +19,6 @@ all:
     ##    Baremetal hosts will override defaults in
     ##      host group sections
 
-    h_rhcosNIC:      "dhcp"
     h_rhcosUSBdelay: "0"
     h_rhcosLOADER:   "bios"
 
@@ -27,9 +26,11 @@ all:
 
 {% if t_virthost_type == "libvirt" %}
     h_rhcosDEV:      "{{ t_blkdev_virthost }}"
+    h_rhcosNIC:      "{{ t_netdev_virthost }}"
     h_hwPROF:        "{{ t_virthost_machine }}"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "{{ t_blkdev_ovirt }}"
+    h_rhcosNIC:      "{{  t_netdev_ovirt }}"
     h_hwPROF:        "{{ t_ovirt_machine }}"
 {% endif %}
 
