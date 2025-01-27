@@ -76,6 +76,8 @@ custom_platform:
 {% endraw %}
 {% endif %}
 
+            macvtap_device:     "{{ t_virthost_vtap_dev }}"
+            macvtap_vlan_id:    "{{ t_virthost_vtap_vlan_id }}"
 
             fwd_type:        "{{ t_virthost_br_type }}"
             bridge_netdev:   "{{ t_virthost_br_dev }}"

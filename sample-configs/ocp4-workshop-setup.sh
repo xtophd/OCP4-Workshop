@@ -26,6 +26,8 @@ export VIRTHOST_UID="root"
 export VIRTHOST_PW=""
 export VIRTHOST_FQDN=""
 export VIRTHOST_TYPE="none"
+export VIRTHOST_VTAP_DEV=""
+export VIRTHOST_VTAP_VID=""
 export VIRTHOST_BR_TYPE=""
 export VIRTHOST_BR_DEV=""
 export VIRTHOST_HW=""
@@ -176,6 +178,8 @@ VIRTHOST_IP="${VIRTHOST_IP}"
 VIRTHOST_FQDN="${VIRTHOST_FQDN}"
 VIRTHOST_UID="${VIRTHOST_UID}"
 VIRTHOST_TYPE="${VIRTHOST_TYPE}"
+VIRTHOST_VTAP_DEV="${VIRTHOST_VTAP_DEV}"
+VIRTHOST_VTAP_VID="${VIRTHOST_VTAP_VID}"
 VIRTHOST_BR_DEV="${VIRTHOST_BR_DEV}"
 VIRTHOST_BR_TYPE="${VIRTHOST_BR_TYPE}"
 VIRTHOST_DATACENTER="${VIRTHOST_DATACENTER}"
@@ -307,13 +311,18 @@ current_settings () {
 
     echo "[ VIRT HOST ]"
     if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        echo "    vHost Type                  ... ${VIRTHOST_TYPE}"
-        echo "    oVirt API (ip/fqdn)         ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}" 
-        echo "    oVirt (vm/dc/blkdom/netdom) ... ${OVIRT_MACHINE} / ${OVIRT_DATACENTER} / ${OVIRT_STORAGE_DOMAIN} / ${OVIRT_NETWORK_DOMAIN}" 
+        echo "    oVirt API (ip/fqdn)         ... ${OVIRT_MANAGER_IP} / ${OVIRT_MANAGER_FQDN}"
+        echo "          Datacenter            ... ${OVIRT_DATACENTER}"
+        echo "          Storage Domain        ... ${OVIRT_STORAGE_DOMAIN}"
+        echo "          Network Domain        ... ${OVIRT_NETWORK_DOMAIN}"
+        echo "          VM machine            ... ${OVIRT_MACHINE}"
     elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "    vHost Type                      ... ${VIRTHOST_TYPE}"
-        echo "    lVirt Host (ip/fqdn/hw/bmc/uid) ... ${VIRTHOST_IP} / ${VIRTHOST_FQDN} / ${VIRTHOST_HW} / ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}" 
-        echo "    lVirt (vm/netdev/brtype)        ... ${VIRTHOST_MACHINE} / ${VIRTHOST_BR_DEV} / ${VIRTHOST_BR_TYPE}" 
+        echo "    lVirt Host   (ip/mac/fqdn)  ... ${VIRTHOST_IP} / ${VIRTHOST_MAC} / ${VIRTHOST_FQDN}"
+        echo "                 (hw/ks)        ... ${VIRTHOST_HW} / ${VIRTHOST_KS}"
+        echo "          BRIDGE (type/dev)     ... ${VIRTHOST_MACHINE} / ${VIRTHOST_BR_TYPE} / ${VIRTHOST_BR_DEV}"
+        echo "          VTAP   (dev/vlan-id)  ... ${VIRTHOST_VTAP_DEV} / ${VIRTHOST_VTAP_VID}"
+        echo "          BMC    (ip/uid)       ... ${VIRTHOST_BMC} / ${VIRTHOST_BMC_UID}"
+        echo "          VM     (machine)      ... ${VIRTHOST_MACHINE}"
     else
         echo "    vHost Type ... ${VIRTHOST_TYPE}"
     fi
@@ -759,9 +768,8 @@ virthost_menu () {
       if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
         TYPE_ACTIONS=("Set Manager IP" "Set Manager FQDN" "Set Datacenter" "Set Storage Domain" "Set Network Domain" "Set VM Type" "Clear vHost Settings")
       elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        TYPE_ACTIONS=("Set vHost IP" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set HW Type" "Set BMC FQDN" "Set BMC User" "Set VM Type" "Clear vHost Settings")
+        TYPE_ACTIONS=("Set vHost IP" "Set vHost MAC" "Set vHost FQDN" "Set vHost User" "Set Bridge Device" "Set Bridge Type" "Set VTAP device" "Set VTAP vlan-id" "Set HW Type" "Set KS Profile" "Set BMC FQDN" "Set BMC User" "Set VM Type" "Clear vHost Settings")
       fi
-
 
       select action in "Set vHost Type" "${TYPE_ACTIONS[@]}" "Back to Main Menu"
       do
@@ -787,17 +795,29 @@ virthost_menu () {
             VIRTHOST_HW=${input:-$VIRTHOST_HW}
             ;;
 
+          "Set KS Profile")
+            read -p "Enter libvirt host kickstart profile [${VIRTHOST_KS}]: " input
+            VIRTHOST_KS=${input:-$VIRTHOST_KS}
+            ;;
+
           "Set vHost IP")
             read -p "Enter libvirt host IP [${VIRTHOST_IP}]: " input
             VIRTHOST_IP=${input:-$VIRTHOST_IP}
             ;;
-  
+
+          "Set vHost MAC")
+            read -p "Enter libvirt host MAC [${VIRTHOST_MAC}]: " input
+            VIRTHOST_MAC=${input:-$VIRTHOST_MAC}
+            ;;
+
           "Set vHost FQDN")
             read -p "Enter libvirt host FQDN [${VIRTHOST_FQDN}]: " input
             VIRTHOST_FQDN=${input:-$VIRTHOST_FQDN}
             ;;
-  
+
           "Set vHost Type")
+            SUB_PROMPT="${PS3}"
+            PS3="Select vHost Type: "
             select VIRTHOST_TYPE in "libvirt" "ovirt" "none"
             do
               case ${VIRTHOST_TYPE} in
@@ -812,6 +832,7 @@ virthost_menu () {
               esac
               REPLY=
             done
+            PS3="${SUB_PROMPT}"
 
             current_settings
             REPLY=
@@ -823,7 +844,17 @@ virthost_menu () {
             read -p "Enter libvirt host bridge device[${VIRTHOST_BR_DEV}]: " input
             VIRTHOST_BR_DEV=${input:-$VIRTHOST_BR_DEV}
             ;;
-  
+
+          "Set VTAP device")
+            read -p "Enter libvirt host macvtap device[${VIRTHOST_VTAP_DEV}]: " input
+            VIRTHOST_VTAP_DEV=${input:-$VIRTHOST_VTAP_DEV}
+            ;;
+
+          "Set VTAP vlan-id")
+            read -p "Enter libvirt host macvtap vlan-id${VIRTHOST_VTAP_VID}]: " input
+            VIRTHOST_VTAP_VID=${input:-$VIRTHOST_VTAP_VID}
+            ;;
+
           "Set Bridge Type")
              select VIRTHOST_BR_TYPE in "bridge" "macvtap" "nat"
              do
@@ -845,22 +876,22 @@ virthost_menu () {
             read -p "Enter oVirt Manager User [${OVIRT_MANAGER_UID}]: " input
             OVIRT_MANAGER_UID=${input:-$OVIRT_MANAGER_UID}
             ;;
-  
+
           "Set Manager IP")
             read -p "Enter oVirt Manager IP[${OVIRT_MANAGER_IP}]: " input
             OVIRT_MANAGER_IP=${input:-$OVIRT_MANAGER_IP}
             ;;
-  
+
           "Set Manager FQDN")
             read -p "Enter oVirt Manager FQDN[${OVIRT_MANAGER_FQDN}]: " input
             OVIRT_MANAGER_FQDN=${input:-$OVIRT_MANAGER_FQDN}
             ;;
-  
+
           "Set Datacenter")
             read -p "Enter oVirt Datacenter[${OVIRT_DATACENTER}]: " input
             OVIRT_DATACENTER=${input:-$OVIRT_DATACENTER}
             ;;
-  
+
           "Set Network Domain")
             read -p "Enter oVirt Network Domain[${VIRTHOST_NETWORK_DOMAIN}]: " input
             OVIRT_NETWORK_DOMAIN=${input:-$OVIRT_NETWORK_DOMAIN}
@@ -870,7 +901,7 @@ virthost_menu () {
             read -p "Enter oVirt Storage Domain[${OVIRT_STORAGE_DOMAIN}]: " input
             OVIRT_STORAGE_DOMAIN=${input:-$OVIRT_STORAGE_DOMAIN}
             ;;
-  
+
           "Clear vHost Settings")
             read -p "Clear vHost Settings ... ARE YOU SURE (Y/N): " input
             if [[ "$input" == "Y" ]]; then
@@ -880,12 +911,13 @@ virthost_menu () {
                   VIRTHOST_FQDN=""
                   VIRTHOST_BR_TYPE=""
                   VIRTHOST_BR_DEV=""
+                  VIRTHOST_VTAP_DEV=""
+                  VIRTHOST_VTAP_VID=""
                   VIRTHOST_HW=""
                   VIRTHOST_MACHINE=""
                   VIRTHOST_BMC=""
                   VIRTHOST_BMC_UID=""
                   VIRTHOST_BMC_PW=""
-
               elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
                   OVIRT_MANAGER_IP=""
                   OVIRT_MANAGER_FQDN=""
