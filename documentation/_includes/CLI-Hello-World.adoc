@@ -612,7 +612,7 @@ Once again, you can use the sample script in /var/tmp to make life a little easi
 
 .[root@master ~]#
 ----
-workshop-install-helloworld.sh
+exercise2-install-helloworld.sh
 ----
 
 .Your output should look like this
