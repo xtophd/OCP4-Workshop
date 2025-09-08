@@ -364,26 +364,26 @@ First let's have a look at the current settings.
     
 .[root@master ~]#
 ----
-oc describe namespace helloworld1
+oc describe namespace exercise-hello-world1
 ----
 
 
 .Your output should look like this
 [source,indent=4]
 ----
-Name:         helloworld1
-Labels:       <none>
-Annotations:  openshift.io/description=My First OCP App
-              openshift.io/display-name=Hello World
-              openshift.io/requester=admin
-              openshift.io/sa.scc.mcs=s0:c11,c0
-              openshift.io/sa.scc.supplemental-groups=1000110000/10000
-              openshift.io/sa.scc.uid-range=1000110000/10000
+Name:         exercise-hello-world1
+Labels:       kubernetes.io/metadata.name=exercise-hello-world1
+Annotations:  openshift.io/description: Hello World exercise
+              openshift.io/display-name: Exercise: Hello-World-1
+              openshift.io/requester: system:admin
+              openshift.io/sa.scc.mcs: s0:c25,c15
+              openshift.io/sa.scc.supplemental-groups: 1000630000/10000
+              openshift.io/sa.scc.uid-range: 1000630000/10000
 Status:       Active
 
 No resource quota.
 
-No resource limits.
+No LimitRange resource.
 ----
 
 Now let us reconfigure the UID range openshift will use to deploy the container.
