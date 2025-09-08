@@ -447,7 +447,7 @@ Next we will once again connect to the containers shell and explore the changes 
 
 .[root@master ~]#
 ----
-workshop-rsh-pod.sh
+workshop-rsh.sh
 ----
 
 Now that you are back in the container namespace, have a look at the /var/www/html directory and see if you notice something different.
