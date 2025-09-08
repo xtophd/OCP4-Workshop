@@ -397,7 +397,7 @@ exercise1-patch-scc.sh
 ====
 _Native command(s) to patch namespace security annotation_
 ----
-oc patch namespace helloworld1 --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
+oc patch namespace exercise-hello-world1 --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
 ----
 ====
 
@@ -405,7 +405,7 @@ oc patch namespace helloworld1 --patch '{"metadata":{"annotations":{"openshift.i
 ====
 _Alternate method to edit security annotations_
 ----
-oc edit namespace helloworld
+oc edit namespace exercise-hello-world1
 ----
 Adjust the following attribute: "openshift.io/sa.scc.uid-range: 1001/10000"
 
