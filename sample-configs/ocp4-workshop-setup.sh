@@ -1226,14 +1226,16 @@ cluster_menu () {
           ;;
 
         "Set Provisioner")
-           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai"
+           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai-http" "ai-vmedia"
            do
               case ${CLUSTER_PROVISIONER} in
                 "upi-pxe" )
                   break ;;
                 "upi-vmedia" )
                   break ;;
-                "ai" )
+                "ai-http" )
+                  break ;;
+                "ai-vmedia" )
                   break ;;
                 "*" )
                   ;;

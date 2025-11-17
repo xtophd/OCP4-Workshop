@@ -173,6 +173,17 @@
       - t_name_worker2:            "{{ lookup('env','NAME_WORKER2') }}"
       - t_name_sno:                "{{ lookup('env','NAME_SNO') }}"
 
+      - t_kopts_bastion:           "{{ xtoph_default_machine[t_hw_bastion].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_bootstrap:         "{{ xtoph_default_machine[t_hw_bootstrap].kickstart.dev_hints['default']['kernel_opts']  | default('') }}"
+      - t_kopts_master1:           "{{ xtoph_default_machine[t_hw_master1].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_master2:           "{{ xtoph_default_machine[t_hw_master2].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_master3:           "{{ xtoph_default_machine[t_hw_master3].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_worker1:           "{{ xtoph_default_machine[t_hw_worker1].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_worker2:           "{{ xtoph_default_machine[t_hw_worker2].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
+      - t_kopts_sno:               "{{ xtoph_default_machine[t_hw_sno].kickstart.dev_hints['default']['kernel_opts']        | default('') }}"
+      - t_kopts_ovirt:             "{{ xtoph_default_machine[t_ovirt_machine].kickstart.dev_hints['default']['kernel_opts'] | default('') }}"
+      - t_kopts_virthost:          "{{ xtoph_default_machine[t_virthost_machine].kickstart.dev_hints['default']['kernel_opts'] | default('') }}"
+
       - t_blkdev_bastion:          "{{ xtoph_default_machine[t_hw_bastion].kickstart.dev_hints['default']['blkdev']    | default('--REQUIRED--') }}"
       - t_blkdev_bootstrap:        "{{ xtoph_default_machine[t_hw_bootstrap].kickstart.dev_hints['default']['blkdev']  | default('--REQUIRED--') }}"
       - t_blkdev_master1:          "{{ xtoph_default_machine[t_hw_master1].kickstart.dev_hints['default']['blkdev']    | default('--REQUIRED--') }}"

@@ -44,17 +44,9 @@ all:
 {% endif %}
 
 {% if t_name_bastion == "localhost.localdomain" %}
-{% if t_cluster_provisioner == "ai" %}
-    h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}.iso"
-{% elif t_cluster_provisioner == "upi-vmedia" %}
     h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
-{% endif %}
 {% else %}
-{% if t_cluster_provisioner == "ai" %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}.iso"
-{% elif t_cluster_provisioner == "upi-vmedia" %}
     h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
-{% endif %}
 {% endif %}
 
     g_clusterAdmin:       "cloud-admin"
@@ -79,8 +71,8 @@ all:
 {% else %}
       ocp_sno:              False
 {% endif %}
-{% if t_cluster_provisioner == "ai" %}
-      ocp_provisioner:      "ai"
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
+      ocp_provisioner:      "{{ t_cluster_provisioner }}"
       ocp_strapless:        False
 {% if t_cluster_sno == True %}
       ocp_vip_cluster:      "{{ t_addr_sno }}"
@@ -110,7 +102,7 @@ all:
 
       bastion:
 
-{% if t_cluster_provisioner == "ai" %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http"  %}
         assisted_installer: True
 {% else %}
         assisted_installer: False
@@ -244,6 +236,9 @@ myBastion:
       h_ksPROF:        "rhel94-bootiso"
       h_pubIP:         "{{ t_addr_bastion }}"
       h_rsPROF:        "{{ t_res_bastion  }}"
+{% if t_kopts_bastion|length %}
+      h_kernelOPTS:    "{{ t_kopts_bastion }}"
+{% endif %}
 {% if t_mac_bastion|length %}
       h_pubMAC:        "{{ t_mac_bastion }}"
 {% endif -%}
@@ -284,7 +279,10 @@ myBootstrap:
       h_hwPROF:        "{{ t_hw_bootstrap  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_bootstrap|length %}
+      h_kernelOPTS:    "{{ t_kopts_bootstrap }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -323,7 +321,10 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_master1|length %}
+      h_kernelOPTS:    "{{ t_kopts_master1 }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -349,7 +350,10 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master2 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_master2|length %}
+      h_kernelOPTS:    "{{ t_kopts_master2 }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -375,7 +379,10 @@ myMasters:
       h_hwPROF:        "{{ t_hw_master3 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_master3|length %}
+      h_kernelOPTS:    "{{ t_kopts_master3 }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -413,7 +420,10 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_worker1|length %}
+      h_kernelOPTS:    "{{ t_kopts_worker1 }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -439,7 +449,10 @@ myWorkers:
       h_hwPROF:        "{{ t_hw_worker2  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_worker2|length %}
+      h_kernelOPTS:    "{{ t_kopts_worker2 }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
@@ -478,7 +491,10 @@ mySNO:
       h_hwPROF:        "{{ t_hw_sno  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_cluster_provisioner == "ai" %}
+{% if t_kopts_sno|length %}
+      h_kernelOPTS:    "{{ t_kopts_sno }}"
+{% endif %}
+{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
