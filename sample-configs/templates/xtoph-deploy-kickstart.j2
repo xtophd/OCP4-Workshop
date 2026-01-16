@@ -12,15 +12,15 @@ custom_kickstart:
     iso_url:                "{{ h_isoURL | default('') }}"
 {% endraw %}
 
-{% if t_cluster_provisioner == "ai" and t_virthost_type == "libvirt" %}
-    description:            "Custom kickstart: (AI + LIBVIRT) simple_cdrom + wait_for_ssh + async restart_monitor"
+{% if t_cluster_provisioner == "ai-vmedia" and t_virthost_type == "libvirt" %}
+    description:            "Custom kickstart: (AI-VMEDIA + LIBVIRT) simple_cdrom + wait_for_ssh + async restart_monitor"
     wait_for_powerup:       false
     wait_for_shutdown:      false
     wait_for_ssh:           true
     launch_restart_monitor: true
 
-{% elif t_cluster_provisioner == "ai" and t_virthost_type == "ovirt" %}
-    description:            "Custom kickstart: (AI + OVIRT) simple_cdrom + wait_for_ssh"
+{% elif t_cluster_provisioner == "ai-vmedia" and t_virthost_type == "ovirt" %}
+    description:            "Custom kickstart: (AI-VMEDIA + OVIRT) simple_cdrom + wait_for_ssh"
     wait_for_powerup:       false
     wait_for_shutdown:      false
     wait_for_ssh:           true
