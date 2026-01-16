@@ -41,6 +41,8 @@
       - t_cluster_provisioner:     "{{ lookup('env','CLUSTER_PROVISIONER') }}"
       - t_cluster_loadbalancer_ip: "{{ lookup('env','CLUSTER_LOADBALANCER_IP') }}"
       - t_cluster_api_ip:          "{{ lookup('env','CLUSTER_API_IP') }}"
+      - t_cluster_cidr:            "{{ lookup('env','CLUSTER_CIDR') }}"
+      - t_cluster_cidr_hostprefix: "{{ lookup('env','CLUSTER_CIDR_HOSTPREFIX') }}"
       - t_cluster_version:         "{{ lookup('env','CLUSTER_VERSION') }}"
       - t_cluster_strapless:       "{{ lookup('env','CLUSTER_STRAPLESS') }}"
       - t_bastion_dns:             "{{ lookup('env','BASTION_DNS') }}"

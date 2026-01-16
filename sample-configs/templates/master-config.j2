@@ -66,6 +66,8 @@ all:
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
+      ocp_clusternetwork_cidr:            "{{ t_cluster_cidr }}"
+      ocp_clusternetwork_cidr_hostprefix: "{{ t_cluster_cidr_hostprefix }}"
 {% if t_cluster_sno == True %}
       ocp_sno:              True
 {% else %}

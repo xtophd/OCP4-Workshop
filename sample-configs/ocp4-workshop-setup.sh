@@ -15,6 +15,8 @@ export CLUSTER_API_IP=""
 export CLUSTER_VERSION="4.17"
 export CLUSTER_STRAPLESS="False"
 export CLUSTER_SNO="False"
+export CLUSTER_CIDR="10.128.0.0/14"
+export CLUSTER_CIDR_HOSTPREFIX="23"
 export BASTION_DNS="True"
 export BASTION_DHCP="True"
 export BASTION_HAPROXY="True"
@@ -160,6 +162,8 @@ CLUSTER_API_IP="${CLUSTER_API_IP}"
 CLUSTER_VERSION="${CLUSTER_VERSION}"
 CLUSTER_STRAPLESS="${CLUSTER_STRAPLESS}"
 CLUSTER_SNO="${CLUSTER_SNO}"
+CLUSTER_CIDR="${CLUSTER_CIDR}"
+CLUSTER_CIDR_HOSTPREFIX="${CLUSTER_CIDR_HOSTPREFIX}"
 BASTION_DNS="${BASTION_DNS}"
 BASTION_DHCP="${BASTION_DHCP}"
 BASTION_HAPROXY="${BASTION_HAPROXY}"
@@ -303,6 +307,9 @@ current_settings () {
     echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (sno = ${CLUSTER_SNO}) (strapless = ${CLUSTER_STRAPLESS})"
     echo "    Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
     echo "    API IP          ... ${CLUSTER_API_IP}"
+    echo "    clusterNetwork"
+    echo "      cidr          ... ${CLUSTER_CIDR}"
+    echo "      hostPrefix    ... ${CLUSTER_CIDR_HOSTPREFIX}"
 
     echo "[ NETWORK ]"
     echo "    id/pre/nm/bc ... ${NETWORK_ID} / ${NETWORK_PREFIX} / ${NETWORK_NETMASK} / ${NETWORK_BROADCAST}"
@@ -1186,7 +1193,7 @@ cluster_menu () {
 
     current_settings
 
-    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set Provisioner" "Set SNO" "Set Strapless" "Back to Main Menu"
+    select action in "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set SNO" "Set Strapless" "Back to Main Menu"
     do
       case ${action}  in
         "Set Name")
@@ -1285,8 +1292,18 @@ cluster_menu () {
           ;;
 
         "Set API IP")
-          read -p "Enter Clsuter API IP [${CLUSTER_API_IP}]: " input
+          read -p "Enter Cluster API IP [${CLUSTER_API_IP}]: " input
           CLUSTER_API_IP=${input:-$CLUSTER_API_IP}
+          ;;
+
+        "Set CIDR")
+          read -p "Enter clusterNetwork cidr [${CLUSTER_CIDR}]: " input
+          CLUSTER_CIDR=${input:-$CLUSTER_CIDR}
+          ;;
+
+        "Set CIDR Host Prefix")
+          read -p "Enter clusterNetwork cidr hostPrefix [${CLUSTER_CIDR_HOSTPREFIX}]: " input
+          CLUSTER_CIDR_HOSTPREFIX=${input:-$CLUSTER_CIDR_HOSTPREFIX}
           ;;
 
         "Back to Main Menu")
