@@ -4,3 +4,6 @@
 [submodule "roles/xtoph_ocp4"]
 	path = roles/xtoph_ocp4
 	url = https://github.com/xtophd/xtoph_ocp4
+[submodule "xtoph-setup"]
+	path = xtoph-setup
+	url = https://github.com/xtophd/xtoph-setup

@@ -43,10 +43,10 @@ all:
     h_ksPROF:        "custom_kickstart"
 {% endif %}
 
-{% if t_name_bastion == "localhost.localdomain" %}
+{% if t_name_node1 == "localhost.localdomain" %}
     h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% else %}
-    h_isoURL:        "http://{{ t_addr_bastion }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+    h_isoURL:        "http://{{ t_addr_node1 }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% endif %}
 
     g_clusterAdmin:       "cloud-admin"
@@ -77,8 +77,8 @@ all:
       ocp_provisioner:      "{{ t_cluster_provisioner }}"
       ocp_strapless:        False
 {% if t_cluster_sno == True %}
-      ocp_vip_cluster:      "{{ t_addr_sno }}"
-      ocp_vip_api:          "{{ t_addr_sno }}"
+      ocp_vip_cluster:      "{{ t_addr_node8 }}"
+      ocp_vip_api:          "{{ t_addr_node8 }}"
 {% else %}
       ocp_vip_cluster:      "{{ t_cluster_loadbalancer_ip }}"
       ocp_vip_api:          "{{ t_cluster_api_ip }}"
@@ -86,8 +86,8 @@ all:
 {% else %}
       ocp_provisioner:      "upi"
       ocp_strapless:        {{ t_cluster_strapless }}
-      ocp_vip_cluster:      "{{ t_addr_bastion }}"
-      ocp_vip_api:          "{{ t_addr_bastion }}"
+      ocp_vip_cluster:      "{{ t_addr_node1 }}"
+      ocp_vip_api:          "{{ t_addr_node1 }}"
 {% endif %}
 
       network_basedomain:   "{{ t_network_basedomain }}"
@@ -229,31 +229,31 @@ myDeployhost:
 
 myBastion:
   hosts:
-{% if t_name_bastion == "localhost.localdomain" %}
+{% if t_name_node1 == "localhost.localdomain" %}
     {{ ansible_nodename }}:
       ansible_connection: local
       h_pubIP:         "{{ t_ansible_ip }}"
 {% else %}
-    {{ t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+    {{ t_name_node1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
       h_ksPROF:        "rhel94-bootiso"
-      h_pubIP:         "{{ t_addr_bastion }}"
-      h_rsPROF:        "{{ t_res_bastion  }}"
-{% if t_kopts_bastion|length %}
-      h_kernelOPTS:    "{{ t_kopts_bastion }}"
+      h_pubIP:         "{{ t_addr_node1 }}"
+      h_rsPROF:        "{{ t_res_node1  }}"
+{% if t_kopts_node1|length %}
+      h_kernelOPTS:    "{{ t_kopts_node1 }}"
 {% endif %}
-{% if t_mac_bastion|length %}
-      h_pubMAC:        "{{ t_mac_bastion }}"
+{% if t_mac_node1|length %}
+      h_pubMAC:        "{{ t_mac_node1 }}"
 {% endif -%}
-{% if t_hw_bastion|length  %}
-      h_hwPROF:        "{{ t_hw_bastion  }}"
+{% if t_hw_node1|length  %}
+      h_hwPROF:        "{{ t_hw_node1  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        true
 {% else %}
       h_pwrOFF:        true
 {% endif %}
 
-{% if t_bmc_bastion|length %}
-      bmc_fqdn:        "{{ t_bmc_bastion }}"
+{% if t_bmc_node1|length %}
+      bmc_fqdn:        "{{ t_bmc_node1 }}"
 {% endif %}
 {% endif %}
 
@@ -269,32 +269,32 @@ myBootstrap:
 {% if t_cluster_sno == False %}
 {% if (( t_cluster_provisioner == "upi-pxe" or t_cluster_provisioner == "upi-vmedia" ) and t_cluster_strapless == False ) %}
 
-{% if t_addr_bootstrap is defined and t_addr_bootstrap|length %}
-    {{ t_name_bootstrap }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_bootstrap }}" 
-      h_rsPROF:        "{{ t_res_bootstrap  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_bootstrap }}"
-{% if t_mac_bootstrap|length %}
-      h_pubMAC:        "{{ t_mac_bootstrap }}"
+{% if t_addr_node2 is defined and t_addr_node2|length %}
+    {{ t_name_node2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node2 }}" 
+      h_rsPROF:        "{{ t_res_node2  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node2 }}"
+{% if t_mac_node2|length %}
+      h_pubMAC:        "{{ t_mac_node2 }}"
 {% endif -%}
-{% if t_hw_bootstrap|length  %}
-      h_hwPROF:        "{{ t_hw_bootstrap  }}"
+{% if t_hw_node2|length  %}
+      h_hwPROF:        "{{ t_hw_node2  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_bootstrap|length %}
-      h_kernelOPTS:    "{{ t_kopts_bootstrap }}"
+{% if t_kopts_node2|length %}
+      h_kernelOPTS:    "{{ t_kopts_node2 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_bootstrap }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_bootstrap }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_bootstrap }}"
-      h_rhcosLOADER:   "{{ t_bootmode_bootstrap }}"
+      h_rhcosNIC:      "{{ t_netdev_node2 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node2 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node2 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node2 }}"
 {% endif %}
-{% if t_bmc_bootstrap|length %}
-      bmc_fqdn:        "{{ t_bmc_bootstrap }}"
+{% if t_bmc_node2|length %}
+      bmc_fqdn:        "{{ t_bmc_node2 }}"
 {% endif %}
 {% endif %}
 
@@ -311,90 +311,90 @@ myMasters:
 
 {% if t_cluster_sno == False %}
 
-{% if t_addr_master1 is defined and t_addr_master1|length %}
-    {{ t_name_master1}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_master1 }}"
-      h_rsPROF:        "{{ t_res_master1  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_master1 }}"
-{% if t_mac_master1|length %}
-      h_pubMAC:        "{{ t_mac_master1 }}"
+{% if t_addr_node3 is defined and t_addr_node3|length %}
+    {{ t_name_node3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node3 }}"
+      h_rsPROF:        "{{ t_res_node3  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node3 }}"
+{% if t_mac_node3|length %}
+      h_pubMAC:        "{{ t_mac_node3 }}"
 {% endif -%}
-{% if t_hw_master1|length  %}
-      h_hwPROF:        "{{ t_hw_master1  }}"
+{% if t_hw_node3|length  %}
+      h_hwPROF:        "{{ t_hw_node3  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_master1|length %}
-      h_kernelOPTS:    "{{ t_kopts_master1 }}"
+{% if t_kopts_node3|length %}
+      h_kernelOPTS:    "{{ t_kopts_node3 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_master1 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_master1 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_master1 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_master1 }}"
+      h_rhcosNIC:      "{{ t_netdev_node3 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node3 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node3 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node3 }}"
 {% endif %}
-{% if t_bmc_master1|length %}
-      bmc_fqdn:        "{{ t_bmc_master1 }}"
+{% if t_bmc_node3|length %}
+      bmc_fqdn:        "{{ t_bmc_node3 }}"
 {% endif %}
 {% endif %}
 
-{% if t_addr_master2 is defined and t_addr_master2|length %}
-    {{ t_name_master2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_master2 }}"
-      h_rsPROF:        "{{ t_res_master2  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_master2 }}"
-{% if t_mac_master2|length %}
-      h_pubMAC:        "{{ t_mac_master2 }}"
+{% if t_addr_node4 is defined and t_addr_node4|length %}
+    {{ t_name_node4 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node4 }}"
+      h_rsPROF:        "{{ t_res_node4  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node4 }}"
+{% if t_mac_node4|length %}
+      h_pubMAC:        "{{ t_mac_node4 }}"
 {% endif %}
-{% if t_hw_master2|length %}
-      h_hwPROF:        "{{ t_hw_master2 }}"
+{% if t_hw_node4|length %}
+      h_hwPROF:        "{{ t_hw_node4 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_master2|length %}
-      h_kernelOPTS:    "{{ t_kopts_master2 }}"
+{% if t_kopts_node4|length %}
+      h_kernelOPTS:    "{{ t_kopts_node4 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_master2 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_master2 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_master2 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_master2 }}"
+      h_rhcosNIC:      "{{ t_netdev_node4 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node4 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node4 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node4 }}"
 {% endif %}
-{% if t_bmc_master2|length %}
-      bmc_fqdn:        "{{ t_bmc_master2 }}"
+{% if t_bmc_node4|length %}
+      bmc_fqdn:        "{{ t_bmc_node4 }}"
 {% endif %}
 {% endif %}
 
-{% if t_addr_master3 is defined and t_addr_master3|length %}
-    {{ t_name_master3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_master3 }}"
-      h_rsPROF:        "{{ t_res_master3  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_master3 }}"
-{% if t_mac_master3|length %}
-      h_pubMAC:        "{{ t_mac_master3 }}"
+{% if t_addr_node5 is defined and t_addr_node5|length %}
+    {{ t_name_node5}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node5 }}"
+      h_rsPROF:        "{{ t_res_node5  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node5 }}"
+{% if t_mac_node5|length %}
+      h_pubMAC:        "{{ t_mac_node5 }}"
 {% endif %}
-{% if t_hw_master3|length %}
-      h_hwPROF:        "{{ t_hw_master3 }}"
+{% if t_hw_node5|length %}
+      h_hwPROF:        "{{ t_hw_node5 }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_master3|length %}
-      h_kernelOPTS:    "{{ t_kopts_master3 }}"
+{% if t_kopts_node5|length %}
+      h_kernelOPTS:    "{{ t_kopts_node5 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_master3 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_master3 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_master3 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_master3 }}"
+      h_rhcosNIC:      "{{ t_netdev_node5 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node5 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node5 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node5 }}"
 {% endif %}
-{% if t_bmc_master3|length %}
-      bmc_fqdn:        "{{ t_bmc_master3 }}"
+{% if t_bmc_node5|length %}
+      bmc_fqdn:        "{{ t_bmc_node5 }}"
 {% endif %}
 {% endif %}
 
@@ -410,61 +410,61 @@ myWorkers:
 
 {% if t_cluster_sno == False %}
 
-{% if t_addr_worker1 is defined and t_addr_worker1|length %}
-    {{ t_name_worker1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_worker1 }}" 
-      h_rsPROF:        "{{ t_res_worker1  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_worker1 }}"
-{% if t_mac_worker1|length %}
-      h_pubMAC:        "{{ t_mac_worker1 }}"
+{% if t_addr_node6 is defined and t_addr_node6|length %}
+    {{ t_name_node6 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node6 }}" 
+      h_rsPROF:        "{{ t_res_node6  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node6 }}"
+{% if t_mac_node6|length %}
+      h_pubMAC:        "{{ t_mac_node6 }}"
 {% endif %}
-{% if t_hw_worker1|length  %}
-      h_hwPROF:        "{{ t_hw_worker1  }}"
+{% if t_hw_node6|length  %}
+      h_hwPROF:        "{{ t_hw_node6  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_worker1|length %}
-      h_kernelOPTS:    "{{ t_kopts_worker1 }}"
+{% if t_kopts_node6|length %}
+      h_kernelOPTS:    "{{ t_kopts_node6 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_worker1 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_worker1 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_worker1 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_worker1 }}"
+      h_rhcosNIC:      "{{ t_netdev_node6 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node6 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node6 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node6 }}"
 {% endif %}
-{% if t_bmc_worker1|length %}
-      bmc_fqdn:        "{{ t_bmc_worker1 }}"
+{% if t_bmc_node6|length %}
+      bmc_fqdn:        "{{ t_bmc_node6 }}"
 {% endif %}
 {% endif %}
 
-{% if t_addr_worker2 is defined and t_addr_worker2|length %}
-    {{ t_name_worker2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_worker2 }}" 
-      h_rsPROF:        "{{ t_res_worker2  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_worker2 }}"
-{% if t_mac_worker2|length %}
-      h_pubMAC:        "{{ t_mac_worker2 }}"
+{% if t_addr_node7 is defined and t_addr_node7|length %}
+    {{ t_name_node7 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node7 }}" 
+      h_rsPROF:        "{{ t_res_node7  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node7 }}"
+{% if t_mac_node7|length %}
+      h_pubMAC:        "{{ t_mac_node7 }}"
 {% endif %}
-{% if t_hw_worker2|length  %}
-      h_hwPROF:        "{{ t_hw_worker2  }}"
+{% if t_hw_node7|length  %}
+      h_hwPROF:        "{{ t_hw_node7  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_worker2|length %}
-      h_kernelOPTS:    "{{ t_kopts_worker2 }}"
+{% if t_kopts_node7|length %}
+      h_kernelOPTS:    "{{ t_kopts_node7 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_worker2 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_worker2 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_worker2 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_worker2 }}"
+      h_rhcosNIC:      "{{ t_netdev_node7 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node7 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node7 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node7 }}"
 {% endif %}
-{% if t_bmc_worker2|length %}
-      bmc_fqdn:        "{{ t_bmc_worker2 }}"
+{% if t_bmc_node7|length %}
+      bmc_fqdn:        "{{ t_bmc_node7 }}"
 {% endif %}
 {% endif %}
 
@@ -481,33 +481,33 @@ mySNO:
 
 {% if t_cluster_sno == True %}
 
-{% if t_addr_sno is defined and t_addr_sno|length %}
-    {{ t_name_sno }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_sno }}"
-      h_rsPROF:        "{{ t_res_sno  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_sno }}"
-{% if t_mac_sno|length %}
-      h_pubMAC:        "{{ t_mac_sno }}"
+{% if t_addr_node8 is defined and t_addr_node8|length %}
+    {{ t_name_node8 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+      h_pubIP:         "{{ t_addr_node8 }}"
+      h_rsPROF:        "{{ t_res_node8  }}"
+      h_rhcosNICmode:  "{{ t_nicmode_node8 }}"
+{% if t_mac_node8|length %}
+      h_pubMAC:        "{{ t_mac_node8 }}"
 {% endif %}
-{% if t_hw_sno|length  %}
-      h_hwPROF:        "{{ t_hw_sno  }}"
+{% if t_hw_node8|length  %}
+      h_hwPROF:        "{{ t_hw_node8  }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_sno|length %}
-      h_kernelOPTS:    "{{ t_kopts_sno }}"
+{% if t_kopts_node8|length %}
+      h_kernelOPTS:    "{{ t_kopts_node8 }}"
 {% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_sno }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_sno }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_sno }}"
-      h_rhcosLOADER:   "{{ t_bootmode_sno }}"
+      h_rhcosNIC:      "{{ t_netdev_node8 }}:dhcp"
+      h_rhcosDEV:      "{{ t_blkdev_node8 }}"
+      h_rhcosUSBdelay: "{{ t_usbdelay_node8 }}"
+      h_rhcosLOADER:   "{{ t_bootmode_node8 }}"
 {% endif %}
 
-{% if t_bmc_sno|length %}
-      bmc_fqdn:        "{{ t_bmc_sno }}"
+{% if t_bmc_node8|length %}
+      bmc_fqdn:        "{{ t_bmc_node8 }}"
 {% endif %}
 {% endif %}
 
@@ -540,5 +540,5 @@ myOther:
 myShelter:
   hosts:
 
-#    {{t_name_bastion }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+#    {{t_name_node1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
 
