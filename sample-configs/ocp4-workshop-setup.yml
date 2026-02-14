@@ -47,6 +47,7 @@
       - t_cluster_version:         "{{ lookup('env','CLUSTER_VERSION') }}"
       - t_cluster_strapless:       "{{ lookup('env','CLUSTER_STRAPLESS') }}"
       - t_cluster_sno:             "{{ lookup('env','CLUSTER_SNO') }}"
+      - t_cluster_topology:        "{{ lookup('env','CLUSTER_TOPOLOGY') }}"
 
       - t_bastion_dns:             "{{ lookup('env','BASTION_DNS') }}"
       - t_bastion_dhcp:            "{{ lookup('env','BASTION_DHCP') }}"
@@ -54,6 +55,7 @@
       - t_bastion_ntp:             "{{ lookup('env','BASTION_NTP') }}"
       - t_bastion_nfs:             "{{ lookup('env','BASTION_NFS') }}"
       - t_bastion_squid:           "{{ lookup('env','BASTION_SQUID') }}"
+      - t_bastion_cockpit:         "{{ lookup('env','BASTION_COCKPIT') }}"
 
       - t_network_id:              "{{ lookup('env','NETWORK_ID') }}"
       - t_network_gateway:         "{{ lookup('env','NETWORK_GATEWAY') }}"
@@ -98,6 +100,7 @@
       - t_addr_node6:            "{{ lookup('env','ADDR_NODE6') }}"
       - t_addr_node7:            "{{ lookup('env','ADDR_NODE7') }}"
       - t_addr_node8:            "{{ lookup('env','ADDR_NODE8') }}"
+      - t_addr_node9:            "{{ lookup('env','ADDR_NODE9') }}"
 
       - t_mac_node1:             "{{ lookup('env','MAC_NODE1') }}"
       - t_mac_node2:             "{{ lookup('env','MAC_NODE2') }}"
@@ -107,6 +110,7 @@
       - t_mac_node6:             "{{ lookup('env','MAC_NODE6') }}"
       - t_mac_node7:             "{{ lookup('env','MAC_NODE7') }}"
       - t_mac_node8:             "{{ lookup('env','MAC_NODE8') }}"
+      - t_mac_node9:             "{{ lookup('env','MAC_NODE9') }}"
 
       - t_nicmode_node1:         "{{ lookup('env','NICMODE_NODE1') }}"
       - t_nicmode_node2:         "{{ lookup('env','NICMODE_NODE2') }}"
@@ -116,6 +120,7 @@
       - t_nicmode_node6:         "{{ lookup('env','NICMODE_NODE6') }}"
       - t_nicmode_node7:         "{{ lookup('env','NICMODE_NODE7') }}"
       - t_nicmode_node8:         "{{ lookup('env','NICMODE_NODE8') }}"
+      - t_nicmode_node9:         "{{ lookup('env','NICMODE_NODE9') }}"
 
       - t_bmc_node1:             "{{ lookup('env','BMC_NODE1') }}"
       - t_bmc_node2:             "{{ lookup('env','BMC_NODE2') }}"
@@ -125,6 +130,7 @@
       - t_bmc_node6:             "{{ lookup('env','BMC_NODE6') }}"
       - t_bmc_node7:             "{{ lookup('env','BMC_NODE7') }}"
       - t_bmc_node8:             "{{ lookup('env','BMC_NODE8') }}"
+      - t_bmc_node9:             "{{ lookup('env','BMC_NODE9') }}"
 
       - t_bmc_uid_default:       "{{ lookup('env','BMC_UID_DEFAULT') }}"
       - t_bmc_uid_node1:         "{{ lookup('env','BMC_UID_NODE1') }}"
@@ -135,6 +141,7 @@
       - t_bmc_uid_node6:         "{{ lookup('env','BMC_UID_NODE6') }}"
       - t_bmc_uid_node7:         "{{ lookup('env','BMC_UID_NODE7') }}"
       - t_bmc_pw_node8:          "{{ lookup('env','BMC_PW_NODE8') }}"
+      - t_bmc_pw_node9:          "{{ lookup('env','BMC_PW_NODE9') }}"
 
       - t_bmc_pw_default:        "{{ lookup('env','BMC_PW_DEFAULT') }}"
       - t_bmc_pw_node1:          "{{ lookup('env','BMC_PW_NODE1') }}"
@@ -145,6 +152,7 @@
       - t_bmc_pw_node6:          "{{ lookup('env','BMC_PW_NODE6') }}"
       - t_bmc_pw_node7:          "{{ lookup('env','BMC_PW_NODE7') }}"
       - t_bmc_pw_node8:          "{{ lookup('env','BMC_PW_NODE8') }}"
+      - t_bmc_pw_node9:          "{{ lookup('env','BMC_PW_NODE9') }}"
 
       - t_hw_node1:              "{{ lookup('env','HW_NODE1') }}"
       - t_hw_node2:              "{{ lookup('env','HW_NODE2') }}"
@@ -154,6 +162,7 @@
       - t_hw_node6:              "{{ lookup('env','HW_NODE6') }}"
       - t_hw_node7:              "{{ lookup('env','HW_NODE7') }}"
       - t_hw_node8:              "{{ lookup('env','HW_NODE8') }}"
+      - t_hw_node9:              "{{ lookup('env','HW_NODE9') }}"
 
       - t_pw_node1:              "{{ lookup('env','PW_NODE1') }}"
       - t_pw_node2:              "{{ lookup('env','PW_NODE2') }}"
@@ -163,6 +172,7 @@
       - t_pw_node6:              "{{ lookup('env','PW_NODE6') }}"
       - t_pw_node7:              "{{ lookup('env','PW_NODE7') }}"
       - t_pw_node8:              "{{ lookup('env','PW_NODE8') }}"
+      - t_pw_node9:              "{{ lookup('env','PW_NODE9') }}"
 
       - t_uid_node1:             "{{ lookup('env','UID_NODE1') }}"
       - t_uid_node2:             "{{ lookup('env','UID_NODE2') }}"
@@ -172,6 +182,7 @@
       - t_uid_node6:             "{{ lookup('env','UID_NODE6') }}"
       - t_uid_node7:             "{{ lookup('env','UID_NODE7') }}"
       - t_uid_node8:             "{{ lookup('env','UID_NODE8') }}"
+      - t_uid_node9:             "{{ lookup('env','UID_NODE9') }}"
 
       - t_res_node1:             "{{ lookup('env','RES_NODE1') }}"
       - t_res_node2:             "{{ lookup('env','RES_NODE2') }}"
@@ -181,6 +192,7 @@
       - t_res_node6:             "{{ lookup('env','RES_NODE6') }}"
       - t_res_node7:             "{{ lookup('env','RES_NODE7') }}"
       - t_res_node8:             "{{ lookup('env','RES_NODE8') }}"
+      - t_res_node9:             "{{ lookup('env','RES_NODE9') }}"
 
       - t_name_node1:            "{{ lookup('env','NAME_NODE1') }}"
       - t_name_node2:            "{{ lookup('env','NAME_NODE2') }}"
@@ -190,6 +202,17 @@
       - t_name_node6:            "{{ lookup('env','NAME_NODE6') }}"
       - t_name_node7:            "{{ lookup('env','NAME_NODE7') }}"
       - t_name_node8:            "{{ lookup('env','NAME_NODE8') }}"
+      - t_name_node9:            "{{ lookup('env','NAME_NODE9') }}"
+
+      - t_ks_node1:            "{{ lookup('env','KS_NODE1') }}"
+      - t_ks_node2:            "{{ lookup('env','KS_NODE2') }}"
+      - t_ks_node3:            "{{ lookup('env','KS_NODE3') }}"
+      - t_ks_node4:            "{{ lookup('env','KS_NODE4') }}"
+      - t_ks_node5:            "{{ lookup('env','KS_NODE5') }}"
+      - t_ks_node6:            "{{ lookup('env','KS_NODE6') }}"
+      - t_ks_node7:            "{{ lookup('env','KS_NODE7') }}"
+      - t_ks_node8:            "{{ lookup('env','KS_NODE8') }}"
+      - t_ks_node9:            "{{ lookup('env','KS_NODE9') }}"
 
       - t_kopts_node1:           "{{ xtoph_default_machine[t_hw_node1].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
       - t_kopts_node2:           "{{ xtoph_default_machine[t_hw_node2].kickstart.dev_hints['default']['kernel_opts']  | default('') }}"
@@ -199,6 +222,7 @@
       - t_kopts_node6:           "{{ xtoph_default_machine[t_hw_node6].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
       - t_kopts_node7:           "{{ xtoph_default_machine[t_hw_node7].kickstart.dev_hints['default']['kernel_opts']    | default('') }}"
       - t_kopts_node8:           "{{ xtoph_default_machine[t_hw_node8].kickstart.dev_hints['default']['kernel_opts']        | default('') }}"
+      - t_kopts_node9:           "{{ xtoph_default_machine[t_hw_node9].kickstart.dev_hints['default']['kernel_opts']        | default('') }}"
       - t_kopts_ovirt:           "{{ xtoph_default_machine[t_ovirt_machine].kickstart.dev_hints['default']['kernel_opts'] | default('') }}"
       - t_kopts_virthost:        "{{ xtoph_default_machine[t_virthost_machine].kickstart.dev_hints['default']['kernel_opts'] | default('') }}"
 
@@ -210,6 +234,7 @@
       - t_blkdev_node6:          "{{ xtoph_default_machine[t_hw_node6].kickstart.dev_hints['default']['blkdev']    | default('--REQUIRED--') }}"
       - t_blkdev_node7:          "{{ xtoph_default_machine[t_hw_node7].kickstart.dev_hints['default']['blkdev']    | default('--REQUIRED--') }}"
       - t_blkdev_node8:          "{{ xtoph_default_machine[t_hw_node8].kickstart.dev_hints['default']['blkdev']        | default('--REQUIRED--') }}"
+      - t_blkdev_node9:          "{{ xtoph_default_machine[t_hw_node9].kickstart.dev_hints['default']['blkdev']        | default('--REQUIRED--') }}"
       - t_blkdev_ovirt:          "{{ xtoph_default_machine[t_ovirt_machine].kickstart.dev_hints['default']['blkdev'] | default('--REQUIRED--') }}"
       - t_blkdev_virthost:       "{{ xtoph_default_machine[t_virthost_machine].kickstart.dev_hints['default']['blkdev'] | default('--REQUIRED--') }}"
 
@@ -221,6 +246,7 @@
       - t_netdev_node6:          "{{ xtoph_default_machine[t_hw_node6].kickstart.dev_hints['default']['netdev']    | default('--REQUIRED--') }}"
       - t_netdev_node7:          "{{ xtoph_default_machine[t_hw_node7].kickstart.dev_hints['default']['netdev']    | default('--REQUIRED--') }}"
       - t_netdev_node8:          "{{ xtoph_default_machine[t_hw_node8].kickstart.dev_hints['default']['netdev']        | default('--REQUIRED--') }}"
+      - t_netdev_node9:          "{{ xtoph_default_machine[t_hw_node9].kickstart.dev_hints['default']['netdev']        | default('--REQUIRED--') }}"
       - t_netdev_ovirt:          "{{ xtoph_default_machine[t_ovirt_machine].kickstart.dev_hints['default']['netdev'] | default('--REQUIRED--') }}"
       - t_netdev_virthost:       "{{ xtoph_default_machine[t_virthost_machine].kickstart.dev_hints['default']['netdev'] | default('--REQUIRED--') }}"
 
@@ -232,6 +258,7 @@
       - t_bootmode_node6:        "{{ xtoph_default_machine[t_hw_node6].boot_mode | default('--REQUIRED--') }}"
       - t_bootmode_node7:        "{{ xtoph_default_machine[t_hw_node7].boot_mode | default('--REQUIRED--') }}"
       - t_bootmode_node8:        "{{ xtoph_default_machine[t_hw_node8].boot_mode | default('--REQUIRED--') }}"
+      - t_bootmode_node9:        "{{ xtoph_default_machine[t_hw_node9].boot_mode | default('--REQUIRED--') }}"
 
       - t_usbdelay_node1:        "{{ xtoph_default_machine[t_hw_node1].usb_storage_delay | default('0') }}"
       - t_usbdelay_node2:        "{{ xtoph_default_machine[t_hw_node2].usb_storage_delay | default('0') }}"
@@ -241,6 +268,7 @@
       - t_usbdelay_node6:        "{{ xtoph_default_machine[t_hw_node6].usb_storage_delay | default('0') }}"
       - t_usbdelay_node7:        "{{ xtoph_default_machine[t_hw_node7].usb_storage_delay | default('0') }}"
       - t_usbdelay_node8:        "{{ xtoph_default_machine[t_hw_node8].usb_storage_delay | default('0') }}"
+      - t_usbdelay_node9:        "{{ xtoph_default_machine[t_hw_node9].usb_storage_delay | default('0') }}"
 
       - name: "main.yml : special handling for kickstart netdev"
         set_fact:

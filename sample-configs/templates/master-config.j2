@@ -63,20 +63,16 @@ all:
       ocp_clustername:      "{{ t_cluster_name }}"
       ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ t_network_basedomain }}"
       ocp_version:          "{{ t_cluster_version }}"
+      ocp_topology:         "{{ t_cluster_topology }}"
       ocp_admin_user:       "cloud-admin"
       ocp_user:             "cloud-user"
       ocp_dns_wildcard:     "{{ t_cluster_wildcard }}"
       ocp_clusternetwork_cidr:            "{{ t_cluster_cidr }}"
       ocp_clusternetwork_cidr_hostprefix: "{{ t_cluster_cidr_hostprefix }}"
-{% if t_cluster_sno == True %}
-      ocp_sno:              True
-{% else %}
-      ocp_sno:              False
-{% endif %}
 {% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       ocp_provisioner:      "{{ t_cluster_provisioner }}"
       ocp_strapless:        False
-{% if t_cluster_sno == True %}
+{% if t_cluster_topology == "sno" %}
       ocp_vip_cluster:      "{{ t_addr_node8 }}"
       ocp_vip_api:          "{{ t_addr_node8 }}"
 {% else %}
@@ -110,13 +106,13 @@ all:
         assisted_installer: False
 {% endif %}
         firewalld:          True
-        cockpit:            False
+        matchbox:           True
+        cockpit:            {{ t_bastion_cockpit }}
         dns:                {{ t_bastion_dns }}
         dhcp:               {{ t_bastion_dhcp }}
         dhcp_pxe:           {{ t_bastion_dhcp }}
         dhcp_uefi_http:     {{ t_bastion_dhcp }}
         haproxy:            {{ t_bastion_haproxy }}
-        matchbox:           True
         nfs:                {{ t_bastion_nfs }}
         ntp:                {{ t_bastion_ntp }}
         squid:              {{ t_bastion_squid }}
@@ -235,7 +231,7 @@ myBastion:
       h_pubIP:         "{{ t_ansible_ip }}"
 {% else %}
     {{ t_name_node1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_ksPROF:        "rhel94-bootiso"
+      h_ksPROF:        "{{ t_ks_node1 }}"
       h_pubIP:         "{{ t_addr_node1 }}"
       h_rsPROF:        "{{ t_res_node1  }}"
 {% if t_kopts_node1|length %}
@@ -266,7 +262,7 @@ myBastion:
 myBootstrap:
   hosts:
 
-{% if t_cluster_sno == False %}
+{% if t_cluster_topology != "sno" %}
 {% if (( t_cluster_provisioner == "upi-pxe" or t_cluster_provisioner == "upi-vmedia" ) and t_cluster_strapless == False ) %}
 
 {% if t_addr_node2 is defined and t_addr_node2|length %}
@@ -309,7 +305,7 @@ myBootstrap:
 myMasters:
   hosts:
 
-{% if t_cluster_sno == False %}
+{% if t_cluster_topology != "sno" %}
 
 {% if t_addr_node3 is defined and t_addr_node3|length %}
     {{ t_name_node3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
@@ -408,7 +404,7 @@ myMasters:
 myWorkers:
   hosts:
 
-{% if t_cluster_sno == False %}
+{% if t_cluster_topology == "3x2" %}
 
 {% if t_addr_node6 is defined and t_addr_node6|length %}
     {{ t_name_node6 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
@@ -479,7 +475,7 @@ myWorkers:
 mySNO:
   hosts:
 
-{% if t_cluster_sno == True %}
+{% if t_cluster_topology == "sno" %}
 
 {% if t_addr_node8 is defined and t_addr_node8|length %}
     {{ t_name_node8 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:

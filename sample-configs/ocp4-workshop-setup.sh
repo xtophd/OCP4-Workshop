@@ -20,8 +20,8 @@ export WORKSHOP_ADMIN_PW=""
 export WORKSHOP_ADMIN_UID="cloud-admin"
 export WORKSHOP_USER_PW=""
 export WORKSHOP_USER_UID="cloud-user"
-export CLUSTER_WILDCARD=""
-export CLUSTER_PROVISIONER=""
+export CLUSTER_WILDCARD="apps"
+export CLUSTER_PROVISIONER="ai-vmedia"
 export CLUSTER_LOADBALANCER_IP=""
 export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
@@ -30,6 +30,7 @@ export CLUSTER_STRAPLESS="False"
 export CLUSTER_SNO="False"
 export CLUSTER_CIDR="10.128.0.0/14"
 export CLUSTER_CIDR_HOSTPREFIX="23"
+export CLUSTER_TOPOLOGY="3x2"
 
 ##
 ##    ESTABLISH SOME ADDITIONAL DEFAULTS
@@ -43,6 +44,27 @@ NAME_NODE5="master3"
 NAME_NODE6="worker1"
 NAME_NODE7="worker2"
 NAME_NODE8="sno"
+NAME_NODE9="arbiter"
+
+NICMOD_NODE1="static"
+NICMOD_NODE2="dhcp"
+NICMOD_NODE3="dhcp"
+NICMOD_NODE4="dhcp"
+NICMOD_NODE5="dhcp"
+NICMOD_NODE6="dhcp"
+NICMOD_NODE7="dhcp"
+NICMOD_NODE8="dhcp"
+NICMOD_NODE9="dhcp"
+
+HGROUP_NODE1="myBastion"
+HGROUP_NODE2="myBootstrap"
+HGROUP_NODE3="myMasters"
+HGROUP_NODE4="myMasters"
+HGROUP_NODE5="myMasters"
+HGROUP_NODE6="myWorkers"
+HGROUP_NODE7="myWorkers"
+HGROUP_NODE8="mySNO"
+HGROUP_NODE9="myArbiter"
 
 ##
 ##    Load current answer file
@@ -68,6 +90,7 @@ cat > ./config/ocp4-workshop-setup.ans <<EO_VARS
     CLUSTER_NAME="${CLUSTER_NAME}"
     CLUSTER_WILDCARD="${CLUSTER_WILDCARD}"
     CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
+    CLUSTER_TOPOLOGY="${CLUSTER_TOPOLOGY}"
     CLUSTER_LOADBALANCER_IP="${CLUSTER_LOADBALANCER_IP}"
     CLUSTER_API_IP="${CLUSTER_API_IP}"
     CLUSTER_VERSION="${CLUSTER_VERSION}"
@@ -126,8 +149,9 @@ current_settings () {
 
     echo "[ OCP CLUSTER ]"
     echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
-    echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
+    echo "    Topology        ... ${CLUSTER_TOPOLOGY}"
     echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (sno = ${CLUSTER_SNO}) (strapless = ${CLUSTER_STRAPLESS})"
+    echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
     echo "    Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
     echo "    API IP          ... ${CLUSTER_API_IP}"
     echo "    clusterNetwork"
@@ -215,11 +239,11 @@ prepare_deployment () {
 
 # ---
 
-password_menu () {
+security_menu () {
 
     SAVED_PROMPT="$PS3"
 
-    PS3="PASSWORD MENU: "
+    PS3="SECURITY MENU: "
 
     current_settings
 
@@ -388,7 +412,7 @@ cluster_menu () {
 
     current_settings
 
-    select action in "RETURN to previous menu" "Set Name" "Set Version" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set SNO" "Set Strapless"
+    select action in "RETURN to previous menu" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set SNO" "Set Strapless"
     do
       case ${action}  in
         "Set Name")
@@ -420,6 +444,25 @@ cluster_menu () {
                 "4.4"  | \
                 "4.3"  | \
                 "4.2"  ) 
+                  break ;;
+                "*" )
+                  ;;
+              esac
+              REPLY=
+            done
+          ;;
+
+        "Set Topology")
+           select CLUSTER_TOPOLOGY in "3x2" "3x0" "sno" "tna"
+           do
+              case ${CLUSTER_TOPOLOGY} in
+                "3x2" )
+                  break ;;
+                "3x0" )
+                  break ;;
+                "sno" )
+                  break ;;
+                "tna" )
                   break ;;
                 "*" )
                   ;;
@@ -556,7 +599,7 @@ main_menu () {
           PROJECT_NAME=${input:-$PROJECT_NAME}
           ;;
         "Security Settings")
-          password_menu
+          security_menu
           ;;
         "Ansible Settings")
           ansible_menu

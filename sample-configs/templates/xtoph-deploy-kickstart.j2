@@ -40,7 +40,7 @@ custom_kickstart:
     wait_for_ssh:           true
     launch_restart_monitor: false
 
-{% elif t_cluster_provisioner == "upi-vmedia" and t_cluster_sno == true  %}
+{% elif t_cluster_provisioner == "upi-vmedia" and t_cluster_topology == "sno"  %}
     description:            "Custom kickstart: (UPI-vMEDIA + SNO) simple_cdrom + don't wait for anything"
     wait_for_powerup:       false
     wait_for_shutdown:      false
