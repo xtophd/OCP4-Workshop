@@ -64,23 +64,24 @@ We begin by creating a *Project*.
 
 .[root@master ~]#
 ----
-oc new-project exercise-hello-world1 --description="Hello World exercise" --display-name="Exercise: Hello-World-1"
+oc new-project cli-ex01 --description='CLI exercise to deploy hello-world container' --display-name='CLI Exercise 01'
 
-oc get projects
+oc get projects | head
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-NAME                                               DISPLAY NAME              STATUS
-default                                                                      Active
-exercise-hello-world1                              Exercise: Hello-World-1   Active
-kube-node-lease                                                              Active
-kube-public                                                                  Active
-kube-system                                                                  Active
-openshift                                                                    Active
-openshift-apiserver                                                          Active
-...<SNIP>...
+NAME                                               DISPLAY NAME      STATUS
+assisted-installer                                                   Active
+cli-ex01                                           CLI Exercise 01   Active
+default                                                              Active
+kube-node-lease                                                      Active
+kube-public                                                          Active
+kube-system                                                          Active
+openshift                                                            Active
+openshift-apiserver                                                  Active
+openshift-apiserver-operator                                         Active
 ----
 
 You can also use `oc projects` to get a list of projects along with a convenient asterisk indicating the current active project.
@@ -93,42 +94,46 @@ oc projects
 .Your output should look like this
 [source,indent=4]
 ----
-You have access to the following projects and can switch between them with ' project <proje
-ctname>':
+You have access to the following projects and can switch between them with ' project <projectname>':
 
+    assisted-installer
+  * cli-ex01 - CLI Exercise 01
     default
-  * exercise-hello-world1 - Exercise: Hello-World-1
     kube-node-lease
     kube-public
     kube-system
     openshift
     openshift-apiserver
 ...<SNIP>...
-
-Using project "exercise-hello-world1" on server "https://master.example.com:8443".
+Using project "cli-ex01" on server "https://api.ocpdemo.lab.linuxsoup.com:6443".
 ----
 
 We can gather some more information about our new *Project* using `oc describe project`
 
 .[root@master ~]#
 ----    
-oc describe project exercise-hello-world1
+oc describe project cli-ex01
 ----  
 
 .Your output should look like this
 [source,indent=4]
 ----
-Name:                   exercise-hello-world1
+Name:                   cli-ex01
 Created:                2 minutes ago
-Labels:                 kubernetes.io/metadata.name=exercise-hello-world1
-Annotations:            openshift.io/description=Hello World exercise
-                        openshift.io/display-name=Exercise: Hello-World-1
+Labels:                 kubernetes.io/metadata.name=cli-ex01
+                        pod-security.kubernetes.io/audit=restricted
+                        pod-security.kubernetes.io/audit-version=latest
+                        pod-security.kubernetes.io/warn=restricted
+                        pod-security.kubernetes.io/warn-version=latest
+Annotations:            openshift.io/description=CLI exercise to deploy hello-world container
+                        openshift.io/display-name=CLI Exercise 01
                         openshift.io/requester=system:admin
-                        openshift.io/sa.scc.mcs=s0:c29,c19
-                        openshift.io/sa.scc.supplemental-groups=1000850000/10000
-                        openshift.io/sa.scc.uid-range=1000850000/10000
-Display Name:           Exercise: Hello-World-1
-Description:            Hello World exercise
+                        openshift.io/sa.scc.mcs=s0:c28,c27
+                        openshift.io/sa.scc.supplemental-groups=1000810000/10000
+                        openshift.io/sa.scc.uid-range=1000810000/10000
+                        security.openshift.io/MinimallySufficientPodSecurityStandard=restricted
+Display Name:           CLI Exercise 01
+Description:            CLI exercise to deploy hello-world container
 Status:                 Active
 Node Selector:          <none>
 Quota:                  <none>
