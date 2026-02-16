@@ -146,12 +146,12 @@ We are not quite ready to start building our own container images from scratch, 
 
 .[root@master ~]#
 ----
-oc new-app registry.access.redhat.com/rhscl/httpd-24-rhel7 --name=hello-app1
+oc new-app registry.redhat.io/ubi8/httpd-24 --name=hello-app
 ----
 
-You just instructed Openshift to create a new application called *hello-app1*.  Without getting caught up in the details, basically what happens is:
+You just instructed Openshift to create a new application called *hello-app*.  Without getting caught up in the details, basically what happens is:
 
-  * Openshift checks the local catalog for an existing copy of the specified image *httpd-24-rhel7*
+  * Openshift checks the local catalog for an existing copy of the specified image *ubi8/httpd-24*
   * Since this is our first deployment in Openshift, the image was likely not available and so Openshift automatically fetches it from the Red Hat Container Catalog and adds it to the local catalog
   * A *Container Creating Container* is initiated to contruct the desired image (ie: customizations or source integration)
   * A *Deployment Container* is initiated to launch the desired image
@@ -177,46 +177,37 @@ Run `oc get pods` and `oc get services` several times to watch the changes as de
 .Your output should look like this
 [source,indent=4]
 ----
-In project Exercise: Hello-World-1 (exercise-hello-world1) on server https://api.ocp4ov10g.example.com:6443
+In project CLI Exercise 01 (cli-ex01) on server https://api.ocpdemo.lab.linuxsoup.com:6443
 
-svc/hello-app1 - 172.30.148.27 ports 8080, 8443
-  deployment/hello-app1 deploys istag/hello-app1:latest
-    deployment #2 running for 1 second - 1 pod
-    deployment #1 deployed 2 seconds ago
+svc/hello-app - 172.30.153.192 ports 8080, 8443
+  deployment/hello-app deploys istag/hello-app:latest
+    deployment #2 running for 25 seconds - 1 pod
+    deployment #1 deployed 26 seconds ago
 
-NAME         READY   UP-TO-DATE   AVAILABLE   AGE
-hello-app1   1/1     1            1           72s
+1 info identified, use 'oc status --suggest' to see details.
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+hello-app   1/1     1            1           26s
 
-NAME                          READY   STATUS    RESTARTS   AGE
-hello-app1-5749464997-tfckj   1/1     Running   0          95s
+NAME                         READY   STATUS    RESTARTS   AGE
+hello-app-7f5c668764-9kxpb   1/1     Running   0          25s
 
-NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
-hello-app1   ClusterIP   172.30.148.27   <none>        8080/TCP,8443/TCP   107s
+NAME        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+hello-app   ClusterIP   172.30.153.192   <none>        8080/TCP,8443/TCP   26s
 ----
 
 We can also monitor the deployment of the application by running `oc rollout status`.  This command will exit once the deployment has completed and the web application is ready.
 
 .[root@master ~]#
 ----
-oc rollout status deployment/hello-app1
+oc rollout status deployment/hello-app
 ----
 
-Once **hello-app1-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.  The native commands are also provided below.
+Once **hello-app-????** is in a 'Running' state, you can proceed with verification that the POD is operating correctly.  There are a few scripts installed in /usr/local/bin to make these steps a little less error prone.
 
 .[root@master ~]#
 ----
-workshop-validate-service.sh
+exercise-validate-service.sh
 ----
-
-[NOTE]
-====
-_Native command(s) to verify POD service_
-----
-oc get services
-
-curl http://{ip_address}}:8080
-----
-====
 
 This illustrates that the application is alive and providing output as expected.  However, it is not yet exposed to the outside world.  For this, we need to create a 'route'.
 
@@ -228,7 +219,7 @@ Let's create a route for our new application.
 
 .[root@bastion ~]#
 ----
-oc expose service hello-app1
+oc expose service hello-app
 ----
 
 You can retrieve the current list of configured routes with the `oc get routes` command.
@@ -241,8 +232,8 @@ oc get routes
 .Your output should look like this
 [source,indent=4]
 ----
-NAME         HOST/PORT                                                PATH   SERVICES    PORT       TERMINATION   WILDCARD
-hello-app1   hello-app1-helloworld1.apps.CLUSTERNAME.example.com            hello-app1  8080-tcp                 None
+NAME        HOST/PORT                                           PATH   SERVICES    PORT       TERMINATION   WILDCARD
+hello-app   hello-app-cli-ex01.apps.ocpdemo.lab.linuxsoup.com          hello-app   8080-tcp                 None
 ----
 
 [discrete]
@@ -252,7 +243,7 @@ Again, there are a few scripts installed in /usr/local/bin to make these steps a
 
 .[root@master ~]#
 ----
-workshop-validate-app.sh
+exercise-validate-app.sh
 ----
 
 The output from the above command will result in a full dump of the HTML test page configured by the default httpd package installation.  Let's run the command again and be a little more specific so we can verify a functional httpd server.  
@@ -369,21 +360,26 @@ First let's have a look at the current settings.
     
 .[root@master ~]#
 ----
-oc describe namespace exercise-hello-world1
+oc describe namespace cli-ex01
 ----
 
 
 .Your output should look like this
 [source,indent=4]
 ----
-Name:         exercise-hello-world1
-Labels:       kubernetes.io/metadata.name=exercise-hello-world1
-Annotations:  openshift.io/description: Hello World exercise
-              openshift.io/display-name: Exercise: Hello-World-1
+Name:         cli-ex01
+Labels:       kubernetes.io/metadata.name=cli-ex01
+              pod-security.kubernetes.io/audit=restricted
+              pod-security.kubernetes.io/audit-version=latest
+              pod-security.kubernetes.io/warn=restricted
+              pod-security.kubernetes.io/warn-version=latest
+Annotations:  openshift.io/description: CLI exercise to deploy hello-world container
+              openshift.io/display-name: CLI Exercise 01
               openshift.io/requester: system:admin
-              openshift.io/sa.scc.mcs: s0:c25,c15
-              openshift.io/sa.scc.supplemental-groups: 1000630000/10000
-              openshift.io/sa.scc.uid-range: 1000630000/10000
+              openshift.io/sa.scc.mcs: s0:c28,c27
+              openshift.io/sa.scc.supplemental-groups: 1000810000/10000
+              openshift.io/sa.scc.uid-range: 1000810000/10000
+              security.openshift.io/MinimallySufficientPodSecurityStandard: restricted
 Status:       Active
 
 No resource quota.
@@ -402,7 +398,7 @@ exercise1-patch-scc.sh
 ====
 _Native command(s) to patch namespace security annotation_
 ----
-oc patch namespace exercise-hello-world1 --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
+oc patch namespace cli-ex01 --patch '{"metadata":{"annotations":{"openshift.io/sa.scc.uid-range":"1001/10000"}}}'
 ----
 ====
 
@@ -410,7 +406,7 @@ oc patch namespace exercise-hello-world1 --patch '{"metadata":{"annotations":{"o
 ====
 _Alternate method to edit security annotations_
 ----
-oc edit namespace exercise-hello-world1
+oc edit namespace cli-ex01
 ----
 Adjust the following attribute: "openshift.io/sa.scc.uid-range: 1001/10000"
 
@@ -421,12 +417,12 @@ Now we will use 'oc delete' to redeploy a fresh instance of our hello-app pod.
 
 .[root@master ~]#
 ----
-oc delete --all pods -n helloworld
+oc delete --all pods -n cli-ex01
 
 watch oc get pods
 ----
 
-Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-1-????* terminating.  Also note that the 'oc' command has a built in 'watch mode', although I prefer the refreshed output provided by the linux *watch* command.  Either way, just press CTRL-C to exit either `watch` modes and return to your shell.
+Depending on how quickly you run *oc get pods* after rolling out the new deployment, you may see the ContainerCreating container running and/or the pre-existing deployment of *hello-app-????* terminating.  Also note that the 'oc' command has a built in 'watch mode', although I prefer the refreshed output provided by the linux *watch* command.  Either way, just press CTRL-C to exit either `watch` modes and return to your shell.
 
 [NOTE]
 ====
@@ -442,9 +438,8 @@ versions of the pod.
 .Your output should look like this
 [source,indent=4]
 ----
-NAME                READY     STATUS        RESTARTS   AGE                                   
-hello-app-1-wbq42   0/1       Terminating   0          2h                                    
-hello-app-2-lhvgp   1/1       Running       0          10s
+NAME                         READY   STATUS    RESTARTS   AGE
+hello-app-7f5c668764-jm5nn   1/1     Running   0          2s
 ----
 
 
@@ -502,10 +497,10 @@ exercise1-install-helloworld.sh
 .Your output should look like this
 [source,indent=4]
 ----
-DETERMINED POD = hello-app-2-qvsl8
-BASH EXEC: oc cp /usr/local/etc/exercise-hello-world.html hello-app-2-qvsl8:/var/www/html/index.html
+DETERMINED POD = hello-app-7f5c668764-jm5nn
+BASH EXEC: oc cp /usr/local/etc/exercise-hello-world.html hello-app-7f5c668764-jm5nn:/var/www/html/index.html
 
-Copying /var/tmp/helloworld.html to hello-app-2-qvs18:/var/www/html/index.html
+Copying /usr/local/etc/exercise-hello-world.html to hello-app-7f5c668764-jm5nn:/var/www/html/index.html
 ----
 
 [NOTE]
@@ -524,29 +519,24 @@ There is a sample script in /var/tmp to make life a little easier.
 
 .[root@master ~]#
 ----
-workshop-validate-app.sh
+exercise-validate-app.sh
 ----
 
 .Your output should look like this
 [source,indent=4]
 ----
-DETERMINED ROUTE: helloworld.cloud.example.com
-EXEC: curl helloworld.cloud.example.com
-
 <html>
 <body>
 Hello, World!
 </body>
 </html>
+
+## ---------- Application Validation ----------
+## DETERMINED ROUTE: hello-app-cli-ex01.apps.ocpdemo.lab.linuxsoup.com
+## EXEC: curl -s hello-app-cli-ex01.apps.ocpdemo.lab.linuxsoup.com
+
 ----
 
-[NOTE]
-====
-_Native command(s) to validate application_
-----    
-curl http://helloworld.cloud.example.com
-----
-====
 
 IMPORTANT: The solution you just completed is NOT a recommended solution on how to deploy a container for production use.  This solution was provided to touch on a few concepts unique to the Openshift Container Platform.  Take some time to review: container design, project attributes, process uid/gid (ie: namespaces) in a containerized environment, filesystems, etc...
 
