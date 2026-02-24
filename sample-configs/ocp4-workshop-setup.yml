@@ -57,6 +57,14 @@
       - t_bastion_squid:           "{{ lookup('env','BASTION_SQUID') }}"
       - t_bastion_cockpit:         "{{ lookup('env','BASTION_COCKPIT') }}"
 
+      - t_ldap:                    "{{ lookup('env','LDAP') }}"
+      - t_ldap_uri:                "{{ lookup('env','LDAP_URI') }}"
+      - t_ldap_base_dn:            "{{ lookup('env','LDAP_BASE_DN') }}"
+      - t_ldap_bind_dn:            "{{ lookup('env','LDAP_BIND_DN') }}"
+      - t_ldap_bind_pw:            "{{ lookup('env','LDAP_BIND_PW') }}"
+      - t_ldap_cert:               "{{ lookup('env','LDAP_CERT') }}"
+      - t_ldap_sudo_grp:           "{{ lookup('env','LDAP_SUDO_GRP') }}"
+
       - t_network_id:              "{{ lookup('env','NETWORK_ID') }}"
       - t_network_gateway:         "{{ lookup('env','NETWORK_GATEWAY') }}"
       - t_network_prefix:          "{{ lookup('env','NETWORK_PREFIX') }}"

@@ -1,10 +1,15 @@
 #!/bin/bash
 
+RELOADER="$0"
+echo "${RELOADER}"
+echo "--------------------"
+
 source ./xtoph-setup/virthost-menu.shlib
 source ./xtoph-setup/network-menu.shlib
 source ./xtoph-setup/ansible-menu.shlib
 source ./xtoph-setup/node-menu.shlib
 source ./xtoph-setup/bastion-menu.shlib
+source ./xtoph-setup/ldap-menu.shlib
 
 # --
 
@@ -13,13 +18,7 @@ source ./xtoph-setup/bastion-menu.shlib
 ##
 
 export PROJECT_NAME=""
-export ANSIBLE_SOURCE=""
-export ANSIBLE_IP=""
-export ANSIBLE_VAULT_PW=""
-export WORKSHOP_ADMIN_PW=""
-export WORKSHOP_ADMIN_UID="cloud-admin"
-export WORKSHOP_USER_PW=""
-export WORKSHOP_USER_UID="cloud-user"
+
 export CLUSTER_WILDCARD="apps"
 export CLUSTER_PROVISIONER="ai-vmedia"
 export CLUSTER_LOADBALANCER_IP=""
@@ -27,10 +26,15 @@ export CLUSTER_NAME=""
 export CLUSTER_API_IP=""
 export CLUSTER_VERSION="4.20"
 export CLUSTER_STRAPLESS="False"
-export CLUSTER_SNO="False"
 export CLUSTER_CIDR="10.128.0.0/14"
 export CLUSTER_CIDR_HOSTPREFIX="23"
 export CLUSTER_TOPOLOGY="3x2"
+
+export WORKSHOP_ADMIN_UID="cloud-admin"
+export WORKSHOP_USER_UID="cloud-user"
+
+export WORKSHOP_ADMIN_PW
+export WORKSHOP_USER_PW
 
 ##
 ##    ESTABLISH SOME ADDITIONAL DEFAULTS
@@ -75,7 +79,7 @@ HGROUP_NODE9="myArbiter"
 
 # ---
 
-save_settings () {
+cluster_dump () {
 
 ##
 ##    NOTE: don't save passwords 
@@ -83,10 +87,11 @@ save_settings () {
 ##          to enter ALL of them
 ##
 
-cat > ./config/ocp4-workshop-setup.ans <<EO_VARS
+cat <<EOVARS
+
+## CLUSTER SETTINGS
+
     PROJECT_NAME="${PROJECT_NAME}"
-    ANSIBLE_SOURCE="${ANSIBLE_SOURCE}"
-    ANSIBLE_IP="${ANSIBLE_IP}"
     CLUSTER_NAME="${CLUSTER_NAME}"
     CLUSTER_WILDCARD="${CLUSTER_WILDCARD}"
     CLUSTER_PROVISIONER="${CLUSTER_PROVISIONER}"
@@ -95,23 +100,55 @@ cat > ./config/ocp4-workshop-setup.ans <<EO_VARS
     CLUSTER_API_IP="${CLUSTER_API_IP}"
     CLUSTER_VERSION="${CLUSTER_VERSION}"
     CLUSTER_STRAPLESS="${CLUSTER_STRAPLESS}"
-    CLUSTER_SNO="${CLUSTER_SNO}"
     CLUSTER_CIDR="${CLUSTER_CIDR}"
     CLUSTER_CIDR_HOSTPREFIX="${CLUSTER_CIDR_HOSTPREFIX}"
-EO_VARS
 
-    ansible_dump  >> ./config/ocp4-workshop-setup.ans
-    virthost_dump >> ./config/ocp4-workshop-setup.ans
-    bastion_dump  >> ./config/ocp4-workshop-setup.ans
-    network_dump  >> ./config/ocp4-workshop-setup.ans
-    node_dump     >> ./config/ocp4-workshop-setup.ans
+    WORKSHOP_ADMIN_UID="${WORKSHOP_ADMIN_UID}"
+    WORKSHOP_USER_UID="${WORKSHOP_USER_UID}"
+
+    ##WORKSHOP_ADMIN_PW=""
+    ##WORKSHOP_USER_PW=""
+
+EOVARS
 
 }
 
 
 # ---
 
-current_settings () {
+save_settings () {
+
+    ##
+    ##    NOTE: don't save passwords 
+    ##          user will always need 
+    ##          to enter ALL of them
+    ##
+
+    ##
+    ##    NOTE:  Network broadcast and netmask
+    ##           are calculated from the prefix
+    ##           and also not saved
+    ##
+
+    if [[ ! -z ${NETWORK_PREFIX} && ! -z ${NETWORK_ID} ]]; then
+        NETWORK_BROADCAST=`ipcalc ${NETWORK_ID}/${NETWORK_PREFIX} -b | cut -d= -f2` 
+        NETWORK_NETMASK=`ipcalc ${NETWORK_ID}/${NETWORK_PREFIX} -m | cut -d= -f2` 
+    fi
+
+    cluster_dump  > ./config/ocp4-workshop-setup.ans
+    ansible_dump  >> ./config/ocp4-workshop-setup.ans
+    virthost_dump >> ./config/ocp4-workshop-setup.ans
+    bastion_dump  >> ./config/ocp4-workshop-setup.ans
+    network_dump  >> ./config/ocp4-workshop-setup.ans
+    node_dump     >> ./config/ocp4-workshop-setup.ans
+    ldap_dump     >> ./config/ocp4-workshop-setup.ans
+
+}
+
+
+# ---
+
+cluster_settings () {
 
     ##
     ##    Network broadcast and netmask
@@ -127,46 +164,65 @@ current_settings () {
     ##
     ##    Bash Lesson:  the bash shell parameter expansion ':+' passes
     ##                  expansion if paramenter is set and not null
+    ##                  we use this to mask passwords for example
     ##
 
     echo ""
     echo "Project Name ... ${PROJECT_NAME}"
     echo ""
 
-    echo "[ SECURITY ]"
-    echo "    Ansible Vault  ... NA/${ANSIBLE_VAULT_PW:+**********}" 
-
-    if [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "ovirt" ]]; then
-        echo "    oVirt API      ... ${OVIRT_MANAGER_UID} / ${OVIRT_MANAGER_PW:+**********}" 
-    elif [[ ! -z ${VIRTHOST_TYPE} && "${VIRTHOST_TYPE}" == "libvirt" ]]; then
-        echo "    lVirt Host     ... ${VIRTHOST_UID} / ${VIRTHOST_PW:+**********}"
-        echo "    lVirt BMC      ... ${VIRTHOST_BMC_UID} / ${VIRTHOST_BMC_PW:+**********}" 
-    fi
-
-    echo "    Workshop Admin ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
-    echo "    Workshop User  ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
-    echo "    BMC Default    ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
-
     echo "[ OCP CLUSTER ]"
     echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
     echo "    Topology        ... ${CLUSTER_TOPOLOGY}"
-    echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (sno = ${CLUSTER_SNO}) (strapless = ${CLUSTER_STRAPLESS})"
+    echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (strapless = ${CLUSTER_STRAPLESS})"
     echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
     echo "    Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
     echo "    API IP          ... ${CLUSTER_API_IP}"
     echo "    clusterNetwork"
     echo "      cidr          ... ${CLUSTER_CIDR}"
     echo "      hostPrefix    ... ${CLUSTER_CIDR_HOSTPREFIX}"
+    echo "    Workshop Admin  ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
+    echo "    Workshop User   ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
+    echo "    BMC Defaults    ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
+}
 
+
+# ---
+
+
+current_settings () {
+    cluster_settings
     ansible_settings
     network_settings
+    ldap_settings
     bastion_settings
     virthost_settings
     node_settings
-
-    echo ""
-
  }
+
+
+# ---
+
+
+cluster_bulk_edit () {
+
+    TMPFILE="$(mktemp /var/tmp/ocp-workshop-setup.XXXXX)"
+
+    cluster_dump > $TMPFILE
+
+    vi $TMPFILE
+
+    read -p "Accept BULK EDIT update (Y/N)? " input
+
+    if [[ "${input^^}" == "Y" ]]; then
+      source $TMPFILE
+      echo "Changes sourced..."
+    fi
+
+    rm $TMPFILE
+
+}
+
 
 # ---
 
@@ -239,182 +295,24 @@ prepare_deployment () {
 
 # ---
 
-security_menu () {
-
-    SAVED_PROMPT="$PS3"
-
-    PS3="SECURITY MENU: "
-
-    current_settings
-
-    select action in "RETURN to previous menu" "Set Ansible Vault Password" "Set Workshop Admin Password" "Set Workshop User Password" "Set vHost Password" "Set vHost BMC Password" "Set oVirt Password" "Set Default BMC Password" 
-    do
-      case ${action}  in
-
-        "Set Ansible Vault Password")
-          echo "Enter new password and press Enter"
-          read -s -p "Enter ansible vault password [${ANSIBLE_VAULT_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter ansible vault password again [${ANSIBLLE_VAULT_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            ANSIBLE_VAULT_PW=${input:-$ANSIBLE_VAULT_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set Workshop Admin Password")
-          read -p "Enter Workshop Admin Username [${WORKSHOP_ADMIN_UID}]: " input
-          WORKSHOP_ADMIN_UID=${input:-$WORKSHOP_ADMIN_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop Admin password [${WORKSHOP_ADMIN_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter Workshop Admin password again [${WORKSHOP_ADMIN_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            WORKSHOP_ADMIN_PW=${input:-$WORKSHOP_ADMIN_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set Workshop User Password")
-          read -p "Enter Workshop User Username [${WORKSHOP_USER_UID}]: " input
-          WORKSHOP_USER_UID=${input:-$WORKSHOP_USER_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set vHost Password")
-          read -p "Enter vHost User Username [${VIRTHOST_UID}]: " input
-          VIRTHOST_UID=${input:-$VIRTHOST_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter libvirt host password [${VIRTHOST_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter libvirt host password again [${VIRTHOST_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            VIRTHOST_PW=${input:-$VIRTHOST_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set vHost BMC Password")
-          read -p "Enter vHost BMC Username [${VIRTHOST_BMC_UID}]: " input
-          VIRTHOST_BMC_UID=${input:-$VIRTHOST_BMC_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter libvirt host BMC password [${VIRTHOST_BMC_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter libvirt host BMC password again [${VIRTHOST_BMC_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            VIRTHOST_BMC_PW=${input:-$VIRTHOST_BMC_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set oVirt Password")
-          read -p "Enter vHost BMC Username [${OVIRT_MANAGER_UID}]: " input
-          OVIRT_MANAGER_UID=${input:-$OVIRT_MANAGER_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter ovirt manager password [${OVIRT_MANAGER_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter ovirt manager password again [${OVIRT_MANAGER_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            OVIRT_MANAGER_PW=${input:-$OVIRT_MANAGER_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "Set Default BMC Password")
-          read -p "Enter Default BMC User [${BMC_UID_DEFAULT}]: " input 
-          BMC_UID_DEFAULT=${input:-$BMC_UID_DEFAULT}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+**********}]: " input
-          echo ""
-          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
-          ;;
-
-        "RETURN to previous menu")
-          PS3=${SAVED_PROMPT}
-          break
-          ;;
-
-        "*")
-          echo "That's NOT an option, try again..."
-          ;;
-
-      esac
-
-      ##
-      ##    Reprint the current settings
-      ##
-
-      current_settings
-
-      ##
-      ##    The following causes the select
-      ##    statement to reprint the menu
-      ##
-
-      REPLY=
-
-    done
-
-}
-
-# ---
-
 cluster_menu () {
 
     SAVED_PROMPT="$PS3"
 
     PS3="CLUSTER MENU: "
 
-    current_settings
+    echo ""
+    cluster_settings
+    echo ""
 
-    select action in "RETURN to previous menu" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set SNO" "Set Strapless"
+    select action in "RETURN to previous menu" "BULK EDIT params" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set Strapless" "Set Workshop Admin Password" "Set Workshop User Password" "Set Default BMC Password"
     do
       case ${action}  in
+
+        "BULK EDIT params")
+          cluster_bulk_edit
+          ;;
+
         "Set Name")
            read -p "Enter Cluster Name [${CLUSTER_NAME}]: " input
            CLUSTER_NAME=${input:-$CLUSTER_NAME}
@@ -505,21 +403,6 @@ cluster_menu () {
             done
            ;;
 
-        "Set SNO")
-           select CLUSTER_SNO in "True" "False"
-           do
-              case ${CLUSTER_SNO} in
-                "True" )
-                  break ;;
-                "False" )
-                  break ;;
-                "*" )
-                  ;;
-              esac
-              REPLY=
-            done
-           ;;
-
         "Set Wildcard")
            read -p "Enter Cluster Wildcard [${CLUSTER_WILDCARD}]: " input
            CLUSTER_WILDCARD=${input:-$CLUSTER_WILDCARD}
@@ -545,6 +428,61 @@ cluster_menu () {
           CLUSTER_CIDR_HOSTPREFIX=${input:-$CLUSTER_CIDR_HOSTPREFIX}
           ;;
 
+
+        "Set Workshop Admin Password")
+          read -p "Enter Workshop Admin Username [${WORKSHOP_ADMIN_UID}]: " input
+          WORKSHOP_ADMIN_UID=${input:-$WORKSHOP_ADMIN_UID}
+
+          echo "Enter new password and press Enter"
+          read -s -p "Enter Workshop Admin password [${WORKSHOP_ADMIN_PW:+**********}]: " input
+          echo ""
+          read -s -p "Enter Workshop Admin password again [${WORKSHOP_ADMIN_PW:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            WORKSHOP_ADMIN_PW=${input:-$WORKSHOP_ADMIN_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
+        "Set Workshop User Password")
+          read -p "Enter Workshop User Username [${WORKSHOP_USER_UID}]: " input
+          WORKSHOP_USER_UID=${input:-$WORKSHOP_USER_UID}
+
+          echo "Enter new password and press Enter"
+          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
+          echo ""
+          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
+        "Set Default BMC Password")
+          read -p "Enter Default BMC User [${BMC_UID_DEFAULT}]: " input
+          BMC_UID_DEFAULT=${input:-$BMC_UID_DEFAULT}
+
+          echo "Enter new password and press Enter"
+          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+**********}]: " input
+          echo ""
+          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+**********}]: " input2
+          echo ""
+          echo ""
+
+          if [[ "$input" == "$input2" ]]; then
+            BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
+          else
+            echo "WARNING: Passwords do not match ... unchanged"
+          fi
+          ;;
+
         "RETURN to previous menu")
           PS3=${SAVED_PROMPT}
           break
@@ -560,7 +498,9 @@ cluster_menu () {
       ##    Reprint the current settings
       ##
 
-      current_settings
+      echo ""
+      cluster_settings
+      echo ""
 
       ##
       ##    The following causes the select
@@ -579,18 +519,22 @@ main_menu () {
 
     PS3="MAIN MENU (select action): "
 
+    echo ""
     current_settings
+    echo ""
 
-    select action in "Set Project Name" \
-                     "Security Settings" \
-                     "Ansible Settings" \
-                     "Bastion Settings" \
+    select action in "Prepare Deployment" \
+                     "Set Project Name" \
                      "Cluster Settings" \
+                     "Ansible Settings" \
                      "Network Settings" \
+                     "LDAP Settings" \
+                     "Bastion Settings" \
                      "Virt Host Settings" \
                      "Node Settings" \
-                     "Prepare Deployment" \
-                     "Save & Quit"
+                     "SAVE Current Params" \
+                     "RELOAD Saved Params"
+
     do
       case ${action}  in
 
@@ -598,11 +542,11 @@ main_menu () {
           read -p "Enter Prooject Name [${PROJECT_NAME}]: " input
           PROJECT_NAME=${input:-$PROJECT_NAME}
           ;;
-        "Security Settings")
-          security_menu
-          ;;
         "Ansible Settings")
           ansible_menu
+          ;;
+        "LDAP Settings")
+          ldap_menu
           ;;
         "Bastion Settings")
           bastion_menu
@@ -623,8 +567,11 @@ main_menu () {
           save_settings
           prepare_deployment
           ;;
-        "Save & Quit")
+        "SAVE Current Params")
           save_settings
+          ;;
+        "RELOAD Saved Params")
+          exec "${RELOADER}"
           break
           ;;
         "*")
@@ -637,7 +584,9 @@ main_menu () {
       ##    Reprint the current settings
       ##
 
+      echo ""
       current_settings
+      echo ""
 
       ##
       ##    The following causes the select

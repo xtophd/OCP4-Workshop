@@ -54,13 +54,17 @@ custom_worker:
 
 custom_sno:
     name: "Custom Single Node Openshift SNO"
-    description: "Custom Openshift Master [10cpu,48GB,120GB disk]"
+    description: "Custom Openshift Master [10cpu,48GB,120GB disk0,250GB disk1]"
     vcpus:    10 
     memsize:  48000
     storage:
       root:
         size: 120 
         hw_storage_profile: default
+      extra:
+        disk1:
+          size: 250
+          hw_storage_profile: default
 
 custom_acm:
     name: "Custom Openshift Master for ACM "

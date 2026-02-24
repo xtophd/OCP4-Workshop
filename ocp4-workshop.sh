@@ -42,6 +42,7 @@ case "$1" in
     "pxe"         | \
     "iso"         | \
     "lock"        | \
+    "ldap"        | \
     "unlock"      | \
     "nfs"         | \
     "noop"        | \
@@ -80,7 +81,7 @@ case "$1" in
         ;;
 
     *)
-        echo "USAGE: ocp4-workshop.sh [ all | ai | assert | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | nfs | noop | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
+        echo "USAGE: ocp4-workshop.sh [ all | ai | assert | basics | cockpit | gui | dns | dhcp | firewall | pxe | uefi | ldap | nfs | noop | ntp | haproxy | matchbox | httpd | upi | workshop | user | finish | lock | setup | shutdown | tests | unlock | user | usher | vnc ]"
         ;;
 
 esac         

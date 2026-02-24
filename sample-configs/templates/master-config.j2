@@ -24,6 +24,12 @@ all:
 
     h_plPROF:        "custom_platform"
 
+{% if t_ldap == True %}
+    h_idPROF:        "ldap-workshopvars"
+{% else %}
+    h_idPROF:        ""
+{% endif %}
+
 {% if t_virthost_type == "libvirt" %}
     h_rhcosDEV:      "{{ t_blkdev_virthost }}"
     h_rhcosNIC:      "{{ t_netdev_virthost }}"
@@ -86,6 +92,14 @@ all:
       ocp_vip_api:          "{{ t_addr_node1 }}"
 {% endif %}
 
+      ldap:                 "{{ t_ldap }}" 
+      ldap_uri:             "{{ t_ldap_uri }}"
+      ldap_base_dn:         "{{ t_ldap_base_dn }}"
+      ldap_bind_dn:         "{{ t_ldap_bind_dn }}"
+      ldap_bind_pw:         "{{ t_ldap_bind_pw }}"
+      ldap_cert:            "{{ t_ldap_cert }}"
+      ldap_sudo_grp:        "{{ t_ldap_sudo_grp }}"
+
       network_basedomain:   "{{ t_network_basedomain }}"
       network_network:      "{{ t_network_id }}"
       network_netmask:      "{{ t_network_netmask }}"
@@ -113,6 +127,7 @@ all:
         dhcp_pxe:           {{ t_bastion_dhcp }}
         dhcp_uefi_http:     {{ t_bastion_dhcp }}
         haproxy:            {{ t_bastion_haproxy }}
+        ldap_client:        {{ t_ldap }}
         nfs:                {{ t_bastion_nfs }}
         ntp:                {{ t_bastion_ntp }}
         squid:              {{ t_bastion_squid }}
