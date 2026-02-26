@@ -523,7 +523,7 @@ main_menu () {
     current_settings
     echo ""
 
-    select action in "Prepare Deployment" \
+    select action in "PREPARE Deployment" \
                      "Set Project Name" \
                      "Cluster Settings" \
                      "Ansible Settings" \
@@ -563,7 +563,7 @@ main_menu () {
         "Node Settings")
           node_menu
           ;;
-        "Prepare Deployment")
+        "PREPARE Deployment")
           save_settings
           prepare_deployment
           ;;
