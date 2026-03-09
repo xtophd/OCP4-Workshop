@@ -20,14 +20,14 @@ custom_baremetal:
             description:       "default baremetal network parameters"
 {% raw %}  
             basedomain:        "{{ workshop_vars.network_basedomain }}"
-            network:           "{{ workshop_vars.network_network    }}"
+            network:           "{{ workshop_vars.network_id         }}"
             netmask:           "{{ workshop_vars.network_netmask    }}"
             broadcast:         "{{ workshop_vars.network_broadcast  }}"
             prefix:            "{{ workshop_vars.network_prefix     }}"
             gateway:           "{{ workshop_vars.network_gateway    }}"
             nameserver:        "{{ workshop_vars.network_nameserver }}"
             timeserver:        "{{ workshop_vars.network_timeserver }}"
-            fqdn:              "{{ workshop_extras.network_fqdn     }}"
+            subdomain:         "{{ workshop_vars.network_subdomain }}"
 {% endraw %}
 
     storage:
@@ -80,19 +80,21 @@ custom_platform:
             macvtap_vlan_id:    "{{ t_virthost_vtap_vlan_id }}"
 
             fwd_type:        "{{ t_virthost_br_type }}"
+{% if   ( t_virthost_br_type == "bridge" ) or (t_virthost_br_type == "macvtap")  %}
             bridge_netdev:   "{{ t_virthost_br_dev }}"
+{% endif %}
             model:           "virtio"
 
 {% raw %}  
             basedomain:        "{{ workshop_vars.network_basedomain }}"
-            network:           "{{ workshop_vars.network_network    }}"
+            network:           "{{ workshop_vars.network_id         }}"
             netmask:           "{{ workshop_vars.network_netmask    }}"
             broadcast:         "{{ workshop_vars.network_broadcast  }}"
             prefix:            "{{ workshop_vars.network_prefix     }}"
             gateway:           "{{ workshop_vars.network_gateway    }}"
             nameserver:        "{{ workshop_vars.network_nameserver }}"
             timeserver:        "{{ workshop_vars.network_timeserver }}"
-            fqdn:              "{{ workshop_extras.network_fqdn     }}"
+            subdomain:         "{{ workshop_vars.network_subdomain  }}"
 {% endraw %}
 
     storage:
@@ -136,14 +138,14 @@ custom_platform:
             network_name: "{{ t_ovirt_network_domain }}"
 {% raw %}  
             basedomain:        "{{ workshop_vars.network_basedomain }}"
-            network:           "{{ workshop_vars.network_network    }}"
+            network:           "{{ workshop_vars.network_id         }}"
             netmask:           "{{ workshop_vars.network_netmask    }}"
             broadcast:         "{{ workshop_vars.network_broadcast  }}"
             prefix:            "{{ workshop_vars.network_prefix     }}"
             gateway:           "{{ workshop_vars.network_gateway    }}"
             nameserver:        "{{ workshop_vars.network_nameserver }}"
             timeserver:        "{{ workshop_vars.network_timeserver }}"
-            fqdn:              "{{ workshop_extras.network_fqdn     }}"
+            subdomain:         "{{ workshop_vars.network_subdomain  }}"
 {% endraw %}
 
     storage:

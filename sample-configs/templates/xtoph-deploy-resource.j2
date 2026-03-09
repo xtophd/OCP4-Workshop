@@ -41,6 +41,9 @@ custom_master:
       root:
         size: 120 
         hw_storage_profile: default
+      extra:
+        disk1:
+          size: 50
 
 custom_worker:
     name: "Custom Openshift Worker"
@@ -51,6 +54,9 @@ custom_worker:
       root:
         size: 120
         hw_storage_profile: default
+      extra:
+        disk1:
+          size: 50
 
 custom_sno:
     name: "Custom Single Node Openshift SNO"
@@ -63,7 +69,7 @@ custom_sno:
         hw_storage_profile: default
       extra:
         disk1:
-          size: 250
+          size: 50
           hw_storage_profile: default
 
 custom_acm:

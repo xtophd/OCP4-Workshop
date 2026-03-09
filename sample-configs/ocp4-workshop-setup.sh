@@ -4,6 +4,7 @@ RELOADER="$0"
 echo "${RELOADER}"
 echo "--------------------"
 
+source ./xtoph-setup/xtoph-setup.shlib
 source ./xtoph-setup/virthost-menu.shlib
 source ./xtoph-setup/network-menu.shlib
 source ./xtoph-setup/ansible-menu.shlib
@@ -50,15 +51,15 @@ NAME_NODE7="worker2"
 NAME_NODE8="sno"
 NAME_NODE9="arbiter"
 
-NICMOD_NODE1="static"
-NICMOD_NODE2="dhcp"
-NICMOD_NODE3="dhcp"
-NICMOD_NODE4="dhcp"
-NICMOD_NODE5="dhcp"
-NICMOD_NODE6="dhcp"
-NICMOD_NODE7="dhcp"
-NICMOD_NODE8="dhcp"
-NICMOD_NODE9="dhcp"
+NICMODE_NODE1="static"
+NICMODE_NODE2="dhcp"
+NICMODE_NODE3="dhcp"
+NICMODE_NODE4="dhcp"
+NICMODE_NODE5="dhcp"
+NICMODE_NODE6="dhcp"
+NICMODE_NODE7="dhcp"
+NICMODE_NODE8="dhcp"
+NICMODE_NODE9="dhcp"
 
 HGROUP_NODE1="myBastion"
 HGROUP_NODE2="myBootstrap"

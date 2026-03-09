@@ -10,6 +10,23 @@
 ##
 ##                   For consistency, only use unquoted booleans: True & False
 
+##
+##    !! NOTE  !!    Openshift DNS requirements
+##
+##                   https://docs.redhat.com/es/documentation/openshift_container_platform/4.21/html/installing_on_bare_metal/user-provisioned-infrastructure#installation-dns-user-infra_installing-bare-metal
+##
+##                   <component>.<cluster_name>.<base_domain>
+##
+##                   api.<cluster_name>.<base_domain>. a                Kubernetes API
+##                   api-int.<cluster_name>.<base_domain>.              Kubernetes API for internal cluster communications
+##                   *.apps.<cluster_name>.<base_domain>.               wildcard routes / ingress load balancer
+##                  
+##                   bootstrap.<cluster_name>.<base_domain>.
+##                   <control_plane><n>.<cluster_name>.<base_domain>.
+##                   <compute><n>.<cluster_name>.<base_domain>.
+##
+
+
 all: 
 
   vars:
@@ -67,7 +84,7 @@ all:
       projectname:          "{{ t_project_name }}"
 
       ocp_clustername:      "{{ t_cluster_name }}"
-      ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ t_network_basedomain }}"
+      ocp_cluster_fqdn:     "{{ t_cluster_name }}.{{ lookup('env','NETWORK_SUBDOMAIN') }}"
       ocp_version:          "{{ t_cluster_version }}"
       ocp_topology:         "{{ t_cluster_topology }}"
       ocp_admin_user:       "cloud-admin"
@@ -100,14 +117,25 @@ all:
       ldap_cert:            "{{ t_ldap_cert }}"
       ldap_sudo_grp:        "{{ t_ldap_sudo_grp }}"
 
-      network_basedomain:   "{{ t_network_basedomain }}"
-      network_network:      "{{ t_network_id }}"
-      network_netmask:      "{{ t_network_netmask }}"
-      network_broadcast:    "{{ t_network_broadcast }}"
-      network_prefix:       "{{ t_network_prefix }}"
-      network_gateway:      "{{ t_network_gateway }}"
-      network_nameserver:   "{{ t_network_dns_server }}"
-      network_timeserver:   "{{ t_network_time_server }}"
+      network_id:           "{{ lookup('env','NETWORK_ID')          }}"
+      network_gateway:      "{{ lookup('env','NETWORK_GATEWAY')     }}"
+      network_prefix:       "{{ lookup('env','NETWORK_PREFIX')      }}"
+      network_broadcast:    "{{ lookup('env','NETWORK_BROADCAST')   }}"
+      network_netmask:      "{{ lookup('env','NETWORK_NETMASK')     }}"
+      network_basedomain:   "{{ lookup('env','NETWORK_BASEDOMAIN')  }}"
+      network_subdomain:    "{{ lookup('env','NETWORK_SUBDOMAIN')   }}"
+      network_nameserver:   "{{ lookup('env','NETWORK_DNS_SERVER')  }}"
+      network_timeserver:   "{{ lookup('env','NETWORK_TIME_SERVER') }}"
+
+
+      ##
+      ##    NOTE:
+      ##        User & Admin UID/PW are stored
+      ##        in the credentials file. Never here!!!
+      ##
+
+      set_admin_password:   True
+      set_student_password: True
 
       http_proxy:           ""
       https_proxy:          ""
@@ -151,11 +179,10 @@ all:
 
     workshop_extras:
 
-      network_fqdn:         "{{ t_network_basedomain }}"
 
       ocp_creds_dir:        "/root/ocp-{{ t_cluster_name }}"
 
-      ocp_wfqdn:            "{{ t_cluster_wildcard }}.{{ t_cluster_name }}.{{ t_network_basedomain }}"
+      ocp_wfqdn:            "{{ t_cluster_wildcard }}.{{ t_cluster_name }}.{{ lookup('env','NETWORK_SUBDOMAIN')   }}"
 
       nfs_export:           "/home/nfs-{{ t_project_name }}"
 
@@ -189,7 +216,7 @@ myLibvirtHosts:
   hosts:
 {% if t_virthost_type == "libvirt" and t_virthost_fqdn|length %}
     {{ t_virthost_fqdn }}:
-      h_pubIP:  "{{ t_virthost_ip }}"
+      h_netIP:  "{{ t_virthost_ip }}"
 {% if t_virthost_fqdn == "localhost.localdomain" %}
       ansible_connection: local
 {% endif %}
@@ -220,7 +247,7 @@ myLibvirtHosts:
 myDeployhost:
   hosts:
     deployer:
-      h_pubIP:       {% raw %}"{{ xtoph_vars.deployhost_ip }}"{% endraw %}
+      h_netIP:       {% raw %}"{{ xtoph_vars.deployhost_ip }}"{% endraw %}
 
   vars:
     ansible_connection: local
@@ -243,17 +270,17 @@ myBastion:
 {% if t_name_node1 == "localhost.localdomain" %}
     {{ ansible_nodename }}:
       ansible_connection: local
-      h_pubIP:         "{{ t_ansible_ip }}"
+      h_netIP:         "{{ t_ansible_ip }}"
 {% else %}
-    {{ t_name_node1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+    {{ t_name_node1 }}.{{ lookup('env','NETWORK_SUBDOMAIN')   }}:
       h_ksPROF:        "{{ t_ks_node1 }}"
-      h_pubIP:         "{{ t_addr_node1 }}"
+      h_netIP:         "{{ t_addr_node1 }}"
       h_rsPROF:        "{{ t_res_node1  }}"
 {% if t_kopts_node1|length %}
       h_kernelOPTS:    "{{ t_kopts_node1 }}"
 {% endif %}
 {% if t_mac_node1|length %}
-      h_pubMAC:        "{{ t_mac_node1 }}"
+      h_netMAC:        "{{ t_mac_node1 }}"
 {% endif -%}
 {% if t_hw_node1|length  %}
       h_hwPROF:        "{{ t_hw_node1  }}"
@@ -277,44 +304,61 @@ myBastion:
 myBootstrap:
   hosts:
 
+
 {% if t_cluster_topology != "sno" %}
 {% if (( t_cluster_provisioner == "upi-pxe" or t_cluster_provisioner == "upi-vmedia" ) and t_cluster_strapless == False ) %}
 
-{% if t_addr_node2 is defined and t_addr_node2|length %}
-    {{ t_name_node2 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node2 }}" 
-      h_rsPROF:        "{{ t_res_node2  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node2 }}"
-{% if t_mac_node2|length %}
-      h_pubMAC:        "{{ t_mac_node2 }}"
-{% endif -%}
-{% if t_hw_node2|length  %}
-      h_hwPROF:        "{{ t_hw_node2  }}"
+{% for index in range(1,9) %}
+{%     if  lookup('env',"HGROUP_NODE" ~ index) == "myBootstrap" %}
+
+    {{ lookup('env',"NAME_NODE" ~ index) }}.{{ lookup('env',"CLUSTER_NAME") }}.{{ lookup('env',"NETWORK_SUBDOMAIN") }} :
+
+      h_netIP:         "{{ lookup('env',"ADDR_NODE" ~ index) }}"
+      h_rsPROF:        "{{ lookup('env',"RES_NODE" ~ index) }}"
+{%       if lookup('env',"MAC_NODE" ~ index)|length %}
+      h_netMAC:        "{{ lookup('env',"MAC_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NICMODE_NODE" ~ index)|length %}
+      h_netMODE:       "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NETDEV_NODE" ~ index)|length %}
+      h_netDEV:        "{{ lookup('env',"NETDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"BLKDEV_NODE" ~ index)|length %}
+      h_blkDEV:        "{{ lookup('env',"BLKDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"HW_NODE" ~ index)|length %}
+      h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_node2|length %}
-      h_kernelOPTS:    "{{ t_kopts_node2 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
-      h_ksPROF:        "vmedia_nowait"
-{% endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_node2 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node2 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node2 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node2 }}"
-{% endif %}
-{% if t_bmc_node2|length %}
-      bmc_fqdn:        "{{ t_bmc_node2 }}"
-{% endif %}
-{% endif %}
+      h_rhcosNIC:      "{{ lookup('vars','t_netdev_node' ~ index) }}:dhcp"
+      h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
+      h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
+      h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
+
+{%         if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
+      h_ksPROF:        "vmedia_nowait"
+{%         else %}
+      h_ksPROF:        "{{ lookup('env',"KS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
+      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"BMC_NODE" ~ index)|length %}
+      bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
+  {%       endif %}
+{%       endif %}
+
+{%     endif %}
+{% endfor %}
 
 {% endif %}
 {% endif %}
 
 
 ## -----------------
-
 
 
 myMasters:
@@ -322,92 +366,51 @@ myMasters:
 
 {% if t_cluster_topology != "sno" %}
 
-{% if t_addr_node3 is defined and t_addr_node3|length %}
-    {{ t_name_node3}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node3 }}"
-      h_rsPROF:        "{{ t_res_node3  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node3 }}"
-{% if t_mac_node3|length %}
-      h_pubMAC:        "{{ t_mac_node3 }}"
-{% endif -%}
-{% if t_hw_node3|length  %}
-      h_hwPROF:        "{{ t_hw_node3  }}"
+{% for index in range(1,9) %}
+{%     if  lookup('env',"HGROUP_NODE" ~ index) == "myMasters" %}
+
+    {{ lookup('env',"NAME_NODE" ~ index) }}.{{ lookup('env',"CLUSTER_NAME") }}.{{ lookup('env',"NETWORK_SUBDOMAIN") }} :
+
+      h_netIP:         "{{ lookup('env',"ADDR_NODE" ~ index) }}"
+      h_rsPROF:        "{{ lookup('env',"RES_NODE" ~ index) }}"
+{%       if lookup('env',"MAC_NODE" ~ index)|length %}
+      h_netMAC:        "{{ lookup('env',"MAC_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NICMODE_NODE" ~ index)|length %}
+      h_netMODE:       "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NETDEV_NODE" ~ index)|length %}
+      h_netDEV:        "{{ lookup('env',"NETDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"BLKDEV_NODE" ~ index)|length %}
+      h_blkDEV:        "{{ lookup('env',"BLKDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"HW_NODE" ~ index)|length %}
+      h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_node3|length %}
-      h_kernelOPTS:    "{{ t_kopts_node3 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
+
+      h_rhcosNIC:      "{{ lookup('vars','t_netdev_node' ~ index) }}:dhcp"
+      h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
+      h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
+      h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
+
+{%         if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
-{% endif %}
+{%         else %}
+      h_ksPROF:        "{{ lookup('env',"KS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
+      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"BMC_NODE" ~ index)|length %}
+      bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
+  {%       endif %}
+{%       endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_node3 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node3 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node3 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node3 }}"
-{% endif %}
-{% if t_bmc_node3|length %}
-      bmc_fqdn:        "{{ t_bmc_node3 }}"
-{% endif %}
-{% endif %}
-
-{% if t_addr_node4 is defined and t_addr_node4|length %}
-    {{ t_name_node4 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node4 }}"
-      h_rsPROF:        "{{ t_res_node4  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node4 }}"
-{% if t_mac_node4|length %}
-      h_pubMAC:        "{{ t_mac_node4 }}"
-{% endif %}
-{% if t_hw_node4|length %}
-      h_hwPROF:        "{{ t_hw_node4 }}"
-      h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-{% if t_kopts_node4|length %}
-      h_kernelOPTS:    "{{ t_kopts_node4 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
-      h_ksPROF:        "vmedia_nowait"
-{% endif %}
-
-      h_rhcosNIC:      "{{ t_netdev_node4 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node4 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node4 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node4 }}"
-{% endif %}
-{% if t_bmc_node4|length %}
-      bmc_fqdn:        "{{ t_bmc_node4 }}"
-{% endif %}
-{% endif %}
-
-{% if t_addr_node5 is defined and t_addr_node5|length %}
-    {{ t_name_node5}}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node5 }}"
-      h_rsPROF:        "{{ t_res_node5  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node5 }}"
-{% if t_mac_node5|length %}
-      h_pubMAC:        "{{ t_mac_node5 }}"
-{% endif %}
-{% if t_hw_node5|length %}
-      h_hwPROF:        "{{ t_hw_node5 }}"
-      h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-{% if t_kopts_node5|length %}
-      h_kernelOPTS:    "{{ t_kopts_node5 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
-      h_ksPROF:        "vmedia_nowait"
-{% endif %}
-
-      h_rhcosNIC:      "{{ t_netdev_node5 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node5 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node5 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node5 }}"
-{% endif %}
-{% if t_bmc_node5|length %}
-      bmc_fqdn:        "{{ t_bmc_node5 }}"
-{% endif %}
-{% endif %}
+{%     endif %}
+{% endfor %}
 
 {% endif %}
 
@@ -415,69 +418,56 @@ myMasters:
 ## -----------------
 
 
-
 myWorkers:
   hosts:
 
 {% if t_cluster_topology == "3x2" %}
 
-{% if t_addr_node6 is defined and t_addr_node6|length %}
-    {{ t_name_node6 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node6 }}" 
-      h_rsPROF:        "{{ t_res_node6  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node6 }}"
-{% if t_mac_node6|length %}
-      h_pubMAC:        "{{ t_mac_node6 }}"
-{% endif %}
-{% if t_hw_node6|length  %}
-      h_hwPROF:        "{{ t_hw_node6  }}"
+{% for index in range(1,9) %}
+{%     if  lookup('env',"HGROUP_NODE" ~ index) == "myWorkers" %}
+
+    {{ lookup('env',"NAME_NODE" ~ index) }}.{{ lookup('env',"CLUSTER_NAME") }}.{{ lookup('env',"NETWORK_SUBDOMAIN") }} :
+
+      h_netIP:         "{{ lookup('env',"ADDR_NODE" ~ index) }}"
+      h_rsPROF:        "{{ lookup('env',"RES_NODE" ~ index) }}"
+{%       if lookup('env',"MAC_NODE" ~ index)|length %}
+      h_netMAC:        "{{ lookup('env',"MAC_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NICMODE_NODE" ~ index)|length %}
+      h_netMODE:       "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NETDEV_NODE" ~ index)|length %}
+      h_netDEV:        "{{ lookup('env',"NETDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"BLKDEV_NODE" ~ index)|length %}
+      h_blkDEV:        "{{ lookup('env',"BLKDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"HW_NODE" ~ index)|length %}
+      h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_node6|length %}
-      h_kernelOPTS:    "{{ t_kopts_node6 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
+
+      h_rhcosNIC:      "{{ lookup('vars','t_netdev_node' ~ index) }}:dhcp"
+      h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
+      h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
+      h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
+
+{%         if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
-{% endif %}
+{%         else %}
+      h_ksPROF:        "{{ lookup('env',"KS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
+      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"BMC_NODE" ~ index)|length %}
+      bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
+  {%       endif %}
+{%       endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_node6 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node6 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node6 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node6 }}"
-{% endif %}
-{% if t_bmc_node6|length %}
-      bmc_fqdn:        "{{ t_bmc_node6 }}"
-{% endif %}
-{% endif %}
-
-{% if t_addr_node7 is defined and t_addr_node7|length %}
-    {{ t_name_node7 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node7 }}" 
-      h_rsPROF:        "{{ t_res_node7  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node7 }}"
-{% if t_mac_node7|length %}
-      h_pubMAC:        "{{ t_mac_node7 }}"
-{% endif %}
-{% if t_hw_node7|length  %}
-      h_hwPROF:        "{{ t_hw_node7  }}"
-      h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
-{% if t_kopts_node7|length %}
-      h_kernelOPTS:    "{{ t_kopts_node7 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
-      h_ksPROF:        "vmedia_nowait"
-{% endif %}
-
-      h_rhcosNIC:      "{{ t_netdev_node7 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node7 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node7 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node7 }}"
-{% endif %}
-{% if t_bmc_node7|length %}
-      bmc_fqdn:        "{{ t_bmc_node7 }}"
-{% endif %}
-{% endif %}
+{%     endif %}
+{% endfor %}
 
 {% endif %}
 
@@ -492,35 +482,51 @@ mySNO:
 
 {% if t_cluster_topology == "sno" %}
 
-{% if t_addr_node8 is defined and t_addr_node8|length %}
-    {{ t_name_node8 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
-      h_pubIP:         "{{ t_addr_node8 }}"
-      h_rsPROF:        "{{ t_res_node8  }}"
-      h_rhcosNICmode:  "{{ t_nicmode_node8 }}"
-{% if t_mac_node8|length %}
-      h_pubMAC:        "{{ t_mac_node8 }}"
-{% endif %}
-{% if t_hw_node8|length  %}
-      h_hwPROF:        "{{ t_hw_node8  }}"
+{% for index in range(1,9) %}
+{%     if  lookup('env',"HGROUP_NODE" ~ index) == "mySNO" %}
+
+    {{ lookup('env',"NAME_NODE" ~ index) }}.{{ lookup('env',"CLUSTER_NAME") }}.{{ lookup('env',"NETWORK_SUBDOMAIN") }} :
+
+      h_netIP:         "{{ lookup('env',"ADDR_NODE" ~ index) }}"
+      h_rsPROF:        "{{ lookup('env',"RES_NODE" ~ index) }}"
+{%       if lookup('env',"MAC_NODE" ~ index)|length %}
+      h_netMAC:        "{{ lookup('env',"MAC_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NICMODE_NODE" ~ index)|length %}
+      h_netMODE:       "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"NETDEV_NODE" ~ index)|length %}
+      h_netDEV:        "{{ lookup('env',"NETDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"BLKDEV_NODE" ~ index)|length %}
+      h_blkDEV:        "{{ lookup('env',"BLKDEV_NODE" ~ index) }}"
+{%       endif %}
+{%       if lookup('env',"HW_NODE" ~ index)|length %}
+      h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
       h_pwrOFF:        false
-{% if t_kopts_node8|length %}
-      h_kernelOPTS:    "{{ t_kopts_node8 }}"
-{% endif %}
-{% if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
+
+      h_rhcosNIC:      "{{ lookup('vars','t_netdev_node' ~ index) }}:dhcp"
+      h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
+      h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
+      h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
+
+{%         if t_cluster_provisioner == "ai-vmedia" or t_cluster_provisioner == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
-{% endif %}
+{%         else %}
+      h_ksPROF:        "{{ lookup('env',"KS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
+      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         endif %}
+{%         if lookup('env',"BMC_NODE" ~ index)|length %}
+      bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
+  {%       endif %}
+{%       endif %}
 
-      h_rhcosNIC:      "{{ t_netdev_node8 }}:dhcp"
-      h_rhcosDEV:      "{{ t_blkdev_node8 }}"
-      h_rhcosUSBdelay: "{{ t_usbdelay_node8 }}"
-      h_rhcosLOADER:   "{{ t_bootmode_node8 }}"
-{% endif %}
-
-{% if t_bmc_node8|length %}
-      bmc_fqdn:        "{{ t_bmc_node8 }}"
-{% endif %}
-{% endif %}
+{%     endif %}
+{% endfor %}
 
 {% endif %}
 
@@ -551,5 +557,5 @@ myOther:
 myShelter:
   hosts:
 
-#    {{t_name_node1 }}.{{ t_cluster_name }}.{{ t_network_basedomain}}:
+#    bastion.{{ lookup('env','NETWORK_SUBDOMAIN') }}:
 
