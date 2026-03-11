@@ -60,7 +60,7 @@ OCP     | 4.16  | ?     | ?     | ?     | ?     | ?     | Y     | Y     |
 OCP     | 4.17  | ?     | ?     | ?     | ?     | ?     | ?     | Y     |
 OCP     | 4.18  | ?     | ?     | b     | ?     | ?     | ?     | Y     |
 OCP     | 4.19  | ?     | ?     | b     | ?     | ?     | ?     | Y     |
-OCP     | 4.20  | ?     | ?     | b     | ?     | ?     | ?     | Y     |
+OCP     | 4.20  | ?     | ?     | b     | Y     | ?     | ?     | Y     |
 
 x : does not work, no intent to enable|fix
 b : does not work (broken), hope to fix
