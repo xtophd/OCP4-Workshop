@@ -32,10 +32,10 @@ export CLUSTER_CIDR_HOSTPREFIX="23"
 export CLUSTER_TOPOLOGY="3x2"
 
 export WORKSHOP_ADMIN_UID="cloud-admin"
-export WORKSHOP_USER_UID="cloud-user"
-
 export WORKSHOP_ADMIN_PW
-export WORKSHOP_USER_PW
+
+export WORKSHOP_STUDENT_UID="cloud-user"
+export WORKSHOP_STUDENT_PW
 
 ##
 ##    ESTABLISH SOME ADDITIONAL DEFAULTS
@@ -105,10 +105,10 @@ cat <<EOVARS
     CLUSTER_CIDR_HOSTPREFIX="${CLUSTER_CIDR_HOSTPREFIX}"
 
     WORKSHOP_ADMIN_UID="${WORKSHOP_ADMIN_UID}"
-    WORKSHOP_USER_UID="${WORKSHOP_USER_UID}"
+    WORKSHOP_STUDENT_UID="${WORKSHOP_STUDENT_UID}"
 
     ##WORKSHOP_ADMIN_PW=""
-    ##WORKSHOP_USER_PW=""
+    ##WORKSHOP_STUDENT_PW=""
 
 EOVARS
 
@@ -173,18 +173,18 @@ cluster_settings () {
     echo ""
 
     echo "[ OCP CLUSTER ]"
-    echo "    Name (ver)      ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
-    echo "    Topology        ... ${CLUSTER_TOPOLOGY}"
-    echo "    Provisioner     ... ${CLUSTER_PROVISIONER} (strapless = ${CLUSTER_STRAPLESS})"
-    echo "    Wildcard        ... ${CLUSTER_WILDCARD}"
-    echo "    Loadbalancer IP ... ${CLUSTER_LOADBALANCER_IP}"
-    echo "    API IP          ... ${CLUSTER_API_IP}"
+    echo "    Name (ver)       ... ${CLUSTER_NAME} (${CLUSTER_VERSION})"
+    echo "    Topology         ... ${CLUSTER_TOPOLOGY}"
+    echo "    Provisioner      ... ${CLUSTER_PROVISIONER} (strapless = ${CLUSTER_STRAPLESS})"
+    echo "    Wildcard         ... ${CLUSTER_WILDCARD}"
+    echo "    Loadbalancer IP  ... ${CLUSTER_LOADBALANCER_IP}"
+    echo "    API IP           ... ${CLUSTER_API_IP}"
     echo "    clusterNetwork"
-    echo "      cidr          ... ${CLUSTER_CIDR}"
-    echo "      hostPrefix    ... ${CLUSTER_CIDR_HOSTPREFIX}"
-    echo "    Workshop Admin  ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
-    echo "    Workshop User   ... ${WORKSHOP_USER_UID} / ${WORKSHOP_USER_PW:+**********}" 
-    echo "    BMC Defaults    ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
+    echo "      cidr           ... ${CLUSTER_CIDR}"
+    echo "      hostPrefix     ... ${CLUSTER_CIDR_HOSTPREFIX}"
+    echo "    Workshop Admin   ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
+    echo "    Workshop Student ... ${WORKSHOP_STUDENT_UID} / ${WORKSHOP_STUDENT_PW:+**********}" 
+    echo "    BMC Defaults     ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
 }
 
 
@@ -306,7 +306,7 @@ cluster_menu () {
     cluster_settings
     echo ""
 
-    select action in "RETURN to previous menu" "BULK EDIT params" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Set Strapless" "Set Workshop Admin Password" "Set Workshop User Password" "Set Default BMC Password"
+    select action in "RETURN to previous menu" "BULK EDIT params" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Toggle Strapless" "Set Workshop Admin UID/PW" "Set Workshop Student UID/PW" "Set Default BMC Password"
     do
       case ${action}  in
 
@@ -315,14 +315,17 @@ cluster_menu () {
           ;;
 
         "Set Name")
-           read -p "Enter Cluster Name [${CLUSTER_NAME}]: " input
-           CLUSTER_NAME=${input:-$CLUSTER_NAME}
+           set_key "Cluster Name"  CLUSTER_NAME
            ;;
 
         "Set Version")
-           select CLUSTER_VERSION in "4.21" "4.20" "4.19" "4.18" "4.17" "4.16" "4.15" "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2"
+           echo ""
+           SAVED_PROMPT="$PS3"
+           PS3="Set Version [${CLUSTER_VERSION}]:"
+
+           select choice in "4.21" "4.20" "4.19" "4.18" "4.17" "4.16" "4.15" "4.14" "4.13" "4.12" "4.11" "4.10" "4.9" "4.8" "4.7" "4.6" "4.5" "4.4" "4.3" "4.2" "CANCEL"
            do
-              case ${CLUSTER_VERSION} in
+              case "$choice" in
                 "4.21" | \
                 "4.20" | \
                 "4.19" | \
@@ -343,127 +346,94 @@ cluster_menu () {
                 "4.4"  | \
                 "4.3"  | \
                 "4.2"  ) 
+                  CLUSTER_VERSION="$choice"
                   break ;;
                 "*" )
                   ;;
               esac
-              REPLY=
             done
+          PS3=${SAVED_PROMPT}
+          REPLY=
           ;;
 
         "Set Topology")
-           select CLUSTER_TOPOLOGY in "3x2" "3x0" "sno" "tna"
+           echo ""
+           SAVED_PROMPT="$PS3"
+           PS3="Set Topology [${CLUSTER_TOPOLOGY}]:"
+
+           select choice in "3x2" "3x0" "sno" "tna" "CANCEL"
            do
-              case ${CLUSTER_TOPOLOGY} in
-                "3x2" )
-                  break ;;
-                "3x0" )
-                  break ;;
-                "sno" )
-                  break ;;
+              case "$choice" in
+                "3x2" | \
+                "3x0" | \
+                "sno" | \
                 "tna" )
+                  CLUSTER_TOPOLOGY="$choice"
+                  break ;;
+                "CANCEL" )
                   break ;;
                 "*" )
-                  ;;
+                  break ;;
               esac
-              REPLY=
             done
+          PS3=${SAVED_PROMPT}
+          REPLY=
           ;;
 
         "Set Provisioner")
-           select CLUSTER_PROVISIONER in "upi-pxe" "upi-vmedia" "ai-http" "ai-vmedia"
+           echo ""
+           SAVED_PROMPT="$PS3"
+           PS3="Set Provisioner [${CLUSTER_PROVISIONER}]:"
+
+           select choice in "upi-pxe" "upi-vmedia" "ai-http" "ai-vmedia" "CANCEL"
            do
-              case ${CLUSTER_PROVISIONER} in
-                "upi-pxe" )
+              case "$choice" in
+                "upi-pxe"    | \
+                "upi-vmedia" | \
+                "ai-http"    | \
+                "ai-vmedia"  )
+                  CLUSTER_PROVISIONER="$choice"
                   break ;;
-                "upi-vmedia" )
-                  break ;;
-                "ai-http" )
-                  break ;;
-                "ai-vmedia" )
+                "CANCEL" )
                   break ;;
                 "*" )
-                  ;;
+                  break ;;
               esac
-              REPLY=
             done
+          PS3=${SAVED_PROMPT}
+          REPLY=
           ;;
 
-        "Set Strapless")
-           select CLUSTER_STRAPLESS in "True" "False"
-           do
-              case ${CLUSTER_STRAPLESS} in
-                "True" )
-                  break ;;
-                "False" )
-                  break ;;
-                "*" )
-                  ;;
-              esac
-              REPLY=
-            done
+        "Toggle Strapless")
+           toggle_key CLUSTER_STRAPLESS 
            ;;
 
         "Set Wildcard")
-           read -p "Enter Cluster Wildcard [${CLUSTER_WILDCARD}]: " input
-           CLUSTER_WILDCARD=${input:-$CLUSTER_WILDCARD}
+           set_key "Wildcard SubDomain" CLUSTER_WILDCARD
            ;;
 
         "Set LB IP")
-          read -p "Enter Cluster Loadbalancer  IP [${CLUSTER_LOADBALANCER_IP}]: " input
-          CLUSTER_LOADBALANCER_IP=${input:-$CLUSTER_LOADBALANCER_IP}
+          set_key "Loadbalancer IP" CLUSTER_LOADBALANCER_IP
           ;;
 
         "Set API IP")
-          read -p "Enter Cluster API IP [${CLUSTER_API_IP}]: " input
-          CLUSTER_API_IP=${input:-$CLUSTER_API_IP}
+          set_key "API IP" CLUSTER_API_IP
           ;;
 
         "Set CIDR")
-          read -p "Enter clusterNetwork cidr [${CLUSTER_CIDR}]: " input
-          CLUSTER_CIDR=${input:-$CLUSTER_CIDR}
+          set_key "clusterNetwork cidr" CLUSTER_CIDR
           ;;
 
         "Set CIDR Host Prefix")
-          read -p "Enter clusterNetwork cidr hostPrefix [${CLUSTER_CIDR_HOSTPREFIX}]: " input
-          CLUSTER_CIDR_HOSTPREFIX=${input:-$CLUSTER_CIDR_HOSTPREFIX}
+          set_key "clusterNetwork cidr hostPrefix" CLUSTER_CIDR_HOSTPREFIX
           ;;
 
-
-        "Set Workshop Admin Password")
-          read -p "Enter Workshop Admin Username [${WORKSHOP_ADMIN_UID}]: " input
-          WORKSHOP_ADMIN_UID=${input:-$WORKSHOP_ADMIN_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop Admin password [${WORKSHOP_ADMIN_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter Workshop Admin password again [${WORKSHOP_ADMIN_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            WORKSHOP_ADMIN_PW=${input:-$WORKSHOP_ADMIN_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
+        "Set Workshop Admin UID/PW")
+          set_uidpw "Workshop Admin" WORKSHOP_ADMIN_UID WORKSHOP_ADMIN_PW
           ;;
 
-        "Set Workshop User Password")
-          read -p "Enter Workshop User Username [${WORKSHOP_USER_UID}]: " input
-          WORKSHOP_USER_UID=${input:-$WORKSHOP_USER_UID}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter Workshop User password [${WORKSHOP_USER_PW:+**********}]: " input
-          echo ""
-          read -s -p "Enter Workshop User password again [${WORKSHOP_USER_PW:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            WORKSHOP_USER_PW=${input:-$WORKSHOP_USER_PW}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
+        "Set Workshop Student UID/PW")
+          set_uidpw "Workshop Student" WORKSHOP_STUDENT_UID WORKSHOP_STUDENT_PW
           ;;
 
         "Set Default BMC Password")

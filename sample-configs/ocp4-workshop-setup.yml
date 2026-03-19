@@ -35,7 +35,10 @@
       - t_config_dir:              "{{ lookup('env','PWD') }}"
       - t_project_name:            "{{ lookup('env','PROJECT_NAME') }}"
       - t_ansible_ip:              "{{ lookup('env','ANSIBLE_IP') }}"
-      - t_workshop_user_pw:        "{{ lookup('env','WORKSHOP_USER_PW') }}"
+      - t_workshop_admin_uid:      "{{ lookup('env','WORKSHOP_ADMIN_UID') }}"
+      - t_workshop_admin_pw:       "{{ lookup('env','WORKSHOP_ADMIN_PW') }}"
+      - t_workshop_student_uid:    "{{ lookup('env','WORKSHOP_STUDENT_UID') }}"
+      - t_workshop_student_pw:     "{{ lookup('env','WORKSHOP_STUDENT_PW') }}"
 
       - t_cluster_name:            "{{ lookup('env','CLUSTER_NAME') }}"
       - t_cluster_wildcard:        "{{ lookup('env','CLUSTER_WILDCARD') }}"
