@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##
+##    One variable we have to declare before doing anything else
+##
+
+export NODE_COUNT=10
+
+##
+##    Now we can source the shell libs and set everything up
+##
+
 RELOADER="$0"
 echo "${RELOADER}"
 echo "--------------------"
@@ -199,7 +209,7 @@ current_settings () {
     bastion_settings
     virthost_settings
     node_settings
- }
+}
 
 
 # ---
@@ -437,21 +447,7 @@ cluster_menu () {
           ;;
 
         "Set Default BMC Password")
-          read -p "Enter Default BMC User [${BMC_UID_DEFAULT}]: " input
-          BMC_UID_DEFAULT=${input:-$BMC_UID_DEFAULT}
-
-          echo "Enter new password and press Enter"
-          read -s -p "Enter BMC default password [${BMC_PW_DEFAULT:+**********}]: " input
-          echo ""
-          read -s -p "Enter BMC default password again [${BMC_PW_DEFAULT:+**********}]: " input2
-          echo ""
-          echo ""
-
-          if [[ "$input" == "$input2" ]]; then
-            BMC_PW_DEFAULT=${input:-$BMC_PW_DEFAULT}
-          else
-            echo "WARNING: Passwords do not match ... unchanged"
-          fi
+          set_uidpw "Default BMC" BMC_UID_DEFAULT BMC_PW_DEFAULT
           ;;
 
         "RETURN to previous menu")

@@ -81,7 +81,7 @@ all:
 
     workshop_vars:
 
-      projectname:          "{{ t_project_name }}"
+      projectname:          "{{ lookup('env','PROJECT_NAME')         }}"
 
       ocp_clustername:      "{{ lookup('env','CLUSTER_NAME')         }}"
       ocp_cluster_fqdn:     "{{ lookup('env','CLUSTER_NAME')         }}.{{ lookup('env','NETWORK_SUBDOMAIN') }}"
