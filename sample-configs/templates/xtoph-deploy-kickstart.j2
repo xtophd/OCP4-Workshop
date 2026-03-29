@@ -10,6 +10,7 @@ custom_kickstart:
     method:                 "simple_cdrom"
 {% raw %}
     iso_url:                "{{ h_isoURL | default('') }}"
+    iso_nfs:                "{{ h_isoNFS | default('') }}"
 {% endraw %}
 
 {% if t_cluster_provisioner == "ai-vmedia" and t_virthost_type == "libvirt" %}

@@ -68,8 +68,10 @@ all:
 
 {% if t_name_node1 == "localhost.localdomain" %}
     h_isoURL:        "http://{{ t_ansible_ip }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+    h_isoNFS:        "{{ t_ansible_ip }}:/var/lib/matchbox/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% else %}
     h_isoURL:        "http://{{ t_addr_node1 }}:8008/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
+    h_isoNFS:        "{{ t_addr_node1 }}:/var/lib/matchbox/assets/{{ t_cluster_name }}-{% raw %}{{ inventory_hostname_short }}{% endraw %}.iso"
 {% endif %}
 
     g_clusterAdmin:       "{{ lookup('env',"WORKSHOP_ADMIN_UID") }}"
