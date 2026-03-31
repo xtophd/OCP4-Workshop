@@ -50,10 +50,12 @@ all:
 {% if t_virthost_type == "libvirt" %}
     h_rhcosDEV:      "{{ t_blkdev_virthost }}"
     h_rhcosNIC:      "{{ t_netdev_virthost }}"
+    h_rhcosKOPTS:    "{{ t_kopts_virthost }}"
     h_hwPROF:        "{{ t_virthost_machine }}"
 {% elif t_virthost_type == "ovirt" %}
     h_rhcosDEV:      "{{ t_blkdev_ovirt }}"
-    h_rhcosNIC:      "{{  t_netdev_ovirt }}"
+    h_rhcosNIC:      "{{ t_netdev_ovirt }}"
+    h_rhcosKOPTS:    "{{ t_kopts_ovirt }}"
     h_hwPROF:        "{{ t_ovirt_machine }}"
 {% endif %}
 
@@ -393,10 +395,13 @@ myBootstrap:
       h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
       h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
       h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
-
-{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
-      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         if lookup('env',"KOPTS_NODE" ~ index )| length %}
+      h_rhcosKOPTS:    "{{ lookup('env','KOPTS_NODE' ~ index) }}"
+{%         else %}
+      h_rhcosKOPTS:    "{{ lookup('vars','t_kopts_node' ~ index) }}"
 {%         endif %}
+
+
 {%         if lookup('env',"BMC_NODE" ~ index)|length %}
       bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
   {%       endif %}
@@ -452,10 +457,13 @@ myMasters:
       h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
       h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
       h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
-
-{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
-      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         if lookup('env',"KOPTS_NODE" ~ index )| length %}
+      h_rhcosKOPTS:    "{{ lookup('env','KOPTS_NODE' ~ index) }}"
+{%         else %}
+      h_rhcosKOPTS:    "{{ lookup('vars','t_kopts_node' ~ index) }}"
 {%         endif %}
+
+
 {%         if lookup('env',"BMC_NODE" ~ index)|length %}
       bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
   {%       endif %}
@@ -510,10 +518,12 @@ myWorkers:
       h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
       h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
       h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
-
-{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
-      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         if lookup('env',"KOPTS_NODE" ~ index )| length %}
+      h_rhcosKOPTS:    "{{ lookup('env','KOPTS_NODE' ~ index) }}"
+{%         else %}
+      h_rhcosKOPTS:    "{{ lookup('vars','t_kopts_node' ~ index) }}"
 {%         endif %}
+
 {%         if lookup('env',"BMC_NODE" ~ index)|length %}
       bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
   {%       endif %}
@@ -547,7 +557,6 @@ mySNO:
 {%       endif %}
 {%       if lookup('env',"NICMODE_NODE" ~ index)|length %}
       h_netMODE:       "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
-      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
 {%       endif %}
 {%       if lookup('env',"NETDEV_NODE" ~ index)|length %}
       h_netDEV:        "{{ lookup('env',"NETDEV_NODE" ~ index) }}"
@@ -564,16 +573,19 @@ mySNO:
 {%         endif %}
 
       h_rhcosNIC:      "{{ lookup('vars','t_netdev_node' ~ index) }}:dhcp"
+      h_rhcosNICmode:  "{{ lookup('env',"NICMODE_NODE" ~ index) }}"
       h_rhcosDEV:      "{{ lookup('vars','t_blkdev_node' ~ index) }}"
       h_rhcosUSBdelay: "{{ lookup('vars','t_usbdelay_node' ~ index) }}"
       h_rhcosLOADER:   "{{ lookup('vars','t_bootmode_node' ~ index) }}"
-
-{%         if lookup('env',"KOPTS_NODE" ~ index)|length %}
-      h_kernelOPTS:    "{{ lookup('env',"KOPTS_NODE" ~ index) }}"
+{%         if lookup('env',"KOPTS_NODE" ~ index )| length %}
+      h_rhcosKOPTS:    "{{ lookup('env','KOPTS_NODE' ~ index) }}"
+{%         else %}
+      h_rhcosKOPTS:    "{{ lookup('vars','t_kopts_node' ~ index) }}"
 {%         endif %}
+
 {%         if lookup('env',"BMC_NODE" ~ index)|length %}
       bmc_fqdn:        "{{ lookup('env',"BMC_NODE" ~ index) }}"
-  {%       endif %}
+{%         endif %}
 {%       endif %}
 
 {%     endif %}
