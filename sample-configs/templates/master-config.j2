@@ -245,7 +245,7 @@ myLibvirtHosts:
       h_plSETUP: "custom_platform"
       h_rsPROF:  "med"
       h_pwrOFF:  false
-      h_ksPROF:  "rhel92-bootiso"
+      h_ksPROF:  "{{ t_virthost_ks }}"
 {% else %}
       h_hwPROF:  "pc_sda"
       h_plSETUP: "custom_platform"
