@@ -194,7 +194,6 @@ cluster_settings () {
     echo "      hostPrefix     ... ${CLUSTER_CIDR_HOSTPREFIX}"
     echo "    Workshop Admin   ... ${WORKSHOP_ADMIN_UID} / ${WORKSHOP_ADMIN_PW:+**********}" 
     echo "    Workshop Student ... ${WORKSHOP_STUDENT_UID} / ${WORKSHOP_STUDENT_PW:+**********}" 
-    echo "    BMC Defaults     ... ${BMC_UID_DEFAULT} / ${BMC_PW_DEFAULT:+**********}" 
 }
 
 
@@ -316,7 +315,7 @@ cluster_menu () {
     cluster_settings
     echo ""
 
-    select action in "RETURN to previous menu" "BULK EDIT params" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Toggle Strapless" "Set Workshop Admin UID/PW" "Set Workshop Student UID/PW" "Set Default BMC Password"
+    select action in "RETURN to previous menu" "BULK EDIT params" "Set Name" "Set Version" "Set Topology" "Set Wildcard" "Set LB IP" "Set API IP" "Set CIDR" "Set CIDR Host Prefix" "Set Provisioner" "Toggle Strapless" "Set Workshop Admin UID/PW" "Set Workshop Student UID/PW" 
     do
       case ${action}  in
 
@@ -445,10 +444,6 @@ cluster_menu () {
 
         "Set Workshop Student UID/PW")
           set_uidpw "Workshop Student" WORKSHOP_STUDENT_UID WORKSHOP_STUDENT_PW
-          ;;
-
-        "Set Default BMC Password")
-          set_uidpw "Default BMC" BMC_UID_DEFAULT BMC_PW_DEFAULT
           ;;
 
         "RETURN to previous menu")
