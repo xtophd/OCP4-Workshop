@@ -62,7 +62,7 @@ all:
 {% if t_cluster_provisioner == "upi-pxe" %}
     h_ksPROF:        "pxe_wait"
 {%   if t_virthost_type == "ovirt" %}
-    h_pwrOFF:        "False"
+    h_pwrOFF:        False
 {%   endif %}
 {% else %}
     h_ksPROF:        "custom_kickstart"
@@ -126,8 +126,9 @@ all:
       ocp_vip_cluster:      "{{ lookup('env','CLUSTER_LOADBALANCER_IP')                }}"
       ocp_vip_api:          "{{ lookup('env','CLUSTER_API_IP')                         }}"
 {% endif %}
+      ocp_skip_shutdown:    False
 
-      ldap:                 "{{ t_ldap }}" 
+      ldap:                 {{ t_ldap }} 
       ldap_uri:             "{{ t_ldap_uri }}"
       ldap_base_dn:         "{{ t_ldap_base_dn }}"
       ldap_bind_dn:         "{{ t_ldap_bind_dn }}"
@@ -244,7 +245,7 @@ myLibvirtHosts:
       h_plPROF:  "custom_baremetal"
       h_plSETUP: "custom_platform"
       h_rsPROF:  "med"
-      h_pwrOFF:  false
+      h_pwrOFF:  False
       h_ksPROF:  "{{ t_virthost_ks }}"
 {% else %}
       h_hwPROF:  "pc_sda"
@@ -315,7 +316,7 @@ myDeployhost:
 {%         if lookup('env','HW_NODE' ~ index)|length      %}
       h_hwPROF:        "{{ lookup('env','HW_NODE' ~ index)      }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        true
+      h_pwrOFF:        True
 {%         endif %}
 {%         if lookup('env','BMC_NODE' ~ index)|length     %}
       bmc_fqdn:        "{{ lookup('env','BMC_NODE' ~ index)     }}"
@@ -386,7 +387,7 @@ myBootstrap:
 {%       if lookup('env',"HW_NODE" ~ index)|length %}
       h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
+      h_pwrOFF:        False
 {%         if lookup('env',"CLUSTER_PROVISIONER") == "ai-vmedia" or lookup('env',"CLUSTER_PROVISIONER") == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {%         endif %}
@@ -448,7 +449,7 @@ myMasters:
 {%       if lookup('env',"HW_NODE" ~ index)|length %}
       h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
+      h_pwrOFF:        False
 {%         if lookup('env',"CLUSTER_PROVISIONER") == "ai-vmedia" or lookup('env',"CLUSTER_PROVISIONER") == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {%         endif %}
@@ -509,7 +510,7 @@ myWorkers:
 {%       if lookup('env',"HW_NODE" ~ index)|length %}
       h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
+      h_pwrOFF:        False
 {%         if lookup('env',"CLUSTER_PROVISIONER") == "ai-vmedia" or lookup('env',"CLUSTER_PROVISIONER") == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {%         endif %}
@@ -567,7 +568,7 @@ mySNO:
 {%       if lookup('env',"HW_NODE" ~ index)|length %}
       h_hwPROF:        "{{ lookup('env',"HW_NODE" ~ index) }}"
       h_plPROF:        "custom_baremetal"
-      h_pwrOFF:        false
+      h_pwrOFF:        False
 {%         if lookup('env',"CLUSTER_PROVISIONER") == "ai-vmedia" or lookup('env',"CLUSTER_PROVISIONER") == "ai-http" %}
       h_ksPROF:        "vmedia_nowait"
 {%         endif %}
