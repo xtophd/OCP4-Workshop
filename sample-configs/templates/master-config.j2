@@ -126,7 +126,7 @@ all:
       ocp_vip_cluster:      "{{ lookup('env','CLUSTER_LOADBALANCER_IP')                }}"
       ocp_vip_api:          "{{ lookup('env','CLUSTER_API_IP')                         }}"
 {% endif %}
-      ocp_skip_shutdown:    False
+      ocp_skip_shutdown:    True
 
       ldap:                 {{ t_ldap }} 
       ldap_uri:             "{{ t_ldap_uri }}"
