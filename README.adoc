@@ -42,8 +42,9 @@ All of these methods should work on
         RHV 4.4+ with compatability set to 4.7 (oVirt 4.7)
         RHEL (8 or 9) + Libvirt
 
-                | BIOS                  | UEFI                          |
-        | Ver   | PXE   | MEDIA | AI    | PXE   | HTTP  | MEDIA | AI    |
+HW Mode         | BIOS                  | UEFI                          |
+Method          | UPI           | AI    | UPI                   | AI    |
+        | Ver   | PXE   | MEDIA | MEDIA | PXE   | HTTP  | MEDIA | MEDIA |
 --------|-------|-------|-------|-------|-------|-------|-------|-------|
 OCP     | 4.2   | Y     | Y     | x     | -     | ?     | Y     | x     |
 OCP     | 4.3   | Y     | Y     | x     | Y     | Y     | Y     | x     |
