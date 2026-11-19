@@ -67,7 +67,7 @@ OCP     | 4.19  | ?     | ?     | Y     | ?     | ?     | ?     | Y     |
 OCP     | 4.20  | ?     | ?     | Y     | Y     | ?     | ?     | Y     |
 OCP     | 4.21  | ?     | ?     | Y     | Y     | ?     | ?     | Y     |
 OCP     | 4.22  | ?     | ?     | Y     | Y     | ?     | ?     | Y     |
-OCP     | 5.0   | ?     | ?     | Y     | ?     | ?     | ?     | Y     |
+OCP     | 5.0   | ?     | ?     | Y     | Y     | ?     | ?     | Y     |
 
 x : does not work, no intent to enable|fix
 b : does not work (broken), hope to fix
